@@ -1,22 +1,20 @@
-package com.studio.zqquery.service;
+package com.studio.query.service;
 
 import java.util.List;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.studio.zqquery.dao.FragmentDao;
-import com.studio.zqquery.dao.VariableDao;
-import com.studio.zqquery.entity.Account;
-import com.studio.zqquery.entity.Fragment;
-import com.studio.zqquery.entity.Variable;
-import com.studio.zqquery.protocol.MethodCode;
-import com.studio.zqquery.protocol.ParameterCode;
-import com.studio.zqquery.util.DateUtil;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.dao.VariableDao;
+import com.studio.query.entity.Account;
+import com.studio.query.entity.Variable;
+import com.studio.query.protocol.MethodCode;
+import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.DateUtil;
+import com.studio.query.util.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Service
 public class VariableService {
@@ -45,29 +43,19 @@ public class VariableService {
 			String variableName = parmJb.optString("variableName", "");
 			String variableDesc = parmJb.optString("variableDesc", "");
 			int variableShare = parmJb.optInt("variableShare", 0);// 是否共享变量
-			String variableExpression = parmJb.optString("variableExpression",
-					"");// git保存expression
+			String variableExpression = parmJb.optString("variableExpression", "");// git保存expression
 			if (StringUtil.isNullOrEmpty(variableName)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Variable findVariable = new Variable();
 			findVariable.setVariableName(variableName);
-			List<Variable> variableList = variableDao
-					.findVariable(findVariable);
+			List<Variable> variableList = variableDao.findVariable(findVariable);
 			if (variableList.size() >= 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.CREATE_VARIABLE_EXIST,
-								"变量已经存在", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.CREATE_VARIABLE_EXIST, "变量已经存在", "");
 				return resultString;
 			}
 
@@ -80,19 +68,12 @@ public class VariableService {
 			insertVariable.setVariableDesc(variableDesc);
 			int insertResult = variableDao.insertVariable(insertVariable);
 			if (insertResult == 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "创建变量成功", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+						"创建变量成功", "");
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.CREATE_VARIABLE_FAIL,
-								"创建变量失败", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.CREATE_VARIABLE_FAIL, "创建变量失败", "");
 			}
 		}
 		return resultString;
@@ -108,29 +89,19 @@ public class VariableService {
 			String variableScope = parmJb.optString("variableScope", "");
 			int variableShare = parmJb.optInt("variableShare", 0);
 			String variableDesc = parmJb.optString("variableDesc", "");
-			String variableExpression = parmJb.optString("variableExpression",
-					"");// git保存expression
+			String variableExpression = parmJb.optString("variableExpression", "");// git保存expression
 			if (StringUtil.isNullOrEmpty(variableNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Variable findvVariable = new Variable();
 			findvVariable.setVariableNo(variableNo);
-			List<Variable> variableList = variableDao
-					.findVariable(findvVariable);
+			List<Variable> variableList = variableDao.findVariable(findvVariable);
 			if (variableList.size() < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_VARIABLE_NO_EXIST,
-								"查询的变量不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
 				return resultString;
 			}
 
@@ -140,19 +111,12 @@ public class VariableService {
 			updateVariable.setVariableDesc(variableDesc);
 			int insertResult = variableDao.updateVariable(updateVariable);
 			if (insertResult == 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "更新变量成功", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+						"更新变量成功", "");
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.UPDATE_VARIABLE_FAIL,
-								"更新变量失败", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.UPDATE_VARIABLE_FAIL, "更新变量失败", "");
 			}
 		}
 		return resultString;
@@ -166,12 +130,8 @@ public class VariableService {
 			String fragmentVersion = parmJb.optString("version", "");
 			if (StringUtil.isNullOrEmpty(fragmentVersion)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.GET_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.GET_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			// 这里根据version解析出相对应的variable
@@ -187,9 +147,8 @@ public class VariableService {
 			variableObj.put("createTime", "2016-04-25 00:12:45");
 			variableObj.put("expression", "");// expression直接从当前version解析提取
 
-			resultString = StringUtil.packetObject(MethodCode.GET_VARIABLE,
-					com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-					"", "获取某个版本variable成功", variableObj.toString());
+			resultString = StringUtil.packetObject(MethodCode.GET_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+					"获取某个版本variable成功", variableObj.toString());
 
 		}
 		return resultString;
@@ -204,12 +163,8 @@ public class VariableService {
 			String variableNo = parmJb.optString("id", "");
 			if (StringUtil.isNullOrEmpty(variableNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DELETE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Variable findVariable = new Variable();
@@ -217,20 +172,13 @@ public class VariableService {
 			findVariable.setVariableNo(variableNo);
 			int result = variableDao.deleteVariable(findVariable);
 			if (result < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DELETE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_VARIABLE_NO_EXIST,
-								"变量不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "变量不存在", "");
 				return resultString;
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DELETE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "删除变量成功", "");
+				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+						"删除变量成功", "");
 			}
 		}
 		return resultString;
@@ -245,12 +193,8 @@ public class VariableService {
 			String variableNo = parmJb.optString("id", "");
 			if (StringUtil.isNullOrEmpty(variableNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_SHARE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_VARIABLE,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Variable updateVariable = new Variable();
@@ -258,20 +202,13 @@ public class VariableService {
 			updateVariable.setVariableNo(variableNo);
 			int result = variableDao.disableShareVariable(updateVariable);
 			if (result < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_SHARE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_VARIABLE_NO_EXIST,
-								"查询的变量不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_VARIABLE,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
 				return resultString;
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_SHARE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "禁用共享变量成功", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_VARIABLE,
+						ParameterCode.Result.RESULT_OK, "", "禁用共享变量成功", "");
 			}
 		}
 		return resultString;
@@ -286,12 +223,8 @@ public class VariableService {
 			String variableNo = parmJb.optString("id", "");
 			if (StringUtil.isNullOrEmpty(variableNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_SHARE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_VARIABLE,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Variable updateVariable = new Variable();
@@ -299,20 +232,13 @@ public class VariableService {
 			updateVariable.setVariableNo(variableNo);
 			int result = variableDao.enableShareVariable(updateVariable);
 			if (result < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_SHARE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST,
-								"查询的变量不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_VARIABLE,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的变量不存在", "");
 				return resultString;
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_SHARE_VARIABLE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "启用共享变量成功", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_VARIABLE, ParameterCode.Result.RESULT_OK,
+						"", "启用共享变量成功", "");
 			}
 		}
 		return resultString;
@@ -335,21 +261,19 @@ public class VariableService {
 			dataObj.put("scope", variable.getVariableScope());
 			dataObj.put("share", variable.getVariableShare());
 			dataObj.put("createdBy", currentAccount.getAccountName());
-			dataObj.put("createTime",
-					DateUtil.dateTimeFormat(variable.getVariableDate()));
+			dataObj.put("createTime", DateUtil.dateTimeFormat(variable.getVariableDate()));
 			dataObj.put("expression", "");
 
 			variableJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_VARIABLE,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
-				"获取变量列表成功", variableJsonArray.toString());
+		resultString = StringUtil.packetObject(MethodCode.LIST_VARIABLE, ParameterCode.Result.RESULT_OK, "", "获取变量列表成功",
+				variableJsonArray.toString());
 
 		return resultString;
 	}
 
-	public String getShareVariables(String bodyString,Account currentAccount) {
+	public String getShareVariables(String bodyString, Account currentAccount) {
 
 		String resultString = null;
 		JSONArray variableJsonArray = new JSONArray();
@@ -366,15 +290,13 @@ public class VariableService {
 			dataObj.put("scope", variable.getVariableScope());
 			dataObj.put("share", variable.getVariableShare());
 			dataObj.put("createdBy", variable.getAccountName());
-			dataObj.put("createTime",
-					DateUtil.dateTimeFormat(variable.getVariableDate()));
+			dataObj.put("createTime", DateUtil.dateTimeFormat(variable.getVariableDate()));
 			dataObj.put("expression", "");
 
 			variableJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_VARIABLE,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_VARIABLE, ParameterCode.Result.RESULT_OK, "",
 				"获取分享变量列表成功", variableJsonArray.toString());
 
 		return resultString;

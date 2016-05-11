@@ -1,4 +1,4 @@
-package com.studio.zqquery.entity;
+package com.studio.query.entity;
 
 public class JsonResult {
 	public int code=0;

@@ -1,23 +1,23 @@
-package com.studio.zqquery.service;
+package com.studio.query.service;
 
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.studio.zqquery.common.Configure;
-import com.studio.zqquery.common.Constants;
-import com.studio.zqquery.dao.SceneDao;
-import com.studio.zqquery.entity.Account;
-import com.studio.zqquery.entity.Scene;
-import com.studio.zqquery.protocol.MethodCode;
-import com.studio.zqquery.protocol.ParameterCode;
-import com.studio.zqquery.util.FileUtil;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.common.Configure;
+import com.studio.query.common.Constants;
+import com.studio.query.dao.SceneDao;
+import com.studio.query.entity.Account;
+import com.studio.query.entity.Scene;
+import com.studio.query.protocol.MethodCode;
+import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.FileUtil;
+import com.studio.query.util.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Service
 public class SceneService {
@@ -46,12 +46,8 @@ public class SceneService {
 			String sceneDesc = parmJb.optString("sceneDesc", "");
 			if (StringUtil.isNullOrEmpty(sceneName)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			// 暂时不启用场景名称重复的验证
@@ -76,24 +72,16 @@ public class SceneService {
 			int insertResult = sceneDao.insertScene(insertScene);
 			if (insertResult == 1) {
 				JGitService jGitService = new JGitService();
-				String gitPath = Configure.gitRepositoryPath + "/"
-						+ currentAccount.getAccountRepository() + "/"
+				String gitPath = Configure.gitRepositoryPath + "/" + currentAccount.getAccountRepository() + "/"
 						+ insertScene.getSceneGit();
 
 				jGitService.initAccountGit(gitPath, currentAccount);
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "创建场景成功", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK, "",
+						"创建场景成功", "");
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.CREATE_SCENE_FAIL,
-								"创建场景失败", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.CREATE_SCENE_FAIL, "创建场景失败", "");
 			}
 		}
 		return resultString;
@@ -115,16 +103,13 @@ public class SceneService {
 			dataObj.put("desc", scene.getSceneDesc());
 			dataObj.put("comment", scene.getSceneComment());
 			dataObj.put("version", scene.getSceneVersion());
-			dataObj.put("active", scene.getSceneActive() == 1 ? "true"
-					: "false");
-			dataObj.put("enable", scene.getSceneEnable() == 1 ? "true"
-					: "false");
+			dataObj.put("active", scene.getSceneActive() == 1 ? "true" : "false");
+			dataObj.put("enable", scene.getSceneEnable() == 1 ? "true" : "false");
 			sceneJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_SCENE,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
-				"获取场景列表成功", sceneJsonArray.toString());
+		resultString = StringUtil.packetObject(MethodCode.LIST_SCENE, ParameterCode.Result.RESULT_OK, "", "获取场景列表成功",
+				sceneJsonArray.toString());
 
 		return resultString;
 	}
@@ -138,24 +123,16 @@ public class SceneService {
 			String sceneNo = parmJb.optString("sceneNo", "");
 			if (StringUtil.isNullOrEmpty(sceneNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.HISTORY_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Scene findScene = new Scene();
 			findScene.setSceneNo(sceneNo);
 			List<Scene> sceneList = sceneDao.findScene(findScene);
 			if (sceneList.size() < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.HISTORY_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_SCENE_NO_EXIST,
-								"场景不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_SCENE_NO_EXIST, "场景不存在", "");
 				return resultString;
 			}
 
@@ -167,8 +144,7 @@ public class SceneService {
 			currentJson.put("committer", "test2");
 			currentJson.put("commiteEmail", "test2@zq.com");
 			currentJson.put("comment", "");
-			currentJson.put("version",
-					"235c0729afe31e95b0f44d18f9b998f15f7c9b90");
+			currentJson.put("version", "235c0729afe31e95b0f44d18f9b998f15f7c9b90");
 			currentJson.put("branch", "master");
 			currentJson.put("commitDate", "2016-04-25 12:55:51");
 
@@ -213,9 +189,8 @@ public class SceneService {
 			sceneJson.put("root", rootJson.toString());
 			sceneJson.put("commit", commitJsons.toString());
 
-			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE,
-					com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-					"", "查询场景历史版本成功", sceneJson.toString());
+			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_OK, "",
+					"查询场景历史版本成功", sceneJson.toString());
 
 		}
 		return resultString;
@@ -228,8 +203,7 @@ public class SceneService {
 	 * @param currentAccount
 	 * @return
 	 */
-	public String switchScene(String bodyString, Account currentAccount,
-			Map<String, Object> session) {
+	public String switchScene(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
@@ -238,34 +212,24 @@ public class SceneService {
 			String sceneNo = parmJb.optString("sceneNo", "");
 			if (StringUtil.isNullOrEmpty(sceneNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.SWITCH_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Scene findScene = new Scene();
 			findScene.setSceneNo(sceneNo);
 			List<Scene> sceneList = this.findScene(findScene);
 			if (sceneList.size() != 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.SWITCH_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_SCENE_NO_EXIST,
-								"查询的场景不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_SCENE_NO_EXIST, "查询的场景不存在", "");
 				return resultString;
 			}
-			String scenePath = Configure.gitRepositoryPath
-					+ currentAccount.getAccountRepository() + "/"
+			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
 					+ sceneList.get(0).getSceneGit();
 			session.put(Constants.KEY_SCENE_PATH, scenePath);
 
-			resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE,
-					com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-					"", "切换场景成功，当前场景是" + sceneList.get(0).getSceneName(), "");
+			resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_OK, "",
+					"切换场景成功，当前场景是" + sceneList.get(0).getSceneName(), "");
 
 		}
 		return resultString;
@@ -280,18 +244,13 @@ public class SceneService {
 			String sceneVersion = parmJb.optString("sceneVersion", "");
 			if (StringUtil.isNullOrEmpty(sceneVersion)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.SWITCH_VERSION,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 
-			resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION,
-					com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-					"", "切换版本成功", "");
+			resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_OK, "",
+					"切换版本成功", "");
 
 		}
 		return resultString;
@@ -354,8 +313,7 @@ public class SceneService {
 		variableObjs.add(variableJson2);
 		sceneObject.put("variableList", variableObjs.toString());
 
-		resultString = StringUtil.packetObject(MethodCode.GET_SCENE_VERSION,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.GET_SCENE_VERSION, ParameterCode.Result.RESULT_OK, "",
 				"获取某版本场景成功", sceneObject.toString());
 
 		return resultString;
@@ -370,24 +328,18 @@ public class SceneService {
 			String sceneVersion = parmJb.optString("sceneVersion", "");
 			if (StringUtil.isNullOrEmpty(sceneVersion)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CLOSE_VERSION,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
-			resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION,
-					com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-					"", "关闭场景成功", "");
+			resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION, ParameterCode.Result.RESULT_OK, "",
+					"关闭场景成功", "");
 
 		}
 		return resultString;
 	}
 
-	public String updateScene(String bodyString, Account currentAccount,
-			Map<String, Object> session) {
+	public String updateScene(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
@@ -398,50 +350,35 @@ public class SceneService {
 			String sceneExpression = parmJb.optString("sceneExpression", "");
 			if (StringUtil.isNullOrEmpty(sceneNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Scene findScene = new Scene();
 			findScene.setSceneNo(sceneNo);
 			List<Scene> sceneList = this.findScene(findScene);
 			if (sceneList.size() != 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_SCENE_NO_EXIST,
-								"查询的场景不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_SCENE_NO_EXIST, "查询的场景不存在", "");
 				return resultString;
 			}
 			Scene currentScene = sceneList.get(0);
-			String scenePath = Configure.gitRepositoryPath
-					+ currentAccount.getAccountRepository() + "/"
+			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
 					+ currentScene.getSceneGit();
 
 			String sessionScenePath = session.get(Constants.KEY_SCENE_PATH) == null ? null
 					: session.get(Constants.KEY_SCENE_PATH).toString();
 			// 如果session中没有记录当前场景，或记录的当前场景跟提交的场景不匹配
-			if (StringUtil.isNullOrEmpty(sessionScenePath)
-					|| !scenePath.equals(sessionScenePath)) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_SCENE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.UPDATE_SCENE_NO_MATCH,
-								"提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口", "");
+			if (StringUtil.isNullOrEmpty(sessionScenePath) || !scenePath.equals(sessionScenePath)) {
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口", "");
 				return resultString;
 			}
 
 			// 保存parmJb string to info.txt
 			FileUtil.updateFile(sessionScenePath + "/info.txt", sceneExpression);
 			JGitService jGitService = new JGitService();
-			jGitService.jGitCommit(sessionScenePath, currentAccount,
-					sceneComment);
+			jGitService.jGitCommit(sessionScenePath, currentAccount, sceneComment);
 
 			JSONObject sceneObject = new JSONObject();
 			sceneObject.put("sceneNo", currentScene.getSceneNo());
@@ -449,14 +386,12 @@ public class SceneService {
 			sceneObject.put("sceneDesc", currentScene.getSceneDesc());
 			// 从git查询最新版本的comment和version
 			sceneObject.put("sceneComment", "");
-			sceneObject.put("sceneVersion",
-					"f897c9206efa2d595f2cd80ac86de874704a1efd");
+			sceneObject.put("sceneVersion", "f897c9206efa2d595f2cd80ac86de874704a1efd");
 
 			sceneObject.put("active", currentScene.getSceneActive());
 			sceneObject.put("enable", currentScene.getSceneEnable());
-			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
-					com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-					"", "更新场景成功", sceneObject.toString());
+			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "",
+					"更新场景成功", sceneObject.toString());
 
 		}
 		return resultString;

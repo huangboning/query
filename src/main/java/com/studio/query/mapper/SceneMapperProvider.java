@@ -1,7 +1,7 @@
-package com.studio.zqquery.mapper;
+package com.studio.query.mapper;
 
-import com.studio.zqquery.entity.Scene;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.entity.Scene;
+import com.studio.query.util.StringUtil;
 
 public class SceneMapperProvider {
 	public static String findScene(Scene scene) {

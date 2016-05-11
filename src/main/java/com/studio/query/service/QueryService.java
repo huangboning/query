@@ -1,15 +1,15 @@
-package com.studio.zqquery.service;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+package com.studio.query.service;
 
 import org.springframework.stereotype.Service;
 
-import com.studio.zqquery.entity.DataSource;
-import com.studio.zqquery.entity.HeadData;
-import com.studio.zqquery.protocol.MethodCode;
-import com.studio.zqquery.protocol.ParameterCode;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.entity.DataSource;
+import com.studio.query.entity.HeadData;
+import com.studio.query.protocol.MethodCode;
+import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Service
 public class QueryService {
@@ -43,8 +43,7 @@ public class QueryService {
 		dataObj2.put("isUnified", returnDataSource2.getDataSourceIsUnified());
 		dataJsonArray.add(dataObj2);
 
-		resultString = StringUtil.packetObject(MethodCode.GET_INDEX_DOC_TYPES,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.GET_INDEX_DOC_TYPES, ParameterCode.Result.RESULT_OK, "",
 				"获取数据源列表成功", dataJsonArray.toString());
 
 		return resultString;
@@ -63,19 +62,14 @@ public class QueryService {
 			String scope = parmJb.optString("scope", "");
 			if (StringUtil.isNullOrEmpty(scope)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.SET_SCOPE,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			// 这里设置数据源逻辑
 
-			resultString = StringUtil.packetObject(MethodCode.SET_SCOPE,
-					com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-					"", "设置数据源成功", "");
+			resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Result.RESULT_OK, "", "设置数据源成功",
+					"");
 
 		}
 		return resultString;
@@ -107,8 +101,7 @@ public class QueryService {
 		dataObj2.put("name", returnHeadData2.getHeadDataName());
 		dataJsonArray.add(dataObj2);
 
-		resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF, ParameterCode.Result.RESULT_OK, "",
 				"获取选择数据源定义的数据表头成功", dataJsonArray.toString());
 
 		return resultString;

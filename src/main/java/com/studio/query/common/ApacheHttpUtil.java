@@ -1,4 +1,4 @@
-package com.studio.zqquery.common;
+package com.studio.query.common;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;

@@ -1,6 +1,6 @@
-package com.studio.zqquery.entity;
+package com.studio.query.entity;
 
-import com.studio.zqquery.common.Page;
+import com.studio.query.common.Page;
 
 public class HeadData extends Page {
 	private String headDataId;// 数据表头ID

@@ -1,4 +1,4 @@
-package com.studio.zqquery.encrypt;
+package com.studio.query.encrypt;
 
 import java.util.Random;
 
@@ -24,8 +24,7 @@ public class JAVATEAEncrypt {
 	 *            密轮数
 	 * @return
 	 */
-	public static byte[] encrypt(byte[] content, int offset, int[] key,
-			int times) {
+	public static byte[] encrypt(byte[] content, int offset, int[] key, int times) {
 		int[] tempInt = byteToInt(content, offset);
 		int y = tempInt[0], z = tempInt[1], sum = 0, i;
 		int delta = 0x9e3779b9; // 这是算法标准给的值
@@ -50,8 +49,7 @@ public class JAVATEAEncrypt {
 	 * @param times
 	 * @return
 	 */
-	public static byte[] decrypt(byte[] encryptContent, int offset, int[] key,
-			int times) {
+	public static byte[] decrypt(byte[] encryptContent, int offset, int[] key, int times) {
 		int[] tempInt = byteToInt(encryptContent, offset);
 		int y = tempInt[0], z = tempInt[1], sum = 0xC6EF3720, i;
 		int delta = 0x9e3779b9; // 这是算法标准给的值
@@ -74,9 +72,8 @@ public class JAVATEAEncrypt {
 		int[] result = new int[content.length >> 2];
 		// 除以2的n次方 == 右移n位 即content.length / 4 ==content.length >> 2
 		for (int i = 0, j = offset; j < content.length; i++, j += 4) {
-			result[i] = transform(content[j + 3])
-					| transform(content[j + 2]) << 8
-					| transform(content[j + 1]) << 16 | (int) content[j] << 24;
+			result[i] = transform(content[j + 3]) | transform(content[j + 2]) << 8 | transform(content[j + 1]) << 16
+					| (int) content[j] << 24;
 		}
 		return result;
 
@@ -139,8 +136,7 @@ public class JAVATEAEncrypt {
 		}
 		int n = decryptData[0];
 		byte[] packDecryptData = new byte[decryptData.length - n];
-		System.arraycopy(decryptData, n, packDecryptData, 0, decryptData.length
-				- n);
+		System.arraycopy(decryptData, n, packDecryptData, 0, decryptData.length - n);
 		return packDecryptData;
 	}
 
@@ -162,12 +158,10 @@ public class JAVATEAEncrypt {
 
 	public static String getDynamicPassword() {
 		String dynamicPassword = "";
-		String[] pwdstr = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-				"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
-				"m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
-				"y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-				"K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-				"W", "X", "Y", "Z" };
+		String[] pwdstr = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h",
+				"i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C",
+				"D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+				"Y", "Z" };
 		Random random = new Random();
 		for (int k = 0; k < 6; k++) {
 			int i = random.nextInt(62);
@@ -205,8 +199,7 @@ public class JAVATEAEncrypt {
 		String info = "www.blogjava.net/orangehf/abc";
 		System.out.println("原数据：" + info);
 
-		byte[] encryptInfo = JAVATEAEncrypt.encryptByTea(info.getBytes(), KEY,
-				32);
+		byte[] encryptInfo = JAVATEAEncrypt.encryptByTea(info.getBytes(), KEY, 32);
 		System.out.print("加密后的数据：");
 		for (byte i : encryptInfo) {
 			System.out.print(i + " ");

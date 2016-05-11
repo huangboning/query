@@ -1,18 +1,18 @@
-package com.studio.zqquery.action;
+package com.studio.query.action;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.studio.zqquery.common.Configure;
-import com.studio.zqquery.entity.JsonResult;
-import com.studio.zqquery.entity.User;
-import com.studio.zqquery.service.UserService;
+import com.studio.query.common.Configure;
+import com.studio.query.entity.JsonResult;
+import com.studio.query.entity.User;
+import com.studio.query.service.UserService;
+
+import net.sf.json.JSONObject;
 
 /**
  * 

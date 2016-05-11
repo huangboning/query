@@ -1,27 +1,26 @@
-package com.studio.zqquery.action;
+package com.studio.query.action;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.studio.zqquery.common.Configure;
-import com.studio.zqquery.entity.Account;
-import com.studio.zqquery.entity.Scene;
-import com.studio.zqquery.protocol.MethodCode;
-import com.studio.zqquery.protocol.ParameterCode;
-import com.studio.zqquery.service.AccountService;
-import com.studio.zqquery.service.FragmentService;
-import com.studio.zqquery.service.QueryService;
-import com.studio.zqquery.service.SceneService;
-import com.studio.zqquery.service.VariableService;
-import com.studio.zqquery.util.ConversionTools;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.common.Configure;
+import com.studio.query.common.ConversionTools;
+import com.studio.query.entity.Account;
+import com.studio.query.protocol.MethodCode;
+import com.studio.query.protocol.ParameterCode;
+import com.studio.query.service.AccountService;
+import com.studio.query.service.FragmentService;
+import com.studio.query.service.QueryService;
+import com.studio.query.service.SceneService;
+import com.studio.query.service.VariableService;
+import com.studio.query.util.StringUtil;
+
+import net.sf.json.JSONObject;
 
 /**
  * android服务器请求接口

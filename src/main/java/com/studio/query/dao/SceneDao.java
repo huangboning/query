@@ -1,4 +1,4 @@
-package com.studio.zqquery.dao;
+package com.studio.query.dao;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 
-import com.studio.zqquery.entity.Scene;
-import com.studio.zqquery.mapper.SceneMapperProvider;
+import com.studio.query.entity.Scene;
+import com.studio.query.mapper.SceneMapperProvider;
 
 public interface SceneDao {
 

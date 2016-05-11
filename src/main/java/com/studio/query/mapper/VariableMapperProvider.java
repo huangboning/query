@@ -1,7 +1,7 @@
-package com.studio.zqquery.mapper;
+package com.studio.query.mapper;
 
-import com.studio.zqquery.entity.Variable;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.entity.Variable;
+import com.studio.query.util.StringUtil;
 
 public class VariableMapperProvider {
 	public static String findVariable(Variable variable) {

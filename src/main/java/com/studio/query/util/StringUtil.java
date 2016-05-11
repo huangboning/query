@@ -1,4 +1,4 @@
-package com.studio.zqquery.util;
+package com.studio.query.util;
 
 import java.util.Calendar;
 
@@ -20,8 +20,8 @@ public class StringUtil {
 		return false;
 	}
 
-	public static String packetObject(String optCode, String statusCode,
-			String errorCode, String message, String baseObject) {
+	public static String packetObject(String optCode, String statusCode, String errorCode, String message,
+			String baseObject) {
 		JSONObject o = new JSONObject();
 		o.put("optCode", optCode);
 		o.put("statusCode", statusCode);
@@ -33,35 +33,33 @@ public class StringUtil {
 
 	public static String createSceneNo() {
 		String sceneNo = java.util.UUID.randomUUID().toString();
-		sceneNo = sceneNo.substring(0, 8) + sceneNo.substring(9, 13)
-				+ sceneNo.substring(14, 18) + sceneNo.substring(19, 23)
-				+ sceneNo.substring(24);
+		sceneNo = sceneNo.substring(0, 8) + sceneNo.substring(9, 13) + sceneNo.substring(14, 18)
+				+ sceneNo.substring(19, 23) + sceneNo.substring(24);
 		sceneNo = "SCNO" + sceneNo;
 		return sceneNo;
 
 	}
+
 	public static String createFragmentNo() {
 		String fragmentNo = java.util.UUID.randomUUID().toString();
-		fragmentNo = fragmentNo.substring(0, 8) + fragmentNo.substring(9, 13)
-				+ fragmentNo.substring(14, 18) + fragmentNo.substring(19, 23)
-				+ fragmentNo.substring(24);
+		fragmentNo = fragmentNo.substring(0, 8) + fragmentNo.substring(9, 13) + fragmentNo.substring(14, 18)
+				+ fragmentNo.substring(19, 23) + fragmentNo.substring(24);
 		fragmentNo = "FRGM" + fragmentNo;
 		return fragmentNo;
 
 	}
+
 	public static String createVariableNo() {
 		String variableNo = java.util.UUID.randomUUID().toString();
-		variableNo = variableNo.substring(0, 8) + variableNo.substring(9, 13)
-				+ variableNo.substring(14, 18) + variableNo.substring(19, 23)
-				+ variableNo.substring(24);
+		variableNo = variableNo.substring(0, 8) + variableNo.substring(9, 13) + variableNo.substring(14, 18)
+				+ variableNo.substring(19, 23) + variableNo.substring(24);
 		variableNo = "VAR" + variableNo;
 		return variableNo;
 
 	}
-	
+
 	public static String createScenegit() {
-		String sceneGit = String.valueOf(Calendar.getInstance()
-				.getTimeInMillis());
+		String sceneGit = String.valueOf(Calendar.getInstance().getTimeInMillis());
 		return sceneGit;
 
 	}

@@ -1,4 +1,4 @@
-package com.studio.zqquery.encrypt;
+package com.studio.query.encrypt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,7 +14,8 @@ import javax.crypto.spec.IvParameterSpec;
 /** * 3DES加密工具类 */
 public class DES3 {
 	// 密钥
-	//private final static String secretKey = "eshop1234567890--1234567890eshop";
+	// private final static String secretKey =
+	// "eshop1234567890--1234567890eshop";
 	// 向量
 	private final static String iv = "01234567";
 	// 加解密统一使用的编码方式
@@ -41,7 +42,7 @@ public class DES3 {
 
 	/** * 3DES解密 ** @param encryptText 加密文本 * @return * @throws Exception */
 
-	public static String decode(byte [] encryptByte,String key) throws Exception {
+	public static String decode(byte[] encryptByte, String key) throws Exception {
 		Key deskey = null;
 		DESedeKeySpec spec = new DESedeKeySpec(key.getBytes());
 		SecretKeyFactory keyfactory = SecretKeyFactory.getInstance("desede");
@@ -49,7 +50,7 @@ public class DES3 {
 		Cipher cipher = Cipher.getInstance("desede/CBC/PKCS5Padding");
 		IvParameterSpec ips = new IvParameterSpec(iv.getBytes());
 		cipher.init(Cipher.DECRYPT_MODE, deskey, ips);
-		byte[] decryptData = cipher.doFinal(Base64.decode(new String(encryptByte,"utf-8")));
+		byte[] decryptData = cipher.doFinal(Base64.decode(new String(encryptByte, "utf-8")));
 		return new String(decryptData, encoding);
 	}
 
@@ -59,8 +60,7 @@ public class DES3 {
 			oldByteArray = str.getBytes("UTF8");
 			int numberToPad = 8 - oldByteArray.length % 8;
 			byte[] newByteArray = new byte[oldByteArray.length + numberToPad];
-			System.arraycopy(oldByteArray, 0, newByteArray, 0,
-					oldByteArray.length);
+			System.arraycopy(oldByteArray, 0, newByteArray, 0, oldByteArray.length);
 			for (int i = oldByteArray.length; i < newByteArray.length; ++i) {
 				newByteArray[i] = 0;
 			}
@@ -84,8 +84,7 @@ public class DES3 {
 			int i = start;
 			int n = 0;
 			while (i <= end) {
-				int d = ((((int) data[i]) & 0x0ff) << 16)
-						| ((((int) data[i + 1]) & 0x0ff) << 8)
+				int d = ((((int) data[i]) & 0x0ff) << 16) | ((((int) data[i + 1]) & 0x0ff) << 8)
 						| (((int) data[i + 2]) & 0x0ff);
 				buf.append(legalChars[(d >> 18) & 63]);
 				buf.append(legalChars[(d >> 12) & 63]);
@@ -98,8 +97,7 @@ public class DES3 {
 				}
 			}
 			if (i == start + len - 2) {
-				int d = ((((int) data[i]) & 0x0ff) << 16)
-						| ((((int) data[i + 1]) & 255) << 8);
+				int d = ((((int) data[i]) & 0x0ff) << 16) | ((((int) data[i + 1]) & 255) << 8);
 				buf.append(legalChars[(d >> 18) & 63]);
 				buf.append(legalChars[(d >> 12) & 63]);
 				buf.append(legalChars[(d >> 6) & 63]);
@@ -149,14 +147,12 @@ public class DES3 {
 				bos.close();
 				bos = null;
 			} catch (IOException ex) {
-				System.err.println("Error while decoding BASE64: "
-						+ ex.toString());
+				System.err.println("Error while decoding BASE64: " + ex.toString());
 			}
 			return decodedBytes;
 		}
 
-		private static void decode(String s, OutputStream os)
-				throws IOException {
+		private static void decode(String s, OutputStream os) throws IOException {
 			int i = 0;
 			int len = s.length();
 			while (true) {
@@ -164,9 +160,7 @@ public class DES3 {
 					i++;
 				if (i == len)
 					break;
-				int tri = (decode(s.charAt(i)) << 18)
-						+ (decode(s.charAt(i + 1)) << 12)
-						+ (decode(s.charAt(i + 2)) << 6)
+				int tri = (decode(s.charAt(i)) << 18) + (decode(s.charAt(i + 1)) << 12) + (decode(s.charAt(i + 2)) << 6)
 						+ (decode(s.charAt(i + 3)));
 				os.write((tri >> 16) & 255);
 				if (s.charAt(i + 2) == '=')

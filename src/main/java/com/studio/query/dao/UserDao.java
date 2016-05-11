@@ -1,4 +1,4 @@
-package com.studio.zqquery.dao;
+package com.studio.query.dao;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 
-import com.studio.zqquery.entity.User;
-import com.studio.zqquery.mapper.UserMapperProvider;
+import com.studio.query.entity.User;
+import com.studio.query.mapper.UserMapperProvider;
 
 public interface UserDao {
 

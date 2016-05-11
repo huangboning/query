@@ -1,4 +1,4 @@
-package com.studio.zqquery.common;
+package com.studio.query.common;
 
 public class Constants {
 

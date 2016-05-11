@@ -1,20 +1,20 @@
-package com.studio.zqquery.service;
+package com.studio.query.service;
 
 import java.util.List;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.studio.zqquery.dao.FragmentDao;
-import com.studio.zqquery.entity.Account;
-import com.studio.zqquery.entity.Fragment;
-import com.studio.zqquery.protocol.MethodCode;
-import com.studio.zqquery.protocol.ParameterCode;
-import com.studio.zqquery.util.DateUtil;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.dao.FragmentDao;
+import com.studio.query.entity.Account;
+import com.studio.query.entity.Fragment;
+import com.studio.query.protocol.MethodCode;
+import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.DateUtil;
+import com.studio.query.util.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Service
 public class FragmentService {
@@ -43,30 +43,19 @@ public class FragmentService {
 			String fragmentType = parmJb.optString("fragmentType", "");
 			int fragmentShare = parmJb.optInt("fragmentShare", 0);
 			String fragmentDesc = parmJb.optString("fragmentDesc", "");
-			String fragmentExpression = parmJb.optString("fragmentExpression",
-					"");// git保存expression
-			if (StringUtil.isNullOrEmpty(fragmentName)
-					|| StringUtil.isNullOrEmpty(fragmentType)) {
+			String fragmentExpression = parmJb.optString("fragmentExpression", "");// git保存expression
+			if (StringUtil.isNullOrEmpty(fragmentName) || StringUtil.isNullOrEmpty(fragmentType)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment findFragment = new Fragment();
 			findFragment.setFragmentName(fragmentName);
-			List<Fragment> fragmentList = fragmentDao
-					.findFragment(findFragment);
+			List<Fragment> fragmentList = fragmentDao.findFragment(findFragment);
 			if (fragmentList.size() >= 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.CREATE_FRAGMENT_EXIST,
-								"fragment已经存在", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.CREATE_FRAGMENT_EXIST, "fragment已经存在", "");
 				return resultString;
 			}
 
@@ -79,19 +68,12 @@ public class FragmentService {
 			insertFragment.setFragmentDesc(fragmentDesc);
 			int insertResult = fragmentDao.insertFragment(insertFragment);
 			if (insertResult == 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "创建fragment成功", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+						"创建fragment成功", "");
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.CREATE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.CREATE_FRAGMENT_FAIL,
-								"创建fragment失败", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.CREATE_FRAGMENT_FAIL, "创建fragment失败", "");
 			}
 		}
 		return resultString;
@@ -107,29 +89,19 @@ public class FragmentService {
 			String fragmentType = parmJb.optString("fragmentType", "");
 			int fragmentShare = parmJb.optInt("fragmentShare", 0);
 			String fragmentDesc = parmJb.optString("fragmentDesc", "");
-			String fragmentExpression = parmJb.optString("fragmentExpression",
-					"");// git保存expression
+			String fragmentExpression = parmJb.optString("fragmentExpression", "");// git保存expression
 			if (StringUtil.isNullOrEmpty(fragmentNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment findFragment = new Fragment();
 			findFragment.setFragmentNo(fragmentNo);
-			List<Fragment> fragmentList = fragmentDao
-					.findFragment(findFragment);
+			List<Fragment> fragmentList = fragmentDao.findFragment(findFragment);
 			if (fragmentList.size() < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST,
-								"查询的fragment不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
 
@@ -139,19 +111,12 @@ public class FragmentService {
 			updateFragment.setFragmentDesc(fragmentDesc);
 			int insertResult = fragmentDao.updateFragment(updateFragment);
 			if (insertResult == 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "更新fragment成功", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+						"更新fragment成功", "");
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.UPDATE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.UPDATE_FRAGMENT_FAIL,
-								"更新fragment失败", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.UPDATE_FRAGMENT_FAIL, "更新fragment失败", "");
 			}
 		}
 		return resultString;
@@ -165,12 +130,8 @@ public class FragmentService {
 			String fragmentVersion = parmJb.optString("version", "");
 			if (StringUtil.isNullOrEmpty(fragmentVersion)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.GET_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			// 这里根据version解析出相对应的fragment
@@ -186,9 +147,8 @@ public class FragmentService {
 			fragmentObj.put("createTime", "2016-04-25 00:12:45");
 			fragmentObj.put("expression", "");// expression直接从当前version解析提取
 
-			resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT,
-					com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-					"", "获取某个版本fragment成功", fragmentObj.toString());
+			resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+					"获取某个版本fragment成功", fragmentObj.toString());
 
 		}
 		return resultString;
@@ -203,12 +163,8 @@ public class FragmentService {
 			String fragmentNo = parmJb.optString("id", "");
 			if (StringUtil.isNullOrEmpty(fragmentNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DELETE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment findFragment = new Fragment();
@@ -216,20 +172,13 @@ public class FragmentService {
 			findFragment.setFragmentNo(fragmentNo);
 			int result = fragmentDao.deleteFragment(findFragment);
 			if (result < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DELETE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST,
-								"fragment不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在", "");
 				return resultString;
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DELETE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "删除fragment成功", "");
+				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+						"删除fragment成功", "");
 			}
 		}
 		return resultString;
@@ -244,12 +193,8 @@ public class FragmentService {
 			String fragmentNo = parmJb.optString("id", "");
 			if (StringUtil.isNullOrEmpty(fragmentNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment updateFragment = new Fragment();
@@ -257,20 +202,13 @@ public class FragmentService {
 			updateFragment.setFragmentNo(fragmentNo);
 			int result = fragmentDao.disableFragment(updateFragment);
 			if (result < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST,
-								"fragment不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在", "");
 				return resultString;
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "禁用fragment成功", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+						"禁用fragment成功", "");
 			}
 		}
 		return resultString;
@@ -285,12 +223,8 @@ public class FragmentService {
 			String fragmentNo = parmJb.optString("id", "");
 			if (StringUtil.isNullOrEmpty(fragmentNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_SHARE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_FRAGMENT,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment updateFragment = new Fragment();
@@ -298,20 +232,14 @@ public class FragmentService {
 			updateFragment.setFragmentNo(fragmentNo);
 			int result = fragmentDao.disableShareFragment(updateFragment);
 			if (result < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_SHARE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST,
-								"fragment不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_FRAGMENT,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在",
+						"");
 				return resultString;
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.DISABLE_SHARE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "禁用共享fragment成功", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_FRAGMENT,
+						ParameterCode.Result.RESULT_OK, "", "禁用共享fragment成功", "");
 			}
 		}
 		return resultString;
@@ -326,12 +254,8 @@ public class FragmentService {
 			String fragmentNo = parmJb.optString("id", "");
 			if (StringUtil.isNullOrEmpty(fragmentNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment updateFragment = new Fragment();
@@ -339,20 +263,13 @@ public class FragmentService {
 			updateFragment.setFragmentNo(fragmentNo);
 			int result = fragmentDao.enableFragment(updateFragment);
 			if (result < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST,
-								"fragment不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在", "");
 				return resultString;
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "启用fragment成功", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+						"启用fragment成功", "");
 			}
 		}
 		return resultString;
@@ -367,12 +284,8 @@ public class FragmentService {
 			String fragmentNo = parmJb.optString("id", "");
 			if (StringUtil.isNullOrEmpty(fragmentNo)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_SHARE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment updateFragment = new Fragment();
@@ -380,20 +293,14 @@ public class FragmentService {
 			updateFragment.setFragmentNo(fragmentNo);
 			int result = fragmentDao.enableShareFragment(updateFragment);
 			if (result < 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_SHARE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST,
-								"fragment不存在", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在",
+						"");
 				return resultString;
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ENABLE_SHARE_FRAGMENT,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "启用分享fragment成功", "");
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+						"", "启用分享fragment成功", "");
 			}
 		}
 		return resultString;
@@ -416,15 +323,13 @@ public class FragmentService {
 			dataObj.put("type", fragment.getFragmentType());
 			dataObj.put("share", fragment.getFragmentShare());
 			dataObj.put("createdBy", currentAccount.getAccountName());
-			dataObj.put("createTime",
-					DateUtil.dateTimeFormat(fragment.getFragmentDate()));
+			dataObj.put("createTime", DateUtil.dateTimeFormat(fragment.getFragmentDate()));
 			dataObj.put("expression", "");
 
 			fragmentJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_FRAGMENT,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.LIST_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
 				"获取fragment列表成功", fragmentJsonArray.toString());
 
 		return resultString;
@@ -447,15 +352,13 @@ public class FragmentService {
 			dataObj.put("type", fragment.getFragmentType());
 			dataObj.put("share", fragment.getFragmentShare());
 			dataObj.put("createdBy", fragment.getAccountName());
-			dataObj.put("createTime",
-					DateUtil.dateTimeFormat(fragment.getFragmentDate()));
+			dataObj.put("createTime", DateUtil.dateTimeFormat(fragment.getFragmentDate()));
 			dataObj.put("expression", "");
 
 			fragmentJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_FRAGMENT,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
 				"获取共享fragment列表成功", fragmentJsonArray.toString());
 
 		return resultString;

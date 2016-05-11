@@ -15,7 +15,7 @@
 		<param-value>classpath:spring.xml</param-value>
 	</context-param>
 	<listener>
-		<listener-class>com.studio.zqquery.common.Configure</listener-class>
+		<listener-class>com.studio.query.common.Configure</listener-class>
 	</listener>
 	<filter>
 		<filter-name>struts2</filter-name>

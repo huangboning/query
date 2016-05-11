@@ -1,11 +1,8 @@
-package com.studio.zqquery.encrypt;
+package com.studio.query.encrypt;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -34,9 +31,8 @@ public class JAVADESEncrypt {
 	 */
 	public static String encrypt(String data, String key) throws Exception {
 		byte[] bt = encrypt(data.getBytes(), key.getBytes());
-		// String strs = new BASE64Encoder().encode(bt);
-		Base64Utils b64 = new Base64Utils();
-		String strs = b64.encode(bt);
+
+		String strs = Base64.getEncoder().encodeToString(bt);
 		return strs;
 	}
 
@@ -50,15 +46,11 @@ public class JAVADESEncrypt {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public static String decrypt(String data, String key) throws IOException,
-			Exception {
+	public static String decrypt(String data, String key) throws IOException, Exception {
 		if (data == null)
 			return null;
-		// BASE64Decoder decoder = new BASE64Decoder();
-		// byte[] buf = decoder.decodeBuffer(data);
-		// byte[] bt = decrypt(buf, key.getBytes());
-		Base64Utils b64 = new Base64Utils();
-		byte temp[] = b64.decode(data);
+
+		byte temp[] = Base64.getDecoder().decode(data);
 		byte[] bt = decrypt(temp, key.getBytes());
 		return new String(bt);
 	}

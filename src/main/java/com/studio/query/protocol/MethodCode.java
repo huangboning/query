@@ -1,4 +1,4 @@
-package com.studio.zqquery.protocol;
+package com.studio.query.protocol;
 
 /**
  * 消息编码string

@@ -1,9 +1,9 @@
-package com.studio.zqquery.action;
+package com.studio.query.action;
+
+import com.studio.query.common.ApacheHttpUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import com.studio.zqquery.common.ApacheHttpUtil;
 
 public class TestAction {
 	public static void main(String[] args) {

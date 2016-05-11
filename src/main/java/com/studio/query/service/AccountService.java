@@ -1,22 +1,21 @@
-package com.studio.zqquery.service;
+package com.studio.query.service;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONObject;
-
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.studio.zqquery.common.Configure;
-import com.studio.zqquery.dao.AccountDao;
-import com.studio.zqquery.entity.Account;
-import com.studio.zqquery.protocol.MethodCode;
-import com.studio.zqquery.protocol.ParameterCode;
-import com.studio.zqquery.util.Md5Util;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.common.Configure;
+import com.studio.query.dao.AccountDao;
+import com.studio.query.entity.Account;
+import com.studio.query.protocol.MethodCode;
+import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.Md5Util;
+import com.studio.query.util.StringUtil;
+
+import net.sf.json.JSONObject;
 
 @Service
 public class AccountService {
@@ -43,15 +42,11 @@ public class AccountService {
 		if (parmJb != null) {
 			String accountName = parmJb.optString("accountName", "");
 			String accountPassword = parmJb.optString("accountPassword", "");
-			if (StringUtil.isNullOrEmpty(accountName)
-					|| StringUtil.isNullOrEmpty(accountPassword)) {
+			if (StringUtil.isNullOrEmpty(accountName) || StringUtil.isNullOrEmpty(accountPassword)) {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ACCOUNT_LOGIN,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.SERVICE_PARAMETER,
-								"必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN,
+						ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			String md5AccountPassword = Md5Util.md5Encode(accountPassword);
@@ -60,20 +55,14 @@ public class AccountService {
 			loginAccount.setAccountPassword(md5AccountPassword);
 			List<Account> accountList = accountDao.findAccount(loginAccount);
 			if (accountList.size() == 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ACCOUNT_LOGIN,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "登录成功", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN,
+						ParameterCode.Result.RESULT_OK, "", "登录成功", "");
 				session.put(Configure.systemSessionAccount, accountList.get(0));
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ACCOUNT_LOGIN,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.ACCOUNT_LOGIN_VALIDATE,
-								"登录失败，帐号或密码错误。", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN,
+						ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.ACCOUNT_LOGIN_VALIDATE, "登录失败，帐号或密码错误。", "");
 			}
 		}
 		return resultString;
@@ -89,12 +78,9 @@ public class AccountService {
 			String accountPassword = parmJb.optString("accountPassword", "");
 			String accountNumber = parmJb.optString("accountNumber", "");
 			String accountEmail = parmJb.optString("accountEmail", "");
-			if (StringUtil.isNullOrEmpty(accountName)
-					|| StringUtil.isNullOrEmpty(accountPassword)) {
+			if (StringUtil.isNullOrEmpty(accountName) || StringUtil.isNullOrEmpty(accountPassword)) {
 
-				resultString = StringUtil.packetObject(
-						MethodCode.ACCOUNT_REGISTER,
-						ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -102,12 +88,9 @@ public class AccountService {
 			findAccount.setAccountName(accountName);
 			List<Account> accountList = accountDao.findAccount(findAccount);
 			if (accountList.size() >= 1) {
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ACCOUNT_REGISTER,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.ACCOUNT_REGISTER_EXIST,
-								"账号已存在", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
+						ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.ACCOUNT_REGISTER_EXIST, "账号已存在", "");
 				return resultString;
 			}
 			String md5AccountPassword = Md5Util.md5Encode(accountPassword);
@@ -117,31 +100,22 @@ public class AccountService {
 			insertAccount.setAccountNumber(accountNumber);
 			insertAccount.setAccountEmail(accountEmail);
 			Calendar a = Calendar.getInstance();
-			String accountRepository = "/" + a.get(Calendar.YEAR) + "/"
-					+ (a.get(Calendar.MONTH) + 1) + "/" + accountName;
+			String accountRepository = "/" + a.get(Calendar.YEAR) + "/" + (a.get(Calendar.MONTH) + 1) + "/"
+					+ accountName;
 			insertAccount.setAccountRepository(accountRepository);
 			int insertResult = accountDao.insertAccount(insertAccount);
 			if (insertResult == 1) {
 				JGitService jGitService = new JGitService();
-				jGitService.createAccountRepository(
-						Configure.gitRepositoryPath,
-						String.valueOf(a.get(Calendar.YEAR)),
-						String.valueOf((a.get(Calendar.MONTH) + 1)),
-						accountName);
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ACCOUNT_REGISTER,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "注册成功", "");
+				jGitService.createAccountRepository(Configure.gitRepositoryPath, String.valueOf(a.get(Calendar.YEAR)),
+						String.valueOf((a.get(Calendar.MONTH) + 1)), accountName);
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
+						ParameterCode.Result.RESULT_OK, "", "注册成功", "");
 				session.put(Configure.systemSessionAccount, insertAccount);
 			} else {
 
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ACCOUNT_REGISTER,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_FAIL,
-								ParameterCode.Error.ACCOUNT_REGISTER_FAIL,
-								"注册失败", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
+						ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.ACCOUNT_REGISTER_FAIL, "注册失败", "");
 			}
 		}
 		return resultString;
@@ -156,9 +130,7 @@ public class AccountService {
 			String accountName = parmJb.optString("accountName", "");
 			if (StringUtil.isNullOrEmpty(accountName)) {
 
-				resultString = StringUtil.packetObject(
-						MethodCode.ACCOUNT_QUERY,
-						ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -168,22 +140,17 @@ public class AccountService {
 			if (accountList.size() >= 1) {
 				JSONObject dataObj1 = new JSONObject();
 				dataObj1.put("accountExist", "1");
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ACCOUNT_QUERY,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "查询的账号存在", dataObj1.toString());
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY,
+						ParameterCode.Result.RESULT_OK, "", "查询的账号存在", dataObj1.toString());
 				return resultString;
 
 			} else {
 
 				JSONObject dataObj1 = new JSONObject();
 				dataObj1.put("accountExist", "0");
-				resultString = StringUtil
-						.packetObject(
-								MethodCode.ACCOUNT_QUERY,
-								com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK,
-								"", "查询的账号不存在", dataObj1.toString());
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY,
+						ParameterCode.Result.RESULT_OK, "", "查询的账号不存在",
+						dataObj1.toString());
 				return resultString;
 			}
 		}
@@ -195,8 +162,7 @@ public class AccountService {
 		String resultString = null;
 		session.remove(Configure.systemSessionAccount);
 		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGOUT,
-				com.studio.zqquery.protocol.ParameterCode.Result.RESULT_OK, "",
-				"注销成功", "");
+				ParameterCode.Result.RESULT_OK, "", "注销成功", "");
 
 		return resultString;
 	}

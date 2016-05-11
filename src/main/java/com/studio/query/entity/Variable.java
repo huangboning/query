@@ -1,8 +1,8 @@
-package com.studio.zqquery.entity;
+package com.studio.query.entity;
 
 import java.util.Date;
 
-import com.studio.zqquery.common.Page;
+import com.studio.query.common.Page;
 
 public class Variable extends Page {
 	private int variableId;

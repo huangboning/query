@@ -1,4 +1,4 @@
-package com.studio.zqquery.service;
+package com.studio.query.service;
 
 import java.io.File;
 
@@ -14,9 +14,9 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
-import com.studio.zqquery.common.Configure;
-import com.studio.zqquery.entity.Account;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.common.Configure;
+import com.studio.query.entity.Account;
+import com.studio.query.util.StringUtil;
 
 public class JGitService {
 	Logger loger = Logger.getLogger(JGitService.class);
@@ -24,16 +24,14 @@ public class JGitService {
 	public String getAccountEmail(Account currentAccount) {
 		String accountEmail = "";
 		if (StringUtil.isNullOrEmpty(currentAccount.getAccountEmail())) {
-			accountEmail = currentAccount.getAccountName()
-					+ Configure.systemEmail;
+			accountEmail = currentAccount.getAccountName() + Configure.systemEmail;
 		} else {
 			accountEmail = currentAccount.getAccountEmail();
 		}
 		return accountEmail;
 	}
 
-	public void createAccountRepository(String rootStr, String yearStr,
-			String monthStr, String name) {
+	public void createAccountRepository(String rootStr, String yearStr, String monthStr, String name) {
 
 		File root = new File(rootStr);
 		if (!root.exists()) {
@@ -66,11 +64,9 @@ public class JGitService {
 				File file = new File(path + "/info.txt");
 				file.createNewFile();
 				git.add().addFilepattern("info.txt").call();
-				PersonIdent personIdent = new PersonIdent(
-						currentAccount.getAccountName(),
+				PersonIdent personIdent = new PersonIdent(currentAccount.getAccountName(),
 						this.getAccountEmail(currentAccount));
-				git.commit().setCommitter(personIdent)
-						.setMessage("系统初始化info.txt").call();
+				git.commit().setCommitter(personIdent).setMessage("系统初始化info.txt").call();
 			} catch (Exception e) {
 				e.printStackTrace();
 				loger.info(e.toString());
@@ -80,13 +76,12 @@ public class JGitService {
 		return true;
 	}
 
-	public boolean jGitCommit(String path, Account currentAccount,String message) {
+	public boolean jGitCommit(String path, Account currentAccount, String message) {
 		try {
 			File root = new File(path);
 			Git git = Git.init().setDirectory(root).call();
 			git.add().addFilepattern("info.txt").call();
-			PersonIdent personIdent = new PersonIdent(
-					currentAccount.getAccountName(),
+			PersonIdent personIdent = new PersonIdent(currentAccount.getAccountName(),
 					this.getAccountEmail(currentAccount));
 			git.commit().setCommitter(personIdent).setMessage(message).call();
 			return true;
@@ -103,8 +98,8 @@ public class JGitService {
 
 			File root = new File("E:/gitquery/2016/5/huangboning/1462632511804");
 
-			 Git git = Git.init().setDirectory(root).call();
-			 
+			Git git = Git.init().setDirectory(root).call();
+
 			// git.add().addFilepattern("test.txt").call();
 			// PersonIdent personIdent = new PersonIdent("huangboning",
 			// "huangboning@test.com");
@@ -190,7 +185,7 @@ public class JGitService {
 	// // * ArrayList<DiffEntry>(diffEntries).iterator(); DiffEntry diffEntry
 	// // * = null; while (iterator.hasNext()) { diffEntry = iterator.next();
 	// // * System.out.println("newPath:" + diffEntry.getNewPath() +
-	// // * "    oldPath:" + diffEntry.getOldPath() + "   changeType:" +
+	// // * " oldPath:" + diffEntry.getOldPath() + " changeType:" +
 	// // * diffEntry.getChangeType()); if (diffEntry.getChangeType() ==
 	// // * ChangeType.DELETE) { iterator.remove(); } }
 	// // */
@@ -221,8 +216,7 @@ public class JGitService {
 
 	// String getContentWithFile(String gitRoot, final String branchName, String
 	// fileName) throws Exception {
-	public static String getContentWithFile(String gitRoot, String branchName,
-			String fileName) throws Exception {
+	public static String getContentWithFile(String gitRoot, String branchName, String fileName) throws Exception {
 		final Git git = Git.open(new File(gitRoot));
 		Repository repository = git.getRepository();
 

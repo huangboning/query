@@ -1,4 +1,4 @@
-package com.studio.zqquery.dao;
+package com.studio.query.dao;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.SelectProvider;
 
-import com.studio.zqquery.entity.Account;
-import com.studio.zqquery.mapper.AccountMapperProvider;
+import com.studio.query.entity.Account;
+import com.studio.query.mapper.AccountMapperProvider;
 
 public interface AccountDao {
 

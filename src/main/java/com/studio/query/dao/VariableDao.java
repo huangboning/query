@@ -1,4 +1,4 @@
-package com.studio.zqquery.dao;
+package com.studio.query.dao;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 
-import com.studio.zqquery.entity.Variable;
-import com.studio.zqquery.mapper.VariableMapperProvider;
+import com.studio.query.entity.Variable;
+import com.studio.query.mapper.VariableMapperProvider;
 
 public interface VariableDao {
 

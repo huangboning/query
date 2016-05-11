@@ -1,4 +1,4 @@
-package com.studio.zqquery.encrypt;
+package com.studio.query.encrypt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,6 +15,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,8 +88,7 @@ public class JAVARSAEncrypt {
 	 * @throws Exception
 	 */
 	public static Map<String, Object> genKeyPair() throws Exception {
-		KeyPairGenerator keyPairGen = KeyPairGenerator
-				.getInstance(KEY_ALGORITHM);
+		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
 		keyPairGen.initialize(1024);
 		KeyPair keyPair = keyPairGen.generateKeyPair();
 		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
@@ -113,14 +113,14 @@ public class JAVARSAEncrypt {
 	 * @throws Exception
 	 */
 	public static String sign(byte[] data, String privateKey) throws Exception {
-		byte[] keyBytes = Base64Utils.decode(privateKey);
+		byte[] keyBytes = Base64.getDecoder().decode(privateKey);
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		PrivateKey privateK = keyFactory.generatePrivate(pkcs8KeySpec);
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
 		signature.initSign(privateK);
 		signature.update(data);
-		return Base64Utils.encode(signature.sign());
+		return Base64.getEncoder().encodeToString(signature.sign());
 	}
 
 	/**
@@ -139,16 +139,15 @@ public class JAVARSAEncrypt {
 	 * @throws Exception
 	 * 
 	 */
-	public static boolean verify(byte[] data, String publicKey, String sign)
-			throws Exception {
-		byte[] keyBytes = Base64Utils.decode(publicKey);
+	public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
+		byte[] keyBytes = Base64.getDecoder().decode(publicKey);
 		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		PublicKey publicK = keyFactory.generatePublic(keySpec);
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
 		signature.initVerify(publicK);
 		signature.update(data);
-		return signature.verify(Base64Utils.decode(sign));
+		return signature.verify(Base64.getDecoder().decode(sign));
 	}
 
 	/**
@@ -163,16 +162,16 @@ public class JAVARSAEncrypt {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] decryptByPrivateKey(byte[] encryptedData,
-			String privateKey) throws Exception {
-		byte[] keyBytes = Base64Utils.decode(privateKey);
+	public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey) throws Exception {
+		byte[] keyBytes = Base64.getDecoder().decode(privateKey);
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-		//Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-		//因为javaJVM和android JVM的填充初始化是不一样的，保证android加密可服务器解密正常，要指定值：
-		//because the default cipher initialization padding appears to be different between the desktop JVM and the Android JVM.
-		//有点区别，java中默认填充方式是RSA/ECB/PKCS1Padding，Cipher.getInstance("RSA/ECB/PKCS1Padding");android不是
+		// Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+		// 因为javaJVM和android JVM的填充初始化是不一样的，保证android加密可服务器解密正常，要指定值：
+		// because the default cipher initialization padding appears to be
+		// different between the desktop JVM and the Android JVM.
+		// 有点区别，java中默认填充方式是RSA/ECB/PKCS1Padding，Cipher.getInstance("RSA/ECB/PKCS1Padding");android不是
 		Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 		cipher.init(Cipher.DECRYPT_MODE, privateK);
 		int inputLen = encryptedData.length;
@@ -183,11 +182,9 @@ public class JAVARSAEncrypt {
 		// 对数据分段解密
 		while (inputLen - offSet > 0) {
 			if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
-				cache = cipher
-						.doFinal(encryptedData, offSet, MAX_DECRYPT_BLOCK);
+				cache = cipher.doFinal(encryptedData, offSet, MAX_DECRYPT_BLOCK);
 			} else {
-				cache = cipher
-						.doFinal(encryptedData, offSet, inputLen - offSet);
+				cache = cipher.doFinal(encryptedData, offSet, inputLen - offSet);
 			}
 			out.write(cache, 0, cache.length);
 			i++;
@@ -210,15 +207,15 @@ public class JAVARSAEncrypt {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] decryptByPublicKey(byte[] encryptedData,
-			String publicKey) throws Exception {
-		byte[] keyBytes = Base64Utils.decode(publicKey);
+	public static byte[] decryptByPublicKey(byte[] encryptedData, String publicKey) throws Exception {
+		byte[] keyBytes = Base64.getDecoder().decode(publicKey);
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		Key publicK = keyFactory.generatePublic(x509KeySpec);
-		//Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-		//因为javaJVM和android JVM的填充初始化是不一样的，保证android加密可服务器解密正常，要指定值：
-		//because the default cipher initialization padding appears to be different between the desktop JVM and the Android JVM.
+		// Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+		// 因为javaJVM和android JVM的填充初始化是不一样的，保证android加密可服务器解密正常，要指定值：
+		// because the default cipher initialization padding appears to be
+		// different between the desktop JVM and the Android JVM.
 		Cipher cipher = Cipher.getInstance("RSA/ECB/NoPadding");
 		cipher.init(Cipher.DECRYPT_MODE, publicK);
 		int inputLen = encryptedData.length;
@@ -229,11 +226,9 @@ public class JAVARSAEncrypt {
 		// 对数据分段解密
 		while (inputLen - offSet > 0) {
 			if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
-				cache = cipher
-						.doFinal(encryptedData, offSet, MAX_DECRYPT_BLOCK);
+				cache = cipher.doFinal(encryptedData, offSet, MAX_DECRYPT_BLOCK);
 			} else {
-				cache = cipher
-						.doFinal(encryptedData, offSet, inputLen - offSet);
+				cache = cipher.doFinal(encryptedData, offSet, inputLen - offSet);
 			}
 			out.write(cache, 0, cache.length);
 			i++;
@@ -256,16 +251,16 @@ public class JAVARSAEncrypt {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] encryptByPublicKey(byte[] data, String publicKey)
-			throws Exception {
-		byte[] keyBytes = Base64Utils.decode(publicKey);
+	public static byte[] encryptByPublicKey(byte[] data, String publicKey) throws Exception {
+		byte[] keyBytes = Base64.getDecoder().decode(publicKey);
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		Key publicK = keyFactory.generatePublic(x509KeySpec);
 		// 对数据加密
-		//Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-		//因为javaJVM和android JVM的填充初始化是不一样的，保证android加密可服务器解密正常，要指定值：
-		//because the default cipher initialization padding appears to be different between the desktop JVM and the Android JVM.
+		// Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+		// 因为javaJVM和android JVM的填充初始化是不一样的，保证android加密可服务器解密正常，要指定值：
+		// because the default cipher initialization padding appears to be
+		// different between the desktop JVM and the Android JVM.
 		Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, publicK);
 		int inputLen = data.length;
@@ -301,15 +296,15 @@ public class JAVARSAEncrypt {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] encryptByPrivateKey(byte[] data, String privateKey)
-			throws Exception {
-		byte[] keyBytes = Base64Utils.decode(privateKey);
+	public static byte[] encryptByPrivateKey(byte[] data, String privateKey) throws Exception {
+		byte[] keyBytes = Base64.getDecoder().decode(privateKey);
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-		//Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-		//因为javaJVM和android JVM的填充初始化是不一样的，保证android加密可服务器解密正常，要指定值：
-		//because the default cipher initialization padding appears to be different between the desktop JVM and the Android JVM.
+		// Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+		// 因为javaJVM和android JVM的填充初始化是不一样的，保证android加密可服务器解密正常，要指定值：
+		// because the default cipher initialization padding appears to be
+		// different between the desktop JVM and the Android JVM.
 		Cipher cipher = Cipher.getInstance("RSA/ECB/NoPadding");
 		cipher.init(Cipher.ENCRYPT_MODE, privateK);
 		int inputLen = data.length;
@@ -343,16 +338,15 @@ public class JAVARSAEncrypt {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getPrivateKey(Map<String, Object> keyMap)
-			throws Exception {
+	public static String getPrivateKey(Map<String, Object> keyMap) throws Exception {
 		Key key = (Key) keyMap.get(PRIVATE_KEY);
-		return Base64Utils.encode(key.getEncoded());
+		return Base64.getEncoder().encodeToString(key.getEncoded());
 	}
 
 	public static byte[] getPrivateKey() {
 		if (LOCAL_PRIVATE_KEY_DATA == null) {
 			try {
-				String path = JAVARSAEncrypt.class.getResource("/"+LOCAL_PRIVATE_KEY).getPath();
+				String path = JAVARSAEncrypt.class.getResource("/" + LOCAL_PRIVATE_KEY).getPath();
 				File file = new File(path);
 				InputStream in = new FileInputStream(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -382,13 +376,8 @@ public class JAVARSAEncrypt {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getPublicKey(Map<String, Object> keyMap)
-			throws Exception {
+	public static String getPublicKey(Map<String, Object> keyMap) throws Exception {
 		Key key = (Key) keyMap.get(PUBLIC_KEY);
-		return Base64Utils.encode(key.getEncoded());
-	}
-
-	public static void main(String[] args) {
-		System.out.println(Math.random() * (80 - 80) + 80);
+		return Base64.getEncoder().encodeToString(key.getEncoded());
 	}
 }

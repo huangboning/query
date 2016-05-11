@@ -1,8 +1,8 @@
-package com.studio.zqquery.common;
+package com.studio.query.common;
+
+import com.studio.query.protocol.ParameterCode;
 
 import net.sf.json.JSONObject;
-
-import com.studio.zqquery.protocol.ParameterCode;
 
 public class CommonError {
 	public static byte[] thorwError(int errorCode) {

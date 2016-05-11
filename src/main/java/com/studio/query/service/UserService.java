@@ -1,12 +1,12 @@
-package com.studio.zqquery.service;
+package com.studio.query.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.studio.zqquery.dao.UserDao;
-import com.studio.zqquery.entity.User;
+import com.studio.query.dao.UserDao;
+import com.studio.query.entity.User;
 
 @Service
 public class UserService {

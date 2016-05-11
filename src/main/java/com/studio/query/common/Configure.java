@@ -1,4 +1,4 @@
-package com.studio.zqquery.common;
+package com.studio.query.common;
 
 import java.io.IOException;
 import java.io.InputStream;

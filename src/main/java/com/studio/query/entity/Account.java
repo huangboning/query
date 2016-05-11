@@ -1,8 +1,8 @@
-package com.studio.zqquery.entity;
+package com.studio.query.entity;
 
 import java.util.Date;
 
-import com.studio.zqquery.common.Page;
+import com.studio.query.common.Page;
 
 public class Account extends Page {
 	private int accountId;

@@ -1,6 +1,6 @@
-package com.studio.zqquery.mapper;
+package com.studio.query.mapper;
 
-import com.studio.zqquery.entity.User;
+import com.studio.query.entity.User;
 
 public class UserMapperProvider {
 	public static String findUser(User user) {

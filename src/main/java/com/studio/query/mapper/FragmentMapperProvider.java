@@ -1,7 +1,7 @@
-package com.studio.zqquery.mapper;
+package com.studio.query.mapper;
 
-import com.studio.zqquery.entity.Fragment;
-import com.studio.zqquery.util.StringUtil;
+import com.studio.query.entity.Fragment;
+import com.studio.query.util.StringUtil;
 
 public class FragmentMapperProvider {
 	public static String findFragment(Fragment fragment) {

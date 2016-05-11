@@ -1,4 +1,4 @@
-package com.studio.zqquery.util;
+package com.studio.query.util;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
