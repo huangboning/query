@@ -1,4 +1,4 @@
-package com.studio.zqquery.action;
+package com.studio.query.action;
 
 import java.util.Map;
 
@@ -12,8 +12,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class BaseAction extends ActionSupport implements SessionAware,
-		ServletRequestAware, ServletResponseAware {
+public class BaseAction extends ActionSupport implements SessionAware, ServletRequestAware, ServletResponseAware {
 
 	/**
 	 * 

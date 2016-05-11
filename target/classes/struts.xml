@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+
+	<package name="authority" extends="struts-default">
+		<interceptors>
+			<!--定义一个名为authority的拦截器 -->
+			<interceptor class="com.studio.zqquery.common.AuthorityInterceptor"
+				name="authority" />
+			<!--定义一个包含权限检查的拦截器栈 -->
+			<interceptor-stack name="mydefault">
+				<!--配置内建默认拦截器 -->
+				<interceptor-ref name="defaultStack" />
+				<!--配置自定义的拦截器 -->
+				<interceptor-ref name="authority" />
+
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="mydefault" />
+
+		<!--定义全局Result -->
+		<global-results>
+			<result name="login" type="redirect">/pages/login.jsp</result>
+		</global-results>
+	</package>
+
+	<package name="default" extends="struts-default">
+		<action name="login" class="com.studio.zqquery.action.UserAction"
+			method="userLogin">
+			<result name="success">/pages/info.jsp</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+		<action name="logout" class="com.studio.zqquery.action.UserAction"
+			method="userLogOut">
+			<result name="success">/pages/login.jsp</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+	</package>
+	<package name="user" extends="authority" namespace="/user">
+		<action name="info" class="com.studio.zqquery.action.UserAction"
+			method="userInfo">
+			<result name="success">/pages/info.jsp</result>
+			<result name="error">/pages/error.jsp</result>
+		</action>
+	</package>
+	<package name="service" extends="struts-default" namespace="/service/v1">
+		<action name="main" class="com.studio.zqquery.action.InterfaceAction">
+		</action>
+	</package>
+</struts>
