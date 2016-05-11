@@ -28,7 +28,7 @@ public class TestAction {
 			JSONObject loginJson = new JSONObject();
 			loginJson.put("method", "login");
 			JSONObject loginObj = new JSONObject();
-			loginObj.put("accountName", "huangboning999");
+			loginObj.put("accountName", "huangboning999123");
 			loginObj.put("accountPassword", "e10adc3949ba59abbe56e057f20f883e");
 
 			loginJson.put("params", loginObj);
