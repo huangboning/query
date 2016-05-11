@@ -14,7 +14,7 @@
 	<!-- 采用注释的方式配置bean -->
 	<context:annotation-config />
 	<!-- 配置要扫描的包 -->
-	<context:component-scan base-package="com.studio.zqquery"></context:component-scan>
+	<context:component-scan base-package="com.studio.query"></context:component-scan>
 	<aop:aspectj-autoproxy />
 
 	<!--proxy-target-class="true"强制使用cglib代理 如果为false则spring会自动选择 -->
@@ -47,7 +47,7 @@
 	<!-- 配置mybitasSqlSessionFactoryBean -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath*:com/studio/zqquery/**/*.xml" />
+		<property name="mapperLocations" value="classpath*:com/studio/query/**/*.xml" />
 	</bean>
 
 	<!-- 配置SqlSessionTemplate -->
@@ -67,7 +67,7 @@
 
 	<!-- 扫描业务组件 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.studio.zqquery" />
+		<property name="basePackage" value="com.studio.query" />
 	</bean>
-	<context:component-scan base-package="com.studio.zqquery" />
+	<context:component-scan base-package="com.studio.query" />
 </beans>

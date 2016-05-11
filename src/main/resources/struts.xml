@@ -8,7 +8,7 @@
 	<package name="authority" extends="struts-default">
 		<interceptors>
 			<!--定义一个名为authority的拦截器 -->
-			<interceptor class="com.studio.zqquery.common.AuthorityInterceptor"
+			<interceptor class="com.studio.query.common.AuthorityInterceptor"
 				name="authority" />
 			<!--定义一个包含权限检查的拦截器栈 -->
 			<interceptor-stack name="mydefault">
@@ -29,26 +29,26 @@
 	</package>
 
 	<package name="default" extends="struts-default">
-		<action name="login" class="com.studio.zqquery.action.UserAction"
+		<action name="login" class="com.studio.query.action.UserAction"
 			method="userLogin">
 			<result name="success">/pages/info.jsp</result>
 			<result name="error">/pages/error.jsp</result>
 		</action>
-		<action name="logout" class="com.studio.zqquery.action.UserAction"
+		<action name="logout" class="com.studio.query.action.UserAction"
 			method="userLogOut">
 			<result name="success">/pages/login.jsp</result>
 			<result name="error">/pages/error.jsp</result>
 		</action>
 	</package>
 	<package name="user" extends="authority" namespace="/user">
-		<action name="info" class="com.studio.zqquery.action.UserAction"
+		<action name="info" class="com.studio.query.action.UserAction"
 			method="userInfo">
 			<result name="success">/pages/info.jsp</result>
 			<result name="error">/pages/error.jsp</result>
 		</action>
 	</package>
 	<package name="service" extends="struts-default" namespace="/service/v1">
-		<action name="main" class="com.studio.zqquery.action.InterfaceAction">
+		<action name="main" class="com.studio.query.action.InterfaceAction">
 		</action>
 	</package>
 </struts>

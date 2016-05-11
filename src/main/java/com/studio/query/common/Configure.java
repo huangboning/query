@@ -27,7 +27,7 @@ public class Configure implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		Properties prop = new Properties();
 		InputStream in = arg0.getServletContext().getResourceAsStream(
-				"/WEB-INF/classes/zqQuery.properties");
+				"/WEB-INF/classes/query.properties");
 		try {
 			prop.load(in);
 			gitRepositoryPath = prop
