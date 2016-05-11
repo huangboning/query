@@ -28,8 +28,8 @@ public class TestAction {
 			JSONObject loginJson = new JSONObject();
 			loginJson.put("method", "login");
 			JSONObject loginObj = new JSONObject();
-			loginObj.put("accountName", "huangboning");
-			loginObj.put("accountPassword", "e10adc3949ba59abbe56e057f20f883e");
+			loginObj.put("accountName", "huangboning555");
+			loginObj.put("accountPassword", "123456");
 			loginJson.put("params", loginObj);
 
 			// // 账号查询测试
@@ -131,7 +131,7 @@ public class TestAction {
 			updateSceneJson.put("params", updateSceneObj);
 
 			String result = ApacheHttpUtil.testSceneBySession(
-					"http://localhost:8080/zqQuery/service/v1/main.do",
+					"http://localhost:8080/query/service/v1/main.do",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson
 							.toString().getBytes("utf-8"), updateSceneJson
 							.toString().getBytes("utf-8"));

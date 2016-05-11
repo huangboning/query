@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2016-04-26 20:33:10
+Date: 2016-05-11 14:33:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,15 +28,16 @@ CREATE TABLE `t_account` (
   `account_repository` varchar(255) DEFAULT NULL,
   `account_date` datetime DEFAULT NULL,
   PRIMARY KEY (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_account
 -- ----------------------------
 INSERT INTO `t_account` VALUES ('1', null, 'test', '123456', null, '/2016/4/test', '2016-04-13 11:04:10');
-INSERT INTO `t_account` VALUES ('6', '1555241588', 'test2', '123456', 'admin@126.com', '/2016/4/test2', '2016-04-14 23:28:03');
+INSERT INTO `t_account` VALUES ('6', '1555241588', 'huangboning', 'e10adc3949ba59abbe56e057f20f883e', 'admin@126.com', '/2016/4/test2', '2016-04-14 23:28:03');
 INSERT INTO `t_account` VALUES ('7', '1555241588', 'test3', 'e10adc3949ba59abbe56e057f20f883e', 'admin@126.com', '/2016/4/test3', '2016-04-14 23:28:18');
 INSERT INTO `t_account` VALUES ('8', '13911710290', 'itrek', '81dc9bdb52d04dc20036dbd8313ed055', 'itrek@163.com', '/2016/4/itrek', '2016-04-18 11:16:47');
+INSERT INTO `t_account` VALUES ('9', '1555241588', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin@126.com', '/2016/5/admin', '2016-05-09 22:13:58');
 
 -- ----------------------------
 -- Table structure for t_fragment
