@@ -1,0 +1,24 @@
+package com.studio.zqquery.mapper;
+
+import com.studio.zqquery.entity.Variable;
+import com.studio.zqquery.util.StringUtil;
+
+public class VariableMapperProvider {
+	public static String findVariable(Variable variable) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("select * from t_variable a where 1=1 ");
+		if (variable.getVariableId() != 0) {
+			buffer.append("and a.variable_id = #{variableId} ");
+		}
+		if (variable.getAccountId() != 0) {
+			buffer.append("and a.account_id = #{accountId} ");
+		}
+		if (!StringUtil.isNullOrEmpty(variable.getVariableNo())) {
+			buffer.append("and a.variable_no =#{variableNo} ");
+		}
+		if (!StringUtil.isNullOrEmpty(variable.getVariableName())) {
+			buffer.append("and a.variable_name =#{variableName} ");
+		}
+		return buffer.toString();
+	}
+}
