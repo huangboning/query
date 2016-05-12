@@ -1,9 +1,15 @@
 package com.studio.query.service;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.PersonIdent;
@@ -12,6 +18,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import com.studio.query.common.Configure;
@@ -92,14 +99,52 @@ public class JGitService {
 		}
 	}
 
+	public String jGitContent(String path, String version) {
+		try {
+			File root = new File(path);
+			Git git = Git.init().setDirectory(root).call();
+			git.checkout().setName(version).call();
+
+			InputStream inputStream = new FileInputStream(path);
+			InputStreamReader inputReader = new InputStreamReader(inputStream);
+			BufferedReader bufferReader = new BufferedReader(inputReader);
+			String line = null;
+			StringBuffer strBuffer = new StringBuffer();
+			while ((line = bufferReader.readLine()) != null) {
+				strBuffer.append(line);
+
+			}
+			bufferReader.close();
+			inputReader.close();
+			inputStream.close();
+			return strBuffer.toString();
+		} catch (Exception e) {
+			loger.info(e.toString());
+			e.printStackTrace();
+			return "";
+		}
+	}
+
 	public static void main(String[] args) {
 
 		try {
 
-			File root = new File("E:/gitquery/2016/5/huangboning/1462632511804");
+			File root = new File("E:/gittest");
 
-			Git git = Git.init().setDirectory(root).call();
-
+			// Git git = Git.init().setDirectory(root).call();
+			// Ref
+			// ref=git.checkout().setName("015e0b852e0ce5841aa03ef1ec077932684e372a").call();
+			// Ref ref=git.checkout().setName("master").call();
+			// System.out.println(ref.getName());
+			FileRepositoryBuilder builder = new FileRepositoryBuilder();
+			builder.setMustExist(true);
+			Repository repository = builder.setGitDir(new File("E:/gittest/.git")).build();
+			ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+			RevWalk revWalk = new RevWalk(repository);
+			RevCommit commit = revWalk.parseCommit(lastCommitId);
+			String str = commit.getName();
+			System.out.println(commit.getParents()[0].getName());
+			
 			// git.add().addFilepattern("test.txt").call();
 			// PersonIdent personIdent = new PersonIdent("huangboning",
 			// "huangboning@test.com");

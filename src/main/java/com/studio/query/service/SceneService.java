@@ -385,6 +385,7 @@ public class SceneService {
 			sceneObject.put("sceneName", currentScene.getSceneName());
 			sceneObject.put("sceneDesc", currentScene.getSceneDesc());
 			// 从git查询最新版本的comment和version
+			
 			sceneObject.put("sceneComment", "");
 			sceneObject.put("sceneVersion", "f897c9206efa2d595f2cd80ac86de874704a1efd");
 
