@@ -13,8 +13,8 @@ public class FragmentMapperProvider {
 		if (fragment.getAccountId() != 0) {
 			buffer.append("and a.account_id = #{accountId} ");
 		}
-		if (!StringUtil.isNullOrEmpty(fragment.getFragmentNo())) {
-			buffer.append("and a.fragment_no =#{fragmentNo} ");
+		if (!StringUtil.isNullOrEmpty(fragment.getFragmentUUID())) {
+			buffer.append("and a.fragment_uuid =#{fragmentUUID} ");
 		}
 		if (!StringUtil.isNullOrEmpty(fragment.getFragmentName())) {
 			buffer.append("and a.fragment_name =#{fragmentName} ");

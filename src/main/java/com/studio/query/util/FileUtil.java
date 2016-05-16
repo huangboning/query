@@ -1,20 +1,48 @@
 package com.studio.query.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class FileUtil {
 
-	public static void updateFile(String filePath, String content) {
+	public static void writeFile(String filePath, String content) {
 		try {
-			File file = new File(filePath);
-			FileWriter fw = new FileWriter(file);
-			fw.write(content);
-			fw.flush();
+			FileWriter fw = new FileWriter(filePath);
+			PrintWriter out = new PrintWriter(fw);
+			out.write(content);
+			out.println();
 			fw.close();
+			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public static String ReadFile(String path) {
+		File file = new File(path);
+		BufferedReader reader = null;
+		StringBuffer strBuffer = new StringBuffer();
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+				strBuffer.append(tempString);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e1) {
+				}
+			}
+		}
+		return strBuffer.toString();
+	}
 }

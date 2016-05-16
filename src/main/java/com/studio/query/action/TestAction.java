@@ -18,8 +18,7 @@ public class TestAction {
 			// registerJson.put("method", "register");
 			// JSONObject registerObj = new JSONObject();
 			// registerObj.put("accountName", "huangboning");
-			// registerObj.put("accountPassword",
-			// "e10adc3949ba59abbe56e057f20f883e");
+			// registerObj.put("accountPassword","123456");
 			// registerObj.put("accountNumber", "15557181347");
 			// registerObj.put("accountEmail", "huangboning@test.com");
 			// registerJson.put("params", registerObj);
@@ -28,8 +27,8 @@ public class TestAction {
 			JSONObject loginJson = new JSONObject();
 			loginJson.put("method", "login");
 			JSONObject loginObj = new JSONObject();
-			loginObj.put("accountName", "huangboning999123");
-			loginObj.put("accountPassword", "e10adc3949ba59abbe56e057f20f883e");
+			loginObj.put("accountName", "huangboning");
+			loginObj.put("accountPassword", "123456");
 
 			loginJson.put("params", loginObj);
 
@@ -46,7 +45,7 @@ public class TestAction {
 			// logoutJson.put("params", "");
 			//
 			// String result = ApacheHttpUtil.sendPost(
-			// "http://localhost:8080/zqQuery/service/v1/main.do", registerJson
+			// "http://115.28.59.232:8080/service/v1/main.do", registerJson
 			// .toString().getBytes("utf-8"));
 			// System.out.println(result);
 
@@ -70,12 +69,12 @@ public class TestAction {
 			// headJson.put("params", "");
 
 			// 创建场景
-			// JSONObject createSceneJson = new JSONObject();
-			// createSceneJson.put("method", "createScene");
-			// JSONObject createSceneObj = new JSONObject();
-			// createSceneObj.put("sceneName", "foxquery");
-			// createSceneObj.put("sceneDesc", "我的第一个场景foxquery");
-			// createSceneJson.put("params", createSceneObj);
+			JSONObject createSceneJson = new JSONObject();
+			createSceneJson.put("method", "createScene");
+			JSONObject createSceneObj = new JSONObject();
+			createSceneObj.put("sceneName", "foxquery");
+			createSceneObj.put("sceneDesc", "我的第一个场景foxquery");
+			createSceneJson.put("params", createSceneObj);
 
 			// // 获取场景列表
 			// JSONObject listSceneJson = new JSONObject();
@@ -95,8 +94,7 @@ public class TestAction {
 			JSONObject switchSceneJson = new JSONObject();
 			switchSceneJson.put("method", "switchScenario");
 			JSONObject switchSceneObj = new JSONObject();
-			switchSceneObj.put("sceneNo",
-					"SCNO93bba5916a1644548926a2c7945bb223");
+			switchSceneObj.put("sceneNo", "SCNO1f30f53a52314039a46c1b76042f2afa");
 			switchSceneJson.put("params", switchSceneObj);
 
 			// // 切换场景版本
@@ -120,24 +118,24 @@ public class TestAction {
 			// "235c0729afe31e95b0f44d18f9b998f15f7c9b90");
 			// closeSceneJson.put("params", closeSceneObj);
 
-			// 更新场景
-			JSONObject updateSceneJson = new JSONObject();
-			updateSceneJson.put("method", "updateScenario");
-			JSONObject updateSceneObj = new JSONObject();
-			updateSceneObj.put("sceneNo",
-					"SCNO93bba5916a1644548926a2c7945bb223");
-			updateSceneObj.put("comment", "添加fragment");
-			updateSceneObj.put("sceneExpression",
-					"{\"fragmentNo\":\"FRAM001\"}");
-			updateSceneJson.put("params", updateSceneObj);
-
-			String result = ApacheHttpUtil.testSceneBySession(
-					"http://localhost:8080/query/service/v1/main.do",
-					loginJson.toString().getBytes("utf-8"), switchSceneJson
-							.toString().getBytes("utf-8"), updateSceneJson
-							.toString().getBytes("utf-8"));
-			System.out.println(updateSceneJson.toString());
-			System.out.println(result);
+			 // 更新场景
+			 JSONObject updateSceneJson = new JSONObject();
+			 updateSceneJson.put("method", "updateScenario");
+			 JSONObject updateSceneObj = new JSONObject();
+			 updateSceneObj.put("sceneNo",
+			 "SCNO1f30f53a52314039a46c1b76042f2afa");
+			 updateSceneObj.put("comment", "huangboning添加fragment");
+			 updateSceneObj.put("sceneExpression",
+			 "{\"fragmentNo\":\"FRAM001\"}");
+			 updateSceneJson.put("params", updateSceneObj);
+			
+			 String result = ApacheHttpUtil.testSceneBySession(
+			 "http://115.28.59.232:8080/service/v1/main.do",
+			 loginJson.toString().getBytes("utf-8"), switchSceneJson
+			 .toString().getBytes("utf-8"), updateSceneJson
+			 .toString().getBytes("utf-8"));
+			 System.out.println(updateSceneJson.toString());
+			 System.out.println(result);
 
 			// // 创建fragment
 			// JSONObject createFragmentJson = new JSONObject();
@@ -284,12 +282,12 @@ public class TestAction {
 			// getVariablesJson.put("method", "getShareVariables");
 			// getVariablesJson.put("params", "");
 
-			// String result = ApacheHttpUtil.sendPostBySession(
-			// "http://localhost:8080/zqQuery/service/v1/main.do",
-			// loginJson.toString().getBytes("utf-8"), updateSceneJson
-			// .toString().getBytes("utf-8"));
-			// System.out.println(updateSceneJson.toString());
-			// System.out.println(result);
+//			 String result = ApacheHttpUtil.sendPostBySession(
+//			 "http://115.28.59.232:8080/service/v1/main.do",
+//			 loginJson.toString().getBytes("utf-8"), createSceneJson
+//			 .toString().getBytes("utf-8"));
+//			 System.out.println(createSceneJson.toString());
+//			 System.out.println(result);
 
 			// JGitService jGitService=new JGitService();
 			// jGitService.initGit();

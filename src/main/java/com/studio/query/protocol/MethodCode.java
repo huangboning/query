@@ -93,11 +93,15 @@ public class MethodCode {
 	 */
 	public static final String ENABLE_FRAGMENT = "enableFragment";
 	/**
+	 * 发布分享Fragment
+	 */
+	public static final String RELEASE_SHARE_FRAGMENT = "releaseShareFragment";
+	/**
 	 * 禁用分享Fragment
 	 */
 	public static final String DISABLE_SHARE_FRAGMENT = "disableShareFragment";
 	/**
-	 * 启用分享Fragment share
+	 * 启用分享Fragment
 	 */
 	public static final String ENABLE_SHARE_FRAGMENT = "enableShareFragment";
 	/**

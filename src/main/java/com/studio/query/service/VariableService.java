@@ -61,7 +61,7 @@ public class VariableService {
 
 			Variable insertVariable = new Variable();
 			insertVariable.setAccountId(currentAccount.getAccountId());
-			insertVariable.setVariableNo(StringUtil.createVariableNo());
+			insertVariable.setVariableUUID(StringUtil.createVariableUUID());
 			insertVariable.setVariableName(variableName);
 			insertVariable.setVariableScope(variableScope);
 			insertVariable.setVariableShare(variableShare);
@@ -85,19 +85,19 @@ public class VariableService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String variableNo = parmJb.optString("variableId", "");
+			String variableUUID = parmJb.optString("variableUUID", "");
 			String variableScope = parmJb.optString("variableScope", "");
 			int variableShare = parmJb.optInt("variableShare", 0);
 			String variableDesc = parmJb.optString("variableDesc", "");
 			String variableExpression = parmJb.optString("variableExpression", "");// git保存expression
-			if (StringUtil.isNullOrEmpty(variableNo)) {
+			if (StringUtil.isNullOrEmpty(variableUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Variable findvVariable = new Variable();
-			findvVariable.setVariableNo(variableNo);
+			findvVariable.setVariableUUID(variableUUID);
 			List<Variable> variableList = variableDao.findVariable(findvVariable);
 			if (variableList.size() < 1) {
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
@@ -107,7 +107,7 @@ public class VariableService {
 
 			Variable updateVariable = new Variable();
 			updateVariable.setAccountId(currentAccount.getAccountId());
-			updateVariable.setVariableNo(variableNo);
+			updateVariable.setVariableUUID(variableUUID);
 			updateVariable.setVariableDesc(variableDesc);
 			int insertResult = variableDao.updateVariable(updateVariable);
 			if (insertResult == 1) {
@@ -160,8 +160,8 @@ public class VariableService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String variableNo = parmJb.optString("id", "");
-			if (StringUtil.isNullOrEmpty(variableNo)) {
+			String variableUUID = parmJb.optString("variableUUID", "");
+			if (StringUtil.isNullOrEmpty(variableUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -169,7 +169,7 @@ public class VariableService {
 			}
 			Variable findVariable = new Variable();
 			findVariable.setAccountId(currentAccount.getAccountId());
-			findVariable.setVariableNo(variableNo);
+			findVariable.setVariableUUID(variableUUID);
 			int result = variableDao.deleteVariable(findVariable);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
@@ -190,8 +190,8 @@ public class VariableService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String variableNo = parmJb.optString("id", "");
-			if (StringUtil.isNullOrEmpty(variableNo)) {
+			String variableUUID = parmJb.optString("variableUUID", "");
+			if (StringUtil.isNullOrEmpty(variableUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_VARIABLE,
 						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -199,7 +199,7 @@ public class VariableService {
 			}
 			Variable updateVariable = new Variable();
 			updateVariable.setAccountId(currentAccount.getAccountId());
-			updateVariable.setVariableNo(variableNo);
+			updateVariable.setVariableUUID(variableUUID);
 			int result = variableDao.disableShareVariable(updateVariable);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_VARIABLE,
@@ -220,8 +220,8 @@ public class VariableService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String variableNo = parmJb.optString("id", "");
-			if (StringUtil.isNullOrEmpty(variableNo)) {
+			String variableUUID = parmJb.optString("variableUUID", "");
+			if (StringUtil.isNullOrEmpty(variableUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_VARIABLE,
 						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -229,7 +229,7 @@ public class VariableService {
 			}
 			Variable updateVariable = new Variable();
 			updateVariable.setAccountId(currentAccount.getAccountId());
-			updateVariable.setVariableNo(variableNo);
+			updateVariable.setVariableUUID(variableUUID);
 			int result = variableDao.enableShareVariable(updateVariable);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_VARIABLE,
@@ -255,14 +255,14 @@ public class VariableService {
 
 			Variable variable = variableList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("id", variable.getVariableNo());
-			dataObj.put("name", variable.getVariableName());
-			dataObj.put("desc", variable.getVariableDesc());
-			dataObj.put("scope", variable.getVariableScope());
-			dataObj.put("share", variable.getVariableShare());
-			dataObj.put("createdBy", currentAccount.getAccountName());
-			dataObj.put("createTime", DateUtil.dateTimeFormat(variable.getVariableDate()));
-			dataObj.put("expression", "");
+			dataObj.put("variableUUID", variable.getVariableUUID());
+			dataObj.put("variableName", variable.getVariableName());
+			dataObj.put("variableDesc", variable.getVariableDesc());
+			dataObj.put("variableScope", variable.getVariableScope());
+			dataObj.put("variableShare", variable.getVariableShare());
+			dataObj.put("variableCreatedBy", currentAccount.getAccountName());
+			dataObj.put("variableCreateTime", DateUtil.dateTimeFormat(variable.getVariableDate()));
+			dataObj.put("variableexpression", "");
 
 			variableJsonArray.add(dataObj);
 		}
@@ -284,7 +284,7 @@ public class VariableService {
 
 			Variable variable = variableList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("id", variable.getVariableNo());
+			dataObj.put("id", variable.getVariableUUID());
 			dataObj.put("name", variable.getVariableName());
 			dataObj.put("desc", variable.getVariableDesc());
 			dataObj.put("scope", variable.getVariableScope());

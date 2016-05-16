@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.studio.query.dao.FragmentDao;
 import com.studio.query.entity.Account;
 import com.studio.query.entity.Fragment;
+import com.studio.query.entity.ShareFragment;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
 import com.studio.query.util.DateUtil;
@@ -41,7 +42,6 @@ public class FragmentService {
 		if (parmJb != null) {
 			String fragmentName = parmJb.optString("fragmentName", "");
 			String fragmentType = parmJb.optString("fragmentType", "");
-			int fragmentShare = parmJb.optInt("fragmentShare", 0);
 			String fragmentDesc = parmJb.optString("fragmentDesc", "");
 			String fragmentExpression = parmJb.optString("fragmentExpression", "");// git保存expression
 			if (StringUtil.isNullOrEmpty(fragmentName) || StringUtil.isNullOrEmpty(fragmentType)) {
@@ -61,10 +61,9 @@ public class FragmentService {
 
 			Fragment insertFragment = new Fragment();
 			insertFragment.setAccountId(currentAccount.getAccountId());
-			insertFragment.setFragmentNo(StringUtil.createFragmentNo());
+			insertFragment.setFragmentUUID(StringUtil.createFragmentUUID());
 			insertFragment.setFragmentName(fragmentName);
 			insertFragment.setFragmentType(fragmentType);
-			insertFragment.setFragmentShare(fragmentShare);
 			insertFragment.setFragmentDesc(fragmentDesc);
 			int insertResult = fragmentDao.insertFragment(insertFragment);
 			if (insertResult == 1) {
@@ -85,19 +84,18 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentNo = parmJb.optString("fragmentId", "");
+			String fragmentUUID = parmJb.optString("fragmentUUID", "");
 			String fragmentType = parmJb.optString("fragmentType", "");
-			int fragmentShare = parmJb.optInt("fragmentShare", 0);
 			String fragmentDesc = parmJb.optString("fragmentDesc", "");
 			String fragmentExpression = parmJb.optString("fragmentExpression", "");// git保存expression
-			if (StringUtil.isNullOrEmpty(fragmentNo)) {
+			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment findFragment = new Fragment();
-			findFragment.setFragmentNo(fragmentNo);
+			findFragment.setFragmentUUID(fragmentUUID);
 			List<Fragment> fragmentList = fragmentDao.findFragment(findFragment);
 			if (fragmentList.size() < 1) {
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
@@ -107,7 +105,7 @@ public class FragmentService {
 
 			Fragment updateFragment = new Fragment();
 			updateFragment.setAccountId(currentAccount.getAccountId());
-			updateFragment.setFragmentNo(fragmentNo);
+			updateFragment.setFragmentUUID(fragmentUUID);
 			updateFragment.setFragmentDesc(fragmentDesc);
 			int insertResult = fragmentDao.updateFragment(updateFragment);
 			if (insertResult == 1) {
@@ -127,7 +125,7 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentVersion = parmJb.optString("version", "");
+			String fragmentVersion = parmJb.optString("fragmentVersion", "");
 			if (StringUtil.isNullOrEmpty(fragmentVersion)) {
 
 				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
@@ -160,8 +158,8 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentNo = parmJb.optString("id", "");
-			if (StringUtil.isNullOrEmpty(fragmentNo)) {
+			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -169,7 +167,7 @@ public class FragmentService {
 			}
 			Fragment findFragment = new Fragment();
 			findFragment.setAccountId(currentAccount.getAccountId());
-			findFragment.setFragmentNo(fragmentNo);
+			findFragment.setFragmentUUID(fragmentUUID);
 			int result = fragmentDao.deleteFragment(findFragment);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
@@ -190,8 +188,8 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentNo = parmJb.optString("id", "");
-			if (StringUtil.isNullOrEmpty(fragmentNo)) {
+			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -199,7 +197,7 @@ public class FragmentService {
 			}
 			Fragment updateFragment = new Fragment();
 			updateFragment.setAccountId(currentAccount.getAccountId());
-			updateFragment.setFragmentNo(fragmentNo);
+			updateFragment.setFragmentUUID(fragmentUUID);
 			int result = fragmentDao.disableFragment(updateFragment);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
@@ -220,8 +218,8 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentNo = parmJb.optString("id", "");
-			if (StringUtil.isNullOrEmpty(fragmentNo)) {
+			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_FRAGMENT,
 						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -229,7 +227,7 @@ public class FragmentService {
 			}
 			Fragment updateFragment = new Fragment();
 			updateFragment.setAccountId(currentAccount.getAccountId());
-			updateFragment.setFragmentNo(fragmentNo);
+			updateFragment.setFragmentUUID(fragmentUUID);
 			int result = fragmentDao.disableShareFragment(updateFragment);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_FRAGMENT,
@@ -251,8 +249,8 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentNo = parmJb.optString("id", "");
-			if (StringUtil.isNullOrEmpty(fragmentNo)) {
+			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -260,7 +258,7 @@ public class FragmentService {
 			}
 			Fragment updateFragment = new Fragment();
 			updateFragment.setAccountId(currentAccount.getAccountId());
-			updateFragment.setFragmentNo(fragmentNo);
+			updateFragment.setFragmentUUID(fragmentUUID);
 			int result = fragmentDao.enableFragment(updateFragment);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
@@ -281,8 +279,8 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentNo = parmJb.optString("id", "");
-			if (StringUtil.isNullOrEmpty(fragmentNo)) {
+			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT,
 						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -290,7 +288,7 @@ public class FragmentService {
 			}
 			Fragment updateFragment = new Fragment();
 			updateFragment.setAccountId(currentAccount.getAccountId());
-			updateFragment.setFragmentNo(fragmentNo);
+			updateFragment.setFragmentUUID(fragmentUUID);
 			int result = fragmentDao.enableShareFragment(updateFragment);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT,
@@ -317,14 +315,15 @@ public class FragmentService {
 
 			Fragment fragment = fragmentList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("id", fragment.getFragmentNo());
-			dataObj.put("name", fragment.getFragmentName());
-			dataObj.put("desc", fragment.getFragmentDesc());
-			dataObj.put("type", fragment.getFragmentType());
-			dataObj.put("share", fragment.getFragmentShare());
-			dataObj.put("createdBy", currentAccount.getAccountName());
-			dataObj.put("createTime", DateUtil.dateTimeFormat(fragment.getFragmentDate()));
-			dataObj.put("expression", "");
+			dataObj.put("fragmentUUID", fragment.getFragmentUUID());
+			dataObj.put("fragmentName", fragment.getFragmentName());
+			dataObj.put("fragmentDesc", fragment.getFragmentDesc());
+			dataObj.put("fragmentType", fragment.getFragmentType());
+			dataObj.put("fragmentEnable", fragment.getFragmentEnable()==1?"true":"false");
+			dataObj.put("fragmentActive", fragment.getFragmentActive()==1?"true":"false");
+			dataObj.put("fragmentCreatedBy", currentAccount.getAccountName());
+			dataObj.put("fragmentCreateTime", DateUtil.dateTimeFormat(fragment.getFragmentDate()));
+			dataObj.put("fragmentExpression", "");
 
 			fragmentJsonArray.add(dataObj);
 		}
@@ -339,21 +338,22 @@ public class FragmentService {
 
 		String resultString = null;
 		JSONArray fragmentJsonArray = new JSONArray();
-		Fragment findFragment = new Fragment();
-		findFragment.setFragmentShare(1);// 0不共享，1共享
-		List<Fragment> fragmentList = fragmentDao.shareFragments(findFragment);
-		for (int i = 0; i < fragmentList.size(); i++) {
+		ShareFragment findShareFragment = new ShareFragment();
+		List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(findShareFragment);
+		for (int i = 0; i < shareFragmentList.size(); i++) {
 
-			Fragment fragment = fragmentList.get(i);
+			ShareFragment shareFragment = shareFragmentList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("id", fragment.getFragmentNo());
-			dataObj.put("name", fragment.getFragmentName());
-			dataObj.put("desc", fragment.getFragmentDesc());
-			dataObj.put("type", fragment.getFragmentType());
-			dataObj.put("share", fragment.getFragmentShare());
-			dataObj.put("createdBy", fragment.getAccountName());
-			dataObj.put("createTime", DateUtil.dateTimeFormat(fragment.getFragmentDate()));
-			dataObj.put("expression", "");
+			dataObj.put("shareFragmentUUID", shareFragment.getShareFragmentUUID());
+			dataObj.put("shareFragmentName", shareFragment.getShareFragmentName());
+			dataObj.put("shareFragmentDesc", shareFragment.getShareFragmentDesc());
+			dataObj.put("shareFragmentType", shareFragment.getShareFragmentType());
+			dataObj.put("shareFragmentEnable", shareFragment.getShareFragmentEnable()==1?"true":"false");
+			dataObj.put("shareFragmentActvie", shareFragment.getShareFragmentActive()==1?"true":"false");
+			dataObj.put("shareFragmentCreatedBy", shareFragment.getAccountName());
+			dataObj.put("shareFragmentCreateTime", DateUtil.dateTimeFormat(shareFragment.getShareFragmentDate()));
+			dataObj.put("shareFragmentVersion", shareFragment.getShareFragmentVersion());
+			//dataObj.put("expression", "");
 
 			fragmentJsonArray.add(dataObj);
 		}
@@ -361,6 +361,43 @@ public class FragmentService {
 		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
 				"获取共享fragment列表成功", fragmentJsonArray.toString());
 
+		return resultString;
+	}
+	
+	//发布共享版本
+	public String releaseShareFragment(String bodyString, Account currentAccount) {
+
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String shareFragmentUUID = parmJb.optString("shareFragmentUUID", "");
+			if (StringUtil.isNullOrEmpty(shareFragmentUUID)) {
+
+				resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_FRAGMENT,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			
+			ShareFragment findShareFragment = new ShareFragment();
+			findShareFragment.setAccountId(currentAccount.getAccountId());
+			findShareFragment.setShareFragmentUUID(shareFragmentUUID);
+			List<ShareFragment>shareFragmentList = fragmentDao.findShareFragment(findShareFragment);
+			if (shareFragmentList.size() != 1) {
+				resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_FRAGMENT,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "共享fragment不存在",
+						"");
+				return resultString;
+			} else {
+				//查看
+				
+                //查看分享表中是否已经有该记录
+				
+				
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+						"", "启用分享fragment成功", "");
+			}
+		}
 		return resultString;
 	}
 }

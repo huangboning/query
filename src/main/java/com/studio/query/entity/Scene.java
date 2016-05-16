@@ -7,7 +7,7 @@ import com.studio.query.common.Page;
 public class Scene extends Page {
 	private int sceneId;
 	private int accountId;
-	private String sceneNo;
+	private String sceneUUID;
 	private String sceneName;
 	private String sceneDesc;
 	private String sceneComment;
@@ -34,12 +34,12 @@ public class Scene extends Page {
 		this.accountId = accountId;
 	}
 
-	public String getSceneNo() {
-		return sceneNo;
+	public String getSceneUUID() {
+		return sceneUUID;
 	}
 
-	public void setSceneNo(String sceneNo) {
-		this.sceneNo = sceneNo;
+	public void setSceneUUID(String sceneUUID) {
+		this.sceneUUID = sceneUUID;
 	}
 
 	public String getSceneName() {

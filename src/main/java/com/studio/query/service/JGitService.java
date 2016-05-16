@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -20,9 +21,12 @@ import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.jgit.treewalk.filter.PathFilter;
 
 import com.studio.query.common.Configure;
 import com.studio.query.entity.Account;
+import com.studio.query.entity.Committer;
+import com.studio.query.util.DateUtil;
 import com.studio.query.util.StringUtil;
 
 public class JGitService {
@@ -56,6 +60,16 @@ public class JGitService {
 		if (!root.exists()) {
 			root.mkdir();
 		}
+		// 创建用户场景的版本库
+		root = new File(rootStr + "/" + yearStr + "/" + monthStr + "/" + name + "/scene");
+		if (!root.exists()) {
+			root.mkdir();
+		}
+		// 创建用户共享fragment的版本库
+		root = new File(rootStr + "/" + yearStr + "/" + monthStr + "/" + name + "/shareFragment");
+		if (!root.exists()) {
+			root.mkdir();
+		}
 	}
 
 	public boolean initAccountGit(String path, Account currentAccount) {
@@ -83,6 +97,20 @@ public class JGitService {
 		return true;
 	}
 
+	public static Repository openRepository(String path) {
+
+		FileRepositoryBuilder builder = new FileRepositoryBuilder();
+		builder.setMustExist(true);
+		Repository repository = null;
+		try {
+			repository = builder.setGitDir(new File(path + "/.git")).build();
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
+		return repository;
+	}
+
 	public boolean jGitCommit(String path, Account currentAccount, String message) {
 		try {
 			File root = new File(path);
@@ -99,64 +127,161 @@ public class JGitService {
 		}
 	}
 
-	public String jGitContent(String path, String version) {
-		try {
-			File root = new File(path);
-			Git git = Git.init().setDirectory(root).call();
-			git.checkout().setName(version).call();
+	public Committer getLastCommitter(String path) {
+		Committer committerInfo = new Committer();
+		try (Repository repository = JGitService.openRepository(path)) {
 
-			InputStream inputStream = new FileInputStream(path);
-			InputStreamReader inputReader = new InputStreamReader(inputStream);
-			BufferedReader bufferReader = new BufferedReader(inputReader);
-			String line = null;
-			StringBuffer strBuffer = new StringBuffer();
-			while ((line = bufferReader.readLine()) != null) {
-				strBuffer.append(line);
+			ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+			if (null == lastCommitId) {
 
 			}
-			bufferReader.close();
-			inputReader.close();
-			inputStream.close();
-			return strBuffer.toString();
-		} catch (Exception e) {
-			loger.info(e.toString());
+			try (RevWalk revWalk = new RevWalk(repository)) {
+				RevCommit commit = revWalk.parseCommit(lastCommitId);
+				committerInfo.setCommitVersion(commit.getName());
+				committerInfo.setCommitName(commit.getAuthorIdent().getName());
+				committerInfo.setCommitEmail(commit.getAuthorIdent().getEmailAddress());
+				committerInfo.setCommitDate(DateUtil.dateTimeFormat(commit.getAuthorIdent().getWhen()));
+				committerInfo.setCommitMssage(commit.getFullMessage());
+				revWalk.dispose();
+			}
+		} catch (IOException e) {
+
 			e.printStackTrace();
-			return "";
 		}
+		return committerInfo;
+	}
+
+	public String getContentByVersion(String path, String version) {
+		String str = "";
+		try (Repository repository = JGitService.openRepository(path)) {
+
+			ObjectId lastCommitId = repository.resolve(version);
+			if (null == lastCommitId) {
+
+			}
+			try (RevWalk revWalk = new RevWalk(repository)) {
+				RevCommit commit = revWalk.parseCommit(lastCommitId);
+				// and using commit's tree find the path
+				RevTree tree = commit.getTree();
+				// System.out.println("Having tree: " + tree);
+
+				// now try to find a specific file
+				try (TreeWalk treeWalk = new TreeWalk(repository)) {
+					treeWalk.addTree(tree);
+					treeWalk.setRecursive(true); // 可以自动读取子树
+					treeWalk.setFilter(PathFilter.create("readme.txt"));
+					if (treeWalk.next()) {
+
+						ObjectId objectId = treeWalk.getObjectId(0);
+						ObjectLoader loader = repository.open(objectId);
+						str = new String(loader.getBytes(), "UTF-8");
+
+					}
+				}
+
+				revWalk.dispose();
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return str;
 	}
 
 	public static void main(String[] args) {
+		Committer committerInfo = new Committer();
+		try (Repository repository = JGitService.openRepository("E:/gittest")) {
 
-		try {
-
-			File root = new File("E:/gittest");
-
-			// Git git = Git.init().setDirectory(root).call();
-			// Ref
-			// ref=git.checkout().setName("015e0b852e0ce5841aa03ef1ec077932684e372a").call();
-			// Ref ref=git.checkout().setName("master").call();
-			// System.out.println(ref.getName());
-			FileRepositoryBuilder builder = new FileRepositoryBuilder();
-			builder.setMustExist(true);
-			Repository repository = builder.setGitDir(new File("E:/gittest/.git")).build();
 			ObjectId lastCommitId = repository.resolve(Constants.HEAD);
-			RevWalk revWalk = new RevWalk(repository);
-			RevCommit commit = revWalk.parseCommit(lastCommitId);
-			String str = commit.getName();
-			System.out.println(commit.getParents()[0].getName());
-			
-			// git.add().addFilepattern("test.txt").call();
-			// PersonIdent personIdent = new PersonIdent("huangboning",
-			// "huangboning@test.com");
-			// git.commit().setCommitter(personIdent)
-			// .setMessage("系统初始化info.txt").call();
-			// for (RevCommit revCommit : git.log().call()) {
-			// System.out.println(revCommit.getName()+"="+
-			// revCommit.getFullMessage());
-			// }
-		} catch (Exception e) {
+			if (null == lastCommitId) {
+
+			}
+			try (RevWalk revWalk = new RevWalk(repository)) {
+				RevCommit commit = revWalk.parseCommit(lastCommitId);
+				committerInfo.setCommitVersion(commit.getName());
+				committerInfo.setCommitName(commit.getAuthorIdent().getName());
+				committerInfo.setCommitEmail(commit.getAuthorIdent().getEmailAddress());
+				committerInfo.setCommitDate(DateUtil.dateTimeFormat(commit.getAuthorIdent().getWhen()));
+				revWalk.dispose();
+			}
+		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
+
+		// try (Repository repository =
+		// JGitService.openRepository("E:/gittest")) {
+		// // find the HEAD
+		// ObjectId lastCommitId =
+		// repository.resolve("a21cf0c64d5a308676425c816777891990522b3f");
+		// if (null == lastCommitId) {
+		//
+		// }
+		// try (RevWalk revWalk = new RevWalk(repository)) {
+		// RevCommit commit = revWalk.parseCommit(lastCommitId);
+		// // and using commit's tree find the path
+		// RevTree tree = commit.getTree();
+		// // System.out.println("Having tree: " + tree);
+		//
+		// // now try to find a specific file
+		// try (TreeWalk treeWalk = new TreeWalk(repository)) {
+		// treeWalk.addTree(tree);
+		// treeWalk.setRecursive(true); // 可以自动读取子树
+		// treeWalk.setFilter(PathFilter.create("readme.txt"));
+		// if (treeWalk.next()) {
+		//
+		// ObjectId objectId = treeWalk.getObjectId(0);
+		// ObjectLoader loader = repository.open(objectId);
+		// String str = new String(loader.getBytes(), "UTF-8");
+		// System.out.println(str);
+		//
+		// }
+		// }
+		//
+		// revWalk.dispose();
+		// }
+		// } catch (IOException e) {
+		//
+		// e.printStackTrace();
+		// }
+
+		// try {
+		//
+		// File root = new File("E:/gittest");
+		//
+		// Repository repository = JGitService.openRepository("E:/gittest");
+		// ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+		// ObjectLoader loader = repository.open(lastCommitId);
+		// String str = new String(loader.getBytes(), "UTF-8");
+		// System.out.println(str);
+		// // Git git = Git.init().setDirectory(root).call();
+		// // Ref
+		// //
+		// ref=git.checkout().setName("015e0b852e0ce5841aa03ef1ec077932684e372a").call();
+		// // Ref ref=git.checkout().setName("master").call();
+		// // System.out.println(ref.getName());
+		// // FileRepositoryBuilder builder = new FileRepositoryBuilder();
+		// // builder.setMustExist(true);
+		// // Repository repository = builder.setGitDir(new
+		// // File("E:/gittest/.git")).build();
+		// // ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+		// // RevWalk revWalk = new RevWalk(repository);
+		// // RevCommit commit = revWalk.parseCommit(lastCommitId);
+		// // String str = commit.getName();
+		// // System.out.println(commit.getParents()[0].getName());
+		//
+		// // git.add().addFilepattern("test.txt").call();
+		// // PersonIdent personIdent = new PersonIdent("huangboning",
+		// // "huangboning@test.com");
+		// // git.commit().setCommitter(personIdent)
+		// // .setMessage("系统初始化info.txt").call();
+		// // for (RevCommit revCommit : git.log().call()) {
+		// // System.out.println(revCommit.getName()+"="+
+		// // revCommit.getFullMessage());
+		// // }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 	}
 
 	// public void initGit() throws Exception {

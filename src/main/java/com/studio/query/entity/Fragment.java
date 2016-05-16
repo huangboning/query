@@ -8,12 +8,11 @@ public class Fragment extends Page {
 	private int fragmentId;
 	private int accountId;
 	private String accountName;
-	private String fragmentNo;
+	private String fragmentUUID;
 	private String fragmentName;
 	private String fragmentType;
 	private String fragmentObjType;
 	private String fragmentDesc;
-	private int fragmentShare;
 	private int fragmentEnable;
 	private int fragmentActive;
 
@@ -43,12 +42,12 @@ public class Fragment extends Page {
 		this.accountName = accountName;
 	}
 
-	public String getFragmentNo() {
-		return fragmentNo;
+	public String getFragmentUUID() {
+		return fragmentUUID;
 	}
 
-	public void setFragmentNo(String fragmentNo) {
-		this.fragmentNo = fragmentNo;
+	public void setFragmentUUID(String fragmentUUID) {
+		this.fragmentUUID = fragmentUUID;
 	}
 
 	public String getFragmentName() {
@@ -81,14 +80,6 @@ public class Fragment extends Page {
 
 	public void setFragmentDesc(String fragmentDesc) {
 		this.fragmentDesc = fragmentDesc;
-	}
-
-	public int getFragmentShare() {
-		return fragmentShare;
-	}
-
-	public void setFragmentShare(int fragmentShare) {
-		this.fragmentShare = fragmentShare;
 	}
 
 	public int getFragmentEnable() {

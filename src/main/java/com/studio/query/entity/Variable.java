@@ -8,7 +8,7 @@ public class Variable extends Page {
 	private int variableId;
 	private int accountId;
 	private String accountName;
-	private String variableNo;
+	private String variableUUID;
 	private int variableScope;
 	private int fragmentId;
 	private String variableName;
@@ -42,12 +42,12 @@ public class Variable extends Page {
 		this.accountName = accountName;
 	}
 
-	public String getVariableNo() {
-		return variableNo;
+	public String getVariableUUID() {
+		return variableUUID;
 	}
 
-	public void setVariableNo(String variableNo) {
-		this.variableNo = variableNo;
+	public void setVariableUUID(String variableUUID) {
+		this.variableUUID = variableUUID;
 	}
 
 	public int getVariableScope() {
