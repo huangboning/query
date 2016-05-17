@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : localhost
 Source Server Version : 50624
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : query
 
 Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2016-05-17 00:55:43
+Date: 2016-05-17 18:28:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,16 +30,12 @@ CREATE TABLE `t_account` (
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `account_name_unique` (`account_name`),
   UNIQUE KEY `account_repository_unique` (`account_repository`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_account
 -- ----------------------------
-INSERT INTO `t_account` VALUES ('1', null, 'test', '123456', null, '/2016/4/test', '2016-04-13 11:04:10');
-INSERT INTO `t_account` VALUES ('6', '1555241588', 'huangboning', 'e10adc3949ba59abbe56e057f20f883e', 'admin@126.com', '/2016/4/huangboning', '2016-04-14 23:28:03');
-INSERT INTO `t_account` VALUES ('7', '1555241588', 'test3', 'e10adc3949ba59abbe56e057f20f883e', 'admin@126.com', '/2016/4/test3', '2016-04-14 23:28:18');
-INSERT INTO `t_account` VALUES ('8', '13911710290', 'itrek', '81dc9bdb52d04dc20036dbd8313ed055', 'itrek@163.com', '/2016/4/itrek', '2016-04-18 11:16:47');
-INSERT INTO `t_account` VALUES ('9', '1555241588', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin@126.com', '/2016/5/admin', '2016-05-09 22:13:58');
+INSERT INTO `t_account` VALUES ('1', '15557181347', 'huangboning', 'e10adc3949ba59abbe56e057f20f883e', 'huangboning@test.com', '/2016/5/huangboning', '2016-05-17 09:39:51');
 
 -- ----------------------------
 -- Table structure for t_fragment
@@ -47,7 +43,7 @@ INSERT INTO `t_account` VALUES ('9', '1555241588', 'admin', 'e10adc3949ba59abbe5
 DROP TABLE IF EXISTS `t_fragment`;
 CREATE TABLE `t_fragment` (
   `fragment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) DEFAULT NULL,
+  `scene_id` int(11) DEFAULT NULL,
   `fragment_uuid` varchar(255) DEFAULT NULL,
   `fragment_name` varchar(255) DEFAULT NULL,
   `fragment_type` varchar(255) DEFAULT NULL,
@@ -58,13 +54,14 @@ CREATE TABLE `t_fragment` (
   `fragment_date` datetime DEFAULT NULL,
   PRIMARY KEY (`fragment_id`),
   UNIQUE KEY `fragment_no_unique` (`fragment_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_fragment
 -- ----------------------------
-INSERT INTO `t_fragment` VALUES ('2', '6', 'FRGM3b617aa7be24475699f73b7ce47b3bec', 'foxFragment', '', null, 'update 1 fragment', '0', null, '2016-04-25 17:43:41');
-INSERT INTO `t_fragment` VALUES ('4', '6', 'FRGM8c7a414e6fad450ebdbc0534a9245f64', 'foxFragment2', '', null, '我的第一个fragment', null, null, '2016-04-25 20:25:08');
+INSERT INTO `t_fragment` VALUES ('3', '1', 'FRGMaa3a42fc184f4943b0f6035baedec0fd', 'foxFragment', 'query', null, '我的第一个fragment', '0', '0', '2016-05-17 17:19:18');
+INSERT INTO `t_fragment` VALUES ('4', '1', 'FRGMa8fbd000b5454ad3867f91c31a678036', 'cangFragment', 'filter', null, '我的第二个fragment', '0', '0', '2016-05-17 17:19:48');
+INSERT INTO `t_fragment` VALUES ('5', '2', 'FRGM7d7a94c4c08c4770951ba64731b86a12', 'thirdFragment', 'filter', null, '我的第三个fragment', '0', '0', '2016-05-17 17:21:06');
 
 -- ----------------------------
 -- Table structure for t_role
@@ -100,17 +97,13 @@ CREATE TABLE `t_scene` (
   PRIMARY KEY (`scene_id`),
   UNIQUE KEY `scene_no_unique` (`scene_uuid`) USING BTREE,
   UNIQUE KEY `scene_git_unique` (`scene_git`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_scene
 -- ----------------------------
-INSERT INTO `t_scene` VALUES ('1', '1', 'ncno1fa', '测试test场景', null, null, null, '0', '0', '2016-04-13 18:08:15');
-INSERT INTO `t_scene` VALUES ('2', '1', 'SCNO42fd5681956a48e08533274df5523eba', 'foxquery', '我的第一个场景scene', null, '1460644790947', '0', '0', '2016-04-14 22:39:50');
-INSERT INTO `t_scene` VALUES ('3', '1', 'SCNO54619c77a6f04a7aa8af45b036643136', 'foxquery', '我的第一个场景scene', null, '1460647933119', '0', '0', '2016-04-14 23:32:13');
-INSERT INTO `t_scene` VALUES ('4', '1', 'SCNO90c7f72a25124038a8293bd82eb4bc62', 'foxquery', '我的第一个场景scene', null, '1460648312028', '0', '0', '2016-04-14 23:38:32');
-INSERT INTO `t_scene` VALUES ('5', '6', 'SCNO6d527981f75343a8b52cd54e7e4b3b9d', 'foxquery1', '我的第一个场景scene', null, '1460648396892', '0', '0', '2016-04-14 23:39:56');
-INSERT INTO `t_scene` VALUES ('6', '6', 'SCNO023eb5202d84462aa7d41884835016f4', 'foxquery2', '我的第二个场景scene', null, '1460686073149', '0', '0', '2016-04-15 10:07:53');
+INSERT INTO `t_scene` VALUES ('1', '1', 'SCNObd1d9a66bca44137a70fd766558f56a8', 'foxquery', '我的第一个场景foxquery', null, '1463449947107', '0', '0', '2016-05-17 09:52:27');
+INSERT INTO `t_scene` VALUES ('2', '1', 'SCNO30652d124b8e4d63b68207c7cdaee113', 'foxquery2', '我的第二个场景foxquery', null, '1463450088442', '0', '0', '2016-05-17 09:54:48');
 
 -- ----------------------------
 -- Table structure for t_share_fragment
@@ -148,13 +141,11 @@ CREATE TABLE `t_user` (
   `user_date` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name_unique` (`user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '智擎', '1', '2016-04-06 10:53:21');
-INSERT INTO `t_user` VALUES ('2', 'hbn', 'e10adc3949ba59abbe56e057f20f883e', 'hbn', '2', '2016-04-13 10:53:37');
 
 -- ----------------------------
 -- Table structure for t_variable
@@ -174,10 +165,8 @@ CREATE TABLE `t_variable` (
   `variable_date` datetime DEFAULT NULL,
   PRIMARY KEY (`variable_id`),
   UNIQUE KEY `variable_no_unique` (`variable_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_variable
 -- ----------------------------
-INSERT INTO `t_variable` VALUES ('2', '6', 'first Variable', 'VAR4b237122c1b241e69176329d698e1eaa', null, '0', '0', null, '1', '我的第一个变量', '2016-04-26 19:18:32');
-INSERT INTO `t_variable` VALUES ('3', '6', 'sencond Variable', 'VARfe22dd661bb14dbea3721ec2d5681ab0', null, '0', '0', null, '0', '我的第二个变量', '2016-04-26 20:14:30');
