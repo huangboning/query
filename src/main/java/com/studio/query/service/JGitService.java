@@ -96,7 +96,26 @@ public class JGitService {
 		}
 		return true;
 	}
-
+	//初始化共享fragment版本库
+	public boolean initShareFragmentGit(String path, Account currentAccount) {
+		File root = new File(path);
+		if (!root.exists()) {
+			root.mkdir();
+		}
+		File gitF = new File(path + "/.git");
+		if (!gitF.exists()) {
+			try {
+				Git.init().setDirectory(root).call();
+				File file = new File(path + "/template.txt");
+				file.createNewFile();
+			} catch (Exception e) {
+				e.printStackTrace();
+				loger.info(e.toString());
+				return false;
+			}
+		}
+		return true;
+	}
 	public static Repository openRepository(String path) {
 
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
@@ -113,6 +132,27 @@ public class JGitService {
 
 	public boolean jGitCommit(String path, Account currentAccount, String message) {
 		try {
+			File root = new File(path);
+			Git git = Git.init().setDirectory(root).call();
+			git.add().addFilepattern("info.txt").call();
+			PersonIdent personIdent = new PersonIdent(currentAccount.getAccountName(),
+					this.getAccountEmail(currentAccount));
+			git.commit().setCommitter(personIdent).setMessage(message).call();
+			return true;
+		} catch (Exception e) {
+			loger.info(e.toString());
+			e.printStackTrace();
+			return false;
+		}
+	}
+	//提交共享fragment
+	public boolean shareFragmentCommit(String path, Account currentAccount, String message) {
+		try {
+			File templateFile = new File(path + "/template.txt");
+			if (!templateFile.exists()) {
+				File file = new File(path + "/template.txt");
+				file.createNewFile();
+			}
 			File root = new File(path);
 			Git git = Git.init().setDirectory(root).call();
 			git.add().addFilepattern("info.txt").call();
@@ -157,7 +197,7 @@ public class JGitService {
 
 			ObjectId lastCommitId = repository.resolve(version);
 			if (null == lastCommitId) {
-
+				return str;
 			}
 			try (RevWalk revWalk = new RevWalk(repository)) {
 				RevCommit commit = revWalk.parseCommit(lastCommitId);
@@ -181,7 +221,7 @@ public class JGitService {
 
 				revWalk.dispose();
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 
 			e.printStackTrace();
 		}

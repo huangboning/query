@@ -18,7 +18,7 @@ public interface FragmentDao {
 
 	@Results(value = {
 			@Result(column = "fragment_id", property = "fragmentId"),
-			@Result(column = "account_id", property = "accountId"),
+			@Result(column = "scene_id", property = "sceneId"),
 			@Result(column = "fragment_uuid", property = "fragmentUUID"),
 			@Result(column = "fragment_name", property = "fragmentName"),
 			@Result(column = "fragment_type", property = "fragmentType"),
@@ -43,20 +43,20 @@ public interface FragmentDao {
 	@SelectProvider(type = ShareFragmentMapperProvider.class, method = "findShareFragment")
 	public List<ShareFragment> findShareFragment(ShareFragment sharefragment);
 	
-	@Insert("insert into t_fragment(account_id,fragment_uuid,fragment_name,fragment_type,fragment_obj_type,fragment_desc,fragment_share,fragment_date)"
-			+ " values(#{accountId},#{fragmentUUID},#{fragmentName},#{fragmentType},#{fragmentObjType},#{fragmentDesc},#{fragmentShare},now())")
+	@Insert("insert into t_fragment(scene_id,fragment_uuid,fragment_name,fragment_type,fragment_obj_type,fragment_desc,fragment_enable,fragment_active,fragment_date)"
+			+ " values(#{sceneId},#{fragmentUUID},#{fragmentName},#{fragmentType},#{fragmentObjType},#{fragmentDesc},#{fragmentEnable},#{fragmentActive},now())")
 	public int insertFragment(Fragment fragment);
 
-	@Update("update t_fragment set fragment_desc=#{fragmentDesc} where fragment_uuid=#{fragmentUUID} and account_id=#{accountId}")
+	@Update("update t_fragment set fragment_name=#{fragmentName},fragment_type=#{fragmentType},fragment_desc=#{fragmentDesc} where fragment_uuid=#{fragmentUUID}")
 	public int updateFragment(Fragment fragment);
 	
-	@Delete("delete from t_fragment where account_id=#{accountId}  and fragment_uuid=#{fragmentUUID}")
+	@Delete("delete from t_fragment where fragment_uuid=#{fragmentUUID}")
 	public int deleteFragment(Fragment fragment);
 	
-	@Update("update t_fragment set fragment_enable=0 where fragment_uuid=#{fragmentUUID} and account_id=#{accountId}")
+	@Update("update t_fragment set fragment_enable=0 where fragment_uuid=#{fragmentUUID}")
 	public int enableFragment(Fragment fragment);
 	
-	@Update("update t_fragment set fragment_enable=-1 where fragment_uuid=#{fragmentUUID} and account_id=#{accountId}")
+	@Update("update t_fragment set fragment_enable=-1 where fragment_uuid=#{fragmentUUID}")
 	public int disableFragment(Fragment fragment);
 	
 	//共享模板fragment

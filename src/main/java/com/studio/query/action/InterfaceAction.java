@@ -103,8 +103,6 @@ public class InterfaceAction extends BaseAction {
 						returnString = sceneService.getSceneHistory(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.SWITCH_SCENE)) {
 						returnString = sceneService.switchScene(bodyString, currentAccount, session);
-					} else if (methodCode.equals(MethodCode.SWITCH_VERSION)) {
-						returnString = sceneService.switchSceneVersion(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.GET_SCENE_VERSION)) {
 						returnString = sceneService.getSceneVersion(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CLOSE_VERSION)) {
@@ -112,25 +110,25 @@ public class InterfaceAction extends BaseAction {
 					} else if (methodCode.equals(MethodCode.UPDATE_SCENE)) {
 						returnString = sceneService.updateScene(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CREATE_FRAGMENT)) {
-						returnString = fragmentService.createFragment(bodyString, currentAccount);
+						returnString = fragmentService.createFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.UPDATE_FRAGMENT)) {
-						returnString = fragmentService.updateFragment(bodyString, currentAccount);
+						returnString = fragmentService.updateFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_FRAGMENT)) {
-						returnString = fragmentService.getFragment(bodyString, currentAccount);
+						returnString = fragmentService.getFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.DELETE_FRAGMENT)) {
-						returnString = fragmentService.deleteFragment(bodyString, currentAccount);
+						returnString = fragmentService.deleteFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.DISABLE_FRAGMENT)) {
-						returnString = fragmentService.disableFragment(bodyString, currentAccount);
+						returnString = fragmentService.disableFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.ENABLE_FRAGMENT)) {
-						returnString = fragmentService.enableFragment(bodyString, currentAccount);
+						returnString = fragmentService.enableFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.DISABLE_SHARE_FRAGMENT)) {
-						returnString = fragmentService.disableShareFragment(bodyString, currentAccount);
+						returnString = fragmentService.disableShareFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.ENABLE_SHARE_FRAGMENT)) {
-						returnString = fragmentService.enableShareFragment(bodyString, currentAccount);
+						returnString = fragmentService.enableShareFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_FRAGMENT)) {
-						returnString = fragmentService.getFragments(bodyString, currentAccount);
+						returnString = fragmentService.getFragments(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_SHARE_FRAGMENT)) {
-						returnString = fragmentService.getShareFragments(bodyString, currentAccount);
+						returnString = fragmentService.getShareFragments(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CREATE_VARIABLE)) {
 						returnString = variableService.createVariable(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.GET_VARIABLE)) {

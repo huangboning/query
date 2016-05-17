@@ -1,5 +1,6 @@
 package com.studio.query.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.studio.query.common.Configure;
 import com.studio.query.common.Constants;
+import com.studio.query.dao.FragmentDao;
 import com.studio.query.dao.SceneDao;
 import com.studio.query.entity.Account;
 import com.studio.query.entity.Committer;
+import com.studio.query.entity.Fragment;
 import com.studio.query.entity.Scene;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
@@ -24,6 +27,8 @@ import net.sf.json.JSONObject;
 public class SceneService {
 	@Autowired
 	public SceneDao sceneDao;
+	@Autowired
+	public FragmentDao fragmentDao;
 
 	public List<Scene> findScene(Scene scene) {
 		return sceneDao.findScene(scene);
@@ -73,8 +78,8 @@ public class SceneService {
 			int insertResult = sceneDao.insertScene(insertScene);
 			if (insertResult == 1) {
 				JGitService jGitService = new JGitService();
-				String gitPath = Configure.gitRepositoryPath + "/" + currentAccount.getAccountRepository() + "/"
-						+ insertScene.getSceneGit();
+				String gitPath = Configure.gitRepositoryPath + "/" + currentAccount.getAccountRepository() + "/" + "/"
+						+ Constants.SCENE_REPOSITORY_NAME + "/" + insertScene.getSceneGit();
 
 				jGitService.initAccountGit(gitPath, currentAccount);
 				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK, "",
@@ -102,8 +107,8 @@ public class SceneService {
 			dataObj.put("sceneUUID", scene.getSceneUUID());
 			dataObj.put("sceneName", scene.getSceneName());
 			dataObj.put("sceneDesc", scene.getSceneDesc());
-			dataObj.put("sceneActive", scene.getSceneActive() == 1 ? "true" : "false");
-			dataObj.put("sceneEnable", scene.getSceneEnable() == 1 ? "true" : "false");
+			dataObj.put("sceneActive", scene.getSceneActive() == 0 ? "true" : "false");
+			dataObj.put("sceneEnable", scene.getSceneEnable() == 0 ? "true" : "false");
 			sceneJsonArray.add(dataObj);
 		}
 
@@ -224,32 +229,12 @@ public class SceneService {
 				return resultString;
 			}
 			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
-					+ sceneList.get(0).getSceneGit();
+					+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneList.get(0).getSceneGit();
 			session.put(Constants.KEY_SCENE_PATH, scenePath);
+			session.put(Constants.SCENE_ACTIVE, sceneList.get(0));
 
 			resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_OK, "",
 					"切换场景成功，当前场景是" + sceneList.get(0).getSceneName(), "");
-
-		}
-		return resultString;
-	}
-
-	public String switchSceneVersion(String bodyString, Account currentAccount) {
-
-		String resultString = null;
-		JSONObject jb = JSONObject.fromObject(bodyString);
-		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
-		if (parmJb != null) {
-			String sceneVersion = parmJb.optString("sceneVersion", "");
-			if (StringUtil.isNullOrEmpty(sceneVersion)) {
-
-				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
-				return resultString;
-			}
-
-			resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_OK, "",
-					"切换版本成功", "");
 
 		}
 		return resultString;
@@ -279,7 +264,7 @@ public class SceneService {
 			}
 			Scene currentScene = sceneList.get(0);
 			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
-					+ currentScene.getSceneGit();
+					+ Constants.SCENE_REPOSITORY_NAME + "/" + currentScene.getSceneGit();
 
 			String sessionScenePath = session.get(Constants.KEY_SCENE_PATH) == null ? null
 					: session.get(Constants.KEY_SCENE_PATH).toString();
@@ -291,8 +276,8 @@ public class SceneService {
 			}
 			// 根据版本获取场景内容
 			JGitService jGitService = new JGitService();
-			jGitService.getContentByVersion(sessionScenePath, sceneVersion);
-			
+			String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion);
+
 			JSONObject sceneObject = new JSONObject();
 			// sceneObject.put("id", "SCNO8a45aae29e3d452c8cb6c4ee1857cd59");
 			// sceneObject.put("name", "test scene");
@@ -402,7 +387,7 @@ public class SceneService {
 			}
 			Scene currentScene = sceneList.get(0);
 			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
-					+ currentScene.getSceneGit();
+					+ Constants.SCENE_REPOSITORY_NAME + "/" + currentScene.getSceneGit();
 
 			String sessionScenePath = session.get(Constants.KEY_SCENE_PATH) == null ? null
 					: session.get(Constants.KEY_SCENE_PATH).toString();
@@ -412,6 +397,8 @@ public class SceneService {
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 				return resultString;
 			}
+			// 执行缓存
+			this.executeCache(session);
 
 			// 保存parmJb string to info.txt
 			FileUtil.writeFile(sessionScenePath + "/info.txt", sceneExpression);
@@ -428,12 +415,60 @@ public class SceneService {
 			sceneObject.put("sceneComment", committer.getCommitMssage());
 			sceneObject.put("sceneVersion", committer.getCommitVersion());
 
-			sceneObject.put("sceneActive", currentScene.getSceneActive());
-			sceneObject.put("sceneEnable", currentScene.getSceneEnable());
+			sceneObject.put("sceneActive", currentScene.getSceneActive() == 0 ? "true" : "false");
+			sceneObject.put("sceneEnable", currentScene.getSceneEnable() == 0 ? "true" : "false");
 			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "",
 					"更新场景成功", sceneObject.toString());
 
 		}
 		return resultString;
+	}
+
+	// 验证缓存是否有未保存数据
+	public boolean verifyCache(String bodyString, Account currentAccount, Map<String, Object> session) {
+		boolean result = false;
+		List<Fragment> fragmentAddList = (List<Fragment>) session.get(Constants.KEY_FRAGMENT_ADD);
+		if (fragmentAddList != null && fragmentAddList.size() >= 1) {
+			result = true;
+		}
+		List<Fragment> fragmentUpdateList = (List<Fragment>) session.get(Constants.KEY_FRAGMENT_UPDATE);
+		if (fragmentUpdateList != null && fragmentUpdateList.size() >= 1) {
+			result = true;
+		}
+		List<Fragment> fragmentDeleteList = (List<Fragment>) session.get(Constants.KEY_FRAGMENT_DELETE);
+		if (fragmentDeleteList != null && fragmentDeleteList.size() >= 1) {
+			result = true;
+		}
+		return result;
+	}
+
+	// 执行缓存将相关数据保存后清空缓存。
+	public boolean executeCache(Map<String, Object> session) {
+		boolean result = false;
+		List<Fragment> fragmentAddList = (List<Fragment>) session.get(Constants.KEY_FRAGMENT_ADD);
+		if (fragmentAddList != null) {
+			for (Fragment fragment : fragmentAddList) {
+				fragmentDao.insertFragment(fragment);
+			}
+			session.remove(Constants.KEY_FRAGMENT_ADD);
+		}
+
+		List<Fragment> fragmentUpdateList = (List<Fragment>) session.get(Constants.KEY_FRAGMENT_UPDATE);
+		if (fragmentUpdateList != null) {
+			for (Fragment fragment : fragmentUpdateList) {
+				fragmentDao.updateFragment(fragment);
+			}
+			session.remove(Constants.KEY_FRAGMENT_UPDATE);
+		}
+
+		List<Fragment> fragmentDeleteList = (List<Fragment>) session.get(Constants.KEY_FRAGMENT_DELETE);
+		if (fragmentDeleteList != null) {
+			for (Fragment fragment : fragmentDeleteList) {
+				fragmentDao.deleteFragment(fragment);
+			}
+			session.remove(Constants.KEY_FRAGMENT_DELETE);
+		}
+
+		return result;
 	}
 }

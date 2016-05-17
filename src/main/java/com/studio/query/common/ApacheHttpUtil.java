@@ -16,8 +16,7 @@ public class ApacheHttpUtil {
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			HttpGet httpGet = new HttpGet(url);
-			httpGet.setHeader("Content-type",
-					"hboring-coding-application/client-stream");
+			httpGet.setHeader("Content-type", "hboring-coding-application/client-stream");
 
 			response = httpclient.execute(httpGet);
 			System.out.println(response.getStatusLine());
@@ -43,8 +42,7 @@ public class ApacheHttpUtil {
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			HttpPost httpPost = new HttpPost(url);
-			httpPost.setHeader("Content-type",
-					"hboring-coding-application/client-stream");
+			httpPost.setHeader("Content-type", "hboring-coding-application/client-stream");
 			// 拼接参数
 			// List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 			// nvps.add(new BasicNameValuePair("username", "vip"));
@@ -82,16 +80,15 @@ public class ApacheHttpUtil {
 		}
 		return result;
 	}
-	
-	public static String sendPostBySession(String url, byte[] loginData,byte[] bodyData) {
+
+	public static String sendPostBySession(String url, byte[] loginData, byte[] bodyData) {
 		String result = "";
 		CloseableHttpResponse response = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			HttpPost httpPost = new HttpPost(url);
-			httpPost.setHeader("Content-type",
-					"hboring-coding-application/client-stream");
-			
+			httpPost.setHeader("Content-type", "hboring-coding-application/client-stream");
+
 			ByteArrayEntity loginEntity = new ByteArrayEntity(loginData);
 			httpPost.setEntity(loginEntity);
 			response = httpclient.execute(httpPost);
@@ -99,8 +96,8 @@ public class ApacheHttpUtil {
 			HttpEntity respEntity = response.getEntity();
 			result = EntityUtils.toString(respEntity, "utf-8");
 			System.out.println(result);
-			
-			//Thread.sleep(59*1000);//模拟会话过期
+
+			// Thread.sleep(59*1000);//模拟会话过期
 			ByteArrayEntity postEntity = new ByteArrayEntity(bodyData);
 			httpPost.setEntity(postEntity);
 			response = httpclient.execute(httpPost);
@@ -119,16 +116,16 @@ public class ApacheHttpUtil {
 		}
 		return result;
 	}
-	
-	public static String testSceneBySession(String url, byte[] loginData,byte[] switchData,byte[] bodyData) {
+
+	public static String testSceneBySession(String url, byte[] loginData, byte[] switchData, byte[] fragmentData,
+			byte[] bodyData) {
 		String result = "";
 		CloseableHttpResponse response = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 			HttpPost httpPost = new HttpPost(url);
-			httpPost.setHeader("Content-type",
-					"hboring-coding-application/client-stream");
-			
+			httpPost.setHeader("Content-type", "hboring-coding-application/client-stream");
+
 			ByteArrayEntity loginEntity = new ByteArrayEntity(loginData);
 			httpPost.setEntity(loginEntity);
 			response = httpclient.execute(httpPost);
@@ -136,8 +133,8 @@ public class ApacheHttpUtil {
 			HttpEntity respEntity = response.getEntity();
 			result = EntityUtils.toString(respEntity, "utf-8");
 			System.out.println(result);
-			
-			//Thread.sleep(59*1000);//模拟会话过期
+
+			// Thread.sleep(59*1000);//模拟会话过期
 			ByteArrayEntity switchEntity = new ByteArrayEntity(switchData);
 			httpPost.setEntity(switchEntity);
 			response = httpclient.execute(httpPost);
@@ -145,7 +142,17 @@ public class ApacheHttpUtil {
 			HttpEntity switchRepEntity = response.getEntity();
 			result = EntityUtils.toString(switchRepEntity, "utf-8");
 			System.out.println(result);
-			
+
+			if (fragmentData!=null) {
+				ByteArrayEntity fragmentEntity = new ByteArrayEntity(fragmentData);
+				httpPost.setEntity(fragmentEntity);
+				response = httpclient.execute(httpPost);
+				System.out.println(response.getStatusLine());
+				HttpEntity fragmentRepEntity = response.getEntity();
+				result = EntityUtils.toString(fragmentRepEntity, "utf-8");
+				System.out.println(result);
+			}
+
 			ByteArrayEntity postEntity = new ByteArrayEntity(bodyData);
 			httpPost.setEntity(postEntity);
 			response = httpclient.execute(httpPost);

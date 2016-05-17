@@ -6,8 +6,7 @@ import com.studio.query.common.Page;
 
 public class Fragment extends Page {
 	private int fragmentId;
-	private int accountId;
-	private String accountName;
+	private int sceneId;
 	private String fragmentUUID;
 	private String fragmentName;
 	private String fragmentType;
@@ -15,6 +14,7 @@ public class Fragment extends Page {
 	private String fragmentDesc;
 	private int fragmentEnable;
 	private int fragmentActive;
+	private String fragmentExpression;
 
 	private Date fragmentDate;
 
@@ -26,20 +26,12 @@ public class Fragment extends Page {
 		this.fragmentId = fragmentId;
 	}
 
-	public int getAccountId() {
-		return accountId;
+	public int getSceneId() {
+		return sceneId;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
-	}
-
-	public String getAccountName() {
-		return accountName;
-	}
-
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
+	public void setSceneId(int sceneId) {
+		this.sceneId = sceneId;
 	}
 
 	public String getFragmentUUID() {
@@ -104,6 +96,14 @@ public class Fragment extends Page {
 
 	public void setFragmentDate(Date fragmentDate) {
 		this.fragmentDate = fragmentDate;
+	}
+
+	public String getFragmentExpression() {
+		return fragmentExpression;
+	}
+
+	public void setFragmentExpression(String fragmentExpression) {
+		this.fragmentExpression = fragmentExpression;
 	}
 
 }

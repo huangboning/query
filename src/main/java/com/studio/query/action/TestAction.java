@@ -29,14 +29,13 @@ public class TestAction {
 			JSONObject loginObj = new JSONObject();
 			loginObj.put("accountName", "huangboning");
 			loginObj.put("accountPassword", "123456");
-
 			loginJson.put("params", loginObj);
 
 			// // 账号查询测试
 			// JSONObject queryJson = new JSONObject();
 			// queryJson.put("method", "accountQuery");
 			// JSONObject queryObj = new JSONObject();
-			// queryObj.put("accountName", "test2x");
+			// queryObj.put("accountName", "huangboning");
 			// queryJson.put("params", queryObj);
 
 			// // 账号注销测试
@@ -45,8 +44,9 @@ public class TestAction {
 			// logoutJson.put("params", "");
 			//
 			// String result = ApacheHttpUtil.sendPost(
-			// "http://115.28.59.232:8080/service/v1/main.do", registerJson
+			// "http://192.168.1.32:8080/query/service/v1/main.do", queryJson
 			// .toString().getBytes("utf-8"));
+			// System.out.println(queryJson.toString());
 			// System.out.println(result);
 
 			// // 获取数据源列表
@@ -68,13 +68,13 @@ public class TestAction {
 			// headJson.put("method", "getTableHeadDef");
 			// headJson.put("params", "");
 
-			// 创建场景
-			JSONObject createSceneJson = new JSONObject();
-			createSceneJson.put("method", "createScene");
-			JSONObject createSceneObj = new JSONObject();
-			createSceneObj.put("sceneName", "foxquery");
-			createSceneObj.put("sceneDesc", "我的第一个场景foxquery");
-			createSceneJson.put("params", createSceneObj);
+			// // 创建场景
+			// JSONObject createSceneJson = new JSONObject();
+			// createSceneJson.put("method", "createScene");
+			// JSONObject createSceneObj = new JSONObject();
+			// createSceneObj.put("sceneName", "foxquery2");
+			// createSceneObj.put("sceneDesc", "我的第二个场景foxquery");
+			// createSceneJson.put("params", createSceneObj);
 
 			// // 获取场景列表
 			// JSONObject listSceneJson = new JSONObject();
@@ -94,21 +94,17 @@ public class TestAction {
 			JSONObject switchSceneJson = new JSONObject();
 			switchSceneJson.put("method", "switchScenario");
 			JSONObject switchSceneObj = new JSONObject();
-			switchSceneObj.put("sceneNo", "SCNO1f30f53a52314039a46c1b76042f2afa");
+			switchSceneObj.put("sceneUUID", "SCNObd1d9a66bca44137a70fd766558f56a8");
 			switchSceneJson.put("params", switchSceneObj);
 
-			// // 切换场景版本
-			// JSONObject switchSceneJson = new JSONObject();
-			// switchSceneJson.put("method", "switchVersion");
-			// JSONObject switchSceneObj = new JSONObject();
-			// switchSceneObj.put("sceneVersion",
-			// "235c0729afe31e95b0f44d18f9b998f15f7c9b90");
-			// switchSceneJson.put("params", switchSceneObj);
-
 			// // 获取某版本场景
-			// JSONObject versionSceneJson = new JSONObject();
-			// versionSceneJson.put("method", "getScenarioVersion");
-			// versionSceneJson.put("params", "");
+			// JSONObject sceneVersionJson = new JSONObject();
+			// sceneVersionJson.put("method", "getScenarioVersion");
+			// JSONObject sceneVersionObj = new JSONObject();
+			// sceneVersionObj.put("sceneUUID",
+			// "SCNObd1d9a66bca44137a70fd766558f56a8");
+			// sceneVersionObj.put("sceneVersion", "sd");
+			// sceneVersionJson.put("params", sceneVersionObj);
 
 			// // 关闭场景版本
 			// JSONObject closeSceneJson = new JSONObject();
@@ -118,41 +114,69 @@ public class TestAction {
 			// "235c0729afe31e95b0f44d18f9b998f15f7c9b90");
 			// closeSceneJson.put("params", closeSceneObj);
 
-			 // 更新场景
-			 JSONObject updateSceneJson = new JSONObject();
-			 updateSceneJson.put("method", "updateScenario");
-			 JSONObject updateSceneObj = new JSONObject();
-			 updateSceneObj.put("sceneNo",
-			 "SCNO1f30f53a52314039a46c1b76042f2afa");
-			 updateSceneObj.put("comment", "huangboning添加fragment");
-			 updateSceneObj.put("sceneExpression",
-			 "{\"fragmentNo\":\"FRAM001\"}");
-			 updateSceneJson.put("params", updateSceneObj);
-			
-			 String result = ApacheHttpUtil.testSceneBySession(
-			 "http://115.28.59.232:8080/service/v1/main.do",
-			 loginJson.toString().getBytes("utf-8"), switchSceneJson
-			 .toString().getBytes("utf-8"), updateSceneJson
-			 .toString().getBytes("utf-8"));
-			 System.out.println(updateSceneJson.toString());
-			 System.out.println(result);
-
 			// // 创建fragment
 			// JSONObject createFragmentJson = new JSONObject();
 			// createFragmentJson.put("method", "createFragment");
 			// JSONObject createFragmentObj = new JSONObject();
-			// createFragmentObj.put("fragmentName", "foxFragment2");
-			// createFragmentObj.put("fragmentDesc", "我的第一个fragment");
+			// createFragmentObj.put("fragmentName", "cangFragment");
+			// createFragmentObj.put("fragmentType", "filter");
+			// createFragmentObj.put("fragmentDesc", "我的第二个fragment");
 			// createFragmentJson.put("params", createFragmentObj);
 
 			// // 更新fragment
 			// JSONObject updateFragmentJson = new JSONObject();
 			// updateFragmentJson.put("method", "updateFragment");
 			// JSONObject updateFragmentObj = new JSONObject();
-			// updateFragmentObj.put("fragmentId",
-			// "FRGM3b617aa7be24475699f73b7ce47b3bec");
-			// updateFragmentObj.put("fragmentDesc", "update 1 fragment");
+			// updateFragmentObj.put("fragmentUUID",
+			// "FRGM7fd6af722f064610bf8dbb66676bd0ee");
+			// updateFragmentObj.put("fragmentName", "foxFragment2");
+			// updateFragmentObj.put("fragmentType", "filter");
+			// updateFragmentObj.put("fragmentDesc", "update foxFragment");
 			// updateFragmentJson.put("params", updateFragmentObj);
+
+			// // 禁用fragment
+			// JSONObject disableFragmentJson = new JSONObject();
+			// disableFragmentJson.put("method", "disableFragment");
+			// JSONObject disableFragmentObj = new JSONObject();
+			// disableFragmentObj.put("fragmentUUID",
+			// "FRGM7fd6af722f064610bf8dbb66676bd0ee");
+			// disableFragmentJson.put("params", disableFragmentObj);
+
+			// // 启用fragment
+			// JSONObject enableFragmentJson = new JSONObject();
+			// enableFragmentJson.put("method", "enableFragment");
+			// JSONObject enableFragmentObj = new JSONObject();
+			// enableFragmentObj.put("fragmentUUID",
+			// "FRGM7fd6af722f064610bf8dbb66676bd0ee");
+			// enableFragmentJson.put("params", enableFragmentObj);
+
+			// // 删除fragment
+			// JSONObject deleteFragmentJson = new JSONObject();
+			// deleteFragmentJson.put("method", "deleteFragment");
+			// JSONObject deleteFragmentObj = new JSONObject();
+			// deleteFragmentObj.put("fragmentUUID",
+			// "FRGM7fd6af722f064610bf8dbb66676bd0ee");
+			// deleteFragmentJson.put("params", deleteFragmentObj);
+
+			 // 获取fragment列表
+			 JSONObject getFragmentsJson = new JSONObject();
+			 getFragmentsJson.put("method", "getFragments");
+			 getFragmentsJson.put("params", "");
+
+			// 更新场景
+			JSONObject updateSceneJson = new JSONObject();
+			updateSceneJson.put("method", "updateScenario");
+			JSONObject updateSceneObj = new JSONObject();
+			updateSceneObj.put("sceneUUID", "SCNObd1d9a66bca44137a70fd766558f56a8");
+			updateSceneObj.put("sceneComment", "huangboning向场景中更新第一个fragment");
+			updateSceneObj.put("sceneExpression", "{\"fragmentList\":\"[{\"fragmentUUID\":\"FRGM001UPDATE\"}]\"}");
+			updateSceneJson.put("params", updateSceneObj);
+
+			String result = ApacheHttpUtil.testSceneBySession("http://192.168.1.32:8080/query/service/v1/main.do",
+					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"),
+					null, getFragmentsJson.toString().getBytes("utf-8"));
+			System.out.println(getFragmentsJson.toString());
+			System.out.println(result);
 
 			// // 获取fragment
 			// JSONObject getFragmentJson = new JSONObject();
@@ -162,36 +186,12 @@ public class TestAction {
 			// "af975235a63239f9c1b396fe32203bfae6b6de12");
 			// getFragmentJson.put("params", getFragmentObj);
 
-			// // 删除fragment
-			// JSONObject deleteFragmentJson = new JSONObject();
-			// deleteFragmentJson.put("method", "deleteFragment");
-			// JSONObject deleteFragmentObj = new JSONObject();
-			// deleteFragmentObj.put("id",
-			// "FRGM9ae953c0fbbe4cce869bb1951349fab9");
-			// deleteFragmentJson.put("params", deleteFragmentObj);
-			//
 			// String result = ApacheHttpUtil.sendPostBySession(
 			// "http://localhost:8080/zqQuery/service/v1/main.do",
 			// loginJson.toString().getBytes("utf-8"), deleteFragmentJson
 			// .toString().getBytes("utf-8"));
 			// System.out.println(deleteFragmentJson.toString());
 			// System.out.println(result);
-
-			// // 禁用fragment
-			// JSONObject disableFragmentJson = new JSONObject();
-			// disableFragmentJson.put("method", "disableFragment");
-			// JSONObject disableFragmentObj = new JSONObject();
-			// disableFragmentObj.put("id",
-			// "FRGM3b617aa7be24475699f73b7ce47b3bec");
-			// disableFragmentJson.put("params", disableFragmentObj);
-
-			// // 启用fragment
-			// JSONObject enableFragmentJson = new JSONObject();
-			// enableFragmentJson.put("method", "enableFragment");
-			// JSONObject enableFragmentObj = new JSONObject();
-			// enableFragmentObj.put("id",
-			// "FRGM3b617aa7be24475699f73b7ce47b3bec");
-			// enableFragmentJson.put("params", enableFragmentObj);
 
 			// // 禁用共享fragment
 			// JSONObject disableShareFragmentJson = new JSONObject();
@@ -208,11 +208,6 @@ public class TestAction {
 			// enableShareFragmentObj.put("id",
 			// "FRGM3b617aa7be24475699f73b7ce47b3bec");
 			// enableShareFragmentJson.put("params", enableShareFragmentObj);
-
-			// // 获取fragment列表
-			// JSONObject getFragmentsJson = new JSONObject();
-			// getFragmentsJson.put("method", "getFragments");
-			// getFragmentsJson.put("params", "");
 
 			// // 获取共享fragment列表
 			// JSONObject getFragmentsJson = new JSONObject();
@@ -282,15 +277,13 @@ public class TestAction {
 			// getVariablesJson.put("method", "getShareVariables");
 			// getVariablesJson.put("params", "");
 
-//			 String result = ApacheHttpUtil.sendPostBySession(
-//			 "http://115.28.59.232:8080/service/v1/main.do",
-//			 loginJson.toString().getBytes("utf-8"), createSceneJson
-//			 .toString().getBytes("utf-8"));
-//			 System.out.println(createSceneJson.toString());
-//			 System.out.println(result);
+			// String result =
+			// ApacheHttpUtil.sendPostBySession("http://192.168.1.32:8080/query/service/v1/main.do",
+			// loginJson.toString().getBytes("utf-8"),
+			// listSceneJson.toString().getBytes("utf-8"));
+			// System.out.println(listSceneJson.toString());
+			// System.out.println(result);
 
-			// JGitService jGitService=new JGitService();
-			// jGitService.initGit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
