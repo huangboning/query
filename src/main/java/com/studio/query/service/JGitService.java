@@ -155,7 +155,7 @@ public class JGitService {
 			}
 			File root = new File(path);
 			Git git = Git.init().setDirectory(root).call();
-			git.add().addFilepattern("info.txt").call();
+			git.add().addFilepattern("template.txt").call();
 			PersonIdent personIdent = new PersonIdent(currentAccount.getAccountName(),
 					this.getAccountEmail(currentAccount));
 			git.commit().setCommitter(personIdent).setMessage(message).call();

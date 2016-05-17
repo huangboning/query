@@ -17,6 +17,7 @@ public class ShareFragment extends Page {
 	private int shareFragmentActive;
 	private Date shareFragmentDate;
 	private String shareFragmentVersion;
+	private String shareFragmentGit;
 
 	public int getShareFragmentId() {
 		return shareFragmentId;
@@ -112,6 +113,14 @@ public class ShareFragment extends Page {
 
 	public void setShareFragmentVersion(String shareFragmentVersion) {
 		this.shareFragmentVersion = shareFragmentVersion;
+	}
+
+	public String getShareFragmentGit() {
+		return shareFragmentGit;
+	}
+
+	public void setShareFragmentGit(String shareFragmentGit) {
+		this.shareFragmentGit = shareFragmentGit;
 	}
 
 }

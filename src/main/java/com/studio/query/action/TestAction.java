@@ -158,10 +158,22 @@ public class TestAction {
 			// "FRGM7fd6af722f064610bf8dbb66676bd0ee");
 			// deleteFragmentJson.put("params", deleteFragmentObj);
 
-			 // 获取fragment列表
-			 JSONObject getFragmentsJson = new JSONObject();
-			 getFragmentsJson.put("method", "getFragments");
-			 getFragmentsJson.put("params", "");
+			// 获取fragment列表
+			// JSONObject getFragmentsJson = new JSONObject();
+			// getFragmentsJson.put("method", "getFragments");
+			// getFragmentsJson.put("params", "");
+			
+			 // 发布共享fragment
+			 JSONObject releaseShareFragmentJson = new JSONObject();
+			 releaseShareFragmentJson.put("method", "releaseShareFragment");
+			 JSONObject releaseShareFragmentObj = new JSONObject();
+			 releaseShareFragmentObj.put("shareFragmentUUID", "FRGMaa3a42fc184f4943b0f6035baedec0fd");
+			 releaseShareFragmentObj.put("shareFragmentName", "foxQuery");
+			 releaseShareFragmentObj.put("shareFragmentType", "query");
+			 releaseShareFragmentObj.put("shareFragmentDesc", "我的第一个分享fragment");
+			 releaseShareFragmentObj.put("shareFragmentComment", "huangboning分享fragment");
+			 releaseShareFragmentObj.put("shareFragmentExpression", "select * from t_test where name='test'");
+			 releaseShareFragmentJson.put("params", releaseShareFragmentObj);
 
 			// 更新场景
 			JSONObject updateSceneJson = new JSONObject();
@@ -172,10 +184,10 @@ public class TestAction {
 			updateSceneObj.put("sceneExpression", "{\"fragmentList\":\"[{\"fragmentUUID\":\"FRGM001UPDATE\"}]\"}");
 			updateSceneJson.put("params", updateSceneObj);
 
-			String result = ApacheHttpUtil.testSceneBySession("http://192.168.1.32:8080/query/service/v1/main.do",
-					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"),
-					null, getFragmentsJson.toString().getBytes("utf-8"));
-			System.out.println(getFragmentsJson.toString());
+			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
+					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
+					releaseShareFragmentJson.toString().getBytes("utf-8"));
+			System.out.println(releaseShareFragmentJson.toString());
 			System.out.println(result);
 
 			// // 获取fragment

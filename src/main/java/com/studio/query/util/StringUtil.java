@@ -63,4 +63,9 @@ public class StringUtil {
 		return sceneGit;
 
 	}
+	public static String createShareFragmentGit() {
+		String shareFragmentGit = String.valueOf(Calendar.getInstance().getTimeInMillis());
+		return shareFragmentGit;
+
+	}
 }

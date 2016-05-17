@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : localhost
 Source Server Version : 50624
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : query
 
 Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2016-05-17 18:28:15
+Date: 2016-05-18 00:34:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -121,6 +121,7 @@ CREATE TABLE `t_share_fragment` (
   `share_fragment_active` tinyint(4) DEFAULT NULL,
   `share_fragment_date` datetime DEFAULT NULL,
   `share_fragment_version` varchar(255) DEFAULT NULL,
+  `share_fragment_git` varchar(255) DEFAULT NULL,
   UNIQUE KEY `share_fragment_no_unique` (`share_fragment_uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
