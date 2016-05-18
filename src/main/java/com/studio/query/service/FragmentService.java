@@ -434,8 +434,8 @@ public class FragmentService {
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
 			String shareFragmentUUID = parmJb.optString("shareFragmentUUID", "");
-			String shareFragmentComment = parmJb.optString("shareFragmentExpression", "");
-			String shareFragmentExpression = parmJb.optString("shareFragmentComment", "");
+			String shareFragmentComment = parmJb.optString("shareFragmentComment", "");
+			String shareFragmentExpression = parmJb.optString("shareFragmentExpression", "");
 			String shareFragmentName = parmJb.optString("shareFragmentName", "");
 			String shareFragmentType = parmJb.optString("shareFragmentType", "");
 			String shareFragmentObjType = parmJb.optString("shareFragmentObjType", "");
@@ -495,9 +495,12 @@ public class FragmentService {
 			// 提交版本库后获取版本
 			String gitPath = Configure.gitRepositoryPath + "/" + currentAccount.getAccountRepository() + "/"
 					+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
-
-			FileUtil.writeFile(gitPath + "/template.txt", shareFragmentExpression);
 			JGitService jGitService = new JGitService();
+			if (shareFragmentList.size() == 1) {
+			} else {
+				jGitService.initShareFragmentGit(gitPath, currentAccount);
+			}
+			FileUtil.writeFile(gitPath + "/template.txt", shareFragmentExpression);
 			jGitService.shareFragmentCommit(gitPath, currentAccount, shareFragmentComment);
 			// 获取最新版本
 			Committer committer = jGitService.getLastCommitter(gitPath);
@@ -507,7 +510,6 @@ public class FragmentService {
 			} else {
 				fragmentDao.releaseFragment(shareFragment);
 			}
-
 			resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 					"", "发布共享fragment成功", "");
 

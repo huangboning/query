@@ -67,11 +67,11 @@ public interface FragmentDao {
 	public int disableShareFragment(Fragment fragment);
 
 	// 发布模板fragment
-	@Insert("insert into t_share_fragment(account_id,share_fragment_uuid,share_fragment_name,share_fragment_type,share_fragment_obj_type,share_fragment_desc,share_fragment_enable,share_active,share_version,share_git,fragment_date)"
+	@Insert("insert into t_share_fragment(account_id,share_fragment_uuid,share_fragment_name,share_fragment_type,share_fragment_obj_type,share_fragment_desc,share_fragment_enable,share_fragment_active,share_fragment_version,share_fragment_git,share_fragment_date)"
 			+ " values(#{accountId},#{shareFragmentUUID},#{shareFragmentName},#{shareFragmentType},#{shareFragmentObjType},#{shareFragmentDesc},#{shareFragmentEnable},#{shareFragmentActive},#{shareFragmentVersion},#{shareFragmentGit},now())")
 	public int releaseFragment(ShareFragment shareFragment);
 
 	// 更新模板fragment
-	@Update("update t_shareFragment set share_fragment_name=#{shareFragmentName},share_fragment_type=#{shareFragmentType},share_fragment_desc=#{shareFragmentDesc},share_fragment_version=#{shareFragmentVersion} where shareFragment_uuid=#{shareFragmentUUID} and account_id=#{accountId}")
+	@Update("update t_share_fragment set share_fragment_name=#{shareFragmentName},share_fragment_type=#{shareFragmentType},share_fragment_desc=#{shareFragmentDesc},share_fragment_version=#{shareFragmentVersion} where share_fragment_uuid=#{shareFragmentUUID} and account_id=#{accountId}")
 	public int updateShareFragment(ShareFragment shareFragment);
 }

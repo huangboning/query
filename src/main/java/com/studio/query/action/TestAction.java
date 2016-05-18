@@ -172,7 +172,7 @@ public class TestAction {
 			 releaseShareFragmentObj.put("shareFragmentType", "query");
 			 releaseShareFragmentObj.put("shareFragmentDesc", "我的第一个分享fragment");
 			 releaseShareFragmentObj.put("shareFragmentComment", "huangboning分享fragment");
-			 releaseShareFragmentObj.put("shareFragmentExpression", "select * from t_test where name='test'");
+			 releaseShareFragmentObj.put("shareFragmentExpression", "select * from t_test where name='test' update");
 			 releaseShareFragmentJson.put("params", releaseShareFragmentObj);
 
 			// 更新场景
