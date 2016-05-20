@@ -14,7 +14,6 @@ public class FileUtil {
 			FileWriter fw = new FileWriter(filePath);
 			PrintWriter out = new PrintWriter(fw);
 			out.write(content);
-			out.println();
 			fw.close();
 			out.close();
 		} catch (Exception e) {

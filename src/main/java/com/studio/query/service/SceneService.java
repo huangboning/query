@@ -276,7 +276,7 @@ public class SceneService {
 			}
 			// 根据版本获取场景内容
 			JGitService jGitService = new JGitService();
-			String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion);
+			String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion,"info.txt");
 
 			JSONObject sceneObject = new JSONObject();
 			// sceneObject.put("id", "SCNO8a45aae29e3d452c8cb6c4ee1857cd59");

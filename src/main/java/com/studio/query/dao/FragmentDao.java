@@ -41,7 +41,7 @@ public interface FragmentDao {
 			@Result(column = "share_fragment_git", property = "shareFragmentGit"),
 			@Result(column = "share_fragment_date", property = "shareFragmentDate") })
 	@SelectProvider(type = ShareFragmentMapperProvider.class, method = "findShareFragment")
-	public List<ShareFragment> findShareFragment(ShareFragment sharefragment);
+	public List<ShareFragment> findShareFragment(ShareFragment shareFragment);
 
 	@Insert("insert into t_fragment(scene_id,fragment_uuid,fragment_name,fragment_type,fragment_obj_type,fragment_desc,fragment_enable,fragment_active,fragment_date)"
 			+ " values(#{sceneId},#{fragmentUUID},#{fragmentName},#{fragmentType},#{fragmentObjType},#{fragmentDesc},#{fragmentEnable},#{fragmentActive},now())")

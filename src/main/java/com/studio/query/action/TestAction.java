@@ -1,6 +1,7 @@
 package com.studio.query.action;
 
 import com.studio.query.common.ApacheHttpUtil;
+import com.studio.query.util.FileUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -174,9 +175,9 @@ public class TestAction {
 			// releaseShareFragmentObj.put("shareFragmentDesc",
 			// "我的第一个分享fragment");
 			// releaseShareFragmentObj.put("shareFragmentComment",
-			// "huangboning分享fragment");
+			// "huangboning发布的第四个版本fragment");
 			// releaseShareFragmentObj.put("shareFragmentExpression", "select *
-			// from t_test where name='test' update");
+			// from t_test where name='test' update 4 new version");
 			// releaseShareFragmentJson.put("params", releaseShareFragmentObj);
 
 			// // 更新场景
@@ -191,16 +192,35 @@ public class TestAction {
 			// "{\"fragmentList\":\"[{\"fragmentUUID\":\"FRGM001UPDATE\"}]\"}");
 			// updateSceneJson.put("params", updateSceneObj);
 
-			 // 获取共享fragment列表
-			 JSONObject getShareFragmentsJson = new JSONObject();
-			 getShareFragmentsJson.put("method", "getShareFragments");
-			 getShareFragmentsJson.put("params", "");
-			
+			// // 获取共享fragment列表
+			// JSONObject getShareFragmentsJson = new JSONObject();
+			// getShareFragmentsJson.put("method", "getShareFragments");
+			// getShareFragmentsJson.put("params", "");
+
+			// // 获取共享fragment历史版本
+			// JSONObject shareFragmentHistoryJson = new JSONObject();
+			// shareFragmentHistoryJson.put("method",
+			// "getShareFragmentHistory");
+			// JSONObject shareFragmentHistoryObj = new JSONObject();
+			// shareFragmentHistoryObj.put("shareFragmentUUID",
+			// "FRGMaa3a42fc184f4943b0f6035baedec0fd");
+			// shareFragmentHistoryJson.put("params", shareFragmentHistoryObj);
+
+			// 获取某个版本共享fragment
+			JSONObject getShareFragmentVersionJson = new JSONObject();
+			getShareFragmentVersionJson.put("method", "getShareFragmentVersion");
+			JSONObject getShareFragmentVersionObj = new JSONObject();
+			getShareFragmentVersionObj.put("shareFragmentVersion", "e8e623820c74a6cd1b89b1a2242cb6e678452300");
+			getShareFragmentVersionObj.put("shareFragmentUUID", "FRGMaa3a42fc184f4943b0f6035baedec0fd");
+			getShareFragmentVersionJson.put("params", getShareFragmentVersionObj);
+
 			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
-					getShareFragmentsJson.toString().getBytes("utf-8"));
-			System.out.println(getShareFragmentsJson.toString());
+					getShareFragmentVersionJson.toString().getBytes("utf-8"));
+			System.out.println(getShareFragmentVersionJson.toString());
 			System.out.println(result);
+
+			FileUtil.writeFile("E:/gitquery/2016/5/huangboning/shareFragment/1463582916514/test.txt", "123");
 
 			// // 获取fragment
 			// JSONObject getFragmentJson = new JSONObject();
@@ -300,7 +320,7 @@ public class TestAction {
 			// JSONObject getVariablesJson = new JSONObject();
 			// getVariablesJson.put("method", "getShareVariables");
 			// getVariablesJson.put("params", "");
-			
+
 			// String result =
 			// ApacheHttpUtil.sendPostBySession("http://192.168.1.32:8080/query/service/v1/main.do",
 			// loginJson.toString().getBytes("utf-8"),

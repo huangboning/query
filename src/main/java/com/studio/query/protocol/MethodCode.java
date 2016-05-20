@@ -109,6 +109,14 @@ public class MethodCode {
 	 */
 	public static final String LIST_SHARE_FRAGMENT = "getShareFragments";
 	/**
+	 * 获取共享Fragment历史记录
+	 */
+	public static final String GET_SHARE_FRAGMENT_HISTORY = "getShareFragmentHistory";
+	/**
+	 * 获取共享Fragment某版本
+	 */
+	public static final String GET_SHARE_FRAGMENT_VERSION = "getShareFragmentVersion";
+	/**
 	 * 创建 变量
 	 */
 	public static final String CREATE_VARIABLE = "createVariable";

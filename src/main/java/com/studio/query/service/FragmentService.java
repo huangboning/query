@@ -396,6 +396,128 @@ public class FragmentService {
 		return resultString;
 	}
 
+	public String getShareFragmentHistory(String bodyString, Account currentAccount, Map<String, Object> session) {
+
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String shareFragmentUUID = parmJb.optString("shareFragmentUUID", "");
+			if (StringUtil.isNullOrEmpty(shareFragmentUUID)) {
+
+				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			ShareFragment shareFragment = new ShareFragment();
+			shareFragment.setShareFragmentUUID(shareFragmentUUID);
+			List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
+			if (shareFragmentList.size() < 1) {
+				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在",
+						"");
+				return resultString;
+			}
+			shareFragment = shareFragmentList.get(0);
+			JSONObject fragmentJsonObj = new JSONObject();
+			fragmentJsonObj.put("shareFragmentUUID", shareFragment.getShareFragmentUUID());
+			fragmentJsonObj.put("shareFragmentName", shareFragment.getShareFragmentName());
+			fragmentJsonObj.put("shareFragmentDesc", shareFragment.getShareFragmentDesc());
+			fragmentJsonObj.put("shareFragmentType", shareFragment.getShareFragmentType());
+			fragmentJsonObj.put("shareFragmentEnable", shareFragment.getShareFragmentEnable() == 0 ? "true" : "false");
+			fragmentJsonObj.put("shareFragmentActvie", shareFragment.getShareFragmentActive() == 0 ? "true" : "false");
+			fragmentJsonObj.put("shareFragmentCreatedBy", shareFragment.getAccountName());
+			fragmentJsonObj.put("shareFragmentCreateTime",
+					DateUtil.dateTimeFormat(shareFragment.getShareFragmentDate()));
+
+			JGitService jGitService = new JGitService();
+			String gitPath = Configure.gitRepositoryPath + "/" + currentAccount.getAccountRepository() + "/"
+					+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
+			List<Committer> committerList = jGitService.getLogs(gitPath);
+			JSONArray committerJsonArray = new JSONArray();
+			for (Committer c : committerList) {
+				JSONObject cJson = new JSONObject();
+
+				cJson.put("commitVersion", c.getCommitVersion());
+				cJson.put("commitName", c.getCommitName());
+				cJson.put("commitEmail", c.getCommitEmail());
+				cJson.put("commitMssage", c.getCommitMssage());
+				cJson.put("commitDate", c.getCommitDate());
+				committerJsonArray.add(cJson);
+			}
+			fragmentJsonObj.put("committers", committerJsonArray.toString());
+
+			resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
+					ParameterCode.Result.RESULT_OK, "", "获取共享fragment共享历史版本成功", fragmentJsonObj.toString());
+
+		}
+		return resultString;
+	}
+
+	public String getShareFragmentVersion(String bodyString, Account currentAccount, Map<String, Object> session) {
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String shareFragmentUUID = parmJb.optString("shareFragmentUUID", "");
+			String shareFragmentVersion = parmJb.optString("shareFragmentVersion", "");
+			if (StringUtil.isNullOrEmpty(shareFragmentUUID) || StringUtil.isNullOrEmpty(shareFragmentVersion)) {
+
+				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+
+			ShareFragment shareFragment = new ShareFragment();
+			shareFragment.setShareFragmentUUID(shareFragmentUUID);
+			List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
+			if (shareFragmentList.size() < 1) {
+				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在",
+						"");
+				return resultString;
+			}
+			shareFragment = shareFragmentList.get(0);
+			JSONObject fragmentJsonObj = new JSONObject();
+			fragmentJsonObj.put("shareFragmentUUID", shareFragment.getShareFragmentUUID());
+			fragmentJsonObj.put("shareFragmentName", shareFragment.getShareFragmentName());
+			fragmentJsonObj.put("shareFragmentDesc", shareFragment.getShareFragmentDesc());
+			fragmentJsonObj.put("shareFragmentType", shareFragment.getShareFragmentType());
+			fragmentJsonObj.put("shareFragmentEnable", shareFragment.getShareFragmentEnable() == 0 ? "true" : "false");
+			fragmentJsonObj.put("shareFragmentActvie", shareFragment.getShareFragmentActive() == 0 ? "true" : "false");
+			fragmentJsonObj.put("shareFragmentCreatedBy", shareFragment.getAccountName());
+			fragmentJsonObj.put("shareFragmentCreateTime",
+					DateUtil.dateTimeFormat(shareFragment.getShareFragmentDate()));
+
+			JGitService jGitService = new JGitService();
+			String gitPath = Configure.gitRepositoryPath + "/" + currentAccount.getAccountRepository() + "/"
+					+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
+			// 根据版本获取共享fragment内容
+			String contentString = jGitService.getContentByVersion(gitPath, shareFragmentVersion, "template.txt");
+			Committer commitInfo = jGitService.getCommitterByVersion(gitPath, shareFragmentVersion);
+			if (commitInfo == null) {
+				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
+						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_VERSION_NO_EXIST, "查询的版本号不存在", "");
+				return resultString;
+			}
+			JSONObject committerJsonObj = new JSONObject();
+
+			committerJsonObj.put("commitVersion", commitInfo.getCommitVersion());
+			committerJsonObj.put("commitName", commitInfo.getCommitName());
+			committerJsonObj.put("commitEmail", commitInfo.getCommitEmail());
+			committerJsonObj.put("commitMssage", commitInfo.getCommitMssage());
+			committerJsonObj.put("commitDate", commitInfo.getCommitDate());
+			committerJsonObj.put("expression", contentString);
+
+			fragmentJsonObj.put("committer", committerJsonObj.toString());
+
+			resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
+					ParameterCode.Result.RESULT_OK, "", "获取某个版本共享fragment成功", fragmentJsonObj.toString());
+
+		}
+		return resultString;
+	}
+
 	public String getShareFragments(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
@@ -410,8 +532,8 @@ public class FragmentService {
 			dataObj.put("shareFragmentName", shareFragment.getShareFragmentName());
 			dataObj.put("shareFragmentDesc", shareFragment.getShareFragmentDesc());
 			dataObj.put("shareFragmentType", shareFragment.getShareFragmentType());
-			dataObj.put("shareFragmentEnable", shareFragment.getShareFragmentEnable() == 1 ? "true" : "false");
-			dataObj.put("shareFragmentActvie", shareFragment.getShareFragmentActive() == 1 ? "true" : "false");
+			dataObj.put("shareFragmentEnable", shareFragment.getShareFragmentEnable() == 0 ? "true" : "false");
+			dataObj.put("shareFragmentActvie", shareFragment.getShareFragmentActive() == 0 ? "true" : "false");
 			dataObj.put("shareFragmentCreatedBy", shareFragment.getAccountName());
 			dataObj.put("shareFragmentCreateTime", DateUtil.dateTimeFormat(shareFragment.getShareFragmentDate()));
 			dataObj.put("shareFragmentVersion", shareFragment.getShareFragmentVersion());

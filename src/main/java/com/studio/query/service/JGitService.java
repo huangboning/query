@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -72,6 +74,13 @@ public class JGitService {
 		}
 	}
 
+	/**
+	 * 初始化用户的版本库
+	 * 
+	 * @param path
+	 * @param currentAccount
+	 * @return
+	 */
 	public boolean initAccountGit(String path, Account currentAccount) {
 		File root = new File(path);
 		if (!root.exists()) {
@@ -96,7 +105,14 @@ public class JGitService {
 		}
 		return true;
 	}
-	//初始化共享fragment版本库
+
+	/**
+	 * 初始化共享fragment版本库
+	 * 
+	 * @param path
+	 * @param currentAccount
+	 * @return
+	 */
 	public boolean initShareFragmentGit(String path, Account currentAccount) {
 		File root = new File(path);
 		if (!root.exists()) {
@@ -116,6 +132,7 @@ public class JGitService {
 		}
 		return true;
 	}
+
 	public static Repository openRepository(String path) {
 
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
@@ -130,6 +147,14 @@ public class JGitService {
 		return repository;
 	}
 
+	/**
+	 * git提交版本
+	 * 
+	 * @param path
+	 * @param currentAccount
+	 * @param message
+	 * @return
+	 */
 	public boolean jGitCommit(String path, Account currentAccount, String message) {
 		try {
 			File root = new File(path);
@@ -145,7 +170,15 @@ public class JGitService {
 			return false;
 		}
 	}
-	//提交共享fragment
+
+	/**
+	 * 提交共享fragment(发布共享的时候初始化template.txt比提交发布的内容)
+	 * 
+	 * @param path
+	 * @param currentAccount
+	 * @param message
+	 * @return
+	 */
 	public boolean shareFragmentCommit(String path, Account currentAccount, String message) {
 		try {
 			File templateFile = new File(path + "/template.txt");
@@ -167,6 +200,12 @@ public class JGitService {
 		}
 	}
 
+	/**
+	 * 获取最后一次提交者信息
+	 * 
+	 * @param path
+	 * @return
+	 */
 	public Committer getLastCommitter(String path) {
 		Committer committerInfo = new Committer();
 		try (Repository repository = JGitService.openRepository(path)) {
@@ -191,7 +230,46 @@ public class JGitService {
 		return committerInfo;
 	}
 
-	public String getContentByVersion(String path, String version) {
+	/**
+	 * 根据版本号获取提交者信息
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public Committer getCommitterByVersion(String path, String version) {
+		Committer committerInfo = new Committer();
+		try (Repository repository = JGitService.openRepository(path)) {
+
+			ObjectId lastCommitId = repository.resolve(version);
+			if (null == lastCommitId) {
+
+			}
+			try (RevWalk revWalk = new RevWalk(repository)) {
+				RevCommit commit = revWalk.parseCommit(lastCommitId);
+				committerInfo.setCommitVersion(commit.getName());
+				committerInfo.setCommitName(commit.getAuthorIdent().getName());
+				committerInfo.setCommitEmail(commit.getAuthorIdent().getEmailAddress());
+				committerInfo.setCommitDate(DateUtil.dateTimeFormat(commit.getAuthorIdent().getWhen()));
+				committerInfo.setCommitMssage(commit.getFullMessage());
+				revWalk.dispose();
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+			return null;
+		}
+		return committerInfo;
+	}
+
+	/**
+	 * 根据版本获取内容
+	 * 
+	 * @param path
+	 * @param version
+	 * @param fileName
+	 * @return
+	 */
+	public String getContentByVersion(String path, String version, String fileName) {
 		String str = "";
 		try (Repository repository = JGitService.openRepository(path)) {
 
@@ -209,7 +287,7 @@ public class JGitService {
 				try (TreeWalk treeWalk = new TreeWalk(repository)) {
 					treeWalk.addTree(tree);
 					treeWalk.setRecursive(true); // 可以自动读取子树
-					treeWalk.setFilter(PathFilter.create("readme.txt"));
+					treeWalk.setFilter(PathFilter.create(fileName));
 					if (treeWalk.next()) {
 
 						ObjectId objectId = treeWalk.getObjectId(0);
@@ -228,23 +306,46 @@ public class JGitService {
 		return str;
 	}
 
+	/**
+	 * 版本提交记录
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public List<Committer> getLogs(String path) {
+		List<Committer> committerList = new ArrayList<Committer>();
+		try (Repository repository = JGitService.openRepository(path)) {
+			Git git = new Git(repository);
+			for (RevCommit revCommit : git.log().call()) {
+				Committer committerInfo = new Committer();
+				committerInfo.setCommitVersion(revCommit.getName());
+				committerInfo.setCommitName(revCommit.getAuthorIdent().getName());
+				committerInfo.setCommitEmail(revCommit.getAuthorIdent().getEmailAddress());
+				committerInfo.setCommitMssage(revCommit.getFullMessage());
+				committerInfo.setCommitDate(DateUtil.dateTimeFormat(revCommit.getAuthorIdent().getWhen()));
+				committerList.add(committerInfo);
+			}
+			git.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return committerList;
+	}
+
 	public static void main(String[] args) {
-		Committer committerInfo = new Committer();
-		try (Repository repository = JGitService.openRepository("E:/gittest")) {
 
-			ObjectId lastCommitId = repository.resolve(Constants.HEAD);
-			if (null == lastCommitId) {
+		try (Repository repository = JGitService
+				.openRepository("E:/gitquery/2016/5/huangboning/shareFragment/1463582916514")) {
+			Git git = new Git(repository);
+			for (RevCommit revCommit : git.log().call()) {
+				// ObjectId objId =
+				// git.getRepository().resolve(revCommit.name());
 
+				System.out.println(revCommit.getName());
 			}
-			try (RevWalk revWalk = new RevWalk(repository)) {
-				RevCommit commit = revWalk.parseCommit(lastCommitId);
-				committerInfo.setCommitVersion(commit.getName());
-				committerInfo.setCommitName(commit.getAuthorIdent().getName());
-				committerInfo.setCommitEmail(commit.getAuthorIdent().getEmailAddress());
-				committerInfo.setCommitDate(DateUtil.dateTimeFormat(commit.getAuthorIdent().getWhen()));
-				revWalk.dispose();
-			}
-		} catch (IOException e) {
+			git.close();
+		} catch (Exception e) {
 
 			e.printStackTrace();
 		}

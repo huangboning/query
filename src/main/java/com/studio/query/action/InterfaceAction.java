@@ -147,6 +147,10 @@ public class InterfaceAction extends BaseAction {
 						returnString = variableService.getShareVariables(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_FRAGMENT)) {
 						returnString = fragmentService.releaseShareFragment(bodyString, currentAccount);
+					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_HISTORY)) {
+						returnString = fragmentService.getShareFragmentHistory(bodyString, currentAccount, session);
+					}else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_VERSION)) {
+						returnString = fragmentService.getShareFragmentVersion(bodyString, currentAccount, session);
 					} else {
 						this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER,
 								"该接口未实现", "");

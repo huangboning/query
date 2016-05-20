@@ -122,6 +122,10 @@ public class ParameterCode {
 		 * 更新场景-提交的场景跟会话中设置当前的场景不匹配
 		 */
 		public static final String UPDATE_SCENE_NO_MATCH = "-115";
+		/**
+		 * 查询版本-查询的版本号不存在
+		 */
+		public static final String QUERY_VERSION_NO_EXIST = "-116";
 
 	}
 }
