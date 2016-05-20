@@ -6,7 +6,7 @@ import com.studio.query.util.StringUtil;
 public class ShareFragmentMapperProvider {
 	public static String findShareFragment(ShareFragment shareFragment) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("select * from t_share_fragment a where 1=1 ");
+		buffer.append("select a.*,b.account_name from t_share_fragment a LEFT JOIN t_account b on (b.account_id=a.account_id) where 1=1 ");
 		if (shareFragment.getShareFragmentId() != 0) {
 			buffer.append("and a.share_fragment_id = #{shareFragmentId} ");
 		}

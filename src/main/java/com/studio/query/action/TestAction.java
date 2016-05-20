@@ -162,32 +162,44 @@ public class TestAction {
 			// JSONObject getFragmentsJson = new JSONObject();
 			// getFragmentsJson.put("method", "getFragments");
 			// getFragmentsJson.put("params", "");
+
+			// // 发布共享fragment
+			// JSONObject releaseShareFragmentJson = new JSONObject();
+			// releaseShareFragmentJson.put("method", "releaseShareFragment");
+			// JSONObject releaseShareFragmentObj = new JSONObject();
+			// releaseShareFragmentObj.put("shareFragmentUUID",
+			// "FRGMaa3a42fc184f4943b0f6035baedec0fd");
+			// releaseShareFragmentObj.put("shareFragmentName", "foxQuery");
+			// releaseShareFragmentObj.put("shareFragmentType", "query");
+			// releaseShareFragmentObj.put("shareFragmentDesc",
+			// "我的第一个分享fragment");
+			// releaseShareFragmentObj.put("shareFragmentComment",
+			// "huangboning分享fragment");
+			// releaseShareFragmentObj.put("shareFragmentExpression", "select *
+			// from t_test where name='test' update");
+			// releaseShareFragmentJson.put("params", releaseShareFragmentObj);
+
+			// // 更新场景
+			// JSONObject updateSceneJson = new JSONObject();
+			// updateSceneJson.put("method", "updateScenario");
+			// JSONObject updateSceneObj = new JSONObject();
+			// updateSceneObj.put("sceneUUID",
+			// "SCNObd1d9a66bca44137a70fd766558f56a8");
+			// updateSceneObj.put("sceneComment",
+			// "huangboning向场景中更新第一个fragment");
+			// updateSceneObj.put("sceneExpression",
+			// "{\"fragmentList\":\"[{\"fragmentUUID\":\"FRGM001UPDATE\"}]\"}");
+			// updateSceneJson.put("params", updateSceneObj);
+
+			 // 获取共享fragment列表
+			 JSONObject getShareFragmentsJson = new JSONObject();
+			 getShareFragmentsJson.put("method", "getShareFragments");
+			 getShareFragmentsJson.put("params", "");
 			
-			 // 发布共享fragment
-			 JSONObject releaseShareFragmentJson = new JSONObject();
-			 releaseShareFragmentJson.put("method", "releaseShareFragment");
-			 JSONObject releaseShareFragmentObj = new JSONObject();
-			 releaseShareFragmentObj.put("shareFragmentUUID", "FRGMaa3a42fc184f4943b0f6035baedec0fd");
-			 releaseShareFragmentObj.put("shareFragmentName", "foxQuery");
-			 releaseShareFragmentObj.put("shareFragmentType", "query");
-			 releaseShareFragmentObj.put("shareFragmentDesc", "我的第一个分享fragment");
-			 releaseShareFragmentObj.put("shareFragmentComment", "huangboning分享fragment");
-			 releaseShareFragmentObj.put("shareFragmentExpression", "select * from t_test where name='test' update");
-			 releaseShareFragmentJson.put("params", releaseShareFragmentObj);
-
-			// 更新场景
-			JSONObject updateSceneJson = new JSONObject();
-			updateSceneJson.put("method", "updateScenario");
-			JSONObject updateSceneObj = new JSONObject();
-			updateSceneObj.put("sceneUUID", "SCNObd1d9a66bca44137a70fd766558f56a8");
-			updateSceneObj.put("sceneComment", "huangboning向场景中更新第一个fragment");
-			updateSceneObj.put("sceneExpression", "{\"fragmentList\":\"[{\"fragmentUUID\":\"FRGM001UPDATE\"}]\"}");
-			updateSceneJson.put("params", updateSceneObj);
-
 			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
-					releaseShareFragmentJson.toString().getBytes("utf-8"));
-			System.out.println(releaseShareFragmentJson.toString());
+					getShareFragmentsJson.toString().getBytes("utf-8"));
+			System.out.println(getShareFragmentsJson.toString());
 			System.out.println(result);
 
 			// // 获取fragment
@@ -288,7 +300,7 @@ public class TestAction {
 			// JSONObject getVariablesJson = new JSONObject();
 			// getVariablesJson.put("method", "getShareVariables");
 			// getVariablesJson.put("params", "");
-
+			
 			// String result =
 			// ApacheHttpUtil.sendPostBySession("http://192.168.1.32:8080/query/service/v1/main.do",
 			// loginJson.toString().getBytes("utf-8"),
