@@ -11,10 +11,12 @@ import com.studio.query.common.Configure;
 import com.studio.query.common.Constants;
 import com.studio.query.dao.FragmentDao;
 import com.studio.query.dao.SceneDao;
+import com.studio.query.dao.VariableDao;
 import com.studio.query.entity.Account;
 import com.studio.query.entity.Committer;
 import com.studio.query.entity.Fragment;
 import com.studio.query.entity.Scene;
+import com.studio.query.entity.Variable;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
 import com.studio.query.util.FileUtil;
@@ -29,6 +31,8 @@ public class SceneService {
 	public SceneDao sceneDao;
 	@Autowired
 	public FragmentDao fragmentDao;
+	@Autowired
+	public VariableDao variableDao;
 
 	public List<Scene> findScene(Scene scene) {
 		return sceneDao.findScene(scene);
@@ -276,7 +280,7 @@ public class SceneService {
 			}
 			// 根据版本获取场景内容
 			JGitService jGitService = new JGitService();
-			String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion,"info.txt");
+			String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion, "info.txt");
 
 			JSONObject sceneObject = new JSONObject();
 			// sceneObject.put("id", "SCNO8a45aae29e3d452c8cb6c4ee1857cd59");
@@ -439,12 +443,23 @@ public class SceneService {
 		if (fragmentDeleteList != null && fragmentDeleteList.size() >= 1) {
 			result = true;
 		}
+		List<Variable> variableAddList = (List<Variable>) session.get(Constants.KEY_VARIABLE_ADD);
+		if (variableAddList != null && variableAddList.size() >= 1) {
+			result = true;
+		}
+		List<Variable> variableUpdateList = (List<Variable>) session.get(Constants.KEY_VARIABLE_UPDATE);
+		if (variableUpdateList != null && variableUpdateList.size() >= 1) {
+			result = true;
+		}
+		List<Variable> variableDeleteList = (List<Variable>) session.get(Constants.KEY_VARIABLE_DELETE);
+		if (variableDeleteList != null && variableDeleteList.size() >= 1) {
+			result = true;
+		}
 		return result;
 	}
 
 	// 执行缓存将相关数据保存后清空缓存。
-	public boolean executeCache(Map<String, Object> session) {
-		boolean result = false;
+	public void executeCache(Map<String, Object> session) {
 		List<Fragment> fragmentAddList = (List<Fragment>) session.get(Constants.KEY_FRAGMENT_ADD);
 		if (fragmentAddList != null) {
 			for (Fragment fragment : fragmentAddList) {
@@ -469,6 +484,28 @@ public class SceneService {
 			session.remove(Constants.KEY_FRAGMENT_DELETE);
 		}
 
-		return result;
+		List<Variable> variableAddList = (List<Variable>) session.get(Constants.KEY_VARIABLE_ADD);
+		if (variableAddList != null) {
+			for (Variable variable : variableAddList) {
+				variableDao.insertVariable(variable);
+			}
+			session.remove(Constants.KEY_VARIABLE_ADD);
+		}
+
+		List<Variable> variableUpdateList = (List<Variable>) session.get(Constants.KEY_VARIABLE_UPDATE);
+		if (variableUpdateList != null) {
+			for (Variable variable : variableUpdateList) {
+				variableDao.updateVariable(variable);
+			}
+			session.remove(Constants.KEY_VARIABLE_UPDATE);
+		}
+
+		List<Variable> variableDeleteList = (List<Variable>) session.get(Constants.KEY_VARIABLE_DELETE);
+		if (variableDeleteList != null) {
+			for (Variable variable : variableDeleteList) {
+				variableDao.deleteVariable(variable);
+			}
+			session.remove(Constants.KEY_VARIABLE_DELETE);
+		}
 	}
 }

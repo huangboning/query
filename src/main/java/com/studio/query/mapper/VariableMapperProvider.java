@@ -10,8 +10,8 @@ public class VariableMapperProvider {
 		if (variable.getVariableId() != 0) {
 			buffer.append("and a.variable_id = #{variableId} ");
 		}
-		if (variable.getAccountId() != 0) {
-			buffer.append("and a.account_id = #{accountId} ");
+		if (variable.getSceneId() != 0) {
+			buffer.append("and a.scene_id = #{sceneId} ");
 		}
 		if (!StringUtil.isNullOrEmpty(variable.getVariableUUID())) {
 			buffer.append("and a.variable_uuid =#{variableUUID} ");

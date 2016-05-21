@@ -6,16 +6,14 @@ import com.studio.query.common.Page;
 
 public class Variable extends Page {
 	private int variableId;
-	private int accountId;
-	private String accountName;
+	private int sceneId;
 	private String variableUUID;
 	private int variableScope;
-	private int fragmentId;
+	private String fragmentUUID;
 	private String variableName;
 	private String variableType;
 	private String variableObjType;
 	private String variableDesc;
-	private int variableShare;
 	private Date variableDate;
 
 	public int getVariableId() {
@@ -26,20 +24,12 @@ public class Variable extends Page {
 		this.variableId = variableId;
 	}
 
-	public int getAccountId() {
-		return accountId;
+	public int getSceneId() {
+		return sceneId;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
-	}
-
-	public String getAccountName() {
-		return accountName;
-	}
-
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
+	public void setSceneId(int sceneId) {
+		this.sceneId = sceneId;
 	}
 
 	public String getVariableUUID() {
@@ -58,12 +48,12 @@ public class Variable extends Page {
 		this.variableScope = variableScope;
 	}
 
-	public int getFragmentId() {
-		return fragmentId;
+	public String getFragmentUUID() {
+		return fragmentUUID;
 	}
 
-	public void setFragmentId(int fragmentId) {
-		this.fragmentId = fragmentId;
+	public void setFragmentUUID(String fragmentUUID) {
+		this.fragmentUUID = fragmentUUID;
 	}
 
 	public String getVariableName() {
@@ -96,14 +86,6 @@ public class Variable extends Page {
 
 	public void setVariableDesc(String variableDesc) {
 		this.variableDesc = variableDesc;
-	}
-
-	public int getVariableShare() {
-		return variableShare;
-	}
-
-	public void setVariableShare(int variableShare) {
-		this.variableShare = variableShare;
 	}
 
 	public Date getVariableDate() {

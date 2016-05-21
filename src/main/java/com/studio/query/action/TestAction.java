@@ -180,17 +180,14 @@ public class TestAction {
 			// from t_test where name='test' update 4 new version");
 			// releaseShareFragmentJson.put("params", releaseShareFragmentObj);
 
-			// // 更新场景
-			// JSONObject updateSceneJson = new JSONObject();
-			// updateSceneJson.put("method", "updateScenario");
-			// JSONObject updateSceneObj = new JSONObject();
-			// updateSceneObj.put("sceneUUID",
-			// "SCNObd1d9a66bca44137a70fd766558f56a8");
-			// updateSceneObj.put("sceneComment",
-			// "huangboning向场景中更新第一个fragment");
-			// updateSceneObj.put("sceneExpression",
-			// "{\"fragmentList\":\"[{\"fragmentUUID\":\"FRGM001UPDATE\"}]\"}");
-			// updateSceneJson.put("params", updateSceneObj);
+			// 更新场景
+			JSONObject updateSceneJson = new JSONObject();
+			updateSceneJson.put("method", "updateScenario");
+			JSONObject updateSceneObj = new JSONObject();
+			updateSceneObj.put("sceneUUID", "SCNObd1d9a66bca44137a70fd766558f56a8");
+			updateSceneObj.put("sceneComment", "huangboning向场景中添加第二个变量");
+			updateSceneObj.put("sceneExpression", "{\"fragmentList\":\"[{\"variableUUID\":\"VAR002\"}]\"}");
+			updateSceneJson.put("params", updateSceneObj);
 
 			// // 获取共享fragment列表
 			// JSONObject getShareFragmentsJson = new JSONObject();
@@ -206,18 +203,67 @@ public class TestAction {
 			// "FRGMaa3a42fc184f4943b0f6035baedec0fd");
 			// shareFragmentHistoryJson.put("params", shareFragmentHistoryObj);
 
-			// 获取某个版本共享fragment
-			JSONObject getShareFragmentVersionJson = new JSONObject();
-			getShareFragmentVersionJson.put("method", "getShareFragmentVersion");
-			JSONObject getShareFragmentVersionObj = new JSONObject();
-			getShareFragmentVersionObj.put("shareFragmentVersion", "e8e623820c74a6cd1b89b1a2242cb6e678452300");
-			getShareFragmentVersionObj.put("shareFragmentUUID", "FRGMaa3a42fc184f4943b0f6035baedec0fd");
-			getShareFragmentVersionJson.put("params", getShareFragmentVersionObj);
+			// // 获取某个版本共享fragment
+			// JSONObject getShareFragmentVersionJson = new JSONObject();
+			// getShareFragmentVersionJson.put("method",
+			// "getShareFragmentVersion");
+			// JSONObject getShareFragmentVersionObj = new JSONObject();
+			// getShareFragmentVersionObj.put("shareFragmentVersion",
+			// "e8e623820c74a6cd1b89b1a2242cb6e678452300");
+			// getShareFragmentVersionObj.put("shareFragmentUUID",
+			// "FRGMaa3a42fc184f4943b0f6035baedec0fd");
+			// getShareFragmentVersionJson.put("params",
+			// getShareFragmentVersionObj);
+
+			// // 创建变量
+			// JSONObject createVariableJson = new JSONObject();
+			// createVariableJson.put("method", "createVariable");
+			// JSONObject createVariableObj = new JSONObject();
+			// createVariableObj.put("variableScope", 1);
+			// createVariableObj.put("fragmentUUID",
+			// "FRGMaa3a42fc184f4943b0f6035baedec0fd");
+			// createVariableObj.put("variableName", "third Variable");
+			// createVariableObj.put("variableType", "vType");
+			// createVariableObj.put("variableObjType", "voType");
+			// createVariableObj.put("variableDesc", "我的第二个变量");
+
+			// // 更新变量
+			// JSONObject updateVariableJson = new JSONObject();
+			// updateVariableJson.put("method", "updateVariable");
+			// JSONObject updateVariableObj = new JSONObject();
+			// updateVariableObj.put("variableUUID",
+			// "VARdf3d803d0a4646949d0a62d81af6c893");
+			// updateVariableObj.put("variableScope", 1);
+			// updateVariableObj.put("fragmentUUID",
+			// "FRGMaa3a42fc184f4943b0f6035baedec0fd");
+			// updateVariableObj.put("variableName", "third Variable update");
+			// updateVariableObj.put("variableType", "vType update");
+			// updateVariableObj.put("variableObjType", "voType update");
+			// updateVariableObj.put("variableDesc", "我的第二个变量 update");
+			// updateVariableJson.put("params", updateVariableObj);
+
+			// // 删除变量
+			// JSONObject deleteVariableJson = new JSONObject();
+			// deleteVariableJson.put("method", "deleteVariable");
+			// JSONObject deleteVariableObj = new JSONObject();
+			// deleteVariableObj.put("variableUUID",
+			// "VARdf3d803d0a4646949d0a62d81af6c893");
+			// deleteVariableJson.put("params", deleteVariableObj);
+
+			// // 获取变量列表
+			// JSONObject getVariablesJson = new JSONObject();
+			// getVariablesJson.put("method", "getVariables");
+			// getVariablesJson.put("params", "");
+			
+			// // 获取共享变量列表
+			 JSONObject getShareVariablesJson = new JSONObject();
+			 getShareVariablesJson.put("method", "getShareVariables");
+			 getShareVariablesJson.put("params", "");
 
 			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
-					getShareFragmentVersionJson.toString().getBytes("utf-8"));
-			System.out.println(getShareFragmentVersionJson.toString());
+					getShareVariablesJson.toString().getBytes("utf-8"));
+			System.out.println(getShareVariablesJson.toString());
 			System.out.println(result);
 
 			FileUtil.writeFile("E:/gitquery/2016/5/huangboning/shareFragment/1463582916514/test.txt", "123");
@@ -258,27 +304,6 @@ public class TestAction {
 			// getFragmentsJson.put("method", "getShareFragments");
 			// getFragmentsJson.put("params", "");
 
-			// // 创建变量
-			// JSONObject createVariableJson = new JSONObject();
-			// createVariableJson.put("method", "createVariable");
-			// JSONObject createVariableObj = new JSONObject();
-			// createVariableObj.put("variableScope", 0);
-			// createVariableObj.put("variableName", "sencond Variable");
-			// createVariableObj.put("variableDesc", "我的第二个变量");
-			// createVariableObj.put("variableShare", 0);
-			// createVariableJson.put("params", createVariableObj);
-
-			// // 更新变量
-			// JSONObject updateVariableJson = new JSONObject();
-			// updateVariableJson.put("method", "updateVariable");
-			// JSONObject updateVariableObj = new JSONObject();
-			// updateVariableObj.put("variableId",
-			// "VAR3055aa1577e24bbc8835c441669976c6");
-			// updateVariableObj.put("variableScope", 0);
-			// updateVariableObj.put("variableDesc", "update 1 变量");
-			// updateVariableObj.put("variableShare", 0);
-			// updateVariableJson.put("params", updateVariableObj);
-
 			// // 获取变量
 			// JSONObject getVariableJson = new JSONObject();
 			// getVariableJson.put("method", "getVariable");
@@ -286,14 +311,6 @@ public class TestAction {
 			// getVariableObj.put("version",
 			// "af975235a63239f9c1b396fe32203bfae6b6de12");
 			// getVariableJson.put("params", getVariableObj);
-
-			// // 删除变量
-			// JSONObject deleteVariableJson = new JSONObject();
-			// deleteVariableJson.put("method", "deleteVariable");
-			// JSONObject deleteVariableObj = new JSONObject();
-			// deleteVariableObj.put("id",
-			// "VAR3055aa1577e24bbc8835c441669976c6");
-			// deleteVariableJson.put("params", deleteVariableObj);
 
 			// // 禁用共享变量
 			// JSONObject disableShareVariableJson = new JSONObject();
@@ -310,16 +327,6 @@ public class TestAction {
 			// enableShareVariableObj.put("id",
 			// "VAR4b237122c1b241e69176329d698e1eaa");
 			// enableShareVariableJson.put("params", enableShareVariableObj);
-
-			// // 获取变量列表
-			// JSONObject getVariablesJson = new JSONObject();
-			// getVariablesJson.put("method", "getVariables");
-			// getVariablesJson.put("params", "");
-
-			// // 获取共享变量列表
-			// JSONObject getVariablesJson = new JSONObject();
-			// getVariablesJson.put("method", "getShareVariables");
-			// getVariablesJson.put("params", "");
 
 			// String result =
 			// ApacheHttpUtil.sendPostBySession("http://192.168.1.32:8080/query/service/v1/main.do",

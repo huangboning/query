@@ -130,26 +130,32 @@ public class InterfaceAction extends BaseAction {
 					} else if (methodCode.equals(MethodCode.LIST_SHARE_FRAGMENT)) {
 						returnString = fragmentService.getShareFragments(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CREATE_VARIABLE)) {
-						returnString = variableService.createVariable(bodyString, currentAccount);
+						returnString = variableService.createVariable(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_VARIABLE)) {
-						returnString = variableService.getVariable(bodyString, currentAccount);
+						returnString = variableService.getVariable(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.UPDATE_VARIABLE)) {
-						returnString = variableService.updateVariable(bodyString, currentAccount);
+						returnString = variableService.updateVariable(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.DELETE_VARIABLE)) {
-						returnString = variableService.deleteVariable(bodyString, currentAccount);
+						returnString = variableService.deleteVariable(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.DISABLE_SHARE_VARIABLE)) {
-						returnString = variableService.disableShareVariable(bodyString, currentAccount);
+						// 未实现
+						// returnString =
+						// variableService.disableShareVariable(bodyString,
+						// currentAccount, session);
 					} else if (methodCode.equals(MethodCode.ENABLE_SHARE_VARIABLE)) {
-						returnString = variableService.enableShareVariable(bodyString, currentAccount);
+						// 未实现
+						// returnString =
+						// variableService.enableShareVariable(bodyString,
+						// currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_VARIABLE)) {
-						returnString = variableService.getVariables(bodyString, currentAccount);
+						returnString = variableService.getVariables(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_SHARE_VARIABLE)) {
 						returnString = variableService.getShareVariables(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_FRAGMENT)) {
 						returnString = fragmentService.releaseShareFragment(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_HISTORY)) {
 						returnString = fragmentService.getShareFragmentHistory(bodyString, currentAccount, session);
-					}else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_VERSION)) {
+					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_VERSION)) {
 						returnString = fragmentService.getShareFragmentVersion(bodyString, currentAccount, session);
 					} else {
 						this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER,
