@@ -1,0 +1,6392 @@
+{
+      "tableHeader": {
+        
+      },
+      "unifiedMapping": {
+        
+      },
+      "isUnified": true,
+      "docTypeDef": {
+        "id": "unified",
+        "name": "\u5f52\u4e00\u5316\u6620\u5c04"
+      },
+      "tableAbstract": {
+        
+      },
+      "indexDef": {
+        "id": "allindicies",
+        "name": "\u6240\u6709\u6570\u636e\u6e90"
+      },
+      "availableOperators": [
+        {
+          "index": "allindicies",
+          "useDefaultOperators": false,
+          "operators": [
+            
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile",
+          "field": "profile",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f\u5b57\u6bb5\u7ec4",
+          "mfield": "",
+          "type": "hint",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": false,
+          "operators": [
+            
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident",
+          "field": "ident",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f\u5b57\u6bb5\u7ec4",
+          "mfield": "",
+          "type": "hint",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": false,
+          "operators": [
+            
+          ],
+          "doctype": "unified",
+          "fieldEffective": "contact",
+          "field": "contact",
+          "fieldname": "\u8054\u7cfb\u65b9\u5f0f\u5b57\u6bb5\u7ec4",
+          "mfield": "",
+          "type": "hint",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": false,
+          "operators": [
+            
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address",
+          "field": "address",
+          "fieldname": "\u5730\u5740\u5b57\u6bb5\u7ec4",
+          "mfield": "",
+          "type": "hint",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": false,
+          "operators": [
+            
+          ],
+          "doctype": "unified",
+          "fieldEffective": "time",
+          "field": "time",
+          "fieldname": "\u65f6\u95f4\u5b57\u6bb5\u7ec4",
+          "mfield": "",
+          "type": "hint",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "equalFilter",
+              "input": [
+                {
+                  "inputType": "plainValue"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7b49\u4e8e"
+            },
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "rangeFilter",
+              "input": [
+                {
+                  "inputType": "valueRange"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u53d6\u503c\u8303\u56f4"
+            },
+            {
+              "operator": "equalQuery",
+              "input": [
+                {
+                  "inputType": "plainValue"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u7b49\u4e8e"
+            },
+            {
+              "operator": "rangeQuery",
+              "input": [
+                {
+                  "inputType": "valueRange"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u53d6\u503c\u8303\u56f4\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_fulladdress_similarity",
+          "field": "address.geocoding_points.point_fulladdress_similarity",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u8be6\u7ec6\u5730\u5740\u76f8\u4f3c\u5ea6",
+          "mfield": "",
+          "type": "double",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "equalFilter",
+              "input": [
+                {
+                  "inputType": "plainValue"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7b49\u4e8e"
+            },
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "rangeFilter",
+              "input": [
+                {
+                  "inputType": "valueRange"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u53d6\u503c\u8303\u56f4"
+            },
+            {
+              "operator": "equalQuery",
+              "input": [
+                {
+                  "inputType": "plainValue"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u7b49\u4e8e"
+            },
+            {
+              "operator": "rangeQuery",
+              "input": [
+                {
+                  "inputType": "valueRange"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u53d6\u503c\u8303\u56f4\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_zip_similarity",
+          "field": "address.geocoding_points.point_zip_similarity",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u90ae\u653f\u7f16\u7801\u76f8\u4f3c\u5ea6",
+          "mfield": "",
+          "type": "double",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "geoBoundingBoxFilter",
+              "input": [
+                {
+                  "inputType": "locationBoundingBox"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5730\u7406\u4f4d\u7f6e\u8fb9\u6846\u5339\u914d"
+            },
+            {
+              "operator": "geoDistanceFilter",
+              "input": [
+                {
+                  "inputType": "locationDistance"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5730\u7406\u4f4d\u7f6e\u8ddd\u79bb\u5339\u914d"
+            },
+            {
+              "operator": "geoDistanceRangeFilter",
+              "input": [
+                {
+                  "inputType": "locationDistanceRange"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5730\u7406\u4f4d\u7f6e\u8ddd\u79bb\u8303\u56f4\u5339\u914d"
+            },
+            {
+              "operator": "geohashCellFilter",
+              "input": [
+                {
+                  "inputType": "locationGeohash"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5730\u7406\u4f4d\u7f6egeohash\u5355\u5143\u5339\u914d"
+            },
+            {
+              "operator": "geoPolygonFilter",
+              "input": [
+                {
+                  "inputType": "mapPolygon"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5730\u7406\u4f4d\u7f6e\u591a\u8fb9\u5f62\u5339\u914d"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_coordinates",
+          "field": "address.geocoding_points.point_coordinates",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u5730\u7406\u5750\u6807",
+          "mfield": "",
+          "type": "geo_point",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_fulladdress",
+          "field": "address.geocoding_points.point_fulladdress",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u8be6\u7ec6\u5730\u5740",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_fulladdress.std",
+          "field": "address.geocoding_points.point_fulladdress",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u8be6\u7ec6\u5730\u5740-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_fulladdress.eng",
+          "field": "address.geocoding_points.point_fulladdress",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u8be6\u7ec6\u5730\u5740-\u82f1\u8bed\u5206\u8bcd",
+          "mfield": "eng",
+          "type": "string",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_fulladdress_blk",
+          "field": "address.geocoding_points.point_fulladdress_blk",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u8857\u9053\u5730\u5740",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_fulladdress_blk.std",
+          "field": "address.geocoding_points.point_fulladdress_blk",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u8857\u9053\u5730\u5740-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_fulladdress_blk.eng",
+          "field": "address.geocoding_points.point_fulladdress_blk",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u8857\u9053\u5730\u5740-\u82f1\u8bed\u5206\u8bcd",
+          "mfield": "eng",
+          "type": "string",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_zip",
+          "field": "address.geocoding_points.point_zip",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u90ae\u653f\u7f16\u7801",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "address.geocoding_points.point_zip.std",
+          "field": "address.geocoding_points.point_zip",
+          "fieldname": "\u5730\u5740-\u89e3\u6790\u5b9a\u4f4d\u70b9-\u90ae\u653f\u7f16\u7801-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": "N/A"
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "contact.email",
+          "field": "contact.email",
+          "fieldname": "\u8054\u7cfb\u65b9\u5f0f-\u7535\u5b50\u90ae\u4ef6",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "contact.phone_unified",
+          "field": "contact.phone_unified",
+          "fieldname": "\u8054\u7cfb\u65b9\u5f0f-\u7535\u8bdd",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "contact.mobile_phone_unified",
+          "field": "contact.mobile_phone_unified",
+          "fieldname": "\u8054\u7cfb\u65b9\u5f0f-\u79fb\u52a8\u7535\u8bdd",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "contact.personal_phone_unified",
+          "field": "contact.personal_phone_unified",
+          "fieldname": "\u8054\u7cfb\u65b9\u5f0f-\u8054\u7cfb\u7535\u8bdd",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "contact.work_phone_unified",
+          "field": "contact.work_phone_unified",
+          "fieldname": "\u8054\u7cfb\u65b9\u5f0f-\u5de5\u4f5c\u7535\u8bdd",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.first_name",
+          "field": "ident.first_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u540d",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.first_name.std",
+          "field": "ident.first_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u540d-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.first_name.eng",
+          "field": "ident.first_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u540d-\u82f1\u8bed\u5206\u8bcd",
+          "mfield": "eng",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.full_name",
+          "field": "ident.full_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u59d3\u540d\u5168\u540d",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.full_name.std",
+          "field": "ident.full_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u59d3\u540d\u5168\u540d-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.full_name.eng",
+          "field": "ident.full_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u59d3\u540d\u5168\u540d-\u82f1\u8bed\u5206\u8bcd",
+          "mfield": "eng",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.last_name",
+          "field": "ident.last_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u59d3",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.last_name.std",
+          "field": "ident.last_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u59d3-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.last_name.eng",
+          "field": "ident.last_name",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u59d3-\u82f1\u8bed\u5206\u8bcd",
+          "mfield": "eng",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.nickname",
+          "field": "ident.nickname",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u6635\u79f0",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.nickname.std",
+          "field": "ident.nickname",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u6635\u79f0-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.nickname.eng",
+          "field": "ident.nickname",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u6635\u79f0-\u82f1\u8bed\u5206\u8bcd",
+          "mfield": "eng",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.username",
+          "field": "ident.username",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u7528\u6237\u540d",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.username.std",
+          "field": "ident.username",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u7528\u6237\u540d-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "ident.username.eng",
+          "field": "ident.username",
+          "fieldname": "\u8eab\u4efd\u4fe1\u606f-\u7528\u6237\u540d-\u82f1\u8bed\u5206\u8bcd",
+          "mfield": "eng",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "rangeFilter",
+              "input": [
+                {
+                  "inputType": "dateRange"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u53d6\u503c\u8303\u56f4"
+            },
+            {
+              "operator": "rangeQuery",
+              "input": [
+                {
+                  "inputType": "dateRange"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u53d6\u503c\u8303\u56f4\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile.dob",
+          "field": "profile.dob",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f-\u51fa\u751f\u65e5\u671f",
+          "mfield": "",
+          "type": "date",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile.ethnicity_word",
+          "field": "profile.ethnicity_word",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f-\u79cd\u65cf",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile.ethnicity_word.std",
+          "field": "profile.ethnicity_word",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f-\u79cd\u65cf-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile.ethnicity_word.eng",
+          "field": "profile.ethnicity_word",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f-\u79cd\u65cf-\u82f1\u8bed\u5206\u8bcd",
+          "mfield": "eng",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile.gender_word",
+          "field": "profile.gender_word",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f-\u6027\u522b",
+          "mfield": "",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "prefixFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u524d\u7f00\u5339\u914d"
+            },
+            {
+              "operator": "regexpFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d"
+            },
+            {
+              "operator": "termFilter",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "termsFilter",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d"
+            },
+            {
+              "operator": "fuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u67e5\u8be2"
+            },
+            {
+              "operator": "matchFuzzyQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6a21\u7cca\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "matchQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "moreLikeThisQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u76f8\u4f3c\u67e5\u8be2"
+            },
+            {
+              "operator": "prefixQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u524d\u7f00\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "regexpQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "termsQuery",
+              "input": [
+                {
+                  "multiple": true,
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u591a\u5206\u8bcd\u5339\u914d\u67e5\u8be2"
+            },
+            {
+              "operator": "wildcardQuery",
+              "input": [
+                {
+                  "inputType": "plainString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u901a\u914d\u7b26\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile.gender_word.std",
+          "field": "profile.gender_word",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f-\u6027\u522b-\u6807\u51c6\u5206\u8bcd",
+          "mfield": "std",
+          "type": "string",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "equalFilter",
+              "input": [
+                {
+                  "inputType": "plainValue"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7b49\u4e8e"
+            },
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "rangeFilter",
+              "input": [
+                {
+                  "inputType": "valueRange"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u53d6\u503c\u8303\u56f4"
+            },
+            {
+              "operator": "equalQuery",
+              "input": [
+                {
+                  "inputType": "plainValue"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u7b49\u4e8e"
+            },
+            {
+              "operator": "rangeQuery",
+              "input": [
+                {
+                  "inputType": "valueRange"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u53d6\u503c\u8303\u56f4\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile.height",
+          "field": "profile.height",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f-\u8eab\u9ad8",
+          "mfield": "",
+          "type": "long",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "equalFilter",
+              "input": [
+                {
+                  "inputType": "plainValue"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7b49\u4e8e"
+            },
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "rangeFilter",
+              "input": [
+                {
+                  "inputType": "valueRange"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u53d6\u503c\u8303\u56f4"
+            },
+            {
+              "operator": "equalQuery",
+              "input": [
+                {
+                  "inputType": "plainValue"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u7b49\u4e8e"
+            },
+            {
+              "operator": "rangeQuery",
+              "input": [
+                {
+                  "inputType": "valueRange"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u53d6\u503c\u8303\u56f4\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "profile.weight",
+          "field": "profile.weight",
+          "fieldname": "\u4e2a\u4eba\u4fe1\u606f-\u4f53\u91cd",
+          "mfield": "",
+          "type": "long",
+          "nestedPath": ""
+        },
+        {
+          "index": "allindicies",
+          "useDefaultOperators": true,
+          "operators": [
+            {
+              "operator": "existsFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u5b58\u5728\u5b57\u6bb5"
+            },
+            {
+              "operator": "missingFilter",
+              "input": [
+                {
+                  
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u7f3a\u5931\u5b57\u6bb5"
+            },
+            {
+              "operator": "rangeFilter",
+              "input": [
+                {
+                  "inputType": "dateRange"
+                }
+              ],
+              "type": "filter",
+              "operatorName": "\u53d6\u503c\u8303\u56f4"
+            },
+            {
+              "operator": "rangeQuery",
+              "input": [
+                {
+                  "inputType": "dateRange"
+                }
+              ],
+              "type": "query",
+              "operatorName": "\u53d6\u503c\u8303\u56f4\u67e5\u8be2"
+            },
+            {
+              "operator": "queryStringQuery",
+              "input": [
+                {
+                  "inputType": "queryString"
+                }
+              ],
+              "type": "query",
+              "operatorName": "Lucene\u8bed\u6cd5\u67e5\u8be2"
+            }
+          ],
+          "doctype": "unified",
+          "fieldEffective": "time.updatedon",
+          "field": "time.updatedon",
+          "fieldname": "\u65f6\u95f4-\u66f4\u65b0",
+          "mfield": "",
+          "type": "date",
+          "nestedPath": ""
+        }
+      ]
+    }
+
+
+
+http://www.bejson.com

@@ -34,13 +34,13 @@ public class InterfaceAction extends BaseAction {
 	@Autowired
 	public AccountService accountService;
 	@Autowired
-	public QueryService queryService;
-	@Autowired
 	public SceneService sceneService;
 	@Autowired
 	public FragmentService fragmentService;
 	@Autowired
 	public VariableService variableService;
+	@Autowired
+	public QueryService queryService;
 
 	Logger loger = Logger.getLogger(InterfaceAction.class);
 
@@ -89,9 +89,8 @@ public class InterfaceAction extends BaseAction {
 								"回话已经过期，请重新登录。", "");
 						return null;
 					}
-					if (methodCode.equals(MethodCode.GET_INDEX_DOC_TYPES)) {
-						returnString = queryService.getIndexDocTypes(bodyString);
-					} else if (methodCode.equals(MethodCode.CREATE_SCENE)) {
+
+					if (methodCode.equals(MethodCode.CREATE_SCENE)) {
 						returnString = sceneService.createScene(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.SET_SCOPE)) {
 						returnString = queryService.setScope(bodyString);
@@ -157,6 +156,20 @@ public class InterfaceAction extends BaseAction {
 						returnString = fragmentService.getShareFragmentHistory(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_VERSION)) {
 						returnString = fragmentService.getShareFragmentVersion(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.GET_INDEX_DOC_TYPES)) {
+						returnString = queryService.getIndexDocTypes(bodyString);
+					} else if (methodCode.equals(MethodCode.GET_TABLE_HEAD_DEF)) {
+						returnString = queryService.getTableHeadDef(bodyString);
+					} else if (methodCode.equals(MethodCode.GET_HELP_VALUE)) {
+						returnString = queryService.getHelpValue(bodyString);
+					} else if (methodCode.equals(MethodCode.GET_FIELD_VALUES)) {
+						returnString = queryService.getFieldValues(bodyString);
+					} else if (methodCode.equals(MethodCode.GET_INPUT_TYPES)) {
+						returnString = queryService.getInputTypes(bodyString);
+					} else if (methodCode.equals(MethodCode.GET_HINT_FIELDS)) {
+						returnString = queryService.getHintFields(bodyString);
+					} else if (methodCode.equals(MethodCode.GET_GEOCODING)) {
+						returnString = queryService.getGeocoding(bodyString);
 					} else {
 						this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER,
 								"该接口未实现", "");

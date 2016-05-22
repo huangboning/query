@@ -2,6 +2,8 @@ package com.studio.query.service;
 
 import org.springframework.stereotype.Service;
 
+import com.studio.query.common.Configure;
+import com.studio.query.common.HttpUtil;
 import com.studio.query.entity.DataSource;
 import com.studio.query.entity.HeadData;
 import com.studio.query.protocol.MethodCode;
@@ -20,6 +22,13 @@ public class QueryService {
 	 */
 	public String getIndexDocTypes(String bodyString) {
 		String resultString = null;
+
+		try {
+			String str = HttpUtil.sendPost(Configure.esBootstrapServiceUrl, bodyString.getBytes("utf-8"));
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		DataSource returnDataSource1 = new DataSource();
 		returnDataSource1.setDataSourceId("所有数据源.归一化映射");
@@ -67,6 +76,12 @@ public class QueryService {
 				return resultString;
 			}
 			// 这里设置数据源逻辑
+			try {
+				String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
+				System.out.println(str);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Result.RESULT_OK, "", "设置数据源成功",
 					"");
@@ -83,6 +98,13 @@ public class QueryService {
 	public String getTableHeadDef(String bodyString) {
 		String resultString = null;
 		// 这里获取选择数据源定义的数据表头逻辑
+		try {
+			String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		HeadData returnHeadData1 = new HeadData();
 		returnHeadData1.setHeadDataId("fullname");
 		returnHeadData1.setHeadDataName("姓名");
@@ -105,5 +127,119 @@ public class QueryService {
 				"获取选择数据源定义的数据表头成功", dataJsonArray.toString());
 
 		return resultString;
+	}
+
+	/**
+	 * 获取提示字段
+	 * 
+	 * @return
+	 */
+	public String getHelpValue(String bodyString) {
+		String resultString = null;
+		//
+		try {
+			String str = HttpUtil.sendPost(Configure.esHintServiceUrl, bodyString.getBytes("utf-8"));
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_OK, "",
+				"获取提示字段成功", "");
+
+		return resultString;
+	}
+
+	/**
+	 * 获取字段值
+	 * 
+	 * @return
+	 */
+	public String getFieldValues(String bodyString) {
+		String resultString = null;
+		//
+		try {
+			String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultString = StringUtil.packetObject(MethodCode.GET_FIELD_VALUES, ParameterCode.Result.RESULT_OK, "",
+				"获取字段值成功", "");
+
+		return resultString;
+	}
+
+	/**
+	 * 获取一个DocTypes下面所有的field列表
+	 * 
+	 * @return
+	 */
+	public String getInputTypes(String bodyString) {
+		String resultString = null;
+		//
+		try {
+			String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultString = StringUtil.packetObject(MethodCode.GET_INPUT_TYPES, ParameterCode.Result.RESULT_OK, "",
+				"获取一个DocTypes下面所有的field列表成功", "");
+
+		return resultString;
+	}
+
+	/**
+	 * 获取field列表
+	 * 
+	 * @return
+	 */
+	public String getHintFields(String bodyString) {
+		String resultString = null;
+		//
+		try {
+			String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultString = StringUtil.packetObject(MethodCode.GET_HINT_FIELDS, ParameterCode.Result.RESULT_OK, "",
+				"获取field列表成功", "");
+
+		return resultString;
+	}
+
+	/**
+	 * 查询位置
+	 * 
+	 * @return
+	 */
+	public String getGeocoding(String bodyString) {
+		String resultString = null;
+		//
+		try {
+			String str = HttpUtil.sendPost(Configure.esGeocodingServiceUrl, bodyString.getBytes("utf-8"));
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_OK, "", "查询位置成功",
+				"");
+
+		return resultString;
+	}
+	public static void main(String[] args) {
+		
+		try {
+			String str = HttpUtil.sendPost("http://10.2.118.16:8088/api/bootstrapService", "{\"method\":\"\"}".getBytes("utf-8"));
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

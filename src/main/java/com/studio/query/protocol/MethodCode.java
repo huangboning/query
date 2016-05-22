@@ -24,22 +24,12 @@ public class MethodCode {
 	 * 账号注销
 	 */
 	public static final String ACCOUNT_LOGOUT = "logout";
-	/**
-	 * 获取数据源列表
-	 */
-	public static final String GET_INDEX_DOC_TYPES = "getIndexDocTypes";
+
 	/**
 	 * 创建场景
 	 */
 	public static final String CREATE_SCENE = "createScene";
-	/**
-	 * 选择数据源
-	 */
-	public static final String SET_SCOPE = "setScope";
-	/**
-	 * 获取选择数据源定义的数据表头
-	 */
-	public static final String GET_TABLE_HEAD_DEF = "getTableHeadDef";
+
 	/**
 	 * 获取场景列表
 	 */
@@ -148,4 +138,46 @@ public class MethodCode {
 	 * 获取共享变量列表
 	 */
 	public static final String LIST_SHARE_VARIABLE = "getShareVariables";
+	
+	
+	/**
+	 * ES接口 getIndexDocTypes 获取数据源列表
+	 */
+	public static final String GET_INDEX_DOC_TYPES = "getIndexDocTypes";
+	/**
+	 * ES接口 getTableHeadDef 获取选择数据源定义的数据表头
+	 */
+	public static final String GET_TABLE_HEAD_DEF = "getTableHeadDef";
+	
+	/**
+	 * ES接口 setScope 设置数据源
+	 */
+	public static final String SET_SCOPE = "setScope";
+	
+	/**
+	 * ES接口 getHelpValue 获取提示字段
+	 */
+	public static final String GET_HELP_VALUE = "getHelpValue";
+	
+	/**
+	 * ES接口 getFieldValues 获取字段值
+	 */
+	public static final String GET_FIELD_VALUES = "getFieldValues";
+	
+	/**
+	 * ES接口 getInputTypes 获取一个DocTypes下面所有的field列表
+	 */
+	public static final String GET_INPUT_TYPES = "getInputTypes";
+	
+	
+	/**
+	 * ES接口 getHintFields 获取field列表
+	 */
+	public static final String GET_HINT_FIELDS = "getHintFields";
+	
+	
+	/**
+	 * ES接口 getGeocoding 查询位置
+	 */
+	public static final String GET_GEOCODING = "getGeocoding";
 }

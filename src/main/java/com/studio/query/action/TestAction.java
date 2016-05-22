@@ -254,19 +254,71 @@ public class TestAction {
 			// JSONObject getVariablesJson = new JSONObject();
 			// getVariablesJson.put("method", "getVariables");
 			// getVariablesJson.put("params", "");
-			
-			// // 获取共享变量列表
-			 JSONObject getShareVariablesJson = new JSONObject();
-			 getShareVariablesJson.put("method", "getShareVariables");
-			 getShareVariablesJson.put("params", "");
+
+			// // // 获取共享变量列表
+			// JSONObject getShareVariablesJson = new JSONObject();
+			// getShareVariablesJson.put("method", "getShareVariables");
+			// getShareVariablesJson.put("params", "");
+
+			// // ES接口 getIndexDocTypes
+			// JSONObject getInitDocTypeJson = new JSONObject();
+			// getInitDocTypeJson.put("method", "getIndexDocTypes");
+			// getInitDocTypeJson.put("params", "{}");
+
+			// // ES接口 setScope
+			// JSONObject setScopeJson = new JSONObject();
+			// setScopeJson.put("method", "setScope");
+			// JSONObject setScopeObj = new JSONObject();
+			// setScopeObj.put("scope", "allindicies");
+			// setScopeJson.put("params", setScopeObj);
+
+			// // ES接口 getTableHeadDef
+			// JSONObject getInitDocTypeJson = new JSONObject();
+			// getInitDocTypeJson.put("method", "getTableHeadDef");
+			// getInitDocTypeJson.put("params", "{}");
+
+			// // ES接口 getHelpValue
+			// JSONObject getHelpValueJson = new JSONObject();
+			// getHelpValueJson.put("method", "getHelpValue");
+			// JSONObject etHelpValueObj = new JSONObject();
+			// etHelpValueObj.put("indexDocTypeId", "unified");
+			// etHelpValueObj.put("fieldId", "profile");
+			// getHelpValueJson.put("params", etHelpValueObj);
+			//
+			// // ES接口 getFieldValues
+			// JSONObject getFieldValuesJson = new JSONObject();
+			// getFieldValuesJson.put("method", "getFieldValues");
+			// getFieldValuesJson.put("params", "{}");
+			//
+			// ES接口 getInputTypes
+			JSONObject getInputTypesJson = new JSONObject();
+			getInputTypesJson.put("method", "getInputTypes");
+			JSONObject getInputTypesObj = new JSONObject();
+			getInputTypesObj.put("indexDocType", "unified");
+			getInputTypesObj.put("fieldId", "profile");
+			getInputTypesObj.put("fragmentType", "query");
+			getInputTypesJson.put("params", "{}");
+
+			// // ES接口 getHintFields
+			// JSONObject getHintFieldsJson = new JSONObject();
+			// getHintFieldsJson.put("method", "getHintFields");
+			// JSONObject getHintFieldsObj = new JSONObject();
+			// getHintFieldsObj.put("indexDocType", "");
+			// getHintFieldsObj.put("fieldEffective", "");
+			// getHintFieldsJson.put("params", getHintFieldsObj);
+
+			// // ES接口 getGeocoding
+			// JSONObject getGeocodingJson = new JSONObject();
+			// getGeocodingJson.put("method", "getGeocoding");
+			// JSONObject getGeocodingObj = new JSONObject();
+			// getGeocodingObj.put("addressName", "beijing");
+			// getGeocodingJson.put("params", getGeocodingObj);
 
 			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
-					getShareVariablesJson.toString().getBytes("utf-8"));
-			System.out.println(getShareVariablesJson.toString());
+					getInputTypesJson.toString().getBytes("utf-8"));
+			System.out.println(getInputTypesJson.toString());
 			System.out.println(result);
-
-			FileUtil.writeFile("E:/gitquery/2016/5/huangboning/shareFragment/1463582916514/test.txt", "123");
 
 			// // 获取fragment
 			// JSONObject getFragmentJson = new JSONObject();
