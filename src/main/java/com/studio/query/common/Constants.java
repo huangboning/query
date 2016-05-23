@@ -6,6 +6,7 @@ public class Constants {
 
 	public static String SCENE_REPOSITORY_NAME="scene";
 	public static String SHARE_FRAGMENT_REPOSITORY_NAME="shareFragment";
+	public static String SHARE_VARIABLE_REPOSITORY_NAME="shareVariable";
 
 	public static String KEY_SCENE_PATH="KEY_SCENE_PATH";
 	public static String SCENE_ACTIVE="SCENE_ACTIVE";

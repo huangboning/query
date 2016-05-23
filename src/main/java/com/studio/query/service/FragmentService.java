@@ -548,7 +548,7 @@ public class FragmentService {
 		return resultString;
 	}
 
-	// 发布共享版本
+	// 发布共享fragment版本
 	public String releaseShareFragment(String bodyString, Account currentAccount) {
 
 		String resultString = null;

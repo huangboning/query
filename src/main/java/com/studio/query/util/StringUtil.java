@@ -68,4 +68,9 @@ public class StringUtil {
 		return shareFragmentGit;
 
 	}
+	public static String createShareVariableGit() {
+		String shareVariableGit = String.valueOf(Calendar.getInstance().getTimeInMillis());
+		return shareVariableGit;
+
+	}
 }

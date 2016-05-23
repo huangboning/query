@@ -37,7 +37,9 @@ public interface VariableDao {
 			@Result(column = "share_variable_obj_type", property = "shareVariableObjType"),
 			@Result(column = "share_variable_scope", property = "shareVariableScope"),
 			@Result(column = "share_variable_desc", property = "shareVariableDesc"),
-			@Result(column = "share_fragment_uuid", property = "fragmentUUID"),
+			@Result(column = "fragment_uuid", property = "fragmentUUID"),
+			@Result(column = "share_variable_version", property = "shareVariableVersion"),
+			@Result(column = "share_variable_git", property = "shareVariableGit"),
 			@Result(column = "share_variable_date", property = "shareVariableDate") })
 	@SelectProvider(type = ShareVariableMapperProvider.class, method = "findShareVariable")
 	public List<ShareVariable> findShareVariable(ShareVariable shareVariable);
@@ -53,12 +55,12 @@ public interface VariableDao {
 	public int deleteVariable(Variable variable);
 
 	// 发布模板变量
-	@Insert("insert into t_share_variable(account_id,share_variable_uuid,share_variable_name,share_variable_type,share_variable_obj_type,share_variable_scope,share_variable_desc,share_variable_version,share_variable_git,share_variable_date)"
-			+ " values(#{accountId},#{shareFragmentUUID},#{shareFragmentName},#{shareFragmentType},#{shareFragmentObjType},#{shareFragmentDesc},#{shareFragmentEnable},#{shareFragmentActive},#{shareFragmentVersion},#{shareFragmentGit},now())")
-	public int releaseFragment(ShareVariable shareVariable);
+	@Insert("insert into t_share_variable(account_id,share_variable_uuid,share_variable_name,share_variable_type,share_variable_obj_type,share_variable_scope,fragment_uuid,share_variable_desc,share_variable_version,share_variable_git,share_variable_date)"
+			+ " values(#{accountId},#{shareVariableUUID},#{shareVariableName},#{shareVariableType},#{shareVariableObjType},#{shareVariableScope},#{fragmentUUID},#{shareVariableDesc},#{shareVariableVersion},#{shareVariableGit},now())")
+	public int releaseVariable(ShareVariable shareVariable);
 
 	// 更新模板变量
-	@Update("update t_share_variable set share_variable_name=#{shareVariableName},share_variable_type=#{shareVariableType},share_variable_obj_type=#{shareVariableObjType},share_variable_scope=#{shareVariableScope},share_variable_desc=#{shareVariableDesc},share_variable_version=#{shareVariableVersion} where share_variable_uuid=#{shareVariableUUID} and account_id=#{accountId}")
-	public int updateShareFragment(ShareVariable shareVariable);
+	@Update("update t_share_variable set share_variable_name=#{shareVariableName},share_variable_type=#{shareVariableType},share_variable_obj_type=#{shareVariableObjType},share_variable_scope=#{shareVariableScope},fragment_uuid=#{fragmentUUID},share_variable_desc=#{shareVariableDesc},share_variable_version=#{shareVariableVersion} where share_variable_uuid=#{shareVariableUUID} and account_id=#{accountId}")
+	public int updateShareVariable(ShareVariable shareVariable);
 
 }

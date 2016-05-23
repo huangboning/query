@@ -132,7 +132,32 @@ public class JGitService {
 		}
 		return true;
 	}
-
+	/**
+	 * 初始化共享变量版本库
+	 * 
+	 * @param path
+	 * @param currentAccount
+	 * @return
+	 */
+	public boolean initShareVariableGit(String path, Account currentAccount) {
+		File root = new File(path);
+		if (!root.exists()) {
+			root.mkdir();
+		}
+		File gitF = new File(path + "/.git");
+		if (!gitF.exists()) {
+			try {
+				Git.init().setDirectory(root).call();
+				File file = new File(path + "/template.txt");
+				file.createNewFile();
+			} catch (Exception e) {
+				e.printStackTrace();
+				loger.info(e.toString());
+				return false;
+			}
+		}
+		return true;
+	}
 	public static Repository openRepository(String path) {
 
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
@@ -172,7 +197,7 @@ public class JGitService {
 	}
 
 	/**
-	 * 提交共享fragment(发布共享的时候初始化template.txt比提交发布的内容)
+	 * 提交共享fragment(发布共享的时候初始化template.txt并提交发布的内容)
 	 * 
 	 * @param path
 	 * @param currentAccount
@@ -199,7 +224,34 @@ public class JGitService {
 			return false;
 		}
 	}
-
+	/**
+	 * 提交共享变量(发布共享的时候初始化template.txt并提交发布的内容)
+	 * 
+	 * @param path
+	 * @param currentAccount
+	 * @param message
+	 * @return
+	 */
+	public boolean shareVariableCommit(String path, Account currentAccount, String message) {
+		try {
+			File templateFile = new File(path + "/template.txt");
+			if (!templateFile.exists()) {
+				File file = new File(path + "/template.txt");
+				file.createNewFile();
+			}
+			File root = new File(path);
+			Git git = Git.init().setDirectory(root).call();
+			git.add().addFilepattern("template.txt").call();
+			PersonIdent personIdent = new PersonIdent(currentAccount.getAccountName(),
+					this.getAccountEmail(currentAccount));
+			git.commit().setCommitter(personIdent).setMessage(message).call();
+			return true;
+		} catch (Exception e) {
+			loger.info(e.toString());
+			e.printStackTrace();
+			return false;
+		}
+	}
 	/**
 	 * 获取最后一次提交者信息
 	 * 

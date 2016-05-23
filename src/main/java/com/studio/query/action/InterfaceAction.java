@@ -152,10 +152,16 @@ public class InterfaceAction extends BaseAction {
 						returnString = variableService.getShareVariables(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_FRAGMENT)) {
 						returnString = fragmentService.releaseShareFragment(bodyString, currentAccount);
+					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_VARIABLE)) {
+						returnString = variableService.releaseShareVariable(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_HISTORY)) {
 						returnString = fragmentService.getShareFragmentHistory(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_VERSION)) {
 						returnString = fragmentService.getShareFragmentVersion(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.GET_SHARE_VARIABLE_HISTORY)) {
+						returnString = variableService.getShareVariableHistory(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.GET_SHARE_VARIABLE_VERSION)) {
+						returnString = variableService.getShareVariableVersion(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_INDEX_DOC_TYPES)) {
 						returnString = queryService.getIndexDocTypes(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_TABLE_HEAD_DEF)) {
