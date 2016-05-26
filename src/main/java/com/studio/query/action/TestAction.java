@@ -297,19 +297,17 @@ public class TestAction {
 			// "VAR4fbdb8ec8ac04fdd94f059571f6e4e4a");
 			// shareVariableHistoryJson.put("params", shareVariableHistoryObj);
 
-			// 获取某个版本共享变量
-			JSONObject getShareVariableVersionJson = new JSONObject();
-			getShareVariableVersionJson.put("method", "getShareVariableVersion");
-			JSONObject getShareVariableVersionObj = new JSONObject();
-			getShareVariableVersionObj.put("shareVariableVersion", "4bf6433cd6a46d82c7aa5ecef70a9e5c6f556008");
-			getShareVariableVersionObj.put("shareVariableUUID", "VAR4fbdb8ec8ac04fdd94f059571f6e4e4a");
-			getShareVariableVersionJson.put("params", getShareVariableVersionObj);
-
-			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
-					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
-					getShareVariableVersionJson.toString().getBytes("utf-8"));
-			System.out.println(getShareVariableVersionJson.toString());
-			System.out.println(result);
+			// // 获取某个版本共享变量
+			// JSONObject getShareVariableVersionJson = new JSONObject();
+			// getShareVariableVersionJson.put("method",
+			// "getShareVariableVersion");
+			// JSONObject getShareVariableVersionObj = new JSONObject();
+			// getShareVariableVersionObj.put("shareVariableVersion",
+			// "4bf6433cd6a46d82c7aa5ecef70a9e5c6f556008");
+			// getShareVariableVersionObj.put("shareVariableUUID",
+			// "VAR4fbdb8ec8ac04fdd94f059571f6e4e4a");
+			// getShareVariableVersionJson.put("params",
+			// getShareVariableVersionObj);
 
 			// // ES接口 getIndexDocTypes
 			// JSONObject getInitDocTypeJson = new JSONObject();
@@ -324,9 +322,13 @@ public class TestAction {
 			// setScopeJson.put("params", setScopeObj);
 
 			// // ES接口 getTableHeadDef
-			// JSONObject getInitDocTypeJson = new JSONObject();
-			// getInitDocTypeJson.put("method", "getTableHeadDef");
-			// getInitDocTypeJson.put("params", "{}");
+			// JSONObject getTableHeadDefJson = new JSONObject();
+			// getTableHeadDefJson.put("method", "getTableHeadDef");
+			// JSONObject getTableHeadDefObj = new JSONObject();
+			// JSONArray scopeArray=new JSONArray();
+			// scopeArray.add("unified");
+			// getTableHeadDefObj.put("scopes",scopeArray);
+			// getTableHeadDefJson.put("params", getTableHeadDefObj);
 
 			// // ES接口 getHelpValue
 			// JSONObject getHelpValueJson = new JSONObject();
@@ -364,6 +366,18 @@ public class TestAction {
 			// JSONObject getGeocodingObj = new JSONObject();
 			// getGeocodingObj.put("addressName", "beijing");
 			// getGeocodingJson.put("params", getGeocodingObj);
+			
+			 // ES接口 executeScene
+						 JSONObject executeSceneJson = new JSONObject();
+						 executeSceneJson.put("method", "executeScenario");
+						 String bodyString=FileUtil.ReadFile("E:/new.txt");
+						 executeSceneJson.put("params", bodyString);
+			
+			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
+			loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
+			executeSceneJson.toString().getBytes("utf-8"));
+	System.out.println(executeSceneJson.toString());
+	System.out.println(result);
 
 			// // 获取fragment
 			// JSONObject getFragmentJson = new JSONObject();

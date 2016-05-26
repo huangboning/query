@@ -1,5 +1,14 @@
 package com.studio.query.service;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
 import com.studio.query.common.Configure;
@@ -233,10 +242,43 @@ public class QueryService {
 
 		return resultString;
 	}
-	public static void main(String[] args) {
-		
+
+	/**
+	 * 查询位置
+	 * 
+	 * @return
+	 */
+	public String executeScenario(String bodyString) {
+		String resultString = null;
+		//
 		try {
-			String str = HttpUtil.sendPost("http://10.2.118.16:8088/api/bootstrapService", "{\"method\":\"\"}".getBytes("utf-8"));
+			// String str = HttpUtil.sendPost(Configure.esQueryServiceUrl,
+			// bodyString.getBytes("utf-8"));
+			// System.out.println(str);
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			HttpPost method = new HttpPost(Configure.esQueryServiceUrl);
+			method.addHeader("Content-type", "application/json; charset=utf-8");
+			method.setHeader("Accept", "application/json");
+			method.setEntity(new StringEntity(bodyString, Charset.forName("UTF-8")));
+
+			HttpResponse response = httpClient.execute(method);
+			resultString = EntityUtils.toString(response.getEntity());
+			System.out.println(resultString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE, ParameterCode.Result.RESULT_OK, "", "执行场景查询成功",
+				"");
+
+		return resultString;
+	}
+
+	public static void main(String[] args) {
+
+		try {
+			String str = HttpUtil.sendPost("http://10.2.118.16:8088/api/bootstrapService",
+					"{\"method\":\"\"}".getBytes("utf-8"));
 			System.out.println(str);
 		} catch (Exception e) {
 			e.printStackTrace();

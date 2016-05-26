@@ -1,0 +1,62 @@
+{
+  "scenario" : {
+    "fragmentList" : [ {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "b73b1832d78a2d2821ba67a4c00b14b6e653cfd4",
+      "enable" : true
+    } ],
+    "createTime" : "2016-05-26 08:08:44",
+    "scope" : [ "allindicies.unified", "voter_fl.entities", "aminno.entities" ],
+    "values" : null,
+    "name" : "SCEN1",
+    "comment" : "",
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "version" : null,
+    "desc" : "",
+    "tags" : [ ]
+  },
+  "fragments" : {
+    "FRGM43d28f19e95744e8924560c196a76a41" : {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "",
+      "tags" : [ ],
+      "createdBy" : "joe",
+      "createTime" : "2016-05-26 03:10:44",
+      "expression" : {
+        "expressions" : [ {
+          "logicalNot" : false,
+          "indexDocType" : "voter_fl.entities",
+          "indexDocTypeName" : "FL登记.实体信息",
+          "field" : "ident.full_name",
+          "fieldname" : "身份信息-全名(string)(当前值)(string)(当前值)(string)(当前值)(string)",
+          "fieldType" : "string",
+          "operator" : "prefixFilter",
+          "operatorName" : "前缀匹配",
+          "dataType" : "value",
+          "value" : {
+            "valueType" : "plainString",
+            "value" : "Josess"
+          },
+          "variable" : {
+            "variableClassId" : ""
+          }
+        } ],
+        "operator" : "bool_and"
+      }
+    }
+  },
+  "pagination" : {
+    "size" : 20,
+    "from" : 0
+  },
+  "method" : "query",
+  "variables" : [ ]
+}

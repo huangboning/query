@@ -1,0 +1,1526 @@
+访问的URL为：V1/index/getIndexDocTypes
+访问的参数为：{
+  "method" : "getIndexDocTypes",
+  "params" : { }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "name" : "所有数据源.归一化映射",
+    "id" : "allindicies.unified",
+    "isUnified" : "true"
+  }, {
+    "name" : "AshleyMadison.实体信息",
+    "id" : "aminno.entities",
+    "isUnified" : "false"
+  }, {
+    "name" : "FL登记.实体信息",
+    "id" : "voter_fl.entities",
+    "isUnified" : "false"
+  } ]
+}
+####没有创建场景的时候#### 
+访问的URL为：V1/scenario/getScenarioes
+访问的参数为：{
+  "method" : "getScenarioes",
+  "params" : { }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ ]
+}
+####没有创建场景的时候不能选择数据源（setScope）####
+
+####创建场景SCEN1####系统初始化场景版本库并提交一个版本
+访问的URL为：V1/scenario/createScenario
+2016-05-26 20:08:44 INFO [com.middleware.util.GitUtils] repository root directory at:\opt\es\scenario\SCNO0a4021b47c7d42efad1f280e62be705c
+git commit
+2016-05-26 20:08:44 INFO [com.middleware.util.GitUtils] Added file \opt\es\scenario\SCNO0a4021b47c7d42efad1f280e62be705c\SCNO0a4021b47c7d42efad1f280e62be705c.json to repository at \opt\es\scenario\SCNO0a4021b47c7d42efad1f280e62be705c
+####场景文件SCNO0a4021b47c7d42efad1f280e62be705c.json写入信息####
+{
+  "metaData" : {
+    "createBy" : "joe",
+    "writeOnlyMember" : [ "joe" ],
+    "readOnlyMember" : [ "joe" ]
+  },
+  "scenario" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : null,
+    "comment" : "",
+    "scope" : [ "allindicies.unified" ],
+    "tags" : [ ],
+    "createTime" : "2016-05-26 08:08:44",
+    "values" : null,
+    "fragmentList" : [ ],
+    "variableList" : [ ]
+  }
+}
+####场景文件SCNO0a4021b47c7d42efad1f280e62be705c.json写入信息####
+####场景文件写入信息后提交版本，版本号为c3a61b29e9b126ff0c669e7eb198cd9910715351####
+
+2016-05-26 20:08:44 INFO [com.middleware.util.GitUtils] repository root directory at:\opt\es\common
+2016-05-26 20:08:44 INFO [com.middleware.util.GitUtils] folder:\opt\es\common\user has been created successfully
+git commit
+2016-05-26 20:08:44 INFO [com.middleware.util.GitUtils] Added file \opt\es\common\user\joe.json to repository at \opt\es\common\user
+2016-05-26 20:08:44 INFO [com.middleware.service.impl.ScenarioServiceImpl] ScenarioInfo: SCNO0a4021b47c7d42efad1f280e62be705c is actived,and added to user/joe.json
+####用户文件user/joe.json写入信息####
+[ {
+  "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+  "name" : "SCEN1",
+  "desc" : "",
+  "version" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+  "active" : true,
+  "comment" : "",
+  "enable" : true
+} ]
+####用户文件user/joe.json写入信息####
+
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+    "active" : true,
+    "comment" : "",
+    "enable" : true
+  }
+}
+访问的URL为：V1/scenario/getScenarioes
+访问的参数为：{
+  "method" : "getScenarioes",
+  "params" : { }
+}
+2016-05-26 20:08:44 INFO [com.middleware.util.GitUtils] find expected file 'user/joe.json'
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+    "active" : true,
+    "comment" : "",
+    "enable" : true
+  } ]
+}
+访问的URL为：V1/scenario/setCurrentScenario
+访问的参数为：{
+  "method" : "setCurrentScenario",
+  "params" : {
+    "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+  }
+}
+2016-05-26 20:08:44 INFO [com.middleware.util.GitUtils] find expected file 'SCNO0a4021b47c7d42efad1f280e62be705c.json'
+2016-05-26 20:08:44 INFO [com.middleware.service.impl.ScenarioServiceImpl] getScenario:ScenarioBean:{
+  "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+  "name" : "SCEN1",
+  "desc" : "",
+  "version" : null,
+  "comment" : "",
+  "scope" : [ "allindicies.unified" ],
+  "tags" : [ ],
+  "createTime" : "2016-05-26 08:08:44",
+  "values" : null,
+  "fragmentList" : [ ],
+  "variableList" : [ ]
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "设置成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : ""
+}
+访问的URL为：V1/scenarioHistory/getScenarioHistory
+访问的参数为：{
+  "method" : "getScenarioHistory",
+  "params" : {
+    "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "current" : {
+      "committer" : "joe",
+      "commiteEmail" : "joe@163.com",
+      "comment" : "",
+      "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+      "branch" : "master",
+      "commitDate" : "2016-05-26 08:08:44"
+    },
+    "root" : {
+      "children" : [ ],
+      "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+      "position" : 1,
+      "branch" : [ "master" ],
+      "commitDate" : 1464264524
+    },
+    "commit" : {
+      "c3a61b29e9b126ff0c669e7eb198cd9910715351" : {
+        "children" : [ ],
+        "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+        "position" : 1,
+        "branch" : [ "master" ],
+        "commitDate" : 1464264524
+      }
+    }
+  }
+}
+访问的URL为：V1/scenario/switchVersion
+访问的参数为：{
+  "method" : "switchVersion",
+  "params" : {
+    "version" : "c3a61b29e9b126ff0c669e7eb198cd9910715351"
+  }
+}
+2016-05-26 20:08:44 INFO [com.middleware.util.GitUtils] find expected file 'SCNO0a4021b47c7d42efad1f280e62be705c.json'
+2016-05-26 20:08:44 INFO [com.middleware.service.impl.ScenarioServiceImpl] getScenario:ScenarioBean:{
+  "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+  "name" : "SCEN1",
+  "desc" : "",
+  "version" : null,
+  "comment" : "",
+  "scope" : [ "allindicies.unified" ],
+  "tags" : [ ],
+  "createTime" : "2016-05-26 08:08:44",
+  "values" : null,
+  "fragmentList" : [ ],
+  "variableList" : [ ]
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : ""
+}
+访问的URL为：V1/scenario/getScenario
+访问的参数为：{
+  "method" : "getScenario",
+  "params" : { }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : null,
+    "comment" : "",
+    "scope" : [ "allindicies.unified" ],
+    "tags" : [ ],
+    "createTime" : "2016-05-26 08:08:44",
+    "values" : null,
+    "fragmentList" : [ ],
+    "variableList" : [ ]
+  }
+}
+####疑问：为什么刚创建的场景scope是[ "allindicies.unified" ]？默认选择一个数据源吗？####
+
+
+####创建FRAM1####
+访问的URL为：V1/fragment/createFragment
+访问的参数为：{
+  "method" : "createFragment",
+  "params" : {
+    "name" : "FRAM1",
+    "desc" : "",
+    "tags" : [ ],
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "expression" : { }
+  }
+}
+2016-05-26 20:31:51 INFO [com.middleware.util.GitUtils] repository root directory at:\opt\es\common
+2016-05-26 20:31:51 INFO [com.middleware.util.GitUtils] folder:\opt\es\common\fragment has been created successfully
+git commit
+2016-05-26 20:31:51 INFO [com.middleware.util.GitUtils] Added file \opt\es\common\fragment\FRGM9200c218761242f3b554aadba630a764.json to repository at \opt\es\common\fragment
+####系统生成文件FRGM9200c218761242f3b554aadba630a764.json写入以下信息，并提交版本，版本号为eaaa3aca123490b00db74cbcec70f319bd7f539b####
+{
+  "metaData" : {
+    "createBy" : "joe",
+    "writeOnlyMember" : [ "joe" ],
+    "readOnlyMember" : [ "joe" ]
+  },
+  "fragment" : {
+    "id" : "FRGM9200c218761242f3b554aadba630a764",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "",
+    "tags" : [ ],
+    "createdBy" : "joe",
+    "createTime" : "2016-05-26 12:31:51",
+    "expression" : {
+      "expressions" : [ ],
+      "operator" : "bool_and"
+    }
+  }
+}
+####系统生成文件FRGM9200c218761242f3b554aadba630a764.json写入以下信息，并提交版本，版本号为eaaa3aca123490b00db74cbcec70f319bd7f539b####
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "FRGM9200c218761242f3b554aadba630a764",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "eaaa3aca123490b00db74cbcec70f319bd7f539b",
+    "enable" : true
+  }
+}
+访问的URL为：V1/scenario/getScenario
+访问的参数为：{
+  "method" : "getScenario",
+  "params" : { }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : null,
+    "comment" : "",
+    "scope" : [ "allindicies.unified" ],
+    "tags" : [ ],
+    "createTime" : "2016-05-26 08:08:44",
+    "values" : null,
+    "fragmentList" : [ {
+      "id" : "FRGM9200c218761242f3b554aadba630a764",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "eaaa3aca123490b00db74cbcec70f319bd7f539b",
+      "enable" : true
+    } ],
+    "variableList" : [ ]
+  }
+}
+
+####注意应该先设置数据源然后在创建fragment####
+访问的URL为：V1/index/setScope
+访问的参数为：{
+  "method" : "setScope",
+  "params" : {
+    "scope" : "voter_fl.entities"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "设置scope成功",
+  "csrfToken" : null,
+  "baseObject" : null
+}
+
+####创建FRAM1####
+
+访问的URL为：V1/fragment/createFragment
+访问的参数为：{
+  "method" : "createFragment",
+  "params" : {
+    "name" : "FRAM1",
+    "desc" : "",
+    "tags" : [ ],
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "expression" : { }
+  }
+}
+2016-05-26 21:24:24 INFO [com.middleware.util.GitUtils] repository root directory at:\opt\es\common
+2016-05-26 21:24:24 INFO [com.middleware.util.GitUtils] folder:\opt\es\common\fragment has been created successfully
+git commit
+2016-05-26 21:24:24 INFO [com.middleware.util.GitUtils] Added file \opt\es\common\fragment\FRGM43d28f19e95744e8924560c196a76a41.json to repository at \opt\es\common\fragment
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "396b5c7cee4252debb0c7bcab316f62af09a0470",
+    "enable" : true
+  }
+}
+访问的URL为：V1/scenario/getScenario
+访问的参数为：{
+  "method" : "getScenario",
+  "params" : { }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : null,
+    "comment" : "",
+    "scope" : [ "allindicies.unified", "voter_fl.entities" ],
+    "tags" : [ ],
+    "createTime" : "2016-05-26 08:08:44",
+    "values" : null,
+    "fragmentList" : [ {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "396b5c7cee4252debb0c7bcab316f62af09a0470",
+      "enable" : true
+    } ],
+    "variableList" : [ ]
+  }
+}
+访问的URL为：V1/index/getTableHeadDef
+访问的参数为：{
+  "method" : "getTableHeadDef",
+  "params" : {
+    "scopes" : [ "voter_fl.entities" ]
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "name" : "姓名",
+    "id" : "fullname"
+  }, {
+    "name" : "性别",
+    "id" : "gender"
+  }, {
+    "name" : "出生日期",
+    "id" : "dob"
+  }, {
+    "name" : "电子邮件",
+    "id" : "email"
+  } ]
+}
+
+####编辑FRAM1，首先是拿到FRAM1####
+
+访问的URL为：V1/fragment/getFragment
+访问的参数为：{
+  "method" : "getFragment",
+  "params" : {
+    "version" : "396b5c7cee4252debb0c7bcab316f62af09a0470",
+    "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41"
+  }
+}
+2016-05-26 21:25:41 INFO [com.middleware.util.GitUtils] find expected file 'fragment/FRGM43d28f19e95744e8924560c196a76a41.json'
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "",
+    "tags" : [ ],
+    "createdBy" : "joe",
+    "createTime" : "2016-05-26 01:24:24",
+    "expression" : {
+      "expressions" : [ ],
+      "operator" : "bool_and"
+    }
+  }
+}
+访问的URL为：V1/variables/getVariablesList
+访问的参数为：{
+  "method" : "getVariableList",
+  "params" : { }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "获取VariableList成功",
+  "csrfToken" : null,
+  "baseObject" : [ ]
+}
+
+####当编辑fragment的时候要添加表达式，添加表达式要下拉选择数据源voter_fl.entities####
+访问的URL为：V1/index/getHintFields
+访问的参数为：{
+  "method" : "getHintFields",
+  "params" : {
+    "indexDocType" : "voter_fl.entities",
+    "fieldEffective" : ""
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "voter_fl.entities.alldoctype",
+    "field" : "voter_fl.entities.alldoctype",
+    "fieldname" : "（数据源全范围）",
+    "mfield" : "",
+    "type" : "alldoctype",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "address",
+    "field" : "address",
+    "fieldname" : "地址字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "conf",
+    "field" : "conf",
+    "fieldname" : "配置字段组（conf）",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "contact",
+    "field" : "contact",
+    "fieldname" : "联系方式字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "ident",
+    "field" : "ident",
+    "fieldname" : "身份信息字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "profile",
+    "field" : "profile",
+    "fieldname" : "个人信息字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "stat",
+    "field" : "stat",
+    "fieldname" : "状态字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "time",
+    "field" : "time",
+    "fieldname" : "时间字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  } ]
+}
+####选择数据源allindicies.unified####
+访问的URL为：V1/index/getHintFields
+访问的参数为：{
+  "method" : "getHintFields",
+  "params" : {
+    "indexDocType" : "allindicies.unified",
+    "fieldEffective" : ""
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "index" : "allindicies",
+    "useDefaultOperators" : false,
+    "doctype" : "unified",
+    "fieldEffective" : "profile",
+    "field" : "profile",
+    "fieldname" : "个人信息字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "allindicies",
+    "useDefaultOperators" : false,
+    "doctype" : "unified",
+    "fieldEffective" : "ident",
+    "field" : "ident",
+    "fieldname" : "身份信息字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "allindicies",
+    "useDefaultOperators" : false,
+    "doctype" : "unified",
+    "fieldEffective" : "contact",
+    "field" : "contact",
+    "fieldname" : "联系方式字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "allindicies",
+    "useDefaultOperators" : false,
+    "doctype" : "unified",
+    "fieldEffective" : "address",
+    "field" : "address",
+    "fieldname" : "地址字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "allindicies",
+    "useDefaultOperators" : false,
+    "doctype" : "unified",
+    "fieldEffective" : "time",
+    "field" : "time",
+    "fieldname" : "时间字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  } ]
+}
+####选择个人信息字段组(hint)联动带出下拉数据(二联动)，注意参数fieldEffective####
+访问的URL为：V1/index/getHintFields
+访问的参数为：{
+  "method" : "getHintFields",
+  "params" : {
+    "indexDocType" : "voter_fl.entities",
+    "fieldEffective" : "profile"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "index" : "voter_fl",
+    "useDefaultOperators" : false,
+    "doctype" : "entities",
+    "fieldEffective" : "profile",
+    "field" : "profile",
+    "fieldname" : "个人信息字段组",
+    "mfield" : "",
+    "type" : "hint",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.dob",
+    "field" : "profile.dob",
+    "fieldname" : "个人信息-出生日期",
+    "mfield" : "",
+    "type" : "date",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.ethnicity",
+    "field" : "profile.ethnicity",
+    "fieldname" : "个人信息-种族编码",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.ethnicity_word",
+    "field" : "profile.ethnicity_word",
+    "fieldname" : "个人信息-种族",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.ethnicity_word.std",
+    "field" : "profile.ethnicity_word",
+    "fieldname" : "个人信息-种族-标准分词",
+    "mfield" : "std",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.ethnicity_word.eng",
+    "field" : "profile.ethnicity_word",
+    "fieldname" : "个人信息-种族-英语分词",
+    "mfield" : "eng",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.gender",
+    "field" : "profile.gender",
+    "fieldname" : "个人信息-性别编码",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.gender_word",
+    "field" : "profile.gender_word",
+    "fieldname" : "个人信息-性别",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.gender_word.std",
+    "field" : "profile.gender_word",
+    "fieldname" : "个人信息-性别-标准分词",
+    "mfield" : "std",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.gender_word.eng",
+    "field" : "profile.gender_word",
+    "fieldname" : "个人信息-性别-英语分词",
+    "mfield" : "eng",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.party_affilition",
+    "field" : "profile.party_affilition",
+    "fieldname" : "个人信息-党派编码",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.party_affilition.std",
+    "field" : "profile.party_affilition",
+    "fieldname" : "个人信息-党派编码-标准分词",
+    "mfield" : "std",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.party_affilition.eng",
+    "field" : "profile.party_affilition",
+    "fieldname" : "个人信息-党派编码-英语分词",
+    "mfield" : "eng",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.party_affilition_word",
+    "field" : "profile.party_affilition_word",
+    "fieldname" : "个人信息-党派",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.party_affilition_word.std",
+    "field" : "profile.party_affilition_word",
+    "fieldname" : "个人信息-党派-标准分词",
+    "mfield" : "std",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.party_affilition_word.eng",
+    "field" : "profile.party_affilition_word",
+    "fieldname" : "个人信息-党派-英语分词",
+    "mfield" : "eng",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.precinct",
+    "field" : "profile.precinct",
+    "fieldname" : "个人信息-precinct",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.precinct_group",
+    "field" : "profile.precinct_group",
+    "fieldname" : "个人信息-precinct_group",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  }, {
+    "index" : "voter_fl",
+    "useDefaultOperators" : "TRUE",
+    "doctype" : "entities",
+    "fieldEffective" : "profile.precinct_split",
+    "field" : "profile.precinct_split",
+    "fieldname" : "个人信息-precinct_split",
+    "mfield" : "",
+    "type" : "string",
+    "nestedPath" : ""
+  } ]
+}
+
+####选择个人信息性别(string)联动带出下拉数据(三联动)，注意参数fieldEffective####
+
+访问的URL为：V1/index/getInputTypes
+访问的参数为：{
+  "method" : "getInputTypes",
+  "params" : {
+    "indexDocType" : "voter_fl.entities",
+    "fieldId" : "profile.gender_word",
+    "fragmentType" : "filter"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "operator" : "existsFilter",
+    "input" : [ { } ],
+    "type" : "filter",
+    "operatorName" : "存在字段"
+  }, {
+    "operator" : "missingFilter",
+    "input" : [ { } ],
+    "type" : "filter",
+    "operatorName" : "缺失字段"
+  }, {
+    "operator" : "prefixFilter",
+    "input" : [ {
+      "inputType" : "plainString"
+    } ],
+    "type" : "filter",
+    "operatorName" : "前缀匹配"
+  }, {
+    "operator" : "regexpFilter",
+    "input" : [ {
+      "inputType" : "plainString"
+    } ],
+    "type" : "filter",
+    "operatorName" : "正则表达式匹配"
+  }, {
+    "operator" : "termFilter",
+    "input" : [ {
+      "inputType" : "plainString"
+    } ],
+    "type" : "filter",
+    "operatorName" : "分词匹配"
+  }, {
+    "operator" : "termsFilter",
+    "input" : [ {
+      "multiple" : true,
+      "inputType" : "plainString"
+    } ],
+    "type" : "filter",
+    "operatorName" : "多分词匹配"
+  } ]
+}
+
+####点击sample获取提示字段值的时候####
+访问的URL为：V1/index/getHelpValue
+访问的参数为：{
+  "method" : "getHelpValue",
+  "params" : {
+    "indexDocTypeId" : "voter_fl.entities",
+    "fieldId" : "profile.gender_word"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "result" : {
+      "field" : "profile.gender_word",
+      "hint" : {
+        "sample" : [ {
+          "cnt" : 6942009,
+          "key" : "Female"
+        }, {
+          "cnt" : 5938167,
+          "key" : "Male"
+        }, {
+          "cnt" : 260904,
+          "key" : "Unknown"
+        }, {
+          "cnt" : 2,
+          "key" : "Notdecoded_Argentina"
+        } ]
+      }
+    }
+  }
+}
+
+####更新FRAM1####
+访问的URL为：V1/fragment/updateFragment
+访问的参数为：{
+  "method" : "updateFragment",
+  "params" : {
+    "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "",
+    "tags" : [ ],
+    "createdBy" : "joe",
+    "createTime" : "2016-05-26 01:24:24",
+    "expression" : {
+      "expressions" : [ {
+        "logicalNot" : false,
+        "indexDocType" : "voter_fl.entities",
+        "indexDocTypeName" : "FL登记.实体信息",
+        "field" : "profile.gender_word",
+        "fieldname" : "个人信息-性别(string)",
+        "fieldType" : "string",
+        "operator" : "termFilter",
+        "operatorName" : "分词匹配",
+        "dataType" : "value",
+        "value" : {
+          "valueType" : "plainString",
+          "value" : "Male"
+        },
+        "variable" : {
+          "variableClassId" : ""
+        }
+      } ],
+      "operator" : "bool_and"
+    },
+    "activeitem" : -1
+  }
+}
+2016-05-26 22:05:52 INFO [com.middleware.service.impl.ScenarioServiceImpl] 查询的字符串是：{
+  "scenario" : {
+    "fragmentList" : [ {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "",
+      "enable" : true
+    } ],
+    "createTime" : "2016-05-26 08:08:44",
+    "scope" : [ "allindicies.unified", "voter_fl.entities" ],
+    "values" : null,
+    "name" : "SCEN1",
+    "comment" : "",
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "version" : null,
+    "desc" : "",
+    "tags" : [ ]
+  },
+  "fragments" : {
+    "FRGM43d28f19e95744e8924560c196a76a41" : {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "",
+      "tags" : [ ],
+      "createdBy" : "joe",
+      "createTime" : "2016-05-26 02:05:52",
+      "expression" : {
+        "expressions" : [ {
+          "logicalNot" : false,
+          "indexDocType" : "voter_fl.entities",
+          "indexDocTypeName" : "FL登记.实体信息",
+          "field" : "profile.gender_word",
+          "fieldname" : "个人信息-性别(string)",
+          "fieldType" : "string",
+          "operator" : "termFilter",
+          "operatorName" : "分词匹配",
+          "dataType" : "value",
+          "value" : {
+            "valueType" : "plainString",
+            "value" : "Male"
+          },
+          "variable" : {
+            "variableClassId" : ""
+          }
+        } ],
+        "operator" : "bool_and"
+      }
+    }
+  },
+  "pagination" : {
+    "size" : "10",
+    "from" : "0"
+  },
+  "method" : "validate",
+  "variables" : [ ]
+}
+校验返回参数{"isValid": true, "fragmentWithVarError": [], "results": [], "success": true, "varReferenced": {}}
+2016-05-26 22:05:52 INFO [com.middleware.util.GitUtils] repository root directory at:\opt\es\common
+git commit
+2016-05-26 22:05:52 INFO [com.middleware.util.GitUtils] Added file \opt\es\common\fragment\FRGM43d28f19e95744e8924560c196a76a41.json to repository at \opt\es\common\fragment
+2016-05-26 22:05:52 INFO [com.middleware.util.GitUtils] repository root directory at:\opt\es\common
+2016-05-26 22:05:52 INFO [com.middleware.util.GitUtils] folder:\opt\es\common\fragmenttemplate has been created successfully
+git commit
+2016-05-26 22:05:52 INFO [com.middleware.util.GitUtils] Added file \opt\es\common\fragmenttemplate\FRGM43d28f19e95744e8924560c196a76a41.json to repository at \opt\es\common\fragmenttemplate
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "70ba3b11cdbf9f02d0b46b1916f067e12111ed71",
+    "enable" : true
+  }
+}
+
+####提交更新场景####
+访问的URL为：V1/scenario/updateScenario
+访问的参数为：{
+  "method" : "updateScenario",
+  "params" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : null,
+    "comment" : "",
+    "scope" : [ "allindicies.unified", "voter_fl.entities" ],
+    "tags" : [ ],
+    "createTime" : "2016-05-26 08:08:44",
+    "values" : null,
+    "fragmentList" : [ {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "396b5c7cee4252debb0c7bcab316f62af09a0470",
+      "enable" : true
+    } ],
+    "variableList" : [ ],
+    "force" : false
+  }
+}
+{
+  "current" : {
+    "committer" : "joe",
+    "commiteEmail" : "joe@163.com",
+    "comment" : "",
+    "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+    "branch" : "master",
+    "commitDate" : "2016-05-26 08:08:44"
+  },
+  "history" : [ {
+    "commit" : [ {
+      "committer" : "joe",
+      "commiteEmail" : "joe@163.com",
+      "comment" : "",
+      "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+      "position" : 1,
+      "commitDate" : "2016-05-26 08:08:44"
+    } ],
+    "branch" : "master"
+  } ]
+}
+{
+  "current" : {
+    "committer" : "joe",
+    "commiteEmail" : "joe@163.com",
+    "comment" : "",
+    "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+    "branch" : "master",
+    "commitDate" : "2016-05-26 08:08:44"
+  },
+  "history" : [ {
+    "commit" : [ {
+      "committer" : "joe",
+      "commiteEmail" : "joe@163.com",
+      "comment" : "",
+      "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+      "position" : 1,
+      "commitDate" : "2016-05-26 08:08:44"
+    } ],
+    "branch" : "master"
+  } ]
+}
+{
+  "current" : {
+    "committer" : "joe",
+    "commiteEmail" : "joe@163.com",
+    "comment" : "",
+    "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+    "branch" : "master",
+    "commitDate" : "2016-05-26 08:08:44"
+  },
+  "history" : [ {
+    "commit" : [ {
+      "committer" : "joe",
+      "commiteEmail" : "joe@163.com",
+      "comment" : "",
+      "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+      "position" : 1,
+      "commitDate" : "2016-05-26 08:08:44"
+    } ],
+    "branch" : "master"
+  } ]
+}
+2016-05-26 22:26:24 INFO [com.middleware.util.GitUtils] repository root directory at:\opt\es\scenario\SCNO0a4021b47c7d42efad1f280e62be705c
+git commit
+2016-05-26 22:26:24 INFO [com.middleware.util.GitUtils] Added file \opt\es\scenario\SCNO0a4021b47c7d42efad1f280e62be705c\SCNO0a4021b47c7d42efad1f280e62be705c.json to repository at \opt\es\scenario\SCNO0a4021b47c7d42efad1f280e62be705c
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544",
+    "active" : true,
+    "comment" : "",
+    "enable" : true
+  }
+}
+访问的URL为：V1/scenarioHistory/getScenarioHistory
+访问的参数为：{
+  "method" : "getScenarioHistory",
+  "params" : {
+    "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "current" : {
+      "committer" : "joe",
+      "commiteEmail" : "joe@163.com",
+      "comment" : "",
+      "id" : "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544",
+      "branch" : "master",
+      "commitDate" : "2016-05-26 10:26:24"
+    },
+    "root" : {
+      "children" : [ "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544" ],
+      "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+      "position" : 1,
+      "branch" : [ "master" ],
+      "commitDate" : 1464264524
+    },
+    "commit" : {
+      "c3a61b29e9b126ff0c669e7eb198cd9910715351" : {
+        "children" : [ "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544" ],
+        "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+        "position" : 1,
+        "branch" : [ "master" ],
+        "commitDate" : 1464264524
+      },
+      "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544" : {
+        "parent" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+        "children" : [ ],
+        "id" : "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544",
+        "position" : 2,
+        "branch" : [ "master" ],
+        "commitDate" : 1464272784
+      }
+    }
+  }
+}
+访问的URL为：V1/scenarioHistory/getScenarioHistory
+访问的参数为：{
+  "method" : "getScenarioHistory",
+  "params" : {
+    "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "current" : {
+      "committer" : "joe",
+      "commiteEmail" : "joe@163.com",
+      "comment" : "",
+      "id" : "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544",
+      "branch" : "master",
+      "commitDate" : "2016-05-26 10:26:24"
+    },
+    "root" : {
+      "children" : [ "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544" ],
+      "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+      "position" : 1,
+      "branch" : [ "master" ],
+      "commitDate" : 1464264524
+    },
+    "commit" : {
+      "c3a61b29e9b126ff0c669e7eb198cd9910715351" : {
+        "children" : [ "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544" ],
+        "id" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+        "position" : 1,
+        "branch" : [ "master" ],
+        "commitDate" : 1464264524
+      },
+      "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544" : {
+        "parent" : "c3a61b29e9b126ff0c669e7eb198cd9910715351",
+        "children" : [ ],
+        "id" : "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544",
+        "position" : 2,
+        "branch" : [ "master" ],
+        "commitDate" : 1464272784
+      }
+    }
+  }
+}
+访问的URL为：V1/scenario/switchVersion
+访问的参数为：{
+  "method" : "switchVersion",
+  "params" : {
+    "version" : "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544"
+  }
+}
+2016-05-26 22:26:24 INFO [com.middleware.util.GitUtils] find expected file 'SCNO0a4021b47c7d42efad1f280e62be705c.json'
+2016-05-26 22:26:24 INFO [com.middleware.service.impl.ScenarioServiceImpl] getScenario:ScenarioBean:{
+  "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+  "name" : "SCEN1",
+  "desc" : "",
+  "version" : null,
+  "comment" : "",
+  "scope" : [ "allindicies.unified", "voter_fl.entities" ],
+  "tags" : [ ],
+  "createTime" : "2016-05-26 08:08:44",
+  "values" : null,
+  "fragmentList" : [ {
+    "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "70ba3b11cdbf9f02d0b46b1916f067e12111ed71",
+    "enable" : true
+  } ],
+  "variableList" : [ ]
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : ""
+}
+访问的URL为：V1/scenario/switchVersion
+访问的参数为：{
+  "method" : "switchVersion",
+  "params" : {
+    "version" : "bead6c6dd0a92813e857e5b1ab5c6d5cd9562544"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : null
+}
+访问的URL为：V1/scenario/getScenario
+访问的参数为：{
+  "method" : "getScenario",
+  "params" : { }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : null,
+    "comment" : "",
+    "scope" : [ "allindicies.unified", "voter_fl.entities" ],
+    "tags" : [ ],
+    "createTime" : "2016-05-26 08:08:44",
+    "values" : null,
+    "fragmentList" : [ {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "70ba3b11cdbf9f02d0b46b1916f067e12111ed71",
+      "enable" : true
+    } ],
+    "variableList" : [ ]
+  }
+}
+访问的URL为：V1/scenario/getScenario
+访问的参数为：{
+  "method" : "getScenario",
+  "params" : { }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "name" : "SCEN1",
+    "desc" : "",
+    "version" : null,
+    "comment" : "",
+    "scope" : [ "allindicies.unified", "voter_fl.entities" ],
+    "tags" : [ ],
+    "createTime" : "2016-05-26 08:08:44",
+    "values" : null,
+    "fragmentList" : [ {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "70ba3b11cdbf9f02d0b46b1916f067e12111ed71",
+      "enable" : true
+    } ],
+    "variableList" : [ ]
+  }
+}
+访问的URL为：V1/index/getTableHeadDef
+访问的参数为：{
+  "method" : "getTableHeadDef",
+  "params" : {
+    "scopes" : [ "voter_fl.entities", "voter_fl.entities" ]
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "name" : "姓名",
+    "id" : "fullname"
+  }, {
+    "name" : "性别",
+    "id" : "gender"
+  }, {
+    "name" : "出生日期",
+    "id" : "dob"
+  }, {
+    "name" : "电子邮件",
+    "id" : "email"
+  } ]
+}
+访问的URL为：V1/index/getTableHeadDef
+访问的参数为：{
+  "method" : "getTableHeadDef",
+  "params" : {
+    "scopes" : [ "voter_fl.entities", "voter_fl.entities", "voter_fl.entities" ]
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : [ {
+    "name" : "姓名",
+    "id" : "fullname"
+  }, {
+    "name" : "性别",
+    "id" : "gender"
+  }, {
+    "name" : "出生日期",
+    "id" : "dob"
+  }, {
+    "name" : "电子邮件",
+    "id" : "email"
+  } ]
+}
+
+####场景执行查询####
+访问的URL为：V1/scenario/executeScenario
+访问的参数为：{
+  "method" : "executeScenario",
+  "params" : {
+    "position" : 0,
+    "recCount" : 0
+  }
+}
+2016-05-26 22:54:22 INFO [com.middleware.util.GitUtils] find expected file 'fragment/FRGM43d28f19e95744e8924560c196a76a41.json'
+2016-05-26 22:54:22 INFO [com.middleware.service.impl.ScenarioServiceImpl] 查询的字符串是：{
+  "scenario" : {
+    "fragmentList" : [ {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "2ee49f76c99d25d34d64ff3806181fc6e9f7855b",
+      "enable" : true
+    } ],
+    "createTime" : "2016-05-26 08:08:44",
+    "scope" : [ "allindicies.unified", "voter_fl.entities" ],
+    "values" : null,
+    "name" : "SCEN1",
+    "comment" : "",
+    "id" : "SCNO0a4021b47c7d42efad1f280e62be705c",
+    "version" : null,
+    "desc" : "",
+    "tags" : [ ]
+  },
+  "fragments" : {
+    "FRGM43d28f19e95744e8924560c196a76a41" : {
+      "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "name" : "FRAM1",
+      "desc" : "",
+      "type" : "filter",
+      "objectType" : "directInstance",
+      "version" : "",
+      "tags" : [ ],
+      "createdBy" : "joe",
+      "createTime" : "2016-05-26 02:52:09",
+      "expression" : {
+        "expressions" : [ {
+          "logicalNot" : false,
+          "indexDocType" : "allindicies.unified",
+          "indexDocTypeName" : "所有数据源.归一化映射",
+          "field" : "profile.height",
+          "fieldname" : "个人信息-身高(long)",
+          "fieldType" : "long",
+          "operator" : "rangeFilter",
+          "operatorName" : "取值范围",
+          "dataType" : "value",
+          "value" : {
+            "valueType" : "valueRange",
+            "value" : {
+              "gte" : 230,
+              "lte" : 250
+            }
+          },
+          "variable" : {
+            "variableClassId" : ""
+          }
+        } ],
+        "operator" : "bool_and"
+      }
+    }
+  },
+  "pagination" : {
+    "size" : 20,
+    "from" : 0
+  },
+  "method" : "query",
+  "variables" : [ ]
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "服务器数据查询错误",
+  "csrfToken" : "05d1dea1a75a4813a32c9b0d8f234a94",
+  "baseObject" : {
+    "results" : [ ],
+    "success" : false
+  }
+}

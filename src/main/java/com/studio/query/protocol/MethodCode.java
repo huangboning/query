@@ -190,4 +190,11 @@ public class MethodCode {
 	 * ES接口 getGeocoding 查询位置
 	 */
 	public static final String GET_GEOCODING = "getGeocoding";
+	
+	/**
+	 * ES接口 executeScenario 执行场景查询
+	 */
+	public static final String EXECUTE_SCENE = "executeScenario";
+	
+	
 }

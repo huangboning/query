@@ -176,6 +176,8 @@ public class InterfaceAction extends BaseAction {
 						returnString = queryService.getHintFields(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_GEOCODING)) {
 						returnString = queryService.getGeocoding(bodyString);
+					} else if (methodCode.equals(MethodCode.EXECUTE_SCENE)) {
+						returnString = queryService.executeScenario(bodyString);
 					} else {
 						this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER,
 								"该接口未实现", "");
