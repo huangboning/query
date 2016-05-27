@@ -102,6 +102,8 @@ public class InterfaceAction extends BaseAction {
 						returnString = sceneService.getSceneHistory(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.SWITCH_SCENE)) {
 						returnString = sceneService.switchScene(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.SWITCH_VERSION)) {
+						returnString = sceneService.switchVersion(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_SCENE_VERSION)) {
 						returnString = sceneService.getSceneVersion(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CLOSE_VERSION)) {

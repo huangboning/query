@@ -43,6 +43,10 @@ public class MethodCode {
 	 */
 	public static final String SWITCH_SCENE = "switchScenario";
 	/**
+	 * 切换场景版本
+	 */
+	public static final String SWITCH_VERSION = "switchVersion";
+	/**
 	 * 获取某版本场景
 	 */
 	public static final String GET_SCENE_VERSION = "getScenarioVersion";

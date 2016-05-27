@@ -14,9 +14,12 @@ public class Fragment extends Page {
 	private String fragmentDesc;
 	private int fragmentEnable;
 	private int fragmentActive;
+	private String fragmentEnableStr;
+	private String fragmentActiveStr;
 	private String fragmentExpression;
 
 	private Date fragmentDate;
+	private String fragmentDateStr;
 
 	public int getFragmentId() {
 		return fragmentId;
@@ -74,6 +77,22 @@ public class Fragment extends Page {
 		this.fragmentDesc = fragmentDesc;
 	}
 
+	public Date getFragmentDate() {
+		return fragmentDate;
+	}
+
+	public void setFragmentDate(Date fragmentDate) {
+		this.fragmentDate = fragmentDate;
+	}
+
+	public String getFragmentExpression() {
+		return fragmentExpression;
+	}
+
+	public void setFragmentExpression(String fragmentExpression) {
+		this.fragmentExpression = fragmentExpression;
+	}
+
 	public int getFragmentEnable() {
 		return fragmentEnable;
 	}
@@ -90,20 +109,28 @@ public class Fragment extends Page {
 		this.fragmentActive = fragmentActive;
 	}
 
-	public Date getFragmentDate() {
-		return fragmentDate;
+	public String getFragmentEnableStr() {
+		return fragmentEnableStr;
 	}
 
-	public void setFragmentDate(Date fragmentDate) {
-		this.fragmentDate = fragmentDate;
+	public void setFragmentEnableStr(String fragmentEnableStr) {
+		this.fragmentEnableStr = fragmentEnableStr;
 	}
 
-	public String getFragmentExpression() {
-		return fragmentExpression;
+	public String getFragmentActiveStr() {
+		return fragmentActiveStr;
 	}
 
-	public void setFragmentExpression(String fragmentExpression) {
-		this.fragmentExpression = fragmentExpression;
+	public void setFragmentActiveStr(String fragmentActiveStr) {
+		this.fragmentActiveStr = fragmentActiveStr;
+	}
+
+	public String getFragmentDateStr() {
+		return fragmentDateStr;
+	}
+
+	public void setFragmentDateStr(String fragmentDateStr) {
+		this.fragmentDateStr = fragmentDateStr;
 	}
 
 }

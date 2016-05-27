@@ -8,8 +8,13 @@ public class Constants {
 	public static String SHARE_FRAGMENT_REPOSITORY_NAME="shareFragment";
 	public static String SHARE_VARIABLE_REPOSITORY_NAME="shareVariable";
 
+	public static String KEY_SET_SCOPE="keySetScope";
+	public static String KEY_FRGM="keyFRGM";
+	public static String KEY_VAR="keyVAR";
+	
 	public static String KEY_SCENE_PATH="KEY_SCENE_PATH";
 	public static String SCENE_ACTIVE="SCENE_ACTIVE";
+	public static String SCENE_VERSION="SCENE_VERSION";
 	
 	public static String KEY_FRAGMENT_ADD="KEY_FRAGMENT_ADD";
 	public static String KEY_FRAGMENT_UPDATE="KEY_FRAGMENT_UPDATE";

@@ -9,12 +9,15 @@ public class Variable extends Page {
 	private int sceneId;
 	private String variableUUID;
 	private int variableScope;
+	private String variableScopeStr;
 	private String fragmentUUID;
 	private String variableName;
 	private String variableType;
 	private String variableObjType;
 	private String variableDesc;
 	private Date variableDate;
+	private String variableDateStr;
+	private String variableExpression;
 
 	public int getVariableId() {
 		return variableId;
@@ -94,6 +97,30 @@ public class Variable extends Page {
 
 	public void setVariableDate(Date variableDate) {
 		this.variableDate = variableDate;
+	}
+
+	public String getVariableExpression() {
+		return variableExpression;
+	}
+
+	public void setVariableExpression(String variableExpression) {
+		this.variableExpression = variableExpression;
+	}
+
+	public String getVariableScopeStr() {
+		return variableScopeStr;
+	}
+
+	public void setVariableScopeStr(String variableScopeStr) {
+		this.variableScopeStr = variableScopeStr;
+	}
+
+	public String getVariableDateStr() {
+		return variableDateStr;
+	}
+
+	public void setVariableDateStr(String variableDateStr) {
+		this.variableDateStr = variableDateStr;
 	}
 
 }
