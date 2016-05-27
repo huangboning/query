@@ -1,6 +1,7 @@
 package com.studio.query.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -147,61 +148,12 @@ public class SceneService {
 				return resultString;
 			}
 
-			JSONObject sceneJson = new JSONObject();
-			JSONObject currentJson = new JSONObject();
-			JSONObject rootJson = new JSONObject();
-			JSONArray commitJsons = new JSONArray();
+			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
+					+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneList.get(0).getSceneGit();
 
-			currentJson.put("committer", "test2");
-			currentJson.put("commiteEmail", "test2@zq.com");
-			currentJson.put("comment", "");
-			currentJson.put("version", "235c0729afe31e95b0f44d18f9b998f15f7c9b90");
-			currentJson.put("branch", "master");
-			currentJson.put("commitDate", "2016-04-25 12:55:51");
-
-			JSONArray childrenObjs = new JSONArray();
-			childrenObjs.add("a2928f08a4d68905409ca1dae4dedc5b87b7634c");
-			rootJson.put("children", childrenObjs.toString());
-			rootJson.put("version", "b1a3d9419283efa738ae1aa5d16d84310d862419");
-			JSONArray branchObjs = new JSONArray();
-			branchObjs.add("master");
-			branchObjs.add("dev");
-			rootJson.put("branch", branchObjs.toString());
-			rootJson.put("commitDate", "2016-04-22 11:50:01");
-
-			JSONObject cJson1 = new JSONObject();
-			cJson1.put("version", "b14744c957c1e57f395106f8590ecc1de30bd53f");
-			cJson1.put("committer", "test2");
-			cJson1.put("commiteEmail", "test2@zq.com");
-			cJson1.put("comment", "");
-			cJson1.put("parent", "e7f44c4f35571c16698644a0401dc3a716223110");
-			JSONArray chiObjs1 = new JSONArray();
-			chiObjs1.add("d87ab50598cf705a56a50e7bd7ec0c60056ea23a");
-			chiObjs1.add("d87ab50598cf705a56a50e7bd7ec0c60056ea23b");
-			cJson1.put("children", chiObjs1.toString());
-			cJson1.put("branch", branchObjs.toString());
-			cJson1.put("commitDate", "2016-04-22 11:50:01");
-			JSONObject cJson2 = new JSONObject();
-			cJson2.put("version", "b14744c957c1e57f395106f8590ecc1de30bd522");
-			cJson2.put("committer", "test2");
-			cJson2.put("commiteEmail", "test2@zq.com");
-			cJson2.put("comment", "");
-			cJson2.put("parent", "e7f44c4f35571c16698644a0401dc3a716223122");
-			JSONArray chiObjs2 = new JSONArray();
-			chiObjs2.add("d87ab50598cf705a56a50e7bd7ec0c60056ea23c");
-			chiObjs2.add("d87ab50598cf705a56a50e7bd7ec0c60056ea23d");
-			cJson2.put("children", chiObjs2.toString());
-			cJson2.put("branch", branchObjs.toString());
-			cJson2.put("commitDate", "2016-04-22 11:50:01");
-			commitJsons.add(cJson1);
-			commitJsons.add(cJson2);
-
-			sceneJson.put("current", currentJson.toString());
-			sceneJson.put("root", rootJson.toString());
-			sceneJson.put("commit", commitJsons.toString());
-
-			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_OK, "",
-					"查询场景历史版本成功", sceneJson.toString());
+			Map map=JGitService.readLogTree(scenePath, new HashMap<>());
+			resultString = StringUtil.packetObjectSpec(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_OK, "",
+					"查询场景历史版本成功", map);
 
 		}
 		return resultString;

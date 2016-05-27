@@ -1,6 +1,7 @@
 package com.studio.query.util;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import net.sf.json.JSONObject;
 
@@ -28,6 +29,17 @@ public class StringUtil {
 		o.put("errorCode", errorCode);
 		o.put("message", message);
 		o.put("baseObject", baseObject);
+		return o.toString();
+	}
+
+	public static String packetObjectSpec(String optCode, String statusCode, String errorCode, String message,
+			Map mapObject) {
+		JSONObject o = new JSONObject();
+		o.put("optCode", optCode);
+		o.put("statusCode", statusCode);
+		o.put("errorCode", errorCode);
+		o.put("message", message);
+		o.put("baseObject", mapObject);
 		return o.toString();
 	}
 
@@ -63,11 +75,13 @@ public class StringUtil {
 		return sceneGit;
 
 	}
+
 	public static String createShareFragmentGit() {
 		String shareFragmentGit = String.valueOf(Calendar.getInstance().getTimeInMillis());
 		return shareFragmentGit;
 
 	}
+
 	public static String createShareVariableGit() {
 		String shareVariableGit = String.valueOf(Calendar.getInstance().getTimeInMillis());
 		return shareVariableGit;

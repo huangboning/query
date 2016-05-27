@@ -8,10 +8,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
@@ -30,6 +36,8 @@ import com.studio.query.entity.Account;
 import com.studio.query.entity.Committer;
 import com.studio.query.util.DateUtil;
 import com.studio.query.util.StringUtil;
+
+import net.sf.json.JSONObject;
 
 public class JGitService {
 	Logger loger = Logger.getLogger(JGitService.class);
@@ -132,6 +140,7 @@ public class JGitService {
 		}
 		return true;
 	}
+
 	/**
 	 * 初始化共享变量版本库
 	 * 
@@ -158,6 +167,7 @@ public class JGitService {
 		}
 		return true;
 	}
+
 	public static Repository openRepository(String path) {
 
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
@@ -224,6 +234,7 @@ public class JGitService {
 			return false;
 		}
 	}
+
 	/**
 	 * 提交共享变量(发布共享的时候初始化template.txt并提交发布的内容)
 	 * 
@@ -252,6 +263,7 @@ public class JGitService {
 			return false;
 		}
 	}
+
 	/**
 	 * 获取最后一次提交者信息
 	 * 
@@ -385,22 +397,281 @@ public class JGitService {
 		return committerList;
 	}
 
-	public static void main(String[] args) {
+	public static void recursiveRead(String parentName, Map<String, List<String>> commitTree,
+			Map<String, Integer> sortedCommitMap, int level) {
+		int currentLevel = 0;
+		List<String> childList = commitTree.get(parentName);
+		for (String commit : childList) {
+			sortedCommitMap.put(commit, level);
+		}
 
-		try (Repository repository = JGitService
-				.openRepository("E:/gitquery/2016/5/huangboning/shareFragment/1463582916514")) {
-			Git git = new Git(repository);
-			for (RevCommit revCommit : git.log().call()) {
-				// ObjectId objId =
-				// git.getRepository().resolve(revCommit.name());
-
-				System.out.println(revCommit.getName());
+		currentLevel = level + 1;
+		for (String commit : childList) {
+			if (commitTree.containsKey(commit)) {
+				recursiveRead(commit, commitTree, sortedCommitMap, currentLevel);
 			}
-			git.close();
-		} catch (Exception e) {
+		}
+	}
 
+	public static Map readLogTree(String relativePath, Map branchMapping) {
+		Map historyMap = new HashMap();
+		List branchList = new ArrayList();
+		Map branchMap = null;
+		List<Map> commitList = null;
+		Map commitMap = null;
+		Map<String, Integer> sortedCommitMap = new HashMap<String, Integer>();
+		Set<String> uniqueCommitSet = new HashSet<String>();
+		List<RevCommit> allCommitList = null;
+		String shortBranchName = null;
+		Map<String, List<String>> commitTree = new HashMap();
+		List<String> childList = new ArrayList();
+		String parentName = null;
+
+		try {
+			Repository repository = openRepository(relativePath);
+			Git git = new Git(repository);
+
+			RevWalk walk = new RevWalk(repository);
+
+			// read HEAD
+			ObjectId head = repository.resolve(Constants.HEAD);
+			if (null == head)
+				return null;
+			RevCommit headCommit = walk.parseCommit(head);
+
+			Iterable<RevCommit> commits = git.log().all().call();
+			// .addPath("aed1669c345345b3acbb6142274573b2.json")
+
+			// 统计总提交数 以及每个提交的顺序
+			allCommitList = new ArrayList();
+			int i = 0;
+			for (RevCommit commit : commits) {
+				i++;
+				// logMap.put(commit.getName(), i);
+				allCommitList.add(commit);
+
+				if (commit.getParentCount() != 0) {
+					for (RevCommit parent : commit.getParents()) {
+						parentName = parent.getName();
+						if (commitTree.containsKey(parentName)) {
+							childList = commitTree.get(parentName);
+						} else {
+							childList = new ArrayList();
+						}
+					}
+				} else {
+					parentName = "root";
+					childList = new ArrayList();
+				}
+				childList.add(commit.getName());
+				commitTree.put(parentName, childList);
+			}
+			recursiveRead("root", commitTree, sortedCommitMap, 1);
+			List<Ref> branches = git.branchList().call();
+			commitList = new ArrayList();
+
+			List<String> masterList = new ArrayList<String>();
+			for (Ref branch : branches) {
+				String branchName = branch.getName();
+				boolean isDetachedBranch = false;
+				if (branchName.equals("HEAD")) {
+					isDetachedBranch = true;
+				}
+				if (!branchName.startsWith(Constants.R_HEADS)) {
+					if (!isDetachedBranch) {
+						continue;
+					}
+				}
+
+				shortBranchName = branchName.substring(branchName.lastIndexOf("/") + 1);
+				masterList.add(shortBranchName);
+				branchMap = new HashMap();
+				// commitList = new ArrayList();
+				for (RevCommit commit : allCommitList) {
+					boolean foundInThisBranch = false;
+					RevCommit targetCommit = walk.parseCommit(repository.resolve(commit.getName()));
+					// System.out.println("targetCommit: "+ targetCommit);
+					Map<String, Ref> testRef = repository.getAllRefs();
+					for (Map.Entry<String, Ref> e : testRef.entrySet()) {
+						if (e.getKey().startsWith(Constants.R_HEADS)) {
+							if (walk.isMergedInto(targetCommit, walk.parseCommit(e.getValue().getObjectId()))) {
+								String foundInBranch = e.getValue().getName();
+								if (branchName.equals(foundInBranch)) {
+									foundInThisBranch = true;
+									break;
+								}
+							}
+						} else if (isDetachedBranch) {
+							if (walk.isMergedInto(targetCommit, walk.parseCommit(e.getValue().getObjectId()))) {
+								String foundInBranch = e.getValue().getName();
+								if (branchName.equals(foundInBranch)) {
+									foundInThisBranch = true;
+									break;
+								}
+							}
+						}
+					}
+					if (foundInThisBranch) {
+						if (headCommit.getName().equals(commit.getName())) {
+							commitMap = new HashMap();
+							commitMap.put("id", headCommit.getName());
+							commitMap.put("branch", shortBranchName);
+							commitMap.put("comment", headCommit.getShortMessage());
+							commitMap.put("committer", headCommit.getCommitterIdent().getName());
+							commitMap.put("commiteEmail", headCommit.getCommitterIdent().getEmailAddress());
+							commitMap.put("commitDate",
+									DateUtil.dateTimeFormat(headCommit.getCommitterIdent().getWhen()));
+							historyMap.put("current", commitMap);
+						}
+						int position = sortedCommitMap.get(commit.getName());
+						commitMap = new HashMap();
+						commitMap.put("id", commit.getName());
+						commitMap.put("position", position);
+						commitMap.put("commitDate", DateUtil.dateTimeFormat(commit.getCommitterIdent().getWhen()));
+						int oop = commit.getParents().length;
+						if (oop > 0) {
+							commitMap.put("parent",
+									commit.getParents()[commit.getParents().length - 1].getName().toString());
+						} else {
+							historyMap.put("root", commitMap);
+						}
+						List<String> branchNameList = new ArrayList<String>();
+						branchNameList.add(shortBranchName);
+						if (oop > 0) {
+							commitMap.put("branch", branchNameList);
+						} else {
+							commitMap.put("branch", masterList);
+						}
+
+						boolean isAdd = true;
+						if (commitList.size() == 0) {
+							commitList.add(commitMap);
+						} else {
+							for (int y = 0; y < commitList.size(); y++) {
+								Map map = (Map) commitList.get(y);
+								String id = (String) map.get("id");
+								if (commit.getName().equals(id)) {
+									List<String> bName = (List) map.get("branch");
+									if (!bName.contains(shortBranchName)) {
+										bName.add(shortBranchName);
+										map.put("branch", bName);
+										commitList.remove(y);
+										commitList.add(y, map);
+										isAdd = false;
+										break;
+									}
+								}
+							}
+							if (isAdd) {
+								commitList.add(commitMap);
+							}
+						}
+					}
+				}
+			}
+			changeResult(commitList, commitTree, branchMapping);
+			Map nMap = new HashMap();
+			for (int y = 0; y < commitList.size(); y++) {
+				Map eachMap = commitList.get(y);
+				String id = (String) eachMap.get("id");
+				nMap.put(id, eachMap);
+			}
+
+			Set<String> keys = nMap.keySet();
+			keys.forEach(key -> {
+				Map lMap = (Map) nMap.get(key);
+				List<String> childrens = (List) lMap.get("children");
+				for (int j = 0; j < childrens.size(); j++) {
+					Map cMap = (Map) nMap.get(childrens.get(j));
+					List<String> branchNames = (List) cMap.get("branch");
+					if (branchNames.contains("master")) {
+						if (j == 0) {
+							continue;
+						} else {
+							childrens.add(0, childrens.get(j));
+							childrens.remove(j + 1);
+							break;
+						}
+					} else {
+						continue;
+					}
+				}
+			});
+
+			historyMap.put("commit", nMap);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} catch (GitAPIException e) {
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		return historyMap;
+	}
+
+	private static void changeResult(List<Map> commitList, Map<String, List<String>> commitTree, Map branchMappingMap) {
+
+		for (int s = 0; s < commitList.size(); s++) {
+			Map map = (Map) commitList.get(s);
+			String id = (String) map.get("id");
+			for (int b = 0; b < commitTree.size(); b++) {
+				List<String> kMap = (List) commitTree.get(id);
+				if (kMap == null) {
+					map.put("children", new ArrayList());
+					List<String> branchList = (List) map.get("branch");
+					int y = -1;
+					for (int u = 0; u < branchList.size(); u++) {
+						if (branchList.get(u).equals("HEAD")) {
+							y = u;
+						}
+					}
+					if (y != -1) {
+						branchList.remove(y);
+					}
+					List bS = new ArrayList();
+					String gitBranchName = branchList.get(0);
+					if ("master".equals(gitBranchName)) {
+						bS.add("master");
+						map.put("branch", bS);
+					} else {
+						String inputS = (String) branchMappingMap.get(gitBranchName);
+						if (null == inputS) {
+							inputS = gitBranchName;
+						}
+						bS.add(inputS);
+						map.put("branch", bS);
+					}
+				} else {
+					map.put("children", kMap);
+				}
+				commitList.remove(s);
+				commitList.add(s, map);
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		
+		Map map=readLogTree("E:/gitquery/2016/5/huangboning/scene/1464357955585", new HashMap<>());
+		System.out.println(map.get("current"));
+		JSONObject obj=new JSONObject();
+		obj.put("baseObject", map);
+		System.out.println(obj.toString());
+
+//		try (Repository repository = JGitService
+//				.openRepository("E:/gitquery/2016/5/huangboning/scene/1464357955585")) {
+//			Git git = new Git(repository);
+//			for (RevCommit revCommit : git.log().call()) {
+//				// ObjectId objId =
+//				// git.getRepository().resolve(revCommit.name());
+//
+//				System.out.println(revCommit.getName());
+//			}
+//			git.close();
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//		}
 
 		// try (Repository repository =
 		// JGitService.openRepository("E:/gittest")) {
