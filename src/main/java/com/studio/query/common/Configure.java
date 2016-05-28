@@ -7,6 +7,8 @@ import java.util.Properties;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import com.studio.query.util.CacheUtil;
+
 public class Configure implements ServletContextListener {
 	public static String gitRepositoryPath;
 	public static String systemEmail;
@@ -61,6 +63,11 @@ public class Configure implements ServletContextListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//测试初始化数据源
+		CacheUtil cacheUtil=new CacheUtil();
+		String testPath=arg0.getServletContext().getRealPath("/")+"WEB-INF/classes/source.txt";
+		cacheUtil.getIndexDocTypes( testPath);
+		cacheUtil.getIndexDocTypesOrigin(testPath);
 	}
 
 }

@@ -21,7 +21,7 @@ public class FileUtil {
 		}
 	}
 
-	public static String ReadFile(String path) {
+	public static String readFile(String path) {
 		File file = new File(path);
 		BufferedReader reader = null;
 		StringBuffer strBuffer = new StringBuffer();

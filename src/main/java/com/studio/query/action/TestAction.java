@@ -69,19 +69,19 @@ public class TestAction {
 			// headJson.put("method", "getTableHeadDef");
 			// headJson.put("params", "");
 
-			// // 创建场景
-			// JSONObject createSceneJson = new JSONObject();
-			// createSceneJson.put("method", "createScene");
-			// JSONObject createSceneObj = new JSONObject();
-			// createSceneObj.put("sceneName", "foxquery2");
-			// createSceneObj.put("sceneDesc", "我的第二个场景foxquery");
-			// createSceneJson.put("params", createSceneObj);
+			 // 创建场景
+			 JSONObject createSceneJson = new JSONObject();
+			 createSceneJson.put("method", "createScene");
+			 JSONObject createSceneObj = new JSONObject();
+			 createSceneObj.put("sceneName", "foxquery2");
+			 createSceneObj.put("sceneDesc", "我的第三个场景foxquery");
+			 createSceneJson.put("params", createSceneObj);
 
-			// // 获取场景列表
-			// JSONObject listSceneJson = new JSONObject();
-			// listSceneJson.put("method", "getScenarioes");
-			// JSONObject listSceneObj = new JSONObject();
-			// listSceneJson.put("params", listSceneObj);
+			 // 获取场景列表
+			 JSONObject listSceneJson = new JSONObject();
+			 listSceneJson.put("method", "getScenarioes");
+			 JSONObject listSceneObj = new JSONObject();
+			 listSceneJson.put("params", listSceneObj);
 
 			// 获取场景历史版本
 			JSONObject historySceneJson = new JSONObject();
@@ -94,7 +94,7 @@ public class TestAction {
 			JSONObject switchSceneJson = new JSONObject();
 			switchSceneJson.put("method", "switchScenario");
 			JSONObject switchSceneObj = new JSONObject();
-			switchSceneObj.put("sceneUUID", "SCNO12c2b35ff3394866ab12cf15ffbecfbb");
+			switchSceneObj.put("sceneUUID", "SCNO7ad652da15cd4172b042c901d0dce3c3");
 			switchSceneJson.put("params", switchSceneObj);
 
 			// 切换版本
@@ -106,7 +106,7 @@ public class TestAction {
 
 			// 获取某版本场景
 			JSONObject sceneVersionJson = new JSONObject();
-			sceneVersionJson.put("method", "getScenarioVersion");
+			sceneVersionJson.put("method", "getCurrentVersion");
 			sceneVersionJson.put("params", "");
 
 			// // 更新场景
@@ -119,16 +119,16 @@ public class TestAction {
 			//
 			// updateSceneJson.put("params", updateSceneObj);
 
-			// // 创建fragment
-			// JSONObject createFragmentJson = new JSONObject();
-			// createFragmentJson.put("method", "createFragment");
-			// JSONObject createFragmentObj = new JSONObject();
-			// createFragmentObj.put("fragmentName", "FRAM1");
-			// createFragmentObj.put("fragmentType", "filter");
-			// createFragmentObj.put("fragmentObjType", "directInstance");
-			// createFragmentObj.put("fragmentDesc", "my fram");
-			// createFragmentObj.put("fragmentExpression", "{expression here}");
-			// createFragmentJson.put("params", createFragmentObj);
+			// 创建fragment
+			JSONObject createFragmentJson = new JSONObject();
+			createFragmentJson.put("method", "createFragment");
+			JSONObject createFragmentObj = new JSONObject();
+			createFragmentObj.put("fragmentName", "FRAM1");
+			createFragmentObj.put("fragmentType", "filter");
+			createFragmentObj.put("fragmentObjType", "directInstance");
+			createFragmentObj.put("fragmentDesc", "my fram");
+			createFragmentObj.put("fragmentExpression", "{expression here}");
+			createFragmentJson.put("params", createFragmentObj);
 
 			// 获取fragment
 			JSONObject getFragmentJson = new JSONObject();
@@ -154,12 +154,13 @@ public class TestAction {
 			JSONObject deleteFragmentObj = new JSONObject();
 			deleteFragmentObj.put("fragmentUUID", "FRGMe191a9b9215641308463f1ff46ee5786");
 			deleteFragmentJson.put("params", deleteFragmentObj);
-
+			
 			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
-					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"),
-					switchVersionJson.toString().getBytes("utf-8"), historySceneJson.toString().getBytes("utf-8"));
-			System.out.println(switchVersionJson.toString());
+					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
+					listSceneJson.toString().getBytes("utf-8"));
+			System.out.println(listSceneJson.toString());
 			System.out.println(result);
+
 
 			// // 关闭场景版本
 			// JSONObject closeSceneJson = new JSONObject();
@@ -329,7 +330,24 @@ public class TestAction {
 			// // ES接口 getIndexDocTypes
 			// JSONObject getInitDocTypeJson = new JSONObject();
 			// getInitDocTypeJson.put("method", "getIndexDocTypes");
-			// getInitDocTypeJson.put("params", "{}");
+			// getInitDocTypeJson.put("params", "");
+
+			// // ES接口 getHintFields
+			// JSONObject getHintFieldsJson = new JSONObject();
+			// getHintFieldsJson.put("method", "getHintFields");
+			// JSONObject getHintFieldsObj = new JSONObject();
+			// getHintFieldsObj.put("indexDocType", "voter_fl.entities");
+			// getHintFieldsObj.put("fieldEffective", "");
+			// getHintFieldsJson.put("params", getHintFieldsObj);
+
+			// // ES接口 getInputTypes
+			// JSONObject getInputTypesJson = new JSONObject();
+			// getInputTypesJson.put("method", "getInputTypes");
+			// JSONObject getInputTypesObj = new JSONObject();
+			// getInputTypesObj.put("indexDocType", "voter_fl.entities");
+			// getInputTypesObj.put("fieldId", "profile.gender_word");
+			// getInputTypesObj.put("fragmentType", "filter");
+			// getInputTypesJson.put("params", getInputTypesObj);
 
 			// // ES接口 setScope
 			// JSONObject setScopeJson = new JSONObject();
@@ -360,22 +378,6 @@ public class TestAction {
 			// getFieldValuesJson.put("method", "getFieldValues");
 			// getFieldValuesJson.put("params", "{}");
 			//
-			// // ES接口 getInputTypes
-			// JSONObject getInputTypesJson = new JSONObject();
-			// getInputTypesJson.put("method", "getInputTypes");
-			// JSONObject getInputTypesObj = new JSONObject();
-			// getInputTypesObj.put("indexDocType", "unified");
-			// getInputTypesObj.put("fieldId", "profile");
-			// getInputTypesObj.put("fragmentType", "query");
-			// getInputTypesJson.put("params", "{}");
-
-			// // ES接口 getHintFields
-			// JSONObject getHintFieldsJson = new JSONObject();
-			// getHintFieldsJson.put("method", "getHintFields");
-			// JSONObject getHintFieldsObj = new JSONObject();
-			// getHintFieldsObj.put("indexDocType", "");
-			// getHintFieldsObj.put("fieldEffective", "");
-			// getHintFieldsJson.put("params", getHintFieldsObj);
 
 			// // ES接口 getGeocoding
 			// JSONObject getGeocodingJson = new JSONObject();

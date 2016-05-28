@@ -55,10 +55,9 @@ public class FragmentService {
 			String fragmentDesc = parmJb.optString("fragmentDesc", "");
 			String fragmentEnable = parmJb.optString("fragmentEnable", "true");
 			String fragmentActive = parmJb.optString("fragmentActive", "true");
-			String fragmentExpression = parmJb.optString("fragmentExpression", "");
+			//String fragmentExpression = parmJb.optString("fragmentExpression", "");
 
-			if (StringUtil.isNullOrEmpty(fragmentName) || StringUtil.isNullOrEmpty(fragmentType)
-					|| StringUtil.isNullOrEmpty(fragmentExpression)) {
+			if (StringUtil.isNullOrEmpty(fragmentName) || StringUtil.isNullOrEmpty(fragmentType)) {
 
 				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -93,7 +92,7 @@ public class FragmentService {
 			insertFragment.setFragmentEnableStr(fragmentEnable);
 			insertFragment.setFragmentActiveStr(fragmentActive);
 			insertFragment.setFragmentDateStr(DateUtil.dateTimeFormat(new Date()));
-			insertFragment.setFragmentExpression(fragmentExpression);
+			insertFragment.setFragmentExpression("{\"expressions\":[],\"operator\":\"bool_and\"}");
 			insertFragment.setFragmentDesc(fragmentDesc);
 
 			// 将fragment保存到缓存中
@@ -116,6 +115,14 @@ public class FragmentService {
 			// if (insertResult == 1) {
 			JSONObject fragmentJsonObject = new JSONObject();
 			fragmentJsonObject.put("fragmentUUID", insertFragment.getFragmentUUID());
+			fragmentJsonObject.put("fragmentName", insertFragment.getFragmentName());
+			fragmentJsonObject.put("fragmentType", insertFragment.getFragmentType());
+			fragmentJsonObject.put("fragmentObjType", insertFragment.getFragmentObjType());
+			fragmentJsonObject.put("fragmentEnable", insertFragment.getFragmentEnableStr());
+			fragmentJsonObject.put("fragmentActive", insertFragment.getFragmentActiveStr());
+			fragmentJsonObject.put("fragmentDesc", insertFragment.getFragmentDesc());
+			fragmentJsonObject.put("fragmentCreateTime", insertFragment.getFragmentDateStr());
+			fragmentJsonObject.put("fragmentExpression", insertFragment.getFragmentExpression());
 			resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
 					"创建fragment到缓存成功，请注意在切换场景前保存场景数据。", fragmentJsonObject.toString());
 			// } else {

@@ -2,6 +2,10 @@ package com.studio.query.service;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -17,6 +21,7 @@ import com.studio.query.entity.DataSource;
 import com.studio.query.entity.HeadData;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.CacheUtil;
 import com.studio.query.util.StringUtil;
 
 import net.sf.json.JSONArray;
@@ -31,38 +36,17 @@ public class QueryService {
 	 */
 	public String getIndexDocTypes(String bodyString) {
 		String resultString = null;
-
-		try {
-			String str = HttpUtil.sendPost(Configure.esBootstrapServiceUrl, bodyString.getBytes("utf-8"));
-			System.out.println(str);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		DataSource returnDataSource1 = new DataSource();
-		returnDataSource1.setDataSourceId("所有数据源.归一化映射");
-		returnDataSource1.setDataSourceName("allindicies.unified");
-		returnDataSource1.setDataSourceIsUnified("true");
-		DataSource returnDataSource2 = new DataSource();
-		returnDataSource2.setDataSourceId("AshleyMadison.实体信息");
-		returnDataSource2.setDataSourceName("aminno.entities");
-		returnDataSource2.setDataSourceIsUnified("false");
-
-		JSONArray dataJsonArray = new JSONArray();
-
-		JSONObject dataObj1 = new JSONObject();
-		dataObj1.put("id", returnDataSource1.getDataSourceId());
-		dataObj1.put("name", returnDataSource1.getDataSourceName());
-		dataObj1.put("isUnified", returnDataSource1.getDataSourceIsUnified());
-		dataJsonArray.add(dataObj1);
-		JSONObject dataObj2 = new JSONObject();
-		dataObj2.put("id", returnDataSource2.getDataSourceId());
-		dataObj2.put("name", returnDataSource2.getDataSourceName());
-		dataObj2.put("isUnified", returnDataSource2.getDataSourceIsUnified());
-		dataJsonArray.add(dataObj2);
-
-		resultString = StringUtil.packetObject(MethodCode.GET_INDEX_DOC_TYPES, ParameterCode.Result.RESULT_OK, "",
-				"获取数据源列表成功", dataJsonArray.toString());
+		// 这里实现ES接口调用
+		// try {
+		// String str = HttpUtil.sendPost(Configure.esBootstrapServiceUrl,
+		// bodyString.getBytes("utf-8"));
+		// System.out.println(str);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		List<Map<String, String>> indexList = (List<Map<String, String>>) CacheUtil.getCacheObject("mapIndex");
+		resultString = StringUtil.packetObjectObj(MethodCode.GET_INDEX_DOC_TYPES, ParameterCode.Result.RESULT_OK, "",
+				"获取数据源列表成功", indexList);
 
 		return resultString;
 	}
@@ -72,7 +56,7 @@ public class QueryService {
 	 * 
 	 * @return
 	 */
-	public String setScope(String bodyString) {
+	public String setScope(String bodyString, Map<String, Object> session) {
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
@@ -85,6 +69,13 @@ public class QueryService {
 				return resultString;
 			}
 			// 这里设置数据源逻辑
+			List<String> scopeList = (List<String>) session.get("scope");
+			if (scopeList == null) {
+				scopeList = new ArrayList<String>();
+			}
+			for (int i = 0; i < scopeList.size(); i++) {
+               
+			}
 			try {
 				String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
 				System.out.println(str);
@@ -186,18 +177,32 @@ public class QueryService {
 	 * @return
 	 */
 	public String getInputTypes(String bodyString) {
+		// //
+		// try {
+		// String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl,
+		// bodyString.getBytes("utf-8"));
+		// System.out.println(str);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 		String resultString = null;
-		//
-		try {
-			String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
-			System.out.println(str);
-		} catch (Exception e) {
-			e.printStackTrace();
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String indexDocType = parmJb.optString("indexDocType", "");
+			String fieldId = parmJb.optString("fieldId", "");
+			String fragmentType = parmJb.optString("fragmentType", "");
+			if (StringUtil.isNullOrEmpty(indexDocType) || StringUtil.isNullOrEmpty(fieldId)
+					|| StringUtil.isNullOrEmpty(fragmentType)) {
+
+				resultString = StringUtil.packetObject(MethodCode.GET_INPUT_TYPES, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			List<JSONObject> map = CacheUtil.getInputTypes(indexDocType, fieldId, fragmentType);
+			resultString = StringUtil.packetObjectObj(MethodCode.GET_INPUT_TYPES, ParameterCode.Result.RESULT_OK, "",
+					"获取一个DocTypes下面所有的field列表成功", map);
 		}
-
-		resultString = StringUtil.packetObject(MethodCode.GET_INPUT_TYPES, ParameterCode.Result.RESULT_OK, "",
-				"获取一个DocTypes下面所有的field列表成功", "");
-
 		return resultString;
 	}
 
@@ -207,18 +212,31 @@ public class QueryService {
 	 * @return
 	 */
 	public String getHintFields(String bodyString) {
-		String resultString = null;
 		//
-		try {
-			String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
-			System.out.println(str);
-		} catch (Exception e) {
-			e.printStackTrace();
+		// try {
+		// String str = HttpUtil.sendPost(Configure.esTalbleServiceUrl,
+		// bodyString.getBytes("utf-8"));
+		// System.out.println(str);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String indexDocType = parmJb.optString("indexDocType", "");
+			String fieldEffective = parmJb.optString("fieldEffective", "");
+			if (StringUtil.isNullOrEmpty(indexDocType)) {
+
+				resultString = StringUtil.packetObject(MethodCode.GET_HINT_FIELDS, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			List<JSONObject> map = CacheUtil.getHintFields(indexDocType, fieldEffective);
+
+			resultString = StringUtil.packetObjectObj(MethodCode.GET_HINT_FIELDS, ParameterCode.Result.RESULT_OK, "",
+					"获取HintField列表成功", map);
 		}
-
-		resultString = StringUtil.packetObject(MethodCode.GET_HINT_FIELDS, ParameterCode.Result.RESULT_OK, "",
-				"获取field列表成功", "");
-
 		return resultString;
 	}
 

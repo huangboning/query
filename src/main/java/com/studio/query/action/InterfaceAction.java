@@ -93,19 +93,19 @@ public class InterfaceAction extends BaseAction {
 					if (methodCode.equals(MethodCode.CREATE_SCENE)) {
 						returnString = sceneService.createScene(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.SET_SCOPE)) {
-						returnString = queryService.setScope(bodyString);
+						returnString = queryService.setScope(bodyString, session);
 					} else if (methodCode.equals(MethodCode.GET_TABLE_HEAD_DEF)) {
 						returnString = queryService.getTableHeadDef(bodyString);
 					} else if (methodCode.equals(MethodCode.LIST_SCENE)) {
 						returnString = sceneService.getSceneList(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.HISTORY_SCENE)) {
-						returnString = sceneService.getSceneHistory(bodyString, currentAccount);
+						returnString = sceneService.getSceneHistory(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.SWITCH_SCENE)) {
 						returnString = sceneService.switchScene(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.SWITCH_VERSION)) {
 						returnString = sceneService.switchVersion(bodyString, currentAccount, session);
-					} else if (methodCode.equals(MethodCode.GET_SCENE_VERSION)) {
-						returnString = sceneService.getSceneVersion(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.GET_CURRENT_VERSION)) {
+						returnString = sceneService.getCurrentVersion(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CLOSE_VERSION)) {
 						returnString = sceneService.closeSceneVersion(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.UPDATE_SCENE)) {

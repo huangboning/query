@@ -32,8 +32,8 @@ public class StringUtil {
 		return o.toString();
 	}
 
-	public static String packetObjectSpec(String optCode, String statusCode, String errorCode, String message,
-			Map mapObject) {
+	public static String packetObjectObj(String optCode, String statusCode, String errorCode, String message,
+			Object mapObject) {
 		JSONObject o = new JSONObject();
 		o.put("optCode", optCode);
 		o.put("statusCode", statusCode);

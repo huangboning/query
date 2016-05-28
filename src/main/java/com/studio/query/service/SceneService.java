@@ -23,6 +23,7 @@ import com.studio.query.protocol.ParameterCode;
 import com.studio.query.util.CacheUtil;
 import com.studio.query.util.DateUtil;
 import com.studio.query.util.FileUtil;
+import com.studio.query.util.HistoryUtil;
 import com.studio.query.util.JsonUtil;
 import com.studio.query.util.StringUtil;
 
@@ -108,6 +109,11 @@ public class SceneService {
 		Scene findScene = new Scene();
 		findScene.setAccountId(currentAccount.getAccountId());
 		List<Scene> sceneList = sceneDao.findScene(findScene);
+		String sceneActiveUUID = HistoryUtil.getUserSceneHistory(currentAccount.getAccountName());
+		boolean isFrist = false;
+		if (StringUtil.isNullOrEmpty(sceneActiveUUID)) {
+			isFrist = true;
+		}
 		for (int i = 0; i < sceneList.size(); i++) {
 
 			Scene scene = sceneList.get(i);
@@ -115,7 +121,19 @@ public class SceneService {
 			dataObj.put("sceneUUID", scene.getSceneUUID());
 			dataObj.put("sceneName", scene.getSceneName());
 			dataObj.put("sceneDesc", scene.getSceneDesc());
-			dataObj.put("sceneActive", scene.getSceneActive() == 0 ? "true" : "false");
+			if (isFrist) {
+				if (i == 0) {
+					dataObj.put("sceneActive", "true");
+				} else {
+					dataObj.put("sceneActive", "false");
+				}
+			} else {
+				if (sceneActiveUUID.equals(scene.getSceneUUID())) {
+					dataObj.put("sceneActive", "true");
+				} else {
+					dataObj.put("sceneActive", "false");
+				}
+			}
 			dataObj.put("sceneEnable", scene.getSceneEnable() == 0 ? "true" : "false");
 			sceneJsonArray.add(dataObj);
 		}
@@ -126,36 +144,25 @@ public class SceneService {
 		return resultString;
 	}
 
-	public String getSceneHistory(String bodyString, Account currentAccount) {
+	public String getSceneHistory(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
-		JSONObject jb = JSONObject.fromObject(bodyString);
-		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
-		if (parmJb != null) {
-			String sceneUUID = parmJb.optString("sceneUUID", "");
-			if (StringUtil.isNullOrEmpty(sceneUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
-				return resultString;
-			}
-			Scene findScene = new Scene();
-			findScene.setSceneUUID(sceneUUID);
-			List<Scene> sceneList = sceneDao.findScene(findScene);
-			if (sceneList.size() < 1) {
-				resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.QUERY_SCENE_NO_EXIST, "场景不存在", "");
-				return resultString;
-			}
-
-			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
-					+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneList.get(0).getSceneGit();
-
-			Map map=JGitService.readLogTree(scenePath, new HashMap<>());
-			resultString = StringUtil.packetObjectSpec(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_OK, "",
-					"查询场景历史版本成功", map);
-
+		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+		// 如果session中没有记录当前场景
+		if (sceneActive == null) {
+			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_FAIL,
+					ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+			return resultString;
 		}
+
+		String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
+				+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneActive.getSceneGit();
+
+		Map map = JGitService.readLogTree(scenePath, new HashMap<>());
+		resultString = StringUtil.packetObjectObj(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_OK, "",
+				"查询场景历史版本成功", map);
+
 		return resultString;
 	}
 
@@ -191,6 +198,11 @@ public class SceneService {
 					+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneList.get(0).getSceneGit();
 			session.put(Constants.KEY_SCENE_PATH, scenePath);
 			session.put(Constants.SCENE_ACTIVE, sceneList.get(0));
+			
+			//记录当前活动的场景
+			JSONObject activeObj=new JSONObject();
+			activeObj.put("sceneUUID", sceneList.get(0).getSceneUUID());
+			HistoryUtil.setUserSceneHistory(currentAccount.getAccountName(), activeObj.toString());
 
 			resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_OK, "",
 					"切换场景成功，当前场景是" + sceneList.get(0).getSceneName(), "");
@@ -217,7 +229,7 @@ public class SceneService {
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (StringUtil.isNullOrEmpty(sessionScenePath) || sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.GET_SCENE_VERSION, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 				return resultString;
 			}
@@ -233,13 +245,13 @@ public class SceneService {
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
 
 			session.put(Constants.SCENE_VERSION, sceneVersion);
-			resultString = StringUtil.packetObject(MethodCode.GET_SCENE_VERSION, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_OK, "",
 					"切换版本成功", "");
 		}
 		return resultString;
 	}
 
-	public String getSceneVersion(String bodyString, Account currentAccount, Map<String, Object> session) {
+	public String getCurrentVersion(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 
@@ -258,7 +270,7 @@ public class SceneService {
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 		// 如果session中没有记录当前场景
 		if (StringUtil.isNullOrEmpty(sessionScenePath) || sceneActive == null) {
-			resultString = StringUtil.packetObject(MethodCode.GET_SCENE_VERSION, ParameterCode.Result.RESULT_FAIL,
+			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_FAIL,
 					ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 			return resultString;
 		}
@@ -332,8 +344,8 @@ public class SceneService {
 		}
 		sceneObject.put("variableList", variableJsonArray);
 
-		resultString = StringUtil.packetObject(MethodCode.GET_SCENE_VERSION, ParameterCode.Result.RESULT_OK, "",
-				"获取某版本场景成功", sceneObject.toString());
+		resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_OK, "",
+				"获取当前本场景成功", sceneObject.toString());
 		return resultString;
 
 	}

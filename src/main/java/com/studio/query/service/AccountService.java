@@ -12,6 +12,7 @@ import com.studio.query.dao.AccountDao;
 import com.studio.query.entity.Account;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.HistoryUtil;
 import com.studio.query.util.Md5Util;
 import com.studio.query.util.StringUtil;
 
@@ -44,8 +45,7 @@ public class AccountService {
 			String accountPassword = parmJb.optString("accountPassword", "");
 			if (StringUtil.isNullOrEmpty(accountName) || StringUtil.isNullOrEmpty(accountPassword)) {
 
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN,
-						ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -55,13 +55,13 @@ public class AccountService {
 			loginAccount.setAccountPassword(md5AccountPassword);
 			List<Account> accountList = accountDao.findAccount(loginAccount);
 			if (accountList.size() == 1) {
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN,
-						ParameterCode.Result.RESULT_OK, "", "登录成功", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_OK, "",
+						"登录成功", "");
 				session.put(Configure.systemSessionAccount, accountList.get(0));
+				HistoryUtil.createUserHistory(loginAccount.getAccountName());
 			} else {
 
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN,
-						ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.ACCOUNT_LOGIN_VALIDATE, "登录失败，帐号或密码错误。", "");
 			}
 		}
@@ -88,8 +88,7 @@ public class AccountService {
 			findAccount.setAccountName(accountName);
 			List<Account> accountList = accountDao.findAccount(findAccount);
 			if (accountList.size() >= 1) {
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
-						ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.ACCOUNT_REGISTER_EXIST, "账号已存在", "");
 				return resultString;
 			}
@@ -108,13 +107,12 @@ public class AccountService {
 				JGitService jGitService = new JGitService();
 				jGitService.createAccountRepository(Configure.gitRepositoryPath, String.valueOf(a.get(Calendar.YEAR)),
 						String.valueOf((a.get(Calendar.MONTH) + 1)), accountName);
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
-						ParameterCode.Result.RESULT_OK, "", "注册成功", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_OK, "",
+						"注册成功", "");
 				session.put(Configure.systemSessionAccount, insertAccount);
 			} else {
 
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
-						ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.ACCOUNT_REGISTER_FAIL, "注册失败", "");
 			}
 		}
@@ -140,17 +138,16 @@ public class AccountService {
 			if (accountList.size() >= 1) {
 				JSONObject dataObj1 = new JSONObject();
 				dataObj1.put("accountExist", "1");
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY,
-						ParameterCode.Result.RESULT_OK, "", "查询的账号存在", dataObj1.toString());
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Result.RESULT_OK, "",
+						"查询的账号存在", dataObj1.toString());
 				return resultString;
 
 			} else {
 
 				JSONObject dataObj1 = new JSONObject();
 				dataObj1.put("accountExist", "0");
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY,
-						ParameterCode.Result.RESULT_OK, "", "查询的账号不存在",
-						dataObj1.toString());
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Result.RESULT_OK, "",
+						"查询的账号不存在", dataObj1.toString());
 				return resultString;
 			}
 		}
@@ -161,8 +158,8 @@ public class AccountService {
 
 		String resultString = null;
 		session.remove(Configure.systemSessionAccount);
-		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGOUT,
-				ParameterCode.Result.RESULT_OK, "", "注销成功", "");
+		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGOUT, ParameterCode.Result.RESULT_OK, "", "注销成功",
+				"");
 
 		return resultString;
 	}

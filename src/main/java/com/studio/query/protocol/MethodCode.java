@@ -47,9 +47,9 @@ public class MethodCode {
 	 */
 	public static final String SWITCH_VERSION = "switchVersion";
 	/**
-	 * 获取某版本场景
+	 * 获取当前版本场景
 	 */
-	public static final String GET_SCENE_VERSION = "getScenarioVersion";
+	public static final String GET_CURRENT_VERSION = "getCurrentVersion";
 	/**
 	 * 关闭场景版本
 	 */
