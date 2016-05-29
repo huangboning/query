@@ -28,7 +28,7 @@ public class TestAction {
 			JSONObject loginJson = new JSONObject();
 			loginJson.put("method", "login");
 			JSONObject loginObj = new JSONObject();
-			loginObj.put("accountName", "huangboning");
+			loginObj.put("accountName", "hbn");
 			loginObj.put("accountPassword", "123456");
 			loginJson.put("params", loginObj);
 
@@ -56,32 +56,32 @@ public class TestAction {
 			// JSONObject jb = new JSONObject();
 			// typesJson.put("params", jb);
 
-			// // 设置数据源
-			// JSONObject setScopeJson = new JSONObject();
-			// setScopeJson.put("method", "setScope");
-			// setScopeJson.put("params", "");
-			// JSONObject jb = new JSONObject();
-			// jb.put("scope", "aminno.entities");
-			// setScopeJson.put("params", jb);
+			// 设置数据源
+			JSONObject setScopeJson = new JSONObject();
+			setScopeJson.put("method", "setScope");
+			setScopeJson.put("params", "");
+			JSONObject setScopeObj = new JSONObject();
+			setScopeObj.put("scope", "aminno.entities");
+			setScopeJson.put("params", setScopeObj);
 
 			// // 获取选择数据源定义的数据表头
 			// JSONObject headJson = new JSONObject();
 			// headJson.put("method", "getTableHeadDef");
 			// headJson.put("params", "");
 
-			 // 创建场景
-			 JSONObject createSceneJson = new JSONObject();
-			 createSceneJson.put("method", "createScene");
-			 JSONObject createSceneObj = new JSONObject();
-			 createSceneObj.put("sceneName", "foxquery2");
-			 createSceneObj.put("sceneDesc", "我的第三个场景foxquery");
-			 createSceneJson.put("params", createSceneObj);
+			// 创建场景
+			JSONObject createSceneJson = new JSONObject();
+			createSceneJson.put("method", "createScene");
+			JSONObject createSceneObj = new JSONObject();
+			createSceneObj.put("sceneName", "foxquery2");
+			createSceneObj.put("sceneDesc", "我的第三个场景foxquery");
+			createSceneJson.put("params", createSceneObj);
 
-			 // 获取场景列表
-			 JSONObject listSceneJson = new JSONObject();
-			 listSceneJson.put("method", "getScenarioes");
-			 JSONObject listSceneObj = new JSONObject();
-			 listSceneJson.put("params", listSceneObj);
+			// 获取场景列表
+			JSONObject listSceneJson = new JSONObject();
+			listSceneJson.put("method", "getScenarioes");
+			JSONObject listSceneObj = new JSONObject();
+			listSceneJson.put("params", listSceneObj);
 
 			// 获取场景历史版本
 			JSONObject historySceneJson = new JSONObject();
@@ -154,13 +154,6 @@ public class TestAction {
 			JSONObject deleteFragmentObj = new JSONObject();
 			deleteFragmentObj.put("fragmentUUID", "FRGMe191a9b9215641308463f1ff46ee5786");
 			deleteFragmentJson.put("params", deleteFragmentObj);
-			
-			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
-					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
-					listSceneJson.toString().getBytes("utf-8"));
-			System.out.println(listSceneJson.toString());
-			System.out.println(result);
-
 
 			// // 关闭场景版本
 			// JSONObject closeSceneJson = new JSONObject();
@@ -349,48 +342,47 @@ public class TestAction {
 			// getInputTypesObj.put("fragmentType", "filter");
 			// getInputTypesJson.put("params", getInputTypesObj);
 
-			// // ES接口 setScope
-			// JSONObject setScopeJson = new JSONObject();
-			// setScopeJson.put("method", "setScope");
-			// JSONObject setScopeObj = new JSONObject();
-			// setScopeObj.put("scope", "allindicies");
-			// setScopeJson.put("params", setScopeObj);
-
 			// // ES接口 getTableHeadDef
 			// JSONObject getTableHeadDefJson = new JSONObject();
 			// getTableHeadDefJson.put("method", "getTableHeadDef");
 			// JSONObject getTableHeadDefObj = new JSONObject();
-			// JSONArray scopeArray=new JSONArray();
-			// scopeArray.add("unified");
-			// getTableHeadDefObj.put("scopes",scopeArray);
+			// JSONArray scopeArray = new JSONArray();
+			// scopeArray.add("voter_fl.entities");
+			// getTableHeadDefObj.put("scopes", scopeArray);
 			// getTableHeadDefJson.put("params", getTableHeadDefObj);
 
-			// // ES接口 getHelpValue
-			// JSONObject getHelpValueJson = new JSONObject();
-			// getHelpValueJson.put("method", "getHelpValue");
-			// JSONObject etHelpValueObj = new JSONObject();
-			// etHelpValueObj.put("indexDocTypeId", "unified");
-			// etHelpValueObj.put("fieldId", "profile");
-			// getHelpValueJson.put("params", etHelpValueObj);
-			//
-			// // ES接口 getFieldValues
-			// JSONObject getFieldValuesJson = new JSONObject();
-			// getFieldValuesJson.put("method", "getFieldValues");
-			// getFieldValuesJson.put("params", "{}");
-			//
+			// ES接口 getHelpValue
+			JSONObject getHelpValueJson = new JSONObject();
+			getHelpValueJson.put("method", "getHelpValue");
+			JSONObject etHelpValueObj = new JSONObject();
+			// etHelpValueObj.put("indexDocTypeId", "voter_fl.entities");
+			// etHelpValueObj.put("fieldId", "profile.gender_word");
+			// 测试，这里服务器自动加工转化
+			etHelpValueObj.put("indexId", "voter_fl");
+			etHelpValueObj.put("docTypeId", "entities");
+			etHelpValueObj.put("fieldId", "profile.gender_word");
+			getHelpValueJson.put("params", etHelpValueObj);
 
-			// // ES接口 getGeocoding
-			// JSONObject getGeocodingJson = new JSONObject();
-			// getGeocodingJson.put("method", "getGeocoding");
-			// JSONObject getGeocodingObj = new JSONObject();
-			// getGeocodingObj.put("addressName", "beijing");
-			// getGeocodingJson.put("params", getGeocodingObj);
+			// ES接口 getGeocoding
+			JSONObject getGeocodingJson = new JSONObject();
+			getGeocodingJson.put("method", "getGeocoding");
+			JSONObject getGeocodingObj = new JSONObject();
+			getGeocodingObj.put("addressName", "beijing");
+			getGeocodingJson.put("params", getGeocodingObj);
+			
+			 // ES接口 executeScene
+			 JSONObject executeSceneJson = new JSONObject();
+			 executeSceneJson.put("method", "executeScenario");
+			 String bodyString = FileUtil.readFile("D:/hbn/workspaces/query/src/main/resources/valid.txt");
+			 executeSceneJson.put("params", bodyString);
 
-			// // ES接口 executeScene
-			// JSONObject executeSceneJson = new JSONObject();
-			// executeSceneJson.put("method", "executeScenario");
-			// String bodyString = FileUtil.ReadFile("E:/new.txt");
-			// executeSceneJson.put("params", bodyString);
+			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
+					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
+					executeSceneJson.toString().getBytes("utf-8"));
+			System.out.println(executeSceneJson.toString());
+			System.out.println(result);
+
+
 
 			// String result = ApacheHttpUtil.sendPostBySession(
 			// "http://localhost:8080/zqQuery/service/v1/main.do",

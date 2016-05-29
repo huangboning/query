@@ -57,6 +57,6 @@
     "size" : 20,
     "from" : 0
   },
-  "method" : "query",
+  "method" : "validate",
   "variables" : [ ]
 }

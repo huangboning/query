@@ -1,5 +1,6 @@
 package com.studio.query.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.studio.query.common.Configure;
+import com.studio.query.common.Constants;
 import com.studio.query.dao.AccountDao;
 import com.studio.query.entity.Account;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.CacheUtil;
 import com.studio.query.util.HistoryUtil;
 import com.studio.query.util.Md5Util;
 import com.studio.query.util.StringUtil;
@@ -58,6 +61,20 @@ public class AccountService {
 				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_OK, "",
 						"登录成功", "");
 				session.put(Configure.systemSessionAccount, accountList.get(0));
+				//设置默认scope
+				List<Map<String, String>> indexList = (List<Map<String, String>>) CacheUtil.getCacheObject("mapIndex");
+				if (indexList!=null) {
+					for (Map<String, String> map:indexList) {
+						String isUndified = (String) map.get("isUnified");
+						if (isUndified.equals("true")) {
+							JSONObject setScopeJson = new JSONObject();
+							JSONObject scopeObj = new JSONObject();
+							scopeObj.put("scope", (String) map.get("id"));
+							setScopeJson.put("params", scopeObj);
+							this.setScope(setScopeJson.toString(), session);
+						}
+					}
+				}
 				HistoryUtil.createUserHistory(loginAccount.getAccountName());
 			} else {
 
@@ -163,4 +180,47 @@ public class AccountService {
 
 		return resultString;
 	}
+
+	/**
+	 * 选择数据源
+	 * 
+	 * @return
+	 */
+	public String setScope(String bodyString, Map<String, Object> session) {
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String scope = parmJb.optString("scope", "");
+			if (StringUtil.isNullOrEmpty(scope)) {
+
+				resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			// 这里设置数据源逻辑
+			List<String> scopeList = (List<String>) session.get(Constants.KEY_SET_SCOPE);
+			if (scopeList == null) {
+				scopeList = new ArrayList<String>();
+			}
+			boolean isExist = false;
+			for (int i = 0; i < scopeList.size(); i++) {
+				String oldScope = scopeList.get(i);
+				if (oldScope.equals(scope)) {
+					isExist = true;
+					break;
+				}
+			}
+			if (!isExist) {
+				scopeList.add(scope);
+				session.put(Constants.KEY_SET_SCOPE, scopeList);
+			}
+
+			resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Result.RESULT_OK, "", "设置数据源成功",
+					"");
+
+		}
+		return resultString;
+	}
+
 }

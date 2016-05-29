@@ -7,6 +7,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.studio.query.common.Configure;
+import com.studio.query.common.HttpUtil;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -31,6 +34,32 @@ public class CacheUtil {
 
 	public static Object getCacheObject(String key) {
 		return objectCacheFactory.get(key);
+	}
+
+	public void initIndexDocTypes() {
+
+		// 这里实现ES接口调用
+		try {
+			JSONObject getIndexDocTypesJson = new JSONObject();
+			getIndexDocTypesJson.put("method", "getIndexDocTypes");
+			JSONObject getIndexDocTypesObj = new JSONObject();
+			getIndexDocTypesJson.put("params", getIndexDocTypesObj);
+			String str = HttpUtil.sendPost(Configure.esBootstrapServiceUrl,
+					getIndexDocTypesJson.toString().getBytes("utf-8"));
+			CacheUtil cacheUtil = new CacheUtil();
+			cacheUtil.getIndexDocTypesES(str);
+			cacheUtil.getIndexDocTypesOriginES(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+			loger.info("获取ES数据源失败:" + Configure.esBootstrapServiceUrl);
+			loger.info(e.toString());
+		}
+		// //测试初始化数据源
+		// CacheUtil cacheUtil=new CacheUtil();
+		// String
+		// testPath=arg0.getServletContext().getRealPath("/")+"WEB-INF/classes/source.txt";
+		// cacheUtil.getIndexDocTypes( testPath);
+		// cacheUtil.getIndexDocTypesOrigin(testPath);
 	}
 
 	public void getIndexDocTypes(String path) {
@@ -76,12 +105,96 @@ public class CacheUtil {
 		}
 	}
 
+	public void getIndexDocTypesES(String sourceString) {
+
+		List<Map<String, String>> indexList = new ArrayList<Map<String, String>>();
+
+		try {
+			JSONObject sourceObj = JSONObject.fromObject(sourceString);
+			JSONArray indexDefArray = sourceObj.getJSONArray("result");
+			for (int i = 0; i < indexDefArray.size(); i++) {
+				Map<String, String> indexMap = new HashMap<String, String>();
+
+				JSONObject infoObj = indexDefArray.getJSONObject(i);
+				JSONObject indexDefObj = infoObj.getJSONObject("indexDef");
+				JSONObject indexDocTypeObj = infoObj.getJSONObject("docTypeDef");
+
+				String indexId = indexDefObj.optString("id", "");
+				String indexName = indexDefObj.optString("name", "");
+				String docDefId = indexDocTypeObj.optString("id", "");
+				String docDefName = indexDocTypeObj.optString("name", "");
+				String isUnified = infoObj.optString("isUnified", "");
+
+				indexMap.put("id", indexId.concat(".").concat(docDefId));
+				indexMap.put("name", indexName.concat(".").concat(docDefName));
+				indexMap.put("isUnified", isUnified);
+
+				indexList.add(indexMap);
+
+				// 保存availableOperators
+				JSONArray availableOperatorsJsonArray = infoObj.getJSONArray("availableOperators");
+				CacheUtil.putCacheObject(indexId.concat(".").concat(docDefId).concat("availableOperators"),
+						availableOperatorsJsonArray);
+			}
+			CacheUtil.putCacheObject("mapIndex", indexList);
+			// JSONObject test = new JSONObject();
+			// test.put("baseObject", CacheUtil.getCacheObject("mapIndex"));
+			// System.out.println(test.toString());
+			loger.info("init IndexDocTypes successful");
+		} catch (Exception e) {
+			e.printStackTrace();
+			loger.info(e.toString());
+		}
+	}
+
 	public void getIndexDocTypesOrigin(String path) {
 
 		List<Map<String, String>> indexList = new ArrayList<Map<String, String>>();
 
 		try {
 			String sourceString = FileUtil.readFile(path);
+			JSONObject sourceObj = JSONObject.fromObject(sourceString);
+			JSONArray indexDefArray = sourceObj.getJSONArray("result");
+			for (int i = 0; i < indexDefArray.size(); i++) {
+				Map<String, String> indexMap = new HashMap<String, String>();
+
+				JSONObject infoObj = indexDefArray.getJSONObject(i);
+				JSONObject indexDefObj = infoObj.getJSONObject("indexDef");
+				JSONObject indexDocTypeObj = infoObj.getJSONObject("docTypeDef");
+
+				String indexId = indexDefObj.optString("id", "");
+				String indexName = indexDefObj.optString("name", "");
+				String docDefId = indexDocTypeObj.optString("id", "");
+				String docDefName = indexDocTypeObj.optString("name", "");
+				String isUnified = infoObj.optString("isUnified", "");
+
+				indexMap.put("id", indexId.concat(".").concat(docDefId));
+				indexMap.put("name", indexName.concat(".").concat(docDefName));
+				indexMap.put("isUnified", isUnified);
+
+				indexList.add(indexMap);
+
+				// 保存availableOperators
+				JSONArray availableOperatorsJsonArray = infoObj.getJSONArray("availableOperators");
+				CacheUtil.putCacheObject(indexId.concat(".").concat(docDefId).concat("availableOperatorsOrigin"),
+						availableOperatorsJsonArray);
+			}
+			CacheUtil.putCacheObject("mapIndex", indexList);
+			JSONObject test = new JSONObject();
+			test.put("baseObject", CacheUtil.getCacheObject("mapIndex"));
+			// System.out.println(test.toString());
+			loger.info("init IndexDocTypesOrigin successful");
+		} catch (Exception e) {
+			e.printStackTrace();
+			loger.info(e.toString());
+		}
+	}
+
+	public void getIndexDocTypesOriginES(String sourceString) {
+
+		List<Map<String, String>> indexList = new ArrayList<Map<String, String>>();
+
+		try {
 			JSONObject sourceObj = JSONObject.fromObject(sourceString);
 			JSONArray indexDefArray = sourceObj.getJSONArray("result");
 			for (int i = 0; i < indexDefArray.size(); i++) {

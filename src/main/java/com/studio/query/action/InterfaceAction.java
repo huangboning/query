@@ -57,7 +57,7 @@ public class InterfaceAction extends BaseAction {
 					return null;
 				}
 				String bodyString = ConversionTools.bytesToString(data, "utf-8");
-				loger.info(bodyString);
+				loger.info("request data=" + bodyString);
 				JSONObject jb = JSONObject.fromObject(bodyString);
 				String methodCode = jb.optString("method", "");
 				if (StringUtil.isNullOrEmpty(methodCode)) {
@@ -65,7 +65,6 @@ public class InterfaceAction extends BaseAction {
 							"无效的参数", "");
 					return null;
 				}
-				loger.info("methodCode=" + methodCode);
 				// 如果是注册或者是登录、登出接口，则不需要判断session是否过期
 				if (methodCode.equals(MethodCode.ACCOUNT_REGISTER) || methodCode.equals(MethodCode.ACCOUNT_LOGIN)
 						|| methodCode.equals(MethodCode.ACCOUNT_LOGOUT)
@@ -93,7 +92,7 @@ public class InterfaceAction extends BaseAction {
 					if (methodCode.equals(MethodCode.CREATE_SCENE)) {
 						returnString = sceneService.createScene(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.SET_SCOPE)) {
-						returnString = queryService.setScope(bodyString, session);
+						returnString = accountService.setScope(bodyString, session);
 					} else if (methodCode.equals(MethodCode.GET_TABLE_HEAD_DEF)) {
 						returnString = queryService.getTableHeadDef(bodyString);
 					} else if (methodCode.equals(MethodCode.LIST_SCENE)) {
@@ -170,8 +169,6 @@ public class InterfaceAction extends BaseAction {
 						returnString = queryService.getTableHeadDef(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_HELP_VALUE)) {
 						returnString = queryService.getHelpValue(bodyString);
-					} else if (methodCode.equals(MethodCode.GET_FIELD_VALUES)) {
-						returnString = queryService.getFieldValues(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_INPUT_TYPES)) {
 						returnString = queryService.getInputTypes(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_HINT_FIELDS)) {
@@ -192,6 +189,7 @@ public class InterfaceAction extends BaseAction {
 							"服务器业务处理错误", "");
 					return null;
 				}
+				loger.info("return data=" + returnString);
 				response.getOutputStream().write(returnString.getBytes("utf-8"));
 				return null;
 			} else {
@@ -249,6 +247,7 @@ public class InterfaceAction extends BaseAction {
 			o.put("baseObject", baseObject);
 			response.setHeader("Content-type", "text/html;charset=utf-8");
 			response.getOutputStream().write(o.toString().getBytes("utf-8"));
+			loger.info("return data=" + o.toString());
 		} catch (Exception e) {
 			loger.info(e.toString());
 		}

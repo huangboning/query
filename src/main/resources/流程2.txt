@@ -1,0 +1,293 @@
+####创建变量VAR1####
+
+访问的URL为：V1/variables/createVariable
+访问的参数为：{
+  "method" : "createVariable",
+  "params" : {
+    "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "variableScope" : "fragment",
+    "name" : "VAR1",
+    "fieldType" : "double",
+    "valueType" : "valueRange",
+    "value" : {
+      "gte" : 90,
+      "lte" : 100
+    }
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "创建变量列表成功",
+  "csrfToken" : null,
+  "baseObject" : {
+    "variableClassId" : "VARC562a5eb11c654597abaed2446d225958",
+    "variableType" : "valueRange",
+    "beLongsTo" : {
+      "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "templateId" : "",
+      "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+    },
+    "valueType" : "valueRange",
+    "name" : "VAR1",
+    "fieldType" : "double",
+    "value" : {
+      "gte" : 90,
+      "lte" : 100
+    },
+    "variableInstanceId" : "VARI1bca5ca176ef44bc9b263c8fbcd1999b",
+    "variableScope" : "fragment"
+  }
+}
+访问的URL为：V1/variables/getVariablesList
+访问的参数为：{
+  "method" : "getVariableList",
+  "params" : { }
+}
+com.middleware.entity.VariableInfo@105d9c94
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "获取VariableList成功",
+  "csrfToken" : null,
+  "baseObject" : [ {
+    "variableClassId" : "VARC562a5eb11c654597abaed2446d225958",
+    "variableType" : "valueRange",
+    "beLongsTo" : {
+      "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "templateId" : "",
+      "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+    },
+    "valueType" : "valueRange",
+    "name" : "VAR1",
+    "fieldType" : "double",
+    "value" : {
+      "gte" : 90,
+      "lte" : 100
+    },
+    "variableInstanceId" : "VARI1bca5ca176ef44bc9b263c8fbcd1999b",
+    "variableScope" : "fragment"
+  } ]
+}
+
+####创建变量VAR1####
+
+####创建变量VAR2#### 全局变量####
+
+访问的URL为：V1/variables/createVariable
+访问的参数为：{
+  "method" : "createVariable",
+  "params" : {
+    "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "variableScope" : "scenario",
+    "name" : "VAR2",
+    "fieldType" : "string",
+    "valueType" : "plainString",
+    "value" : "testVarString"
+  }
+}
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "创建变量列表成功",
+  "csrfToken" : null,
+  "baseObject" : {
+    "variableClassId" : "VARC5e15d6798c384d018da4e927e1f8a6eb",
+    "variableType" : "plainString",
+    "beLongsTo" : {
+      "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "templateId" : "",
+      "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+    },
+    "valueType" : "plainString",
+    "name" : "VAR2",
+    "fieldType" : "string",
+    "value" : "testVarString",
+    "variableInstanceId" : "VARIe2f7711da1414fc49508912594d99224",
+    "variableScope" : "scenario"
+  }
+}
+访问的URL为：V1/variables/getVariablesList
+访问的参数为：{
+  "method" : "getVariableList",
+  "params" : { }
+}
+com.middleware.entity.VariableInfo@23592158
+com.middleware.entity.VariableInfo@508cdc79
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "获取VariableList成功",
+  "csrfToken" : null,
+  "baseObject" : [ {
+    "variableClassId" : "VARC562a5eb11c654597abaed2446d225958",
+    "variableType" : "valueRange",
+    "beLongsTo" : {
+      "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "templateId" : "",
+      "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+    },
+    "valueType" : "valueRange",
+    "name" : "VAR1",
+    "fieldType" : "double",
+    "value" : {
+      "gte" : 90,
+      "lte" : 100
+    },
+    "variableInstanceId" : "VARI1bca5ca176ef44bc9b263c8fbcd1999b",
+    "variableScope" : "fragment"
+  }, {
+    "variableClassId" : "VARC5e15d6798c384d018da4e927e1f8a6eb",
+    "variableType" : "plainString",
+    "beLongsTo" : {
+      "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "templateId" : "",
+      "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+    },
+    "valueType" : "plainString",
+    "name" : "VAR2",
+    "fieldType" : "string",
+    "value" : "testVarString",
+    "variableInstanceId" : "VARIe2f7711da1414fc49508912594d99224",
+    "variableScope" : "scenario"
+  } ]
+}
+####创建变量VAR2#### 全局变量####
+
+
+编辑fragment
+
+访问的URL为：V1/fragment/getFragment
+访问的参数为：{
+  "method" : "getFragment",
+  "params" : {
+    "version" : "70ba3b11cdbf9f02d0b46b1916f067e12111ed71",
+    "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41"
+  }
+}
+2016-05-29 17:43:10 INFO [com.middleware.util.GitUtils] find expected file 'fragment/FRGM43d28f19e95744e8924560c196a76a41.json'
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "查询成功",
+  "csrfToken" : "2eaed928eff24b058ef2e3fcbc78ed8b",
+  "baseObject" : {
+    "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "",
+    "tags" : [ ],
+    "createdBy" : "joe",
+    "createTime" : "2016-05-26 02:05:52",
+    "expression" : {
+      "expressions" : [ {
+        "logicalNot" : false,
+        "indexDocType" : "voter_fl.entities",
+        "indexDocTypeName" : "FL登记.实体信息",
+        "field" : "profile.gender_word",
+        "fieldname" : "个人信息-性别(string)",
+        "fieldType" : "string",
+        "operator" : "termFilter",
+        "operatorName" : "分词匹配",
+        "dataType" : "value",
+        "value" : {
+          "valueType" : "plainString",
+          "value" : "Male"
+        },
+        "variable" : {
+          "variableClassId" : ""
+        }
+      } ],
+      "operator" : "bool_and"
+    }
+  }
+}
+访问的URL为：V1/variables/getVariablesList
+访问的参数为：{
+  "method" : "getVariableList",
+  "params" : { }
+}
+com.middleware.entity.VariableInfo@5c67fc0
+com.middleware.entity.VariableInfo@67162579
+返回的报文：{
+  "optCode" : null,
+  "statusCode" : "200",
+  "message" : "获取VariableList成功",
+  "csrfToken" : null,
+  "baseObject" : [ {
+    "variableClassId" : "VARC562a5eb11c654597abaed2446d225958",
+    "variableType" : "valueRange",
+    "beLongsTo" : {
+      "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "templateId" : "",
+      "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+    },
+    "valueType" : "valueRange",
+    "name" : "VAR1",
+    "fieldType" : "double",
+    "value" : {
+      "gte" : 90,
+      "lte" : 100
+    },
+    "variableInstanceId" : "VARI1bca5ca176ef44bc9b263c8fbcd1999b",
+    "variableScope" : "fragment"
+  }, {
+    "variableClassId" : "VARC5e15d6798c384d018da4e927e1f8a6eb",
+    "variableType" : "plainString",
+    "beLongsTo" : {
+      "fragmentId" : "FRGM43d28f19e95744e8924560c196a76a41",
+      "templateId" : "",
+      "scenarioId" : "SCNO0a4021b47c7d42efad1f280e62be705c"
+    },
+    "valueType" : "plainString",
+    "name" : "VAR2",
+    "fieldType" : "string",
+    "value" : "testVarString",
+    "variableInstanceId" : "VARIe2f7711da1414fc49508912594d99224",
+    "variableScope" : "scenario"
+  } ]
+}
+
+####更新fragment
+
+访问的URL为：V1/fragment/updateFragment
+访问的参数为：{
+  "method" : "updateFragment",
+  "params" : {
+    "id" : "FRGM43d28f19e95744e8924560c196a76a41",
+    "name" : "FRAM1",
+    "desc" : "",
+    "type" : "filter",
+    "objectType" : "directInstance",
+    "version" : "",
+    "tags" : [ ],
+    "createdBy" : "joe",
+    "createTime" : "2016-05-26 02:05:52",
+    "expression" : {
+      "expressions" : [ {
+        "logicalNot" : false,
+        "indexDocType" : "voter_fl.entities",
+        "indexDocTypeName" : "FL登记.实体信息",
+        "field" : "profile.gender_word",
+        "fieldname" : "个人信息-性别(string)(当前值)(string)",
+        "fieldType" : "string",
+        "operator" : "termFilter",
+        "operatorName" : "分词匹配",
+        "dataType" : "variable",
+        "value" : {
+          "valueType" : "plainString",
+          "value" : "Male"
+        },
+        "variable" : {
+          "variableClassId" : "VARC5e15d6798c384d018da4e927e1f8a6eb"
+        }
+      } ],
+      "operator" : "bool_and"
+    },
+    "activeitem" : -1
+  }
+}
+
+

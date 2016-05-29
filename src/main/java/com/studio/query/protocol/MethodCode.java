@@ -176,11 +176,6 @@ public class MethodCode {
 	public static final String GET_HELP_VALUE = "getHelpValue";
 
 	/**
-	 * ES接口 getFieldValues 获取字段值
-	 */
-	public static final String GET_FIELD_VALUES = "getFieldValues";
-
-	/**
 	 * ES接口 getInputTypes 获取一个DocTypes下面所有的field列表
 	 */
 	public static final String GET_INPUT_TYPES = "getInputTypes";
