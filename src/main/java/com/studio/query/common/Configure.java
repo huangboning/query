@@ -26,6 +26,8 @@ public class Configure implements ServletContextListener {
 	public static String systemSessionAccount = "zq_query_account";
 	public static String systemSessionUser = "zq_query_user";
 
+	public static boolean isDevelopment;
+
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
 		// TODO Auto-generated method stub
@@ -40,6 +42,7 @@ public class Configure implements ServletContextListener {
 			prop.load(in);
 			gitRepositoryPath = prop.getProperty("account.repository.root.path").trim();
 			systemEmail = prop.getProperty("account.email.default").trim();
+			isDevelopment = Boolean.valueOf(prop.getProperty("server.development").trim());
 			in.close();
 
 		} catch (IOException e) {
@@ -63,13 +66,18 @@ public class Configure implements ServletContextListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		CacheUtil cacheUtil=new CacheUtil();
-		cacheUtil.initIndexDocTypes();
-//		//测试初始化数据源
-//		CacheUtil cacheUtil=new CacheUtil();
-//		String testPath=arg0.getServletContext().getRealPath("/")+"WEB-INF/classes/source.txt";
-//		cacheUtil.getIndexDocTypes( testPath);
-//		cacheUtil.getIndexDocTypesOrigin(testPath);
+
+		if (isDevelopment) {
+			// 测试初始化数据源
+			CacheUtil cacheUtil = new CacheUtil();
+			String testPath = arg0.getServletContext().getRealPath("/") + "WEB-INF/classes/source.txt";
+			cacheUtil.getIndexDocTypes(testPath);
+			cacheUtil.getIndexDocTypesOrigin(testPath);
+		} else {
+			// 正式环境
+			CacheUtil cacheUtil = new CacheUtil();
+			cacheUtil.initIndexDocTypes();
+		}
 	}
 
 }

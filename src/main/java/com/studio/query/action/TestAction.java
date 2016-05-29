@@ -28,7 +28,7 @@ public class TestAction {
 			JSONObject loginJson = new JSONObject();
 			loginJson.put("method", "login");
 			JSONObject loginObj = new JSONObject();
-			loginObj.put("accountName", "hbn");
+			loginObj.put("accountName", "huangboning");
 			loginObj.put("accountPassword", "123456");
 			loginJson.put("params", loginObj);
 
@@ -345,23 +345,23 @@ public class TestAction {
 			// // ES接口 getTableHeadDef
 			// JSONObject getTableHeadDefJson = new JSONObject();
 			// getTableHeadDefJson.put("method", "getTableHeadDef");
-			// JSONObject getTableHeadDefObj = new JSONObject();
-			// JSONArray scopeArray = new JSONArray();
-			// scopeArray.add("voter_fl.entities");
-			// getTableHeadDefObj.put("scopes", scopeArray);
-			// getTableHeadDefJson.put("params", getTableHeadDefObj);
+			// // JSONObject getTableHeadDefObj = new JSONObject();
+			// // JSONArray scopeArray = new JSONArray();
+			// // scopeArray.add("voter_fl.entities");
+			// // getTableHeadDefObj.put("scopes", scopeArray);
+			// getTableHeadDefJson.put("params", "");
 
-			// ES接口 getHelpValue
-			JSONObject getHelpValueJson = new JSONObject();
-			getHelpValueJson.put("method", "getHelpValue");
-			JSONObject etHelpValueObj = new JSONObject();
+			// // ES接口 getHelpValue
+			// JSONObject getHelpValueJson = new JSONObject();
+			// getHelpValueJson.put("method", "getHelpValue");
+			// JSONObject etHelpValueObj = new JSONObject();
 			// etHelpValueObj.put("indexDocTypeId", "voter_fl.entities");
 			// etHelpValueObj.put("fieldId", "profile.gender_word");
-			// 测试，这里服务器自动加工转化
-			etHelpValueObj.put("indexId", "voter_fl");
-			etHelpValueObj.put("docTypeId", "entities");
-			etHelpValueObj.put("fieldId", "profile.gender_word");
-			getHelpValueJson.put("params", etHelpValueObj);
+			// // 测试，这里服务器自动加工转化
+			// // etHelpValueObj.put("indexId", "voter_fl");
+			// // etHelpValueObj.put("docTypeId", "entities");
+			// // etHelpValueObj.put("fieldId", "profile.gender_word");
+			// getHelpValueJson.put("params", etHelpValueObj);
 
 			// ES接口 getGeocoding
 			JSONObject getGeocodingJson = new JSONObject();
@@ -369,20 +369,19 @@ public class TestAction {
 			JSONObject getGeocodingObj = new JSONObject();
 			getGeocodingObj.put("addressName", "beijing");
 			getGeocodingJson.put("params", getGeocodingObj);
-			
-			 // ES接口 executeScene
-			 JSONObject executeSceneJson = new JSONObject();
-			 executeSceneJson.put("method", "executeScenario");
-			 String bodyString = FileUtil.readFile("D:/hbn/workspaces/query/src/main/resources/valid.txt");
-			 executeSceneJson.put("params", bodyString);
+
+			// // ES接口 executeScene
+			// JSONObject executeSceneJson = new JSONObject();
+			// executeSceneJson.put("method", "executeScenario");
+			// String bodyString =
+			// FileUtil.readFile("D:/hbn/workspaces/query/src/main/resources/valid.txt");
+			// executeSceneJson.put("params", bodyString);
 
 			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
-					executeSceneJson.toString().getBytes("utf-8"));
-			System.out.println(executeSceneJson.toString());
+					getGeocodingJson.toString().getBytes("utf-8"));
+			System.out.println(getGeocodingJson.toString());
 			System.out.println(result);
-
-
 
 			// String result = ApacheHttpUtil.sendPostBySession(
 			// "http://localhost:8080/zqQuery/service/v1/main.do",

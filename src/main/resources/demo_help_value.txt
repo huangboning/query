@@ -1,0 +1,20 @@
+{
+    "result" : {
+      "field" : "profile.gender_word",
+      "hint" : {
+        "sample" : [ {
+          "cnt" : 6942009,
+          "key" : "Female"
+        }, {
+          "cnt" : 5938167,
+          "key" : "Male"
+        }, {
+          "cnt" : 260904,
+          "key" : "Unknown"
+        }, {
+          "cnt" : 2,
+          "key" : "Notdecoded_Argentina"
+        } ]
+      }
+    }
+ }

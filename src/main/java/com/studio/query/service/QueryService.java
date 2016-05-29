@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.studio.query.common.Configure;
+import com.studio.query.common.Constants;
 import com.studio.query.common.HttpUtil;
 import com.studio.query.entity.HeadData;
 import com.studio.query.protocol.MethodCode;
@@ -55,14 +56,34 @@ public class QueryService {
 	 * 
 	 * @return
 	 */
-	public String getTableHeadDef(String bodyString) {
+	public String getTableHeadDef(Map<String, Object> session) {
 		String resultString = null;
 		// 这里获取选择数据源定义的数据表头逻辑
 		String tableHeadDefString = "";
-		try {
-			tableHeadDefString = HttpUtil.sendPost(Configure.esTalbleServiceUrl, bodyString.getBytes("utf-8"));
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (Configure.isDevelopment) {
+
+			tableHeadDefString = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_table_head_def.txt");
+		} else {
+			try {
+				JSONObject getTableHeadDefJson = new JSONObject();
+				getTableHeadDefJson.put("method", "getTableHeadDef");
+				JSONObject getTableHeadDefObj = new JSONObject();
+				List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+				if (scopeArray == null) {
+					scopeArray = new ArrayList<String>();
+				}
+				getTableHeadDefObj.put("scopes", scopeArray);
+				getTableHeadDefJson.put("params", getTableHeadDefObj);
+				tableHeadDefString = HttpUtil.sendPost(Configure.esTalbleServiceUrl,
+						getTableHeadDefJson.toString().getBytes("utf-8"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				loger.info(e.toString());
+				loger.info("请求失败：" + Configure.esTalbleServiceUrl);
+				resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_INVALID, "获取选择数据源定义的数据表头失败", tableHeadDefString);
+				return resultString;
+			}
 		}
 
 		resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF, ParameterCode.Result.RESULT_OK, "",
@@ -77,28 +98,58 @@ public class QueryService {
 	 * @return
 	 */
 	public String getHelpValue(String bodyString) {
-		// 注意这里要加工字段
-		// Map<String, String> mapValues = new HashMap<String, String>();
-		// mapValues.put("indexId", indexId);
-		// mapValues.put("docTypeId", docTypeId);
-		// mapValues.put("fieldId", fieldId);
-		// rb.setParams(mapValues);
+
 		String resultString = null;
 		// 这里获取提示字段
 		String helpValueString = "";
-		try {
-			helpValueString = HttpUtil.sendPost(Configure.esHintServiceUrl, bodyString.getBytes("utf-8"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			loger.info(e.toString());
-			resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_FAIL,
-					ParameterCode.Error.SERVICE_INVALID, "获取提示字段失败", "");
-			return resultString;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			if (Configure.isDevelopment) {
+
+				helpValueString = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_help_value.txt");
+			} else {
+				String indexDocTypeId = parmJb.optString("indexDocTypeId", "");
+				String fieldId = parmJb.optString("fieldId", "");
+				if (StringUtil.isNullOrEmpty(indexDocTypeId) || StringUtil.isNullOrEmpty(fieldId)) {
+
+					resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_FAIL,
+							ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+					return resultString;
+				}
+
+				try {
+					// 注意这里要加工字段 （变成indexId和docTypeId和fieldId）
+
+					String method = jb.optString("method", "");
+
+					JSONObject getHelpValueJson = new JSONObject();
+					getHelpValueJson.put("method", method);
+					JSONObject getHelpValueObj = new JSONObject();
+					if (!StringUtil.isNullOrEmpty(indexDocTypeId)) {
+						String str[] = indexDocTypeId.split("\\.");
+						if (str.length >= 2) {
+							getHelpValueObj.put("indexId", str[0]);
+							getHelpValueObj.put("docTypeId", str[1]);
+						}
+					}
+					getHelpValueObj.put("fieldId", fieldId);
+					getHelpValueJson.put("params", getHelpValueObj);
+
+					helpValueString = HttpUtil.sendPost(Configure.esHintServiceUrl,
+							getHelpValueJson.toString().getBytes("utf-8"));
+				} catch (Exception e) {
+					e.printStackTrace();
+					loger.info(e.toString());
+					loger.info("请求失败：" + Configure.esHintServiceUrl);
+					resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_FAIL,
+							ParameterCode.Error.SERVICE_INVALID, "获取提示字段失败", "");
+					return resultString;
+				}
+			}
+			resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_OK, "",
+					"获取提示字段成功", helpValueString);
 		}
-
-		resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_OK, "",
-				"获取提示字段成功", helpValueString);
-
 		return resultString;
 	}
 
@@ -180,16 +231,35 @@ public class QueryService {
 		String resultString = null;
 		// 这里获取查询地理字段
 		String geocodingString = "";
-		try {
-			geocodingString = HttpUtil.sendPost(Configure.esGeocodingServiceUrl, bodyString.getBytes("utf-8"));
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String addressName = parmJb.optString("addressName", "");
+			if (StringUtil.isNullOrEmpty(addressName)) {
 
-		} catch (Exception e) {
-			e.printStackTrace();
+				resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_FAIL,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			if (Configure.isDevelopment) {
+
+				geocodingString = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_geocoding.txt");
+			} else {
+				try {
+					geocodingString = HttpUtil.sendPost(Configure.esGeocodingServiceUrl, bodyString.getBytes("utf-8"));
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					loger.info(e.toString());
+					loger.info("请求失败：" + Configure.esGeocodingServiceUrl);
+					resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_FAIL,
+							ParameterCode.Error.SERVICE_INVALID, "查询位置失败", "");
+					return resultString;
+				}
+			}
+			resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_OK, "",
+					"查询位置成功", geocodingString);
 		}
-
-		resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_OK, "", "查询位置成功",
-				geocodingString);
-
 		return resultString;
 	}
 
@@ -200,8 +270,8 @@ public class QueryService {
 	 */
 	public String executeScenario(String bodyString) {
 		String resultString = null;
-		//这里执行场景查询结果返回
-		String executeScenarioString="";
+		// 这里执行场景查询结果返回
+		String executeScenarioString = "";
 		try {
 			// String str = HttpUtil.sendPost(Configure.esQueryServiceUrl,
 			// bodyString.getBytes("utf-8"));

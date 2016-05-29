@@ -102,7 +102,7 @@ public class SceneService {
 		return resultString;
 	}
 
-	public String getSceneList(String bodyString, Account currentAccount) {
+	public String getSceneList(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONArray sceneJsonArray = new JSONArray();
@@ -124,12 +124,16 @@ public class SceneService {
 			if (isFrist) {
 				if (i == 0) {
 					dataObj.put("sceneActive", "true");
+					//会话中设置当前活动场景
+					this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
 				} else {
 					dataObj.put("sceneActive", "false");
 				}
 			} else {
 				if (sceneActiveUUID.equals(scene.getSceneUUID())) {
 					dataObj.put("sceneActive", "true");
+					//会话中设置当前活动场景
+					this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
 				} else {
 					dataObj.put("sceneActive", "false");
 				}
@@ -144,6 +148,21 @@ public class SceneService {
 		return resultString;
 	}
 
+	// 设置当前活动场景
+	public void setActiveScene(String sceneUUID, Account currentAccount, Map<String, Object> session) {
+
+		Scene findScene = new Scene();
+		findScene.setSceneUUID(sceneUUID);
+		List<Scene> sceneList = this.findScene(findScene);
+		if (sceneList.size() == 1) {
+			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
+					+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneList.get(0).getSceneGit();
+			session.put(Constants.KEY_SCENE_PATH, scenePath);
+			session.put(Constants.SCENE_ACTIVE, sceneList.get(0));
+		}
+
+	}
+
 	public String getSceneHistory(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
@@ -152,7 +171,7 @@ public class SceneService {
 		// 如果session中没有记录当前场景
 		if (sceneActive == null) {
 			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_FAIL,
-					ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+					ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
 			return resultString;
 		}
 
@@ -198,9 +217,9 @@ public class SceneService {
 					+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneList.get(0).getSceneGit();
 			session.put(Constants.KEY_SCENE_PATH, scenePath);
 			session.put(Constants.SCENE_ACTIVE, sceneList.get(0));
-			
-			//记录当前活动的场景
-			JSONObject activeObj=new JSONObject();
+
+			// 记录当前活动的场景
+			JSONObject activeObj = new JSONObject();
 			activeObj.put("sceneUUID", sceneList.get(0).getSceneUUID());
 			HistoryUtil.setUserSceneHistory(currentAccount.getAccountName(), activeObj.toString());
 
@@ -223,16 +242,13 @@ public class SceneService {
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
-
-			String sessionScenePath = session.get(Constants.KEY_SCENE_PATH) == null ? null
-					: session.get(Constants.KEY_SCENE_PATH).toString();
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
-			// 如果session中没有记录当前场景
-			if (StringUtil.isNullOrEmpty(sessionScenePath) || sceneActive == null) {
+			if (sceneActive == null) {
 				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+						ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
 				return resultString;
 			}
+			String sessionScenePath = (String) session.get(Constants.KEY_SCENE_PATH);
 
 			// 根据版本获取场景内容
 			JGitService jGitService = new JGitService();
@@ -254,27 +270,13 @@ public class SceneService {
 	public String getCurrentVersion(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
-
-		// String sceneVersion = (String) session.get(Constants.SCENE_VERSION)
-		// == null ? null
-		// : session.get(Constants.SCENE_VERSION).toString();
-		// if (StringUtil.isNullOrEmpty(sceneVersion)) {
-		//
-		// resultString = StringUtil.packetObject(MethodCode.GET_SCENE_VERSION,
-		// ParameterCode.Result.RESULT_FAIL,
-		// ParameterCode.Error.SERVICE_PARAMETER, "当前会话中没有设置版本号，请切换场景版本", "");
-		// return resultString;
-		// }
-		String sessionScenePath = session.get(Constants.KEY_SCENE_PATH) == null ? null
-				: session.get(Constants.KEY_SCENE_PATH).toString();
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
-		// 如果session中没有记录当前场景
-		if (StringUtil.isNullOrEmpty(sessionScenePath) || sceneActive == null) {
+		if (sceneActive == null) {
 			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_FAIL,
-					ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+					ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
 			return resultString;
 		}
-
+		String sessionScenePath = (String) session.get(Constants.KEY_SCENE_PATH);
 		// 获取最新提交记录
 		JGitService jGitService = new JGitService();
 		Committer committer = jGitService.getLastCommitter(sessionScenePath);
@@ -376,41 +378,29 @@ public class SceneService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String sceneUUID = parmJb.optString("sceneUUID", "");
 			String sceneComment = parmJb.optString("sceneComment", "");
-			if (StringUtil.isNullOrEmpty(sceneUUID) || StringUtil.isNullOrEmpty(sceneComment)) {
+			if (StringUtil.isNullOrEmpty(sceneComment)) {
 
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_FAIL,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
-			Scene findScene = new Scene();
-			findScene.setSceneUUID(sceneUUID);
-			List<Scene> sceneList = this.findScene(findScene);
-			if (sceneList.size() != 1) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.QUERY_SCENE_NO_EXIST, "查询的场景不存在", "");
-				return resultString;
-			}
-			Scene currentScene = sceneList.get(0);
-			String scenePath = Configure.gitRepositoryPath + currentAccount.getAccountRepository() + "/"
-					+ Constants.SCENE_REPOSITORY_NAME + "/" + currentScene.getSceneGit();
 
-			String sessionScenePath = session.get(Constants.KEY_SCENE_PATH) == null ? null
-					: session.get(Constants.KEY_SCENE_PATH).toString();
-			// 如果session中没有记录当前场景，或记录的当前场景跟提交的场景不匹配
-			if (StringUtil.isNullOrEmpty(sessionScenePath) || !scenePath.equals(sessionScenePath)) {
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			if (sceneActive == null) {
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "提交的场景跟会话中设置当前的场景不匹配，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+						ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
 				return resultString;
 			}
+			String scenePath = (String) session.get(Constants.KEY_SCENE_PATH);
+
 			// 执行缓存
 			this.executeCache(session);
 			JSONObject sceneJson = new JSONObject();
 			// 逻辑处理，保存scene json数据
 			// 获取缓存中fragment数组
 			List<Fragment> sessionFragmentArray = (ArrayList<Fragment>) CacheUtil
-					.getCacheObject(sceneUUID + Constants.KEY_FRGM);
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
 			if (sessionFragmentArray == null) {
 				sessionFragmentArray = new ArrayList<Fragment>();
 			}
@@ -431,7 +421,7 @@ public class SceneService {
 			sceneJson.put("fragmentList", fragmentJsonArray);
 			// 获取缓存中变量数组
 			List<Variable> sessionVariableArray = (ArrayList<Variable>) CacheUtil
-					.getCacheObject(sceneUUID + Constants.KEY_VAR);
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
 			if (sessionVariableArray == null) {
 				sessionVariableArray = new ArrayList<Variable>();
 			}
@@ -452,22 +442,22 @@ public class SceneService {
 			}
 			sceneJson.put("variableList", variableJsonArray);
 
-			FileUtil.writeFile(sessionScenePath + "/info.txt", sceneJson.toString());
+			FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
 			JGitService jGitService = new JGitService();
-			jGitService.jGitCommit(sessionScenePath, currentAccount, sceneComment);
+			jGitService.jGitCommit(scenePath, currentAccount, sceneComment);
 
 			JSONObject sceneObject = new JSONObject();
-			sceneObject.put("sceneUUID", currentScene.getSceneUUID());
-			sceneObject.put("sceneName", currentScene.getSceneName());
-			sceneObject.put("sceneDesc", currentScene.getSceneDesc());
+			sceneObject.put("sceneUUID", sceneActive.getSceneUUID());
+			sceneObject.put("sceneName", sceneActive.getSceneName());
+			sceneObject.put("sceneDesc", sceneActive.getSceneDesc());
 			// 从git查询最新版本的comment和version
-			Committer committer = jGitService.getLastCommitter(sessionScenePath);
+			Committer committer = jGitService.getLastCommitter(scenePath);
 
 			sceneObject.put("sceneComment", committer.getCommitMssage());
 			sceneObject.put("sceneVersion", committer.getCommitVersion());
 
-			sceneObject.put("sceneActive", currentScene.getSceneActive() == 0 ? "true" : "false");
-			sceneObject.put("sceneEnable", currentScene.getSceneEnable() == 0 ? "true" : "false");
+			sceneObject.put("sceneActive", "true");
+			sceneObject.put("sceneEnable", "true");
 			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "",
 					"更新场景成功", sceneObject.toString());
 

@@ -1,0 +1,224 @@
+{
+    "result": [
+        {
+            "point_type": "place/city",
+            "point_osm_id": 25248662,
+            "point_coordinates": [
+                116.39135,
+                39.90591
+            ],
+            "point_isReverse": false,
+            "point_zip": null,
+            "point_fulladdress": "Beijing,Beijing,China"
+        },
+        {
+            "point_type": "place/state",
+            "point_osm_id": 912940,
+            "point_coordinates": [
+                116.41215,
+                40.19063
+            ],
+            "point_isReverse": false,
+            "point_zip": null,
+            "point_fulladdress": "Beijing,China"
+        },
+        {
+            "point_type": "railway/station",
+            "point_osm_id": 1300399132,
+            "point_coordinates": [
+                116.42096,
+                39.903645
+            ],
+            "point_isReverse": false,
+            "point_zip": "100005",
+            "point_fulladdress": "Beijing Railway Station,北京站街,Beijing,Beijing,China"
+        },
+        {
+            "point_type": "railway/station",
+            "point_osm_id": 79250977,
+            "point_coordinates": [
+                116.478645,
+                39.90121
+            ],
+            "point_isReverse": false,
+            "point_zip": "3208",
+            "point_fulladdress": "Beijing East,Baiziwan Rd,深沟,Beijing,China"
+        },
+        {
+            "point_type": "amenity/university",
+            "point_osm_id": 30784020,
+            "point_coordinates": [
+                116.359695,
+                39.96025
+            ],
+            "point_isReverse": false,
+            "point_zip": "100875",
+            "point_fulladdress": "19,Beijing Normal University (BNU),新街口外大街,Beijing,Beijing,China"
+        },
+        {
+            "point_type": "railway/station",
+            "point_osm_id": 30680817,
+            "point_coordinates": [
+                116.31512,
+                39.893494
+            ],
+            "point_isReverse": false,
+            "point_zip": "100037",
+            "point_fulladdress": "Beijing West Railway Station,莲花池东路,Beijing,China"
+        },
+        {
+            "point_type": "amenity/university",
+            "point_osm_id": 297678790,
+            "point_coordinates": [
+                116.56024,
+                39.911484
+            ],
+            "point_isReverse": false,
+            "point_zip": "100024",
+            "point_fulladdress": "1,Beijing International Studies University,Jianguo Road,定福庄,Beijing,China"
+        },
+        {
+            "point_type": "place/locality",
+            "point_osm_id": 1038801756,
+            "point_coordinates": [
+                116.49419,
+                40.462795
+            ],
+            "point_isReverse": false,
+            "point_zip": null,
+            "point_fulladdress": "Beijing Knot,旧水坑村,Beijing,China"
+        },
+        {
+            "point_type": "amenity/college",
+            "point_osm_id": 50636364,
+            "point_coordinates": [
+                116.32149,
+                39.743626
+            ],
+            "point_isReverse": false,
+            "point_zip": "102600",
+            "point_fulladdress": "1号,Beijing Institute of Graphic Communication,清源路,大兴区,Beijing,China"
+        },
+        {
+            "point_type": "railway/station",
+            "point_osm_id": 43045237,
+            "point_coordinates": [
+                116.37283,
+                39.863655
+            ],
+            "point_isReverse": false,
+            "point_zip": "100055",
+            "point_fulladdress": "Beijing South Railway Station,北京南站路,Beijing,China"
+        },
+        {
+            "point_type": "aeroway/aerodrome",
+            "point_osm_id": 292809708,
+            "point_coordinates": [
+                116.59456,
+                40.079285
+            ],
+            "point_isReverse": false,
+            "point_zip": "101312",
+            "point_fulladdress": "Beijing Capital International Airport,航管南路,顺义区,Beijing,China"
+        },
+        {
+            "point_type": "landuse/residential",
+            "point_osm_id": 55783243,
+            "point_coordinates": [
+                116.51365,
+                40.030975
+            ],
+            "point_isReverse": false,
+            "point_zip": "100103",
+            "point_fulladdress": "Beijing Riviera,康营,Beijing,China"
+        },
+        {
+            "point_type": "leisure/stadium",
+            "point_osm_id": 107011235,
+            "point_coordinates": [
+                116.27242,
+                39.86564
+            ],
+            "point_isReverse": false,
+            "point_zip": "100039",
+            "point_fulladdress": "Beijing Fengtai Stadium,丰体南路,Beijing,China"
+        },
+        {
+            "point_type": "tourism/attraction",
+            "point_osm_id": 269693885,
+            "point_coordinates": [
+                116.42835,
+                39.90618
+            ],
+            "point_isReverse": false,
+            "point_zip": "100005",
+            "point_fulladdress": "Beijing Ancient Observatory,建国门南大街,Beijing,Beijing,China"
+        },
+        {
+            "point_type": "place/village",
+            "point_osm_id": 3365572,
+            "point_coordinates": [
+                120.691734,
+                24.16338
+            ],
+            "point_isReverse": false,
+            "point_zip": "406",
+            "point_fulladdress": "Beijing Village,Taichung City,Taiwan"
+        },
+        {
+            "point_type": "railway/station",
+            "point_osm_id": 528928174,
+            "point_coordinates": [
+                116.33272,
+                39.936886
+            ],
+            "point_isReverse": false,
+            "point_zip": "100044",
+            "point_fulladdress": "Beijing Zoo,西直门外大街,Beijing,Beijing,China"
+        },
+        {
+            "point_type": "amenity/university",
+            "point_osm_id": 30725172,
+            "point_coordinates": [
+                116.307335,
+                39.954838
+            ],
+            "point_isReverse": false,
+            "point_zip": "100872",
+            "point_fulladdress": "Beijing Foreign Studies University,Weigongcun Rd,稻香园南社区,Beijing,China"
+        },
+        {
+            "point_type": "waterway/river",
+            "point_osm_id": 29236029,
+            "point_coordinates": [
+                116.659294,
+                39.85063
+            ],
+            "point_isReverse": false,
+            "point_zip": null,
+            "point_fulladdress": "Beijing Paiwu River,通州区,Beijing,China"
+        },
+        {
+            "point_type": "waterway/river",
+            "point_osm_id": 226214864,
+            "point_coordinates": [
+                116.7436,
+                39.822266
+            ],
+            "point_isReverse": false,
+            "point_zip": null,
+            "point_fulladdress": "Beijing Paiwu River,通州区,Beijing,China"
+        },
+        {
+            "point_type": "amenity/university",
+            "point_osm_id": 30748230,
+            "point_coordinates": [
+                116.309715,
+                39.958664
+            ],
+            "point_isReverse": false,
+            "point_zip": "100872",
+            "point_fulladdress": "5,Beijing Institute of Technology (BIT),S. Zhongguancun Str,海淀路社区,Beijing,China"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+[ {
+    "name" : "姓名",
+    "id" : "fullname"
+  }, {
+    "name" : "性别",
+    "id" : "gender"
+  }, {
+    "name" : "出生日期",
+    "id" : "dob"
+  }, {
+    "name" : "电子邮件",
+    "id" : "email"
+  } ]

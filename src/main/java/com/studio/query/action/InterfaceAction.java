@@ -85,7 +85,7 @@ public class InterfaceAction extends BaseAction {
 					Account currentAccount = (Account) session.get(Configure.systemSessionAccount);
 					if (currentAccount == null) {
 						this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_SESSION,
-								"回话已经过期，请重新登录。", "");
+								"会话已经过期，请重新登录。", "");
 						return null;
 					}
 
@@ -94,9 +94,9 @@ public class InterfaceAction extends BaseAction {
 					} else if (methodCode.equals(MethodCode.SET_SCOPE)) {
 						returnString = accountService.setScope(bodyString, session);
 					} else if (methodCode.equals(MethodCode.GET_TABLE_HEAD_DEF)) {
-						returnString = queryService.getTableHeadDef(bodyString);
+						returnString = queryService.getTableHeadDef(session);
 					} else if (methodCode.equals(MethodCode.LIST_SCENE)) {
-						returnString = sceneService.getSceneList(bodyString, currentAccount);
+						returnString = sceneService.getSceneList(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.HISTORY_SCENE)) {
 						returnString = sceneService.getSceneHistory(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.SWITCH_SCENE)) {
@@ -165,8 +165,6 @@ public class InterfaceAction extends BaseAction {
 						returnString = variableService.getShareVariableVersion(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_INDEX_DOC_TYPES)) {
 						returnString = queryService.getIndexDocTypes(bodyString);
-					} else if (methodCode.equals(MethodCode.GET_TABLE_HEAD_DEF)) {
-						returnString = queryService.getTableHeadDef(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_HELP_VALUE)) {
 						returnString = queryService.getHelpValue(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_INPUT_TYPES)) {
