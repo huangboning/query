@@ -243,4 +243,29 @@ public class InterfaceAction extends BaseAction {
 			loger.info(e.toString());
 		}
 	}
+
+	public void register() {
+
+		this.execute();
+	}
+
+	public void login() {
+
+		this.execute();
+	}
+
+	public void accountQuery() {
+
+		this.execute();
+	}
+
+	public void logout() {
+
+		this.execute();
+	}
+
+	public void getIndexDocTypes() {
+
+		this.execute();
+	}
 }

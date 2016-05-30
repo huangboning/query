@@ -124,13 +124,6 @@ public class TestAction {
 
 			updateSceneJson.put("params", updateSceneObj);
 
-			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
-					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"),
-					switchVersionJson.toString().getBytes("utf-8"), null,
-					currentVersionJson.toString().getBytes("utf-8"));
-			System.out.println(currentVersionJson.toString());
-			System.out.println(result);
-
 			// 创建fragment
 			JSONObject createFragmentJson = new JSONObject();
 			createFragmentJson.put("method", "createFragment");
@@ -332,10 +325,16 @@ public class TestAction {
 			// getShareVariableVersionJson.put("params",
 			// getShareVariableVersionObj);
 
-			// // ES接口 getIndexDocTypes
-			// JSONObject getInitDocTypeJson = new JSONObject();
-			// getInitDocTypeJson.put("method", "getIndexDocTypes");
-			// getInitDocTypeJson.put("params", "");
+			// ES接口 getIndexDocTypes
+			JSONObject getInitDocTypeJson = new JSONObject();
+			getInitDocTypeJson.put("method", "getIndexDocTypes");
+			getInitDocTypeJson.put("params", "");
+
+			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/getIndexDocTypes",
+					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null, null,
+					getInitDocTypeJson.toString().getBytes("utf-8"));
+			System.out.println(getInitDocTypeJson.toString());
+			System.out.println(result);
 
 			// // ES接口 getHintFields
 			// JSONObject getHintFieldsJson = new JSONObject();

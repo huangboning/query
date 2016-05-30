@@ -50,5 +50,21 @@
 	<package name="service" extends="struts-default" namespace="/service/v1">
 		<action name="main" class="com.studio.query.action.InterfaceAction">
 		</action>
+		<action name="register" class="com.studio.query.action.InterfaceAction"
+			method="register">
+		</action>
+		<action name="login" class="com.studio.query.action.InterfaceAction"
+			method="login">
+		</action>
+		<action name="accountQuery" class="com.studio.query.action.InterfaceAction"
+			method="accountQuery">
+		</action>
+		<action name="logout" class="com.studio.query.action.InterfaceAction"
+			method="logout">
+		</action>
+		<action name="getIndexDocTypes" class="com.studio.query.action.InterfaceAction"
+			method="getIndexDocTypes">
+		</action>
+
 	</package>
 </struts>
