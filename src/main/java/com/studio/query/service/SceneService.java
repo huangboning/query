@@ -51,7 +51,7 @@ public class SceneService {
 		return sceneDao.updateScene(scene);
 	}
 
-	public String createScene(String bodyString, Account currentAccount) {
+	public String createScene(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
@@ -61,8 +61,8 @@ public class SceneService {
 			String sceneDesc = parmJb.optString("sceneDesc", "");
 			if (StringUtil.isNullOrEmpty(sceneName)) {
 
-				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			// 暂时不启用场景名称重复的验证
@@ -91,12 +91,13 @@ public class SceneService {
 						+ Constants.SCENE_REPOSITORY_NAME + "/" + insertScene.getSceneGit();
 
 				jGitService.initAccountGit(gitPath, currentAccount);
-				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK, "",
+				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK,
 						"创建场景成功", "");
+				this.resetScope(null, session);
 			} else {
 
-				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.CREATE_SCENE_FAIL, "创建场景失败", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Error.CREATE_SCENE_FAIL,
+						"创建场景失败", "");
 			}
 		}
 		return resultString;
@@ -124,7 +125,7 @@ public class SceneService {
 			if (isFrist) {
 				if (i == 0) {
 					dataObj.put("sceneActive", "true");
-					//会话中设置当前活动场景
+					// 会话中设置当前活动场景
 					this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
 				} else {
 					dataObj.put("sceneActive", "false");
@@ -132,7 +133,7 @@ public class SceneService {
 			} else {
 				if (sceneActiveUUID.equals(scene.getSceneUUID())) {
 					dataObj.put("sceneActive", "true");
-					//会话中设置当前活动场景
+					// 会话中设置当前活动场景
 					this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
 				} else {
 					dataObj.put("sceneActive", "false");
@@ -142,7 +143,7 @@ public class SceneService {
 			sceneJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_SCENE, ParameterCode.Result.RESULT_OK, "", "获取场景列表成功",
+		resultString = StringUtil.packetObject(MethodCode.LIST_SCENE, ParameterCode.Result.RESULT_OK, "获取场景列表成功",
 				sceneJsonArray.toString());
 
 		return resultString;
@@ -163,6 +164,39 @@ public class SceneService {
 
 	}
 
+	// 重新设置scope
+	public void resetScope(List<String> resetScopes, Map<String, Object> session) {
+
+		session.remove(Constants.KEY_SET_SCOPE);
+		List<String> scopeList = new ArrayList<String>();
+		List<Map<String, String>> indexList = (List<Map<String, String>>) CacheUtil.getCacheObject("mapIndex");
+		if (indexList != null) {
+			for (Map<String, String> map : indexList) {
+				String scopeId = map.get("id");
+				String isUnified = map.get("isUnified");
+				if (isUnified.equals("true")) {
+					scopeList.add(scopeId);
+				}
+			}
+		}
+		if (resetScopes != null) {
+			for (String scope : resetScopes) {
+				boolean isExist = false;
+				for (int i = 0; i < scopeList.size(); i++) {
+					String oldScope = scopeList.get(i);
+					if (oldScope.equals(scope)) {
+						isExist = true;
+						break;
+					}
+				}
+				if (!isExist) {
+					scopeList.add(scope);
+				}
+			}
+		}
+		session.put(Constants.KEY_SET_SCOPE, scopeList);
+	}
+
 	public String getSceneHistory(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
@@ -170,8 +204,8 @@ public class SceneService {
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 		// 如果session中没有记录当前场景
 		if (sceneActive == null) {
-			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_FAIL,
-					ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
+			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Error.SERVICE_SESSION,
+					"当前没设置活动场景，或会话已经过期！", "");
 			return resultString;
 		}
 
@@ -179,7 +213,7 @@ public class SceneService {
 				+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneActive.getSceneGit();
 
 		Map map = JGitService.readLogTree(scenePath, new HashMap<>());
-		resultString = StringUtil.packetObjectObj(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObjectObj(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_OK,
 				"查询场景历史版本成功", map);
 
 		return resultString;
@@ -201,15 +235,15 @@ public class SceneService {
 			String sceneUUID = parmJb.optString("sceneUUID", "");
 			if (StringUtil.isNullOrEmpty(sceneUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			Scene findScene = new Scene();
 			findScene.setSceneUUID(sceneUUID);
 			List<Scene> sceneList = this.findScene(findScene);
 			if (sceneList.size() != 1) {
-				resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE,
 						ParameterCode.Error.QUERY_SCENE_NO_EXIST, "查询的场景不存在", "");
 				return resultString;
 			}
@@ -223,7 +257,7 @@ public class SceneService {
 			activeObj.put("sceneUUID", sceneList.get(0).getSceneUUID());
 			HistoryUtil.setUserSceneHistory(currentAccount.getAccountName(), activeObj.toString());
 
-			resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Result.RESULT_OK,
 					"切换场景成功，当前场景是" + sceneList.get(0).getSceneName(), "");
 
 		}
@@ -238,14 +272,14 @@ public class SceneService {
 		if (parmJb != null) {
 			String sceneVersion = parmJb.optString("sceneVersion", "");
 			if (StringUtil.isNullOrEmpty(sceneVersion)) {
-				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Error.SERVICE_SESSION,
+						"当前没设置活动场景，或会话已经过期！", "");
 				return resultString;
 			}
 			String sessionScenePath = (String) session.get(Constants.KEY_SCENE_PATH);
@@ -256,13 +290,16 @@ public class SceneService {
 			// 解析场景json数据
 			List<Fragment> fragmentList = JsonUtil.getFragmentFromSceneString(contentString);
 			List<Variable> variableList = JsonUtil.getVariableFromSceneString(contentString);
+			List<String> scopeList = JsonUtil.getScopeFromSceneString(contentString);
 
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
+			// 重设scope
+			this.resetScope(scopeList, session);
 
 			session.put(Constants.SCENE_VERSION, sceneVersion);
-			resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_OK, "",
-					"切换版本成功", "");
+			resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Result.RESULT_OK, "切换版本成功",
+					"");
 		}
 		return resultString;
 	}
@@ -272,8 +309,8 @@ public class SceneService {
 		String resultString = null;
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 		if (sceneActive == null) {
-			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_FAIL,
-					ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
+			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Error.SERVICE_SESSION,
+					"当前没设置活动场景，或会话已经过期！", "");
 			return resultString;
 		}
 		String sessionScenePath = (String) session.get(Constants.KEY_SCENE_PATH);
@@ -346,7 +383,7 @@ public class SceneService {
 		}
 		sceneObject.put("variableList", variableJsonArray);
 
-		resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_OK,
 				"获取当前本场景成功", sceneObject.toString());
 		return resultString;
 
@@ -361,12 +398,12 @@ public class SceneService {
 			String sceneVersion = parmJb.optString("sceneVersion", "");
 			if (StringUtil.isNullOrEmpty(sceneVersion)) {
 
-				resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
-			resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION, ParameterCode.Result.RESULT_OK, "",
-					"关闭场景成功", "");
+			resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION, ParameterCode.Result.RESULT_OK, "关闭场景成功",
+					"");
 
 		}
 		return resultString;
@@ -381,15 +418,15 @@ public class SceneService {
 			String sceneComment = parmJb.optString("sceneComment", "");
 			if (StringUtil.isNullOrEmpty(sceneComment)) {
 
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Error.SERVICE_SESSION,
+						"当前没设置活动场景，或会话已经过期！", "");
 				return resultString;
 			}
 			String scenePath = (String) session.get(Constants.KEY_SCENE_PATH);
@@ -442,6 +479,16 @@ public class SceneService {
 			}
 			sceneJson.put("variableList", variableJsonArray);
 
+			JSONArray scopeObjs = new JSONArray();
+			List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+			if (scopeArray == null) {
+				scopeArray = new ArrayList<String>();
+			}
+			for (String scopeStr : scopeArray) {
+				scopeObjs.add(scopeStr);
+			}
+			sceneJson.put("scopeList", scopeObjs.toString());
+
 			FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
 			JGitService jGitService = new JGitService();
 			jGitService.jGitCommit(scenePath, currentAccount, sceneComment);
@@ -456,10 +503,11 @@ public class SceneService {
 			sceneObject.put("sceneComment", committer.getCommitMssage());
 			sceneObject.put("sceneVersion", committer.getCommitVersion());
 
+			sceneObject.put("scope", scopeObjs.toString());
 			sceneObject.put("sceneActive", "true");
 			sceneObject.put("sceneEnable", "true");
-			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "",
-					"更新场景成功", sceneObject.toString());
+			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "更新场景成功",
+					sceneObject.toString());
 
 		}
 		return resultString;

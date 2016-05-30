@@ -117,7 +117,7 @@ public class ApacheHttpUtil {
 		return result;
 	}
 
-	public static String testSceneBySession(String url, byte[] loginData, byte[] switchData, byte[] fragmentData,
+	public static String testSceneBySession(String url, byte[] loginData, byte[] switchData, byte[] fragmentData,byte[] fragmentData2,
 			byte[] bodyData) {
 		String result = "";
 		CloseableHttpResponse response = null;
@@ -152,7 +152,15 @@ public class ApacheHttpUtil {
 				result = EntityUtils.toString(fragmentRepEntity, "utf-8");
 				System.out.println(result);
 			}
-
+			if (fragmentData2!=null) {
+				ByteArrayEntity fragmentEntity = new ByteArrayEntity(fragmentData2);
+				httpPost.setEntity(fragmentEntity);
+				response = httpclient.execute(httpPost);
+				System.out.println(response.getStatusLine());
+				HttpEntity fragmentRepEntity = response.getEntity();
+				result = EntityUtils.toString(fragmentRepEntity, "utf-8");
+				System.out.println(result);
+			}
 			ByteArrayEntity postEntity = new ByteArrayEntity(bodyData);
 			httpPost.setEntity(postEntity);
 			response = httpclient.execute(httpPost);

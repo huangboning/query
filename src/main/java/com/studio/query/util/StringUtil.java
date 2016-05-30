@@ -21,23 +21,19 @@ public class StringUtil {
 		return false;
 	}
 
-	public static String packetObject(String optCode, String statusCode, String errorCode, String message,
-			String baseObject) {
+	public static String packetObject(String optCode, String statusCode, String message, String baseObject) {
 		JSONObject o = new JSONObject();
 		o.put("optCode", optCode);
 		o.put("statusCode", statusCode);
-		o.put("errorCode", errorCode);
 		o.put("message", message);
 		o.put("baseObject", baseObject);
 		return o.toString();
 	}
 
-	public static String packetObjectObj(String optCode, String statusCode, String errorCode, String message,
-			Object mapObject) {
+	public static String packetObjectObj(String optCode, String statusCode, String message, Object mapObject) {
 		JSONObject o = new JSONObject();
 		o.put("optCode", optCode);
 		o.put("statusCode", statusCode);
-		o.put("errorCode", errorCode);
 		o.put("message", message);
 		o.put("baseObject", mapObject);
 		return o.toString();

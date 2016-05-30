@@ -57,7 +57,7 @@ public class VariableService {
 			String variableDesc = parmJb.optString("variableDesc", "");
 			if (StringUtil.isNullOrEmpty(variableName)
 					|| (variableScope == 1 && StringUtil.isNullOrEmpty(fragmentUUID))) {
-				resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -77,7 +77,7 @@ public class VariableService {
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 				return resultString;
 			}
@@ -100,7 +100,7 @@ public class VariableService {
 
 			JSONObject variableJsonObject = new JSONObject();
 			variableJsonObject.put("variableUUID", insertVariable.getVariableUUID());
-			resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE, ParameterCode.Result.RESULT_OK,
 					"创建变量到缓存成功，请注意在切换场景前保存场景数据。", variableJsonObject.toString());
 
 		}
@@ -124,7 +124,7 @@ public class VariableService {
 			if (StringUtil.isNullOrEmpty(variableUUID)
 					|| (variableScope == 1 && StringUtil.isNullOrEmpty(fragmentUUID))) {
 
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -132,7 +132,7 @@ public class VariableService {
 			findvVariable.setVariableUUID(variableUUID);
 			List<Variable> variableList = variableDao.findVariable(findvVariable);
 			if (variableList.size() < 1) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
 						ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
 				return resultString;
 			}
@@ -140,7 +140,7 @@ public class VariableService {
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 				return resultString;
 			}
@@ -170,7 +170,7 @@ public class VariableService {
 			sessionVariableList.add(updateVariable);
 			session.put(Constants.KEY_VARIABLE_UPDATE, sessionVariableList);
 
-			resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_OK,
 					"更新变量到缓存成功，请注意在切换场景前保存场景数据。", "");
 
 		}
@@ -185,8 +185,8 @@ public class VariableService {
 			String fragmentVersion = parmJb.optString("version", "");
 			if (StringUtil.isNullOrEmpty(fragmentVersion)) {
 
-				resultString = StringUtil.packetObject(MethodCode.GET_VARIABLE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.GET_VARIABLE, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			// 这里根据version解析出相对应的variable
@@ -202,7 +202,7 @@ public class VariableService {
 			variableObj.put("createTime", "2016-04-25 00:12:45");
 			variableObj.put("expression", "");// expression直接从当前version解析提取
 
-			resultString = StringUtil.packetObject(MethodCode.GET_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.GET_VARIABLE, ParameterCode.Result.RESULT_OK,
 					"获取某个版本variable成功", variableObj.toString());
 
 		}
@@ -218,7 +218,7 @@ public class VariableService {
 			String variableUUID = parmJb.optString("variableUUID", "");
 			if (StringUtil.isNullOrEmpty(variableUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -226,14 +226,14 @@ public class VariableService {
 			findVariable.setVariableUUID(variableUUID);
 			List<Variable> variableList = variableDao.findVariable(findVariable);
 			if (variableList.size() != 1) {
-				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
 						ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
 				return resultString;
 			}
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 				return resultString;
 			}
@@ -245,7 +245,7 @@ public class VariableService {
 			sessionVariableList.add(deleteVariable);
 			session.put(Constants.KEY_VARIABLE_DELETE, sessionVariableList);
 
-			resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_OK,
 					"删除变量到缓存成功，请注意在切换场景前保存场景数据。", "");
 		}
 		return resultString;
@@ -324,8 +324,8 @@ public class VariableService {
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 		// 如果session中没有记录当前场景
 		if (sceneActive == null) {
-			resultString = StringUtil.packetObject(MethodCode.LIST_VARIABLE, ParameterCode.Result.RESULT_FAIL,
-					ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+			resultString = StringUtil.packetObject(MethodCode.LIST_VARIABLE, ParameterCode.Error.UPDATE_SCENE_NO_MATCH,
+					"当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 			return resultString;
 		}
 		JSONArray variableJsonArray = new JSONArray();
@@ -348,7 +348,7 @@ public class VariableService {
 			variableJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_VARIABLE, ParameterCode.Result.RESULT_OK, "", "获取变量列表成功",
+		resultString = StringUtil.packetObject(MethodCode.LIST_VARIABLE, ParameterCode.Result.RESULT_OK, "获取变量列表成功",
 				variableJsonArray.toString());
 
 		return resultString;
@@ -364,7 +364,7 @@ public class VariableService {
 			if (StringUtil.isNullOrEmpty(shareVariableUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_VARIABLE_HISTORY,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			ShareVariable shareVariable = new ShareVariable();
@@ -372,7 +372,7 @@ public class VariableService {
 			List<ShareVariable> shareVariableList = variableDao.findShareVariable(shareVariable);
 			if (shareVariableList.size() < 1) {
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_VARIABLE_HISTORY,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
+						ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
 				return resultString;
 			}
 			shareVariable = shareVariableList.get(0);
@@ -406,7 +406,7 @@ public class VariableService {
 			variableJsonObj.put("committers", committerJsonArray.toString());
 
 			resultString = StringUtil.packetObject(MethodCode.GET_SHARE_VARIABLE_HISTORY,
-					ParameterCode.Result.RESULT_OK, "", "获取共享变量共享历史版本成功", variableJsonObj.toString());
+					ParameterCode.Result.RESULT_OK, "获取共享变量共享历史版本成功", variableJsonObj.toString());
 
 		}
 		return resultString;
@@ -422,7 +422,7 @@ public class VariableService {
 			if (StringUtil.isNullOrEmpty(shareVariableUUID) || StringUtil.isNullOrEmpty(shareVariableVersion)) {
 
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_VARIABLE_VERSION,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 
@@ -431,7 +431,7 @@ public class VariableService {
 			List<ShareVariable> shareVariableList = variableDao.findShareVariable(shareVariable);
 			if (shareVariableList.size() < 1) {
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_VARIABLE_VERSION,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
+						ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
 				return resultString;
 			}
 			shareVariable = shareVariableList.get(0);
@@ -455,7 +455,7 @@ public class VariableService {
 			Committer commitInfo = jGitService.getCommitterByVersion(gitPath, shareVariableVersion);
 			if (commitInfo == null) {
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_VARIABLE_VERSION,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_VERSION_NO_EXIST, "查询的版本号不存在", "");
+						ParameterCode.Error.QUERY_VERSION_NO_EXIST, "查询的版本号不存在", "");
 				return resultString;
 			}
 			JSONObject committerJsonObj = new JSONObject();
@@ -470,7 +470,7 @@ public class VariableService {
 			variableJsonObj.put("committer", committerJsonObj.toString());
 
 			resultString = StringUtil.packetObject(MethodCode.GET_SHARE_VARIABLE_VERSION,
-					ParameterCode.Result.RESULT_OK, "", "获取某个版本共享变量成功", variableJsonObj.toString());
+					ParameterCode.Result.RESULT_OK, "获取某个版本共享变量成功", variableJsonObj.toString());
 
 		}
 		return resultString;
@@ -499,7 +499,7 @@ public class VariableService {
 			variableJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_VARIABLE, ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_VARIABLE, ParameterCode.Result.RESULT_OK,
 				"获取分享变量列表成功", variableJsonArray.toString());
 
 		return resultString;
@@ -527,7 +527,7 @@ public class VariableService {
 					|| (shareVariableScope == 1 && StringUtil.isNullOrEmpty(fragmentUUID))) {
 
 				resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_VARIABLE,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Variable findVariable = new Variable();
@@ -535,7 +535,7 @@ public class VariableService {
 			List<Variable> variableList = variableDao.findVariable(findVariable);
 			if (variableList.size() != 1) {
 				resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_VARIABLE,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
+						ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
 				return resultString;
 			}
 			Variable fromVariable = variableList.get(0);
@@ -607,7 +607,7 @@ public class VariableService {
 				variableDao.releaseVariable(shareVariable);
 			}
 			resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_VARIABLE, ParameterCode.Result.RESULT_OK,
-					"", "发布共享变量成功", "");
+					"发布共享变量成功", "");
 
 		}
 		return resultString;

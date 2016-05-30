@@ -48,8 +48,8 @@ public class AccountService {
 			String accountPassword = parmJb.optString("accountPassword", "");
 			if (StringUtil.isNullOrEmpty(accountName) || StringUtil.isNullOrEmpty(accountPassword)) {
 
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			String md5AccountPassword = Md5Util.md5Encode(accountPassword);
@@ -58,13 +58,13 @@ public class AccountService {
 			loginAccount.setAccountPassword(md5AccountPassword);
 			List<Account> accountList = accountDao.findAccount(loginAccount);
 			if (accountList.size() == 1) {
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_OK, "",
-						"登录成功", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_OK, "登录成功",
+						"");
 				session.put(Configure.systemSessionAccount, accountList.get(0));
-				//设置默认scope
+				// 设置默认scope
 				List<Map<String, String>> indexList = (List<Map<String, String>>) CacheUtil.getCacheObject("mapIndex");
-				if (indexList!=null) {
-					for (Map<String, String> map:indexList) {
+				if (indexList != null) {
+					for (Map<String, String> map : indexList) {
 						String isUndified = (String) map.get("isUnified");
 						if (isUndified.equals("true")) {
 							JSONObject setScopeJson = new JSONObject();
@@ -78,7 +78,7 @@ public class AccountService {
 				HistoryUtil.createUserHistory(loginAccount.getAccountName());
 			} else {
 
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN,
 						ParameterCode.Error.ACCOUNT_LOGIN_VALIDATE, "登录失败，帐号或密码错误。", "");
 			}
 		}
@@ -97,7 +97,7 @@ public class AccountService {
 			String accountEmail = parmJb.optString("accountEmail", "");
 			if (StringUtil.isNullOrEmpty(accountName) || StringUtil.isNullOrEmpty(accountPassword)) {
 
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -105,7 +105,7 @@ public class AccountService {
 			findAccount.setAccountName(accountName);
 			List<Account> accountList = accountDao.findAccount(findAccount);
 			if (accountList.size() >= 1) {
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
 						ParameterCode.Error.ACCOUNT_REGISTER_EXIST, "账号已存在", "");
 				return resultString;
 			}
@@ -124,12 +124,12 @@ public class AccountService {
 				JGitService jGitService = new JGitService();
 				jGitService.createAccountRepository(Configure.gitRepositoryPath, String.valueOf(a.get(Calendar.YEAR)),
 						String.valueOf((a.get(Calendar.MONTH) + 1)), accountName);
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_OK, "",
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_OK,
 						"注册成功", "");
 				session.put(Configure.systemSessionAccount, insertAccount);
 			} else {
 
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
 						ParameterCode.Error.ACCOUNT_REGISTER_FAIL, "注册失败", "");
 			}
 		}
@@ -145,8 +145,8 @@ public class AccountService {
 			String accountName = parmJb.optString("accountName", "");
 			if (StringUtil.isNullOrEmpty(accountName)) {
 
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			Account findAccount = new Account();
@@ -155,7 +155,7 @@ public class AccountService {
 			if (accountList.size() >= 1) {
 				JSONObject dataObj1 = new JSONObject();
 				dataObj1.put("accountExist", "1");
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Result.RESULT_OK, "",
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Result.RESULT_OK,
 						"查询的账号存在", dataObj1.toString());
 				return resultString;
 
@@ -163,7 +163,7 @@ public class AccountService {
 
 				JSONObject dataObj1 = new JSONObject();
 				dataObj1.put("accountExist", "0");
-				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Result.RESULT_OK, "",
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_QUERY, ParameterCode.Result.RESULT_OK,
 						"查询的账号不存在", dataObj1.toString());
 				return resultString;
 			}
@@ -175,8 +175,11 @@ public class AccountService {
 
 		String resultString = null;
 		session.remove(Configure.systemSessionAccount);
-		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGOUT, ParameterCode.Result.RESULT_OK, "", "注销成功",
-				"");
+		session.remove(Constants.KEY_SET_SCOPE);
+		session.remove(Constants.KEY_SCENE_PATH);
+		session.remove(Constants.SCENE_ACTIVE);
+		session.remove(Constants.SCENE_VERSION);
+		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGOUT, ParameterCode.Result.RESULT_OK, "", "");
 
 		return resultString;
 	}
@@ -194,8 +197,8 @@ public class AccountService {
 			String scope = parmJb.optString("scope", "");
 			if (StringUtil.isNullOrEmpty(scope)) {
 
-				resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			// 这里设置数据源逻辑
@@ -216,8 +219,7 @@ public class AccountService {
 				session.put(Constants.KEY_SET_SCOPE, scopeList);
 			}
 
-			resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Result.RESULT_OK, "", "设置数据源成功",
-					"");
+			resultString = StringUtil.packetObject(MethodCode.SET_SCOPE, ParameterCode.Result.RESULT_OK, "设置数据源成功", "");
 
 		}
 		return resultString;

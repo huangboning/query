@@ -10,19 +10,10 @@ public class ParameterCode {
 
 	public static final class Result {
 
-		public static String RESPONSE_RESULT = "response_result";
-
-		public static String RESPONSE_ERROR_CODE = "response_error_code";
-
-		public static String RESPONSE_ERROR_MSG = "response_error_msg";
 		/**
 		 * 成功
 		 */
 		public static String RESULT_OK = "200";
-		/**
-		 * 失败
-		 */
-		public static String RESULT_FAIL = "-100";
 	}
 
 	public static final class Error {

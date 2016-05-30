@@ -64,6 +64,13 @@ public class TestAction {
 			setScopeObj.put("scope", "aminno.entities");
 			setScopeJson.put("params", setScopeObj);
 
+			JSONObject setScopeJson2 = new JSONObject();
+			setScopeJson2.put("method", "setScope");
+			setScopeJson2.put("params", "");
+			JSONObject setScopeObj2 = new JSONObject();
+			setScopeObj2.put("scope", "aminno.entities22");
+			setScopeJson2.put("params", setScopeObj2);
+
 			// // 获取选择数据源定义的数据表头
 			// JSONObject headJson = new JSONObject();
 			// headJson.put("method", "getTableHeadDef");
@@ -101,23 +108,28 @@ public class TestAction {
 			JSONObject switchVersionJson = new JSONObject();
 			switchVersionJson.put("method", "switchVersion");
 			JSONObject switchVersionObj = new JSONObject();
-			switchVersionObj.put("sceneVersion", "1e3ca68e8f42d408391b751050ce60cc26f55650");
+			switchVersionObj.put("sceneVersion", "42f4f0bddd44624bad920a785ab95c8bdf7a7a6c");
 			switchVersionJson.put("params", switchVersionObj);
 
 			// 获取某版本场景
-			JSONObject sceneVersionJson = new JSONObject();
-			sceneVersionJson.put("method", "getCurrentVersion");
-			sceneVersionJson.put("params", "");
+			JSONObject currentVersionJson = new JSONObject();
+			currentVersionJson.put("method", "getCurrentVersion");
+			currentVersionJson.put("params", "");
 
-			// // 更新场景
-			// JSONObject updateSceneJson = new JSONObject();
-			// updateSceneJson.put("method", "updateScenario");
-			// JSONObject updateSceneObj = new JSONObject();
-			// updateSceneObj.put("sceneUUID",
-			// "SCNO12c2b35ff3394866ab12cf15ffbecfbb");
-			// updateSceneObj.put("sceneComment", "huangboning update scene 1");
-			//
-			// updateSceneJson.put("params", updateSceneObj);
+			// 更新场景
+			JSONObject updateSceneJson = new JSONObject();
+			updateSceneJson.put("method", "updateScenario");
+			JSONObject updateSceneObj = new JSONObject();
+			updateSceneObj.put("sceneComment", "huangboning update scene 1");
+
+			updateSceneJson.put("params", updateSceneObj);
+
+			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
+					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"),
+					switchVersionJson.toString().getBytes("utf-8"), null,
+					currentVersionJson.toString().getBytes("utf-8"));
+			System.out.println(currentVersionJson.toString());
+			System.out.println(result);
 
 			// 创建fragment
 			JSONObject createFragmentJson = new JSONObject();
@@ -363,12 +375,12 @@ public class TestAction {
 			// // etHelpValueObj.put("fieldId", "profile.gender_word");
 			// getHelpValueJson.put("params", etHelpValueObj);
 
-			// ES接口 getGeocoding
-			JSONObject getGeocodingJson = new JSONObject();
-			getGeocodingJson.put("method", "getGeocoding");
-			JSONObject getGeocodingObj = new JSONObject();
-			getGeocodingObj.put("addressName", "beijing");
-			getGeocodingJson.put("params", getGeocodingObj);
+			// // ES接口 getGeocoding
+			// JSONObject getGeocodingJson = new JSONObject();
+			// getGeocodingJson.put("method", "getGeocoding");
+			// JSONObject getGeocodingObj = new JSONObject();
+			// getGeocodingObj.put("addressName", "beijing");
+			// getGeocodingJson.put("params", getGeocodingObj);
 
 			// // ES接口 executeScene
 			// JSONObject executeSceneJson = new JSONObject();
@@ -376,12 +388,6 @@ public class TestAction {
 			// String bodyString =
 			// FileUtil.readFile("D:/hbn/workspaces/query/src/main/resources/valid.txt");
 			// executeSceneJson.put("params", bodyString);
-
-			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/main.do",
-					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null,
-					getGeocodingJson.toString().getBytes("utf-8"));
-			System.out.println(getGeocodingJson.toString());
-			System.out.println(result);
 
 			// String result = ApacheHttpUtil.sendPostBySession(
 			// "http://localhost:8080/zqQuery/service/v1/main.do",

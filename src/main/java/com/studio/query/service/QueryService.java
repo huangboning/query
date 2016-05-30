@@ -45,7 +45,7 @@ public class QueryService {
 		if (indexList == null) {
 			indexList = new ArrayList<Map<String, String>>();
 		}
-		resultString = StringUtil.packetObjectObj(MethodCode.GET_INDEX_DOC_TYPES, ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObjectObj(MethodCode.GET_INDEX_DOC_TYPES, ParameterCode.Result.RESULT_OK,
 				"获取数据源列表成功", indexList);
 
 		return resultString;
@@ -80,13 +80,13 @@ public class QueryService {
 				e.printStackTrace();
 				loger.info(e.toString());
 				loger.info("请求失败：" + Configure.esTalbleServiceUrl);
-				resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF,
 						ParameterCode.Error.SERVICE_INVALID, "获取选择数据源定义的数据表头失败", tableHeadDefString);
 				return resultString;
 			}
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF, ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF, ParameterCode.Result.RESULT_OK,
 				"获取选择数据源定义的数据表头成功", tableHeadDefString);
 
 		return resultString;
@@ -113,7 +113,7 @@ public class QueryService {
 				String fieldId = parmJb.optString("fieldId", "");
 				if (StringUtil.isNullOrEmpty(indexDocTypeId) || StringUtil.isNullOrEmpty(fieldId)) {
 
-					resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_FAIL,
+					resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE,
 							ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 					return resultString;
 				}
@@ -142,12 +142,12 @@ public class QueryService {
 					e.printStackTrace();
 					loger.info(e.toString());
 					loger.info("请求失败：" + Configure.esHintServiceUrl);
-					resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_FAIL,
+					resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE,
 							ParameterCode.Error.SERVICE_INVALID, "获取提示字段失败", "");
 					return resultString;
 				}
 			}
-			resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.GET_HELP_VALUE, ParameterCode.Result.RESULT_OK,
 					"获取提示字段成功", helpValueString);
 		}
 		return resultString;
@@ -177,12 +177,12 @@ public class QueryService {
 			if (StringUtil.isNullOrEmpty(indexDocType) || StringUtil.isNullOrEmpty(fieldId)
 					|| StringUtil.isNullOrEmpty(fragmentType)) {
 
-				resultString = StringUtil.packetObject(MethodCode.GET_INPUT_TYPES, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.GET_INPUT_TYPES,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			List<JSONObject> map = CacheUtil.getInputTypes(indexDocType, fieldId, fragmentType);
-			resultString = StringUtil.packetObjectObj(MethodCode.GET_INPUT_TYPES, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObjectObj(MethodCode.GET_INPUT_TYPES, ParameterCode.Result.RESULT_OK,
 					"获取一个DocTypes下面所有的field列表成功", map);
 		}
 		return resultString;
@@ -210,13 +210,13 @@ public class QueryService {
 			String fieldEffective = parmJb.optString("fieldEffective", "");
 			if (StringUtil.isNullOrEmpty(indexDocType)) {
 
-				resultString = StringUtil.packetObject(MethodCode.GET_HINT_FIELDS, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.GET_HINT_FIELDS,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			List<JSONObject> map = CacheUtil.getHintFields(indexDocType, fieldEffective);
 
-			resultString = StringUtil.packetObjectObj(MethodCode.GET_HINT_FIELDS, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObjectObj(MethodCode.GET_HINT_FIELDS, ParameterCode.Result.RESULT_OK,
 					"获取HintField列表成功", map);
 		}
 		return resultString;
@@ -237,8 +237,8 @@ public class QueryService {
 			String addressName = parmJb.optString("addressName", "");
 			if (StringUtil.isNullOrEmpty(addressName)) {
 
-				resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			if (Configure.isDevelopment) {
@@ -252,13 +252,13 @@ public class QueryService {
 					e.printStackTrace();
 					loger.info(e.toString());
 					loger.info("请求失败：" + Configure.esGeocodingServiceUrl);
-					resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_FAIL,
+					resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING,
 							ParameterCode.Error.SERVICE_INVALID, "查询位置失败", "");
 					return resultString;
 				}
 			}
-			resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_OK, "",
-					"查询位置成功", geocodingString);
+			resultString = StringUtil.packetObject(MethodCode.GET_GEOCODING, ParameterCode.Result.RESULT_OK, "查询位置成功",
+					geocodingString);
 		}
 		return resultString;
 	}
@@ -289,7 +289,7 @@ public class QueryService {
 			e.printStackTrace();
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE, ParameterCode.Result.RESULT_OK, "", "执行场景查询成功",
+		resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE, ParameterCode.Result.RESULT_OK, "执行场景查询成功",
 				executeScenarioString);
 
 		return resultString;

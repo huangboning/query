@@ -76,4 +76,29 @@ public class JsonUtil {
 		}
 		return variableList;
 	}
+
+	/**
+	 * 从场景json中解析出scope数据
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static List<String> getScopeFromSceneString(String str) {
+
+		List<String> scopeList = new ArrayList<String>();
+		if (!StringUtil.isNullOrEmpty(str)) {
+			JSONObject strObj = JSONObject.fromObject(str);
+			JSONArray strScopeArray = strObj.getJSONArray("scopeList");
+			if (strScopeArray != null) {
+				for (int i = 0; i < strScopeArray.size(); i++) {
+
+					String scope = (String) strScopeArray.get(i);
+
+					scopeList.add(scope);
+
+				}
+			}
+		}
+		return scopeList;
+	}
 }

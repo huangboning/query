@@ -55,11 +55,12 @@ public class FragmentService {
 			String fragmentDesc = parmJb.optString("fragmentDesc", "");
 			String fragmentEnable = parmJb.optString("fragmentEnable", "true");
 			String fragmentActive = parmJb.optString("fragmentActive", "true");
-			//String fragmentExpression = parmJb.optString("fragmentExpression", "");
+			// String fragmentExpression =
+			// parmJb.optString("fragmentExpression", "");
 
 			if (StringUtil.isNullOrEmpty(fragmentName) || StringUtil.isNullOrEmpty(fragmentType)) {
 
-				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -78,7 +79,7 @@ public class FragmentService {
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 				return resultString;
 			}
@@ -123,7 +124,7 @@ public class FragmentService {
 			fragmentJsonObject.put("fragmentDesc", insertFragment.getFragmentDesc());
 			fragmentJsonObject.put("fragmentCreateTime", insertFragment.getFragmentDateStr());
 			fragmentJsonObject.put("fragmentExpression", insertFragment.getFragmentExpression());
-			resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 					"创建fragment到缓存成功，请注意在切换场景前保存场景数据。", fragmentJsonObject.toString());
 			// } else {
 			//
@@ -152,7 +153,7 @@ public class FragmentService {
 			String fragmentExpression = parmJb.optString("fragmentExpression", "");
 			if (StringUtil.isNullOrEmpty(fragmentUUID) || StringUtil.isNullOrEmpty(fragmentExpression)) {
 
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -171,7 +172,7 @@ public class FragmentService {
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
 				return resultString;
 			}
@@ -206,7 +207,7 @@ public class FragmentService {
 
 			// 将fragment更新到缓存中
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
-			
+
 			// Fragment updateFragment = fragmentList.get(0);
 			// if (!StringUtil.isNullOrEmpty(fragmentName)) {
 			// updateFragment.setFragmentName(fragmentName);
@@ -227,7 +228,7 @@ public class FragmentService {
 			// session.put(Constants.KEY_FRAGMENT_UPDATE, sessionFragmentList);
 			// int insertResult = fragmentDao.updateFragment(updateFragment);
 			// if (insertResult == 1) {
-			resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 					"更新fragment到缓存成功，请注意在切换场景前保存场景数据。", "");
 			// } else {
 			//
@@ -248,8 +249,8 @@ public class FragmentService {
 			String fragmentUUID = parmJb.optString("fragmentUUID", "");
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
 			// 从缓存中解析出对应的fragment
@@ -257,7 +258,7 @@ public class FragmentService {
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
 				return resultString;
 			}
@@ -284,7 +285,7 @@ public class FragmentService {
 				}
 			}
 
-			resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+			resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_OK,
 					"获取某个版本fragment成功", fragmentObj.toString());
 
 		}
@@ -300,22 +301,26 @@ public class FragmentService {
 			String fragmentUUID = parmJb.optString("fragmentUUID", "");
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
-//			Fragment findFragment = new Fragment();
-//			findFragment.setFragmentUUID(fragmentUUID);
-//			List<Fragment> fragmentList = fragmentDao.findFragment(findFragment);
-//			if (fragmentList.size() != 1) {
-//				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
-//						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
-//				return resultString;
-//			}
+			// Fragment findFragment = new Fragment();
+			// findFragment.setFragmentUUID(fragmentUUID);
+			// List<Fragment> fragmentList =
+			// fragmentDao.findFragment(findFragment);
+			// if (fragmentList.size() != 1) {
+			// resultString =
+			// StringUtil.packetObject(MethodCode.DELETE_FRAGMENT,
+			// ParameterCode.Result.RESULT_FAIL,
+			// ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在",
+			// "");
+			// return resultString;
+			// }
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
 				return resultString;
 			}
@@ -335,16 +340,18 @@ public class FragmentService {
 			}
 			// 将删除fragment更新到缓存中
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
-			
-//			Fragment deleteFragment = fragmentList.get(0);
-//			List<Fragment> sessionFragmentList = (List<Fragment>) session.get(Constants.KEY_FRAGMENT_DELETE);
-//			if (sessionFragmentList == null || sessionFragmentList.size() == 0) {
-//				sessionFragmentList = new ArrayList<Fragment>();
-//			}
-//			sessionFragmentList.add(deleteFragment);
-//			session.put(Constants.KEY_FRAGMENT_DELETE, sessionFragmentList);
 
-			resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+			// Fragment deleteFragment = fragmentList.get(0);
+			// List<Fragment> sessionFragmentList = (List<Fragment>)
+			// session.get(Constants.KEY_FRAGMENT_DELETE);
+			// if (sessionFragmentList == null || sessionFragmentList.size() ==
+			// 0) {
+			// sessionFragmentList = new ArrayList<Fragment>();
+			// }
+			// sessionFragmentList.add(deleteFragment);
+			// session.put(Constants.KEY_FRAGMENT_DELETE, sessionFragmentList);
+
+			resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 					"删除fragment到缓存成功，请注意在切换场景前保存场景数据。", "");
 
 		}
@@ -360,7 +367,7 @@ public class FragmentService {
 			String fragmentUUID = parmJb.optString("fragmentUUID", "");
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -368,12 +375,12 @@ public class FragmentService {
 			updateFragment.setFragmentUUID(fragmentUUID);
 			int result = fragmentDao.disableFragment(updateFragment);
 			if (result < 1) {
-				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT,
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			} else {
 
-				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 						"禁用fragment成功", "");
 			}
 		}
@@ -390,7 +397,7 @@ public class FragmentService {
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_FRAGMENT,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment updateFragment = new Fragment();
@@ -398,13 +405,12 @@ public class FragmentService {
 			int result = fragmentDao.disableShareFragment(updateFragment);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_FRAGMENT,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在",
-						"");
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在", "");
 				return resultString;
 			} else {
 
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_SHARE_FRAGMENT,
-						ParameterCode.Result.RESULT_OK, "", "禁用共享fragment成功", "");
+						ParameterCode.Result.RESULT_OK, "禁用共享fragment成功", "");
 			}
 		}
 		return resultString;
@@ -419,7 +425,7 @@ public class FragmentService {
 			String fragmentUUID = parmJb.optString("fragmentUUID", "");
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -427,12 +433,12 @@ public class FragmentService {
 			updateFragment.setFragmentUUID(fragmentUUID);
 			int result = fragmentDao.enableFragment(updateFragment);
 			if (result < 1) {
-				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT,
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在", "");
 				return resultString;
 			} else {
 
-				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 						"启用fragment成功", "");
 			}
 		}
@@ -449,7 +455,7 @@ public class FragmentService {
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment updateFragment = new Fragment();
@@ -458,13 +464,12 @@ public class FragmentService {
 			int result = fragmentDao.enableShareFragment(updateFragment);
 			if (result < 1) {
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在",
-						"");
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在", "");
 				return resultString;
 			} else {
 
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK,
-						"", "启用分享fragment成功", "");
+						"启用分享fragment成功", "");
 			}
 		}
 		return resultString;
@@ -476,8 +481,8 @@ public class FragmentService {
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 		// 如果session中没有记录当前场景
 		if (sceneActive == null) {
-			resultString = StringUtil.packetObject(MethodCode.LIST_FRAGMENT, ParameterCode.Result.RESULT_FAIL,
-					ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+			resultString = StringUtil.packetObject(MethodCode.LIST_FRAGMENT, ParameterCode.Error.UPDATE_SCENE_NO_MATCH,
+					"当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
 			return resultString;
 		}
 		JSONArray fragmentJsonArray = new JSONArray();
@@ -499,7 +504,7 @@ public class FragmentService {
 			fragmentJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.LIST_FRAGMENT, ParameterCode.Result.RESULT_OK,
 				"获取fragment列表成功", fragmentJsonArray.toString());
 
 		return resultString;
@@ -515,7 +520,7 @@ public class FragmentService {
 			if (StringUtil.isNullOrEmpty(shareFragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			ShareFragment shareFragment = new ShareFragment();
@@ -523,8 +528,7 @@ public class FragmentService {
 			List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
 			if (shareFragmentList.size() < 1) {
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在",
-						"");
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
 			shareFragment = shareFragmentList.get(0);
@@ -557,7 +561,7 @@ public class FragmentService {
 			fragmentJsonObj.put("committers", committerJsonArray.toString());
 
 			resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
-					ParameterCode.Result.RESULT_OK, "", "获取共享fragment共享历史版本成功", fragmentJsonObj.toString());
+					ParameterCode.Result.RESULT_OK, "获取共享fragment共享历史版本成功", fragmentJsonObj.toString());
 
 		}
 		return resultString;
@@ -573,7 +577,7 @@ public class FragmentService {
 			if (StringUtil.isNullOrEmpty(shareFragmentUUID) || StringUtil.isNullOrEmpty(shareFragmentVersion)) {
 
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 
@@ -582,8 +586,7 @@ public class FragmentService {
 			List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
 			if (shareFragmentList.size() < 1) {
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在",
-						"");
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
 			shareFragment = shareFragmentList.get(0);
@@ -606,7 +609,7 @@ public class FragmentService {
 			Committer commitInfo = jGitService.getCommitterByVersion(gitPath, shareFragmentVersion);
 			if (commitInfo == null) {
 				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_VERSION_NO_EXIST, "查询的版本号不存在", "");
+						ParameterCode.Error.QUERY_VERSION_NO_EXIST, "查询的版本号不存在", "");
 				return resultString;
 			}
 			JSONObject committerJsonObj = new JSONObject();
@@ -621,7 +624,7 @@ public class FragmentService {
 			fragmentJsonObj.put("committer", committerJsonObj.toString());
 
 			resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
-					ParameterCode.Result.RESULT_OK, "", "获取某个版本共享fragment成功", fragmentJsonObj.toString());
+					ParameterCode.Result.RESULT_OK, "获取某个版本共享fragment成功", fragmentJsonObj.toString());
 
 		}
 		return resultString;
@@ -651,7 +654,7 @@ public class FragmentService {
 			fragmentJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK, "",
+		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 				"获取共享fragment列表成功", fragmentJsonArray.toString());
 
 		return resultString;
@@ -676,7 +679,7 @@ public class FragmentService {
 					|| StringUtil.isNullOrEmpty(shareFragmentExpression)) {
 
 				resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_FRAGMENT,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Fragment findFragment = new Fragment();
@@ -684,8 +687,7 @@ public class FragmentService {
 			List<Fragment> fragmentList = fragmentDao.findFragment(findFragment);
 			if (fragmentList.size() != 1) {
 				resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_FRAGMENT,
-						ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在",
-						"");
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
 			Fragment fromFragment = fragmentList.get(0);
@@ -742,7 +744,7 @@ public class FragmentService {
 				fragmentDao.releaseFragment(shareFragment);
 			}
 			resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK,
-					"", "发布共享fragment成功", "");
+					"发布共享fragment成功", "");
 
 		}
 		return resultString;

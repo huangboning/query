@@ -52,8 +52,7 @@ public class InterfaceAction extends BaseAction {
 				byte[] data = getRequestData();
 				// 如果data长度小于1，说明必要参数没有填写完整。
 				if (data.length < 1) {
-					this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_INVALID,
-							"无效的请求包体", "");
+					this.thorwError("", ParameterCode.Error.SERVICE_INVALID, "无效的请求包体", "");
 					return null;
 				}
 				String bodyString = ConversionTools.bytesToString(data, "utf-8");
@@ -61,8 +60,7 @@ public class InterfaceAction extends BaseAction {
 				JSONObject jb = JSONObject.fromObject(bodyString);
 				String methodCode = jb.optString("method", "");
 				if (StringUtil.isNullOrEmpty(methodCode)) {
-					this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER,
-							"无效的参数", "");
+					this.thorwError("", ParameterCode.Error.SERVICE_PARAMETER, "无效的参数", "");
 					return null;
 				}
 				// 如果是注册或者是登录、登出接口，则不需要判断session是否过期
@@ -84,13 +82,12 @@ public class InterfaceAction extends BaseAction {
 				} else {
 					Account currentAccount = (Account) session.get(Configure.systemSessionAccount);
 					if (currentAccount == null) {
-						this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_SESSION,
-								"会话已经过期，请重新登录。", "");
+						this.thorwError("", ParameterCode.Error.SERVICE_SESSION, "会话已经过期，请重新登录。", "");
 						return null;
 					}
 
 					if (methodCode.equals(MethodCode.CREATE_SCENE)) {
-						returnString = sceneService.createScene(bodyString, currentAccount);
+						returnString = sceneService.createScene(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.SET_SCOPE)) {
 						returnString = accountService.setScope(bodyString, session);
 					} else if (methodCode.equals(MethodCode.GET_TABLE_HEAD_DEF)) {
@@ -176,29 +173,26 @@ public class InterfaceAction extends BaseAction {
 					} else if (methodCode.equals(MethodCode.EXECUTE_SCENE)) {
 						returnString = queryService.executeScenario(bodyString);
 					} else {
-						this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_PARAMETER,
-								"该接口未实现", "");
+						this.thorwError("", ParameterCode.Error.SERVICE_PARAMETER, "该接口未实现", "");
 						return null;
 					}
 				}
 
 				if (StringUtil.isNullOrEmpty(returnString)) {
-					this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_RESOLVE,
-							"服务器业务处理错误", "");
+					this.thorwError("", ParameterCode.Error.SERVICE_RESOLVE, "服务器业务处理错误", "");
 					return null;
 				}
 				loger.info("return data=" + returnString);
 				response.getOutputStream().write(returnString.getBytes("utf-8"));
 				return null;
 			} else {
-				this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_REFUSE, "请求被服务器拒绝",
-						"");
+				this.thorwError("", ParameterCode.Error.SERVICE_REFUSE, "请求被服务器拒绝", "");
 				return null;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			loger.info(e.toString());
-			this.thorwError("", ParameterCode.Result.RESULT_FAIL, ParameterCode.Error.SERVICE_UNKNOWN, "服务器未知错误", "");
+			this.thorwError("", ParameterCode.Error.SERVICE_UNKNOWN, "服务器未知错误", "");
 			return null;
 		}
 	}
@@ -234,13 +228,12 @@ public class InterfaceAction extends BaseAction {
 		return out.toByteArray();
 	}
 
-	private void thorwError(String optCode, String statusCode, String errorCode, String message, String baseObject) {
+	private void thorwError(String optCode, String statusCode, String message, String baseObject) {
 
 		try {
 			JSONObject o = new JSONObject();
 			o.put("optCode", optCode);
 			o.put("statusCode", statusCode);
-			o.put("errorCode", errorCode);
 			o.put("message", message);
 			o.put("baseObject", baseObject);
 			response.setHeader("Content-type", "text/html;charset=utf-8");
