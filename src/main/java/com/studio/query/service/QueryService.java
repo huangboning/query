@@ -264,7 +264,7 @@ public class QueryService {
 	}
 
 	/**
-	 * 查询位置
+	 * 查询场景
 	 * 
 	 * @return
 	 */
@@ -290,6 +290,38 @@ public class QueryService {
 		}
 
 		resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE, ParameterCode.Result.RESULT_OK, "执行场景查询成功",
+				executeScenarioString);
+
+		return resultString;
+	}
+
+	/**
+	 * 验证场景
+	 * 
+	 * @return
+	 */
+	public String validateScenario(String bodyString) {
+		String resultString = null;
+		// 这里执行场景查询结果返回
+		String executeScenarioString = "";
+		try {
+			// String str = HttpUtil.sendPost(Configure.esQueryServiceUrl,
+			// bodyString.getBytes("utf-8"));
+			// System.out.println(str);
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			HttpPost method = new HttpPost(Configure.esQueryServiceUrl);
+			method.addHeader("Content-type", "application/json; charset=utf-8");
+			method.setHeader("Accept", "application/json");
+			String bodyStringaa = FileUtil.readFile("D:/hbn/workspaces/query/src/main/resources/valid.txt");
+			method.setEntity(new StringEntity(bodyStringaa, Charset.forName("UTF-8")));
+
+			HttpResponse response = httpClient.execute(method);
+			executeScenarioString = EntityUtils.toString(response.getEntity());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		resultString = StringUtil.packetObject(MethodCode.VALIDATE_SCENE, ParameterCode.Result.RESULT_OK, "验证场景成功",
 				executeScenarioString);
 
 		return resultString;

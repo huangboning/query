@@ -119,27 +119,54 @@ public class SceneService {
 
 			Scene scene = sceneList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("sceneUUID", scene.getSceneUUID());
-			dataObj.put("sceneName", scene.getSceneName());
-			dataObj.put("sceneDesc", scene.getSceneDesc());
-			if (isFrist) {
-				if (i == 0) {
-					dataObj.put("sceneActive", "true");
-					// 会话中设置当前活动场景
-					this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+			if (Configure.serverVersion == 0) {
+				dataObj.put("id", scene.getSceneUUID());
+				dataObj.put("name", scene.getSceneName());
+				dataObj.put("desc", scene.getSceneDesc());
+				if (isFrist) {
+					if (i == 0) {
+						dataObj.put("active", "true");
+						// 会话中设置当前活动场景
+						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+					} else {
+						dataObj.put("active", "false");
+					}
 				} else {
-					dataObj.put("sceneActive", "false");
+					if (sceneActiveUUID.equals(scene.getSceneUUID())) {
+						dataObj.put("active", "true");
+						// 会话中设置当前活动场景
+						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+					} else {
+						dataObj.put("active", "false");
+					}
 				}
+				dataObj.put("enable", scene.getSceneEnable() == 0 ? "true" : "false");
+				dataObj.put("version", "");
+				dataObj.put("comment", "");
+
 			} else {
-				if (sceneActiveUUID.equals(scene.getSceneUUID())) {
-					dataObj.put("sceneActive", "true");
-					// 会话中设置当前活动场景
-					this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+				dataObj.put("sceneUUID", scene.getSceneUUID());
+				dataObj.put("sceneName", scene.getSceneName());
+				dataObj.put("sceneDesc", scene.getSceneDesc());
+				if (isFrist) {
+					if (i == 0) {
+						dataObj.put("sceneActive", "true");
+						// 会话中设置当前活动场景
+						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+					} else {
+						dataObj.put("sceneActive", "false");
+					}
 				} else {
-					dataObj.put("sceneActive", "false");
+					if (sceneActiveUUID.equals(scene.getSceneUUID())) {
+						dataObj.put("sceneActive", "true");
+						// 会话中设置当前活动场景
+						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+					} else {
+						dataObj.put("sceneActive", "false");
+					}
 				}
+				dataObj.put("sceneEnable", scene.getSceneEnable() == 0 ? "true" : "false");
 			}
-			dataObj.put("sceneEnable", scene.getSceneEnable() == 0 ? "true" : "false");
 			sceneJsonArray.add(dataObj);
 		}
 
@@ -232,7 +259,12 @@ public class SceneService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String sceneUUID = parmJb.optString("sceneUUID", "");
+			String sceneUUID;
+			if (Configure.serverVersion == 0) {
+				sceneUUID = parmJb.optString("scenarioId", "");
+			} else {
+				sceneUUID = parmJb.optString("sceneUUID", "");
+			}
 			if (StringUtil.isNullOrEmpty(sceneUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.SWITCH_SCENE, ParameterCode.Error.SERVICE_PARAMETER,
@@ -270,7 +302,12 @@ public class SceneService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String sceneVersion = parmJb.optString("sceneVersion", "");
+			String sceneVersion;
+			if (Configure.serverVersion == 0) {
+				sceneVersion = parmJb.optString("version", "");
+			} else {
+				sceneVersion = parmJb.optString("sceneVersion", "");
+			}
 			if (StringUtil.isNullOrEmpty(sceneVersion)) {
 				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Error.SERVICE_PARAMETER,
 						"必要参数不足", "");
@@ -317,15 +354,6 @@ public class SceneService {
 		// 获取最新提交记录
 		JGitService jGitService = new JGitService();
 		Committer committer = jGitService.getLastCommitter(sessionScenePath);
-
-		JSONObject sceneObject = new JSONObject();
-		sceneObject.put("sceneUUID", sceneActive.getSceneUUID());
-		sceneObject.put("sceneName", sceneActive.getSceneName());
-		sceneObject.put("sceneDesc", sceneActive.getSceneDesc());
-		sceneObject.put("sceneCreateTime", sceneActive.getSceneDesc());
-
-		sceneObject.put("sceneVersion", committer.getCommitVersion());
-		sceneObject.put("sceneComment", committer.getCommitMssage());
 		JSONArray scopeObjs = new JSONArray();
 		List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
 		if (scopeArray == null) {
@@ -334,7 +362,28 @@ public class SceneService {
 		for (String scopeStr : scopeArray) {
 			scopeObjs.add(scopeStr);
 		}
-		sceneObject.put("scope", scopeObjs.toString());
+		JSONObject sceneObject = new JSONObject();
+		if (Configure.serverVersion == 0) {
+			sceneObject.put("id", sceneActive.getSceneUUID());
+			sceneObject.put("name", sceneActive.getSceneName());
+			sceneObject.put("desc", sceneActive.getSceneDesc());
+			sceneObject.put("createTime", sceneActive.getSceneDesc());
+			sceneObject.put("version", committer.getCommitVersion());
+			sceneObject.put("comment", committer.getCommitMssage());
+			sceneObject.put("scope", scopeObjs.toString());
+			sceneObject.put("tags", "[]");
+			sceneObject.put("values", "[]");
+		} else {
+			sceneObject.put("sceneUUID", sceneActive.getSceneUUID());
+			sceneObject.put("sceneName", sceneActive.getSceneName());
+			sceneObject.put("sceneDesc", sceneActive.getSceneDesc());
+			sceneObject.put("sceneCreateTime", sceneActive.getSceneDesc());
+
+			sceneObject.put("sceneVersion", committer.getCommitVersion());
+			sceneObject.put("sceneComment", committer.getCommitMssage());
+
+			sceneObject.put("scope", scopeObjs.toString());
+		}
 		JSONArray fragmentJsonArray = new JSONArray();
 		JSONArray variableJsonArray = new JSONArray();
 
@@ -348,14 +397,24 @@ public class SceneService {
 
 			Fragment fragment = fragmentList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("fragmentUUID", fragment.getFragmentUUID());
-			dataObj.put("fragmentName", fragment.getFragmentName());
-			dataObj.put("fragmentDesc", fragment.getFragmentDesc());
-			dataObj.put("fragmentType", fragment.getFragmentType());
-			dataObj.put("fragmentObjType", fragment.getFragmentObjType());
-			dataObj.put("fragmentEnable", fragment.getFragmentEnableStr());
-			dataObj.put("fragmentActive", fragment.getFragmentActiveStr());
-			dataObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
+			if (Configure.serverVersion == 0) {
+				dataObj.put("id", fragment.getFragmentUUID());
+				dataObj.put("name", fragment.getFragmentName());
+				dataObj.put("desc", fragment.getFragmentDesc());
+				dataObj.put("type", fragment.getFragmentType());
+				dataObj.put("objectType", fragment.getFragmentObjType());
+				dataObj.put("enable", fragment.getFragmentEnableStr());
+				dataObj.put("version", "");
+			} else {
+				dataObj.put("fragmentUUID", fragment.getFragmentUUID());
+				dataObj.put("fragmentName", fragment.getFragmentName());
+				dataObj.put("fragmentDesc", fragment.getFragmentDesc());
+				dataObj.put("fragmentType", fragment.getFragmentType());
+				dataObj.put("fragmentObjType", fragment.getFragmentObjType());
+				dataObj.put("fragmentEnable", fragment.getFragmentEnableStr());
+				dataObj.put("fragmentActive", fragment.getFragmentActiveStr());
+				dataObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
+			}
 
 			fragmentJsonArray.add(dataObj);
 		}
@@ -370,14 +429,26 @@ public class SceneService {
 
 			Variable variable = variableList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("variableUUID", variable.getVariableUUID());
-			dataObj.put("variableName", variable.getVariableName());
-			dataObj.put("variableType", variable.getVariableType());
-			dataObj.put("variableObjType", variable.getVariableObjType());
-			dataObj.put("variableScope", variable.getVariableScopeStr());
-			dataObj.put("fragmentUUID", variable.getFragmentUUID());
-			dataObj.put("variableDesc", variable.getVariableDesc());
-			dataObj.put("variableCreateTime", variable.getVariableDateStr());
+			if (Configure.serverVersion == 0) {
+				dataObj.put("variableClassId", variable.getVariableUUID());
+				dataObj.put("name", variable.getVariableName());
+				dataObj.put("variableType", variable.getVariableType());
+				dataObj.put("beLongsTo", "{}");
+				dataObj.put("valueType", "");
+				dataObj.put("fieldType", "");
+				dataObj.put("value", "");
+				dataObj.put("variableInstanceId", "");
+				dataObj.put("variableScope", "");
+			} else {
+				dataObj.put("variableUUID", variable.getVariableUUID());
+				dataObj.put("variableName", variable.getVariableName());
+				dataObj.put("variableType", variable.getVariableType());
+				dataObj.put("variableObjType", variable.getVariableObjType());
+				dataObj.put("variableScope", variable.getVariableScopeStr());
+				dataObj.put("fragmentUUID", variable.getFragmentUUID());
+				dataObj.put("variableDesc", variable.getVariableDesc());
+				dataObj.put("variableCreateTime", variable.getVariableDateStr());
+			}
 
 			variableJsonArray.add(dataObj);
 		}
@@ -415,7 +486,12 @@ public class SceneService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String sceneComment = parmJb.optString("sceneComment", "");
+			String sceneComment;
+			if (Configure.serverVersion == 0) {
+				sceneComment = parmJb.optString("comment", "");
+			} else {
+				sceneComment = parmJb.optString("sceneComment", "");
+			}
 			if (StringUtil.isNullOrEmpty(sceneComment)) {
 
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Error.SERVICE_PARAMETER,
@@ -493,19 +569,30 @@ public class SceneService {
 			JGitService jGitService = new JGitService();
 			jGitService.jGitCommit(scenePath, currentAccount, sceneComment);
 
-			JSONObject sceneObject = new JSONObject();
-			sceneObject.put("sceneUUID", sceneActive.getSceneUUID());
-			sceneObject.put("sceneName", sceneActive.getSceneName());
-			sceneObject.put("sceneDesc", sceneActive.getSceneDesc());
 			// 从git查询最新版本的comment和version
 			Committer committer = jGitService.getLastCommitter(scenePath);
 
-			sceneObject.put("sceneComment", committer.getCommitMssage());
-			sceneObject.put("sceneVersion", committer.getCommitVersion());
+			JSONObject sceneObject = new JSONObject();
+			if (Configure.serverVersion == 0) {
+				sceneObject.put("id", sceneActive.getSceneUUID());
+				sceneObject.put("name", sceneActive.getSceneName());
+				sceneObject.put("desc", sceneActive.getSceneDesc());
+				sceneObject.put("comment", committer.getCommitMssage());
+				sceneObject.put("version", committer.getCommitVersion());
+				sceneObject.put("scope", scopeObjs.toString());
+				sceneObject.put("active", "true");
+				sceneObject.put("enable", "true");
+			} else {
+				sceneObject.put("sceneUUID", sceneActive.getSceneUUID());
+				sceneObject.put("sceneName", sceneActive.getSceneName());
+				sceneObject.put("sceneDesc", sceneActive.getSceneDesc());
+				sceneObject.put("sceneComment", committer.getCommitMssage());
+				sceneObject.put("sceneVersion", committer.getCommitVersion());
+				sceneObject.put("scope", scopeObjs.toString());
+				sceneObject.put("sceneActive", "true");
+				sceneObject.put("sceneEnable", "true");
+			}
 
-			sceneObject.put("scope", scopeObjs.toString());
-			sceneObject.put("sceneActive", "true");
-			sceneObject.put("sceneEnable", "true");
 			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "更新场景成功",
 					sceneObject.toString());
 

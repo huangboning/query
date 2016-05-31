@@ -49,12 +49,27 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentName = parmJb.optString("fragmentName", "");
-			String fragmentType = parmJb.optString("fragmentType", "");
-			String fragmentObjType = parmJb.optString("fragmentObjType", "");
-			String fragmentDesc = parmJb.optString("fragmentDesc", "");
-			String fragmentEnable = parmJb.optString("fragmentEnable", "true");
-			String fragmentActive = parmJb.optString("fragmentActive", "true");
+			String fragmentName;
+			String fragmentType;
+			String fragmentObjType;
+			String fragmentDesc;
+			String fragmentEnable;
+			String fragmentActive;
+			if (Configure.serverVersion == 0) {
+				fragmentName = parmJb.optString("name", "");
+				fragmentType = parmJb.optString("desc", "");
+				fragmentObjType = parmJb.optString("type", "");
+				fragmentDesc = parmJb.optString("objectType", "");
+				fragmentEnable = parmJb.optString("enable", "true");
+				fragmentActive = parmJb.optString("active", "true");
+			} else {
+				fragmentName = parmJb.optString("fragmentName", "");
+				fragmentType = parmJb.optString("fragmentType", "");
+				fragmentObjType = parmJb.optString("fragmentObjType", "");
+				fragmentDesc = parmJb.optString("fragmentDesc", "");
+				fragmentEnable = parmJb.optString("fragmentEnable", "true");
+				fragmentActive = parmJb.optString("fragmentActive", "true");
+			}
 			// String fragmentExpression =
 			// parmJb.optString("fragmentExpression", "");
 
@@ -115,15 +130,27 @@ public class FragmentService {
 			// int insertResult = fragmentDao.insertFragment(insertFragment);
 			// if (insertResult == 1) {
 			JSONObject fragmentJsonObject = new JSONObject();
-			fragmentJsonObject.put("fragmentUUID", insertFragment.getFragmentUUID());
-			fragmentJsonObject.put("fragmentName", insertFragment.getFragmentName());
-			fragmentJsonObject.put("fragmentType", insertFragment.getFragmentType());
-			fragmentJsonObject.put("fragmentObjType", insertFragment.getFragmentObjType());
-			fragmentJsonObject.put("fragmentEnable", insertFragment.getFragmentEnableStr());
-			fragmentJsonObject.put("fragmentActive", insertFragment.getFragmentActiveStr());
-			fragmentJsonObject.put("fragmentDesc", insertFragment.getFragmentDesc());
-			fragmentJsonObject.put("fragmentCreateTime", insertFragment.getFragmentDateStr());
-			fragmentJsonObject.put("fragmentExpression", insertFragment.getFragmentExpression());
+			if (Configure.serverVersion == 0) {
+				fragmentJsonObject.put("id", insertFragment.getFragmentUUID());
+				fragmentJsonObject.put("name", insertFragment.getFragmentName());
+				fragmentJsonObject.put("type", insertFragment.getFragmentType());
+				fragmentJsonObject.put("objectType", insertFragment.getFragmentObjType());
+				fragmentJsonObject.put("enable", insertFragment.getFragmentEnableStr());
+				fragmentJsonObject.put("active", insertFragment.getFragmentActiveStr());
+				fragmentJsonObject.put("desc", insertFragment.getFragmentDesc());
+				fragmentJsonObject.put("version", "");
+				fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
+			} else {
+				fragmentJsonObject.put("fragmentUUID", insertFragment.getFragmentUUID());
+				fragmentJsonObject.put("fragmentName", insertFragment.getFragmentName());
+				fragmentJsonObject.put("fragmentType", insertFragment.getFragmentType());
+				fragmentJsonObject.put("fragmentObjType", insertFragment.getFragmentObjType());
+				fragmentJsonObject.put("fragmentEnable", insertFragment.getFragmentEnableStr());
+				fragmentJsonObject.put("fragmentActive", insertFragment.getFragmentActiveStr());
+				fragmentJsonObject.put("fragmentDesc", insertFragment.getFragmentDesc());
+				fragmentJsonObject.put("fragmentCreateTime", insertFragment.getFragmentDateStr());
+				fragmentJsonObject.put("fragmentExpression", insertFragment.getFragmentExpression());
+			}
 			resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 					"创建fragment到缓存成功，请注意在切换场景前保存场景数据。", fragmentJsonObject.toString());
 			// } else {
@@ -143,14 +170,33 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentUUID = parmJb.optString("fragmentUUID", "");
-			String fragmentName = parmJb.optString("fragmentName", "");
-			String fragmentType = parmJb.optString("fragmentType", "");
-			String fragmentObjType = parmJb.optString("fragmentObjType", "");
-			String fragmentDesc = parmJb.optString("fragmentDesc", "");
-			String fragmentEnable = parmJb.optString("fragmentEnable", "true");
-			String fragmentActive = parmJb.optString("fragmentActive", "true");
-			String fragmentExpression = parmJb.optString("fragmentExpression", "");
+			String fragmentUUID;
+			String fragmentName;
+			String fragmentType;
+			String fragmentObjType;
+			String fragmentDesc;
+			String fragmentEnable;
+			String fragmentActive;
+			String fragmentExpression;
+			if (Configure.serverVersion == 0) {
+				fragmentUUID = parmJb.optString("id", "");
+				fragmentName = parmJb.optString("name", "");
+				fragmentType = parmJb.optString("type", "");
+				fragmentObjType = parmJb.optString("objectType", "");
+				fragmentDesc = parmJb.optString("desc", "");
+				fragmentEnable = parmJb.optString("enable", "true");
+				fragmentActive = parmJb.optString("active", "true");
+				fragmentExpression = parmJb.optString("expression", "");
+			} else {
+				fragmentUUID = parmJb.optString("fragmentUUID", "");
+				fragmentName = parmJb.optString("fragmentName", "");
+				fragmentType = parmJb.optString("fragmentType", "");
+				fragmentObjType = parmJb.optString("fragmentObjType", "");
+				fragmentDesc = parmJb.optString("fragmentDesc", "");
+				fragmentEnable = parmJb.optString("fragmentEnable", "true");
+				fragmentActive = parmJb.optString("fragmentActive", "true");
+				fragmentExpression = parmJb.optString("fragmentExpression", "");
+			}
 			if (StringUtil.isNullOrEmpty(fragmentUUID) || StringUtil.isNullOrEmpty(fragmentExpression)) {
 
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
@@ -246,7 +292,12 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			String fragmentUUID;
+			if (Configure.serverVersion == 0) {
+				fragmentUUID = parmJb.optString("id", "");
+			} else {
+				fragmentUUID = parmJb.optString("fragmentUUID", "");
+			}
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Error.SERVICE_PARAMETER,
@@ -272,15 +323,27 @@ public class FragmentService {
 
 				Fragment fragment = fragmentList.get(i);
 				if (fragment.getFragmentUUID().equals(fragmentUUID)) {
-					fragmentObj.put("fragmentUUID", fragment.getFragmentUUID());
-					fragmentObj.put("fragmentName", fragment.getFragmentName());
-					fragmentObj.put("fragmentDesc", fragment.getFragmentDesc());
-					fragmentObj.put("fragmentType", fragment.getFragmentType());
-					fragmentObj.put("fragmentObjType", fragment.getFragmentObjType());
-					fragmentObj.put("fragmentEnable", fragment.getFragmentEnableStr());
-					fragmentObj.put("fragmentActive", fragment.getFragmentActiveStr());
-					fragmentObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
-					fragmentObj.put("fragmentExpression", fragment.getFragmentExpression());
+					if (Configure.serverVersion == 0) {
+						fragmentObj.put("id", fragment.getFragmentUUID());
+						fragmentObj.put("name", fragment.getFragmentName());
+						fragmentObj.put("desc", fragment.getFragmentDesc());
+						fragmentObj.put("type", fragment.getFragmentType());
+						fragmentObj.put("objectType", fragment.getFragmentObjType());
+						fragmentObj.put("enable", fragment.getFragmentEnableStr());
+						fragmentObj.put("active", fragment.getFragmentActiveStr());
+						fragmentObj.put("createTime", fragment.getFragmentDateStr());
+						fragmentObj.put("expression", fragment.getFragmentExpression());
+					} else {
+						fragmentObj.put("fragmentUUID", fragment.getFragmentUUID());
+						fragmentObj.put("fragmentName", fragment.getFragmentName());
+						fragmentObj.put("fragmentDesc", fragment.getFragmentDesc());
+						fragmentObj.put("fragmentType", fragment.getFragmentType());
+						fragmentObj.put("fragmentObjType", fragment.getFragmentObjType());
+						fragmentObj.put("fragmentEnable", fragment.getFragmentEnableStr());
+						fragmentObj.put("fragmentActive", fragment.getFragmentActiveStr());
+						fragmentObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
+						fragmentObj.put("fragmentExpression", fragment.getFragmentExpression());
+					}
 					break;
 				}
 			}
@@ -298,7 +361,12 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			String fragmentUUID;
+			if (Configure.serverVersion == 0) {
+				fragmentUUID = parmJb.optString("fragmentId", "");
+			} else {
+				fragmentUUID = parmJb.optString("fragmentUUID", "");
+			}
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.DELETE_FRAGMENT,
@@ -364,7 +432,12 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			String fragmentUUID;
+			if (Configure.serverVersion == 0) {
+				fragmentUUID = parmJb.optString("fragmentId", "");
+			} else {
+				fragmentUUID = parmJb.optString("fragmentUUID", "");
+			}
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT,
@@ -422,7 +495,12 @@ public class FragmentService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String fragmentUUID = parmJb.optString("fragmentUUID", "");
+			String fragmentUUID;
+			if (Configure.serverVersion == 0) {
+				fragmentUUID = parmJb.optString("fragmentId", "");
+			} else {
+				fragmentUUID = parmJb.optString("fragmentUUID", "");
+			}
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT,

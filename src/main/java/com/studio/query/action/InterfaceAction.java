@@ -86,7 +86,7 @@ public class InterfaceAction extends BaseAction {
 						return null;
 					}
 
-					if (methodCode.equals(MethodCode.CREATE_SCENE)) {
+					if (methodCode.equals(MethodCode.CREATE_SCENE) || methodCode.equals(MethodCode.CREATE_SCENE_OLD)) {
 						returnString = sceneService.createScene(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.SET_SCOPE)) {
 						returnString = accountService.setScope(bodyString, session);
@@ -96,11 +96,13 @@ public class InterfaceAction extends BaseAction {
 						returnString = sceneService.getSceneList(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.HISTORY_SCENE)) {
 						returnString = sceneService.getSceneHistory(bodyString, currentAccount, session);
-					} else if (methodCode.equals(MethodCode.SWITCH_SCENE)) {
+					} else if (methodCode.equals(MethodCode.SWITCH_SCENE)
+							|| methodCode.equals(MethodCode.SWITCH_SCENE_OLD)) {
 						returnString = sceneService.switchScene(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.SWITCH_VERSION)) {
 						returnString = sceneService.switchVersion(bodyString, currentAccount, session);
-					} else if (methodCode.equals(MethodCode.GET_CURRENT_VERSION)) {
+					} else if (methodCode.equals(MethodCode.GET_CURRENT_VERSION)
+							|| methodCode.equals(MethodCode.GET_CURRENT_VERSION_OLD)) {
 						returnString = sceneService.getCurrentVersion(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CLOSE_VERSION)) {
 						returnString = sceneService.closeSceneVersion(bodyString, currentAccount);
@@ -172,6 +174,8 @@ public class InterfaceAction extends BaseAction {
 						returnString = queryService.getGeocoding(bodyString);
 					} else if (methodCode.equals(MethodCode.EXECUTE_SCENE)) {
 						returnString = queryService.executeScenario(bodyString);
+					} else if (methodCode.equals(MethodCode.VALIDATE_SCENE)) {
+						returnString = queryService.validateScenario(bodyString);
 					} else {
 						this.thorwError("", ParameterCode.Error.SERVICE_PARAMETER, "该接口未实现", "");
 						return null;
@@ -264,8 +268,182 @@ public class InterfaceAction extends BaseAction {
 		this.execute();
 	}
 
-	public void getIndexDocTypes() {
+	public void createScene() {
 
 		this.execute();
 	}
+
+	public void createScenario() {
+
+		this.execute();
+	}
+
+	public void getScenarioes() {
+		this.execute();
+	}
+
+	public void getScenarioHistory() {
+		this.execute();
+	}
+
+	public void switchScenario() {
+		this.execute();
+	}
+
+	public void setCurrentScenario() {
+		this.execute();
+	}
+
+	public void switchVersion() {
+		this.execute();
+	}
+
+	public void getCurrentVersion() {
+		this.execute();
+	}
+
+	public void getScenario() {
+		this.execute();
+	}
+
+	public void closeScenario() {
+		this.execute();
+	}
+
+	public void updateScenario() {
+		this.execute();
+	}
+
+	public void createFragment() {
+		this.execute();
+	}
+
+	public void updateFragment() {
+		this.execute();
+	}
+
+	public void getFragment() {
+		this.execute();
+	}
+
+	public void deleteFragment() {
+		this.execute();
+	}
+
+	public void disableFragment() {
+		this.execute();
+	}
+
+	public void enableFragment() {
+		this.execute();
+	}
+
+	public void releaseShareFragment() {
+		this.execute();
+	}
+
+	public void disableShareFragment() {
+		this.execute();
+	}
+
+	public void enableShareFragment() {
+		this.execute();
+	}
+
+	public void getFragments() {
+		this.execute();
+	}
+
+	public void getShareFragments() {
+		this.execute();
+	}
+
+	public void getShareFragmentHistory() {
+		this.execute();
+	}
+
+	public void getShareFragmentVersion() {
+		this.execute();
+	}
+
+	public void createVariable() {
+		this.execute();
+	}
+
+	public void getVariable() {
+		this.execute();
+	}
+
+	public void updateVariable() {
+		this.execute();
+	}
+
+	public void deleteVariable() {
+		this.execute();
+	}
+
+	public void disableShareVariable() {
+		this.execute();
+	}
+
+	public void enableShareVariable() {
+		this.execute();
+	}
+
+	public void getVariables() {
+		this.execute();
+	}
+
+	public void getShareVariableHistory() {
+		this.execute();
+	}
+
+	public void getShareVariableVersion() {
+		this.execute();
+	}
+
+	public void getShareVariables() {
+		this.execute();
+	}
+
+	public void releaseShareVariable() {
+		this.execute();
+	}
+
+	public void getIndexDocTypes() {
+		this.execute();
+	}
+
+	public void getTableHeadDef() {
+		this.execute();
+	}
+
+	public void setScope() {
+		this.execute();
+	}
+
+	public void getHelpValue() {
+		this.execute();
+	}
+
+	public void getInputTypes() {
+		this.execute();
+	}
+
+	public void getHintFields() {
+		this.execute();
+	}
+
+	public void getGeocoding() {
+		this.execute();
+	}
+
+	public void executeScenario() {
+		this.execute();
+	}
+
+	public void validateScenario() {
+		this.execute();
+	}
+
 }

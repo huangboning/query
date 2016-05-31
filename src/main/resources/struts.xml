@@ -62,9 +62,137 @@
 		<action name="logout" class="com.studio.query.action.InterfaceAction"
 			method="logout">
 		</action>
+		<action name="createScene" class="com.studio.query.action.InterfaceAction"
+			method="createScene">
+		</action>
+		<action name="createScenario" class="com.studio.query.action.InterfaceAction"
+			method="createScenario">
+		</action>
+		<action name="getScenarioes" class="com.studio.query.action.InterfaceAction"
+			method="getScenarioes">
+		</action>
+		<action name="getScenarioHistory" class="com.studio.query.action.InterfaceAction"
+			method="getScenarioHistory">
+		</action>
+		<action name="switchScenario" class="com.studio.query.action.InterfaceAction"
+			method="switchScenario">
+		</action>
+		<action name="setCurrentScenario" class="com.studio.query.action.InterfaceAction"
+			method="setCurrentScenario">
+		</action>
+		<action name="switchVersion" class="com.studio.query.action.InterfaceAction"
+			method="switchVersion">
+		</action>
+		<action name="getCurrentVersion" class="com.studio.query.action.InterfaceAction"
+			method="getCurrentVersion">
+		</action>
+		<action name="getScenario" class="com.studio.query.action.InterfaceAction"
+			method="getScenario">
+		</action>
+		<action name="closeScenario" class="com.studio.query.action.InterfaceAction"
+			method="closeScenario">
+		</action>
+		<action name="updateScenario" class="com.studio.query.action.InterfaceAction"
+			method="updateScenario">
+		</action>
+		<action name="createFragment" class="com.studio.query.action.InterfaceAction"
+			method="createFragment">
+		</action>
+		<action name="updateFragment" class="com.studio.query.action.InterfaceAction"
+			method="updateFragment">
+		</action>
+		<action name="getFragment" class="com.studio.query.action.InterfaceAction"
+			method="getFragment">
+		</action>
+		<action name="deleteFragment" class="com.studio.query.action.InterfaceAction"
+			method="deleteFragment">
+		</action>
+		<action name="disableFragment" class="com.studio.query.action.InterfaceAction"
+			method="disableFragment">
+		</action>
+		<action name="enableFragment" class="com.studio.query.action.InterfaceAction"
+			method="enableFragment">
+		</action>
+		<action name="releaseShareFragment" class="com.studio.query.action.InterfaceAction"
+			method="releaseShareFragment">
+		</action>
+		<action name="disableShareFragment" class="com.studio.query.action.InterfaceAction"
+			method="disableShareFragment">
+		</action>
+		<action name="enableShareFragment" class="com.studio.query.action.InterfaceAction"
+			method="enableShareFragment">
+		</action>
+		<action name="getFragments" class="com.studio.query.action.InterfaceAction"
+			method="getFragments">
+		</action>
+		<action name="getShareFragments" class="com.studio.query.action.InterfaceAction"
+			method="getShareFragments">
+		</action>
+		<action name="getShareFragmentHistory" class="com.studio.query.action.InterfaceAction"
+			method="getShareFragmentHistory">
+		</action>
+		<action name="getShareFragmentVersion" class="com.studio.query.action.InterfaceAction"
+			method="getShareFragmentVersion">
+		</action>
+		<action name="createVariable" class="com.studio.query.action.InterfaceAction"
+			method="createVariable">
+		</action>
+		<action name="getVariable" class="com.studio.query.action.InterfaceAction"
+			method="getVariable">
+		</action>
+		<action name="updateVariable" class="com.studio.query.action.InterfaceAction"
+			method="updateVariable">
+		</action>
+		<action name="deleteVariable" class="com.studio.query.action.InterfaceAction"
+			method="deleteVariable">
+		</action>
+		<action name="disableShareVariable" class="com.studio.query.action.InterfaceAction"
+			method="disableShareVariable">
+		</action>
+		<action name="enableShareVariable" class="com.studio.query.action.InterfaceAction"
+			method="enableShareVariable">
+		</action>
+		<action name="getVariables" class="com.studio.query.action.InterfaceAction"
+			method="getVariables">
+		</action>
+		<action name="getShareVariableHistory" class="com.studio.query.action.InterfaceAction"
+			method="getShareVariableHistory">
+		</action>
+		<action name="getShareVariableVersion" class="com.studio.query.action.InterfaceAction"
+			method="getShareVariableVersion">
+		</action>
+		<action name="getShareVariables" class="com.studio.query.action.InterfaceAction"
+			method="getShareVariables">
+		</action>
+		<action name="releaseShareVariable" class="com.studio.query.action.InterfaceAction"
+			method="releaseShareVariable">
+		</action>
 		<action name="getIndexDocTypes" class="com.studio.query.action.InterfaceAction"
 			method="getIndexDocTypes">
 		</action>
-
+		<action name="getTableHeadDef" class="com.studio.query.action.InterfaceAction"
+			method="getTableHeadDef">
+		</action>
+		<action name="setScope" class="com.studio.query.action.InterfaceAction"
+			method="setScope">
+		</action>
+		<action name="getHelpValue" class="com.studio.query.action.InterfaceAction"
+			method="getHelpValue">
+		</action>
+		<action name="getInputTypes" class="com.studio.query.action.InterfaceAction"
+			method="getInputTypes">
+		</action>
+		<action name="getHintFields" class="com.studio.query.action.InterfaceAction"
+			method="getHintFields">
+		</action>
+		<action name="getGeocoding" class="com.studio.query.action.InterfaceAction"
+			method="getGeocoding">
+		</action>
+		<action name="executeScenario" class="com.studio.query.action.InterfaceAction"
+			method="executeScenario">
+		</action>
+		<action name="validateScenario" class="com.studio.query.action.InterfaceAction"
+			method="validateScenario">
+		</action>
 	</package>
 </struts>

@@ -27,6 +27,7 @@ public class Configure implements ServletContextListener {
 	public static String systemSessionUser = "zq_query_user";
 
 	public static boolean isDevelopment;
+	public static int serverVersion;
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
@@ -43,6 +44,7 @@ public class Configure implements ServletContextListener {
 			gitRepositoryPath = prop.getProperty("account.repository.root.path").trim();
 			systemEmail = prop.getProperty("account.email.default").trim();
 			isDevelopment = Boolean.valueOf(prop.getProperty("server.development").trim());
+			serverVersion=Integer.valueOf(prop.getProperty("server.version").trim());
 			in.close();
 
 		} catch (IOException e) {

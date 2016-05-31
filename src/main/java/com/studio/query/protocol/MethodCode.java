@@ -29,6 +29,10 @@ public class MethodCode {
 	 * 创建场景
 	 */
 	public static final String CREATE_SCENE = "createScene";
+	/**
+	 * 创建场景(旧版本)
+	 */
+	public static final String CREATE_SCENE_OLD = "createScenario";
 
 	/**
 	 * 获取场景列表
@@ -43,6 +47,10 @@ public class MethodCode {
 	 */
 	public static final String SWITCH_SCENE = "switchScenario";
 	/**
+	 * 切换场景(旧版本)
+	 */
+	public static final String SWITCH_SCENE_OLD = "setCurrentScenario";
+	/**
 	 * 切换场景版本
 	 */
 	public static final String SWITCH_VERSION = "switchVersion";
@@ -50,6 +58,10 @@ public class MethodCode {
 	 * 获取当前版本场景
 	 */
 	public static final String GET_CURRENT_VERSION = "getCurrentVersion";
+	/**
+	 * 获取当前版本场景(旧版本)
+	 */
+	public static final String GET_CURRENT_VERSION_OLD = "getScenario";
 	/**
 	 * 关闭场景版本
 	 */
@@ -194,6 +206,10 @@ public class MethodCode {
 	 * ES接口 executeScenario 执行场景查询
 	 */
 	public static final String EXECUTE_SCENE = "executeScenario";
+	/**
+	 * ES接口 executeScenario 执行场景查询
+	 */
+	public static final String VALIDATE_SCENE = "validateScenario";
 	
 	
 }
