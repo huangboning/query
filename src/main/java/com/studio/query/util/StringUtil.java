@@ -26,7 +26,12 @@ public class StringUtil {
 		o.put("optCode", optCode);
 		o.put("statusCode", statusCode);
 		o.put("message", message);
-		o.put("baseObject", baseObject);
+		if (StringUtil.isNullOrEmpty(baseObject)) {
+			o.put("baseObject", "{}");
+		} else {
+			o.put("baseObject", baseObject);
+		}
+
 		return o.toString();
 	}
 
@@ -35,7 +40,11 @@ public class StringUtil {
 		o.put("optCode", optCode);
 		o.put("statusCode", statusCode);
 		o.put("message", message);
-		o.put("baseObject", mapObject);
+		if (mapObject == null || mapObject.equals("")) {
+			o.put("baseObject", "{}");
+		} else {
+			o.put("baseObject", mapObject);
+		}
 		return o.toString();
 	}
 

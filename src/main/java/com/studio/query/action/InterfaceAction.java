@@ -239,7 +239,11 @@ public class InterfaceAction extends BaseAction {
 			o.put("optCode", optCode);
 			o.put("statusCode", statusCode);
 			o.put("message", message);
-			o.put("baseObject", baseObject);
+			if (StringUtil.isNullOrEmpty(baseObject)) {
+				o.put("baseObject", "{}");
+			} else {
+				o.put("baseObject", baseObject);
+			}
 			response.setHeader("Content-type", "text/html;charset=utf-8");
 			response.getOutputStream().write(o.toString().getBytes("utf-8"));
 			loger.info("return data=" + o.toString());

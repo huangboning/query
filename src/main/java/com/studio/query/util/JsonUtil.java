@@ -32,8 +32,8 @@ public class JsonUtil {
 					fragment.setFragmentDesc(obj.optString("fragmentDesc", ""));
 					fragment.setFragmentType(obj.optString("fragmentType", ""));
 					fragment.setFragmentObjType(obj.optString("fragmentObjType", ""));
-					fragment.setFragmentActiveStr(obj.optString("fragmentActive", ""));
-					fragment.setFragmentEnableStr(obj.optString("fragmentEnable", ""));
+					fragment.setFragmentActive(obj.optBoolean("fragmentActive", true));
+					fragment.setFragmentEnable(obj.optBoolean("fragmentEnable", true));
 					fragment.setFragmentDateStr(obj.optString("fragmentCreateTime", ""));
 					fragment.setFragmentExpression(obj.optString("fragmentExpression", ""));
 					fragmentList.add(fragment);

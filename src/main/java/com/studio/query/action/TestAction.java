@@ -330,10 +330,10 @@ public class TestAction {
 			getInitDocTypeJson.put("method", "getIndexDocTypes");
 			getInitDocTypeJson.put("params", "");
 
-			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/service/v1/getIndexDocTypes",
+			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/V1/index/getIndexDocTypes",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null, null,
-					getInitDocTypeJson.toString().getBytes("utf-8"));
-			System.out.println(getInitDocTypeJson.toString());
+					listSceneJson.toString().getBytes("utf-8"));
+			System.out.println(listSceneJson.toString());
 			System.out.println(result);
 
 			// // ES接口 getHintFields

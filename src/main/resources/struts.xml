@@ -47,7 +47,7 @@
 			<result name="error">/pages/error.jsp</result>
 		</action>
 	</package>
-	<package name="service" extends="struts-default" namespace="/service/v1">
+	<package name="service" extends="struts-default" namespace="/V1">
 		<action name="main" class="com.studio.query.action.InterfaceAction">
 		</action>
 		<action name="register" class="com.studio.query.action.InterfaceAction"
@@ -62,6 +62,42 @@
 		<action name="logout" class="com.studio.query.action.InterfaceAction"
 			method="logout">
 		</action>
+	</package>
+	<package name="index" extends="struts-default" namespace="/V1/index">
+		<action name="getIndexDocTypes" class="com.studio.query.action.InterfaceAction"
+			method="getIndexDocTypes">
+		</action>
+		<action name="getTableHeadDef" class="com.studio.query.action.InterfaceAction"
+			method="getTableHeadDef">
+		</action>
+		<action name="setScope" class="com.studio.query.action.InterfaceAction"
+			method="setScope">
+		</action>
+		<action name="getHelpValue" class="com.studio.query.action.InterfaceAction"
+			method="getHelpValue">
+		</action>
+		<action name="getInputTypes" class="com.studio.query.action.InterfaceAction"
+			method="getInputTypes">
+		</action>
+		<action name="getHintFields" class="com.studio.query.action.InterfaceAction"
+			method="getHintFields">
+		</action>
+		<action name="getGeocoding" class="com.studio.query.action.InterfaceAction"
+			method="getGeocoding">
+		</action>
+		<action name="executeScenario" class="com.studio.query.action.InterfaceAction"
+			method="executeScenario">
+		</action>
+		<action name="validateScenario" class="com.studio.query.action.InterfaceAction"
+			method="validateScenario">
+		</action>
+	</package>
+	<package name="scenarioHistory" extends="struts-default" namespace="/V1/scenarioHistory">
+		<action name="getScenarioHistory" class="com.studio.query.action.InterfaceAction"
+			method="getScenarioHistory">
+		</action>
+	</package>
+	<package name="scenario" extends="struts-default" namespace="/V1/scenario">
 		<action name="createScene" class="com.studio.query.action.InterfaceAction"
 			method="createScene">
 		</action>
@@ -70,9 +106,6 @@
 		</action>
 		<action name="getScenarioes" class="com.studio.query.action.InterfaceAction"
 			method="getScenarioes">
-		</action>
-		<action name="getScenarioHistory" class="com.studio.query.action.InterfaceAction"
-			method="getScenarioHistory">
 		</action>
 		<action name="switchScenario" class="com.studio.query.action.InterfaceAction"
 			method="switchScenario">
@@ -95,6 +128,8 @@
 		<action name="updateScenario" class="com.studio.query.action.InterfaceAction"
 			method="updateScenario">
 		</action>
+	</package>
+	<package name="fragment" extends="struts-default" namespace="/V1/fragment">
 		<action name="createFragment" class="com.studio.query.action.InterfaceAction"
 			method="createFragment">
 		</action>
@@ -134,6 +169,8 @@
 		<action name="getShareFragmentVersion" class="com.studio.query.action.InterfaceAction"
 			method="getShareFragmentVersion">
 		</action>
+	</package>
+	<package name="variables" extends="struts-default" namespace="/V1/variables">
 		<action name="createVariable" class="com.studio.query.action.InterfaceAction"
 			method="createVariable">
 		</action>
@@ -166,33 +203,6 @@
 		</action>
 		<action name="releaseShareVariable" class="com.studio.query.action.InterfaceAction"
 			method="releaseShareVariable">
-		</action>
-		<action name="getIndexDocTypes" class="com.studio.query.action.InterfaceAction"
-			method="getIndexDocTypes">
-		</action>
-		<action name="getTableHeadDef" class="com.studio.query.action.InterfaceAction"
-			method="getTableHeadDef">
-		</action>
-		<action name="setScope" class="com.studio.query.action.InterfaceAction"
-			method="setScope">
-		</action>
-		<action name="getHelpValue" class="com.studio.query.action.InterfaceAction"
-			method="getHelpValue">
-		</action>
-		<action name="getInputTypes" class="com.studio.query.action.InterfaceAction"
-			method="getInputTypes">
-		</action>
-		<action name="getHintFields" class="com.studio.query.action.InterfaceAction"
-			method="getHintFields">
-		</action>
-		<action name="getGeocoding" class="com.studio.query.action.InterfaceAction"
-			method="getGeocoding">
-		</action>
-		<action name="executeScenario" class="com.studio.query.action.InterfaceAction"
-			method="executeScenario">
-		</action>
-		<action name="validateScenario" class="com.studio.query.action.InterfaceAction"
-			method="validateScenario">
 		</action>
 	</package>
 </struts>

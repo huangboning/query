@@ -12,10 +12,8 @@ public class Fragment extends Page {
 	private String fragmentType;
 	private String fragmentObjType;
 	private String fragmentDesc;
-	private int fragmentEnable;
-	private int fragmentActive;
-	private String fragmentEnableStr;
-	private String fragmentActiveStr;
+	private boolean fragmentEnable;
+	private boolean fragmentActive;
 	private String fragmentExpression;
 
 	private Date fragmentDate;
@@ -93,44 +91,28 @@ public class Fragment extends Page {
 		this.fragmentExpression = fragmentExpression;
 	}
 
-	public int getFragmentEnable() {
-		return fragmentEnable;
-	}
-
-	public void setFragmentEnable(int fragmentEnable) {
-		this.fragmentEnable = fragmentEnable;
-	}
-
-	public int getFragmentActive() {
-		return fragmentActive;
-	}
-
-	public void setFragmentActive(int fragmentActive) {
-		this.fragmentActive = fragmentActive;
-	}
-
-	public String getFragmentEnableStr() {
-		return fragmentEnableStr;
-	}
-
-	public void setFragmentEnableStr(String fragmentEnableStr) {
-		this.fragmentEnableStr = fragmentEnableStr;
-	}
-
-	public String getFragmentActiveStr() {
-		return fragmentActiveStr;
-	}
-
-	public void setFragmentActiveStr(String fragmentActiveStr) {
-		this.fragmentActiveStr = fragmentActiveStr;
-	}
-
 	public String getFragmentDateStr() {
 		return fragmentDateStr;
 	}
 
 	public void setFragmentDateStr(String fragmentDateStr) {
 		this.fragmentDateStr = fragmentDateStr;
+	}
+
+	public boolean isFragmentEnable() {
+		return fragmentEnable;
+	}
+
+	public void setFragmentEnable(boolean fragmentEnable) {
+		this.fragmentEnable = fragmentEnable;
+	}
+
+	public boolean isFragmentActive() {
+		return fragmentActive;
+	}
+
+	public void setFragmentActive(boolean fragmentActive) {
+		this.fragmentActive = fragmentActive;
 	}
 
 }

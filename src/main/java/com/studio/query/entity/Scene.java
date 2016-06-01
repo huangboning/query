@@ -9,6 +9,7 @@ public class Scene extends Page {
 	private int accountId;
 	private String sceneUUID;
 	private String sceneName;
+	private String sceneType;
 	private String sceneDesc;
 	private String sceneComment;
 	private String sceneGit;
@@ -48,6 +49,14 @@ public class Scene extends Page {
 
 	public void setSceneName(String sceneName) {
 		this.sceneName = sceneName;
+	}
+
+	public String getSceneType() {
+		return sceneType;
+	}
+
+	public void setSceneType(String sceneType) {
+		this.sceneType = sceneType;
 	}
 
 	public String getSceneDesc() {

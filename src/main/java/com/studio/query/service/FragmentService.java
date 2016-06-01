@@ -53,22 +53,16 @@ public class FragmentService {
 			String fragmentType;
 			String fragmentObjType;
 			String fragmentDesc;
-			String fragmentEnable;
-			String fragmentActive;
 			if (Configure.serverVersion == 0) {
 				fragmentName = parmJb.optString("name", "");
-				fragmentType = parmJb.optString("desc", "");
-				fragmentObjType = parmJb.optString("type", "");
-				fragmentDesc = parmJb.optString("objectType", "");
-				fragmentEnable = parmJb.optString("enable", "true");
-				fragmentActive = parmJb.optString("active", "true");
+				fragmentType = parmJb.optString("type", "");
+				fragmentObjType = parmJb.optString("objectType", "");
+				fragmentDesc = parmJb.optString("desc", "");
 			} else {
 				fragmentName = parmJb.optString("fragmentName", "");
 				fragmentType = parmJb.optString("fragmentType", "");
 				fragmentObjType = parmJb.optString("fragmentObjType", "");
 				fragmentDesc = parmJb.optString("fragmentDesc", "");
-				fragmentEnable = parmJb.optString("fragmentEnable", "true");
-				fragmentActive = parmJb.optString("fragmentActive", "true");
 			}
 			// String fragmentExpression =
 			// parmJb.optString("fragmentExpression", "");
@@ -105,8 +99,8 @@ public class FragmentService {
 			insertFragment.setFragmentName(fragmentName);
 			insertFragment.setFragmentType(fragmentType);
 			insertFragment.setFragmentObjType(fragmentObjType);
-			insertFragment.setFragmentEnableStr(fragmentEnable);
-			insertFragment.setFragmentActiveStr(fragmentActive);
+			insertFragment.setFragmentEnable(true);
+			insertFragment.setFragmentActive(true);
 			insertFragment.setFragmentDateStr(DateUtil.dateTimeFormat(new Date()));
 			insertFragment.setFragmentExpression("{\"expressions\":[],\"operator\":\"bool_and\"}");
 			insertFragment.setFragmentDesc(fragmentDesc);
@@ -135,8 +129,8 @@ public class FragmentService {
 				fragmentJsonObject.put("name", insertFragment.getFragmentName());
 				fragmentJsonObject.put("type", insertFragment.getFragmentType());
 				fragmentJsonObject.put("objectType", insertFragment.getFragmentObjType());
-				fragmentJsonObject.put("enable", insertFragment.getFragmentEnableStr());
-				fragmentJsonObject.put("active", insertFragment.getFragmentActiveStr());
+				fragmentJsonObject.put("enable", insertFragment.isFragmentEnable());
+				fragmentJsonObject.put("active", insertFragment.isFragmentActive());
 				fragmentJsonObject.put("desc", insertFragment.getFragmentDesc());
 				fragmentJsonObject.put("version", "");
 				fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
@@ -145,8 +139,8 @@ public class FragmentService {
 				fragmentJsonObject.put("fragmentName", insertFragment.getFragmentName());
 				fragmentJsonObject.put("fragmentType", insertFragment.getFragmentType());
 				fragmentJsonObject.put("fragmentObjType", insertFragment.getFragmentObjType());
-				fragmentJsonObject.put("fragmentEnable", insertFragment.getFragmentEnableStr());
-				fragmentJsonObject.put("fragmentActive", insertFragment.getFragmentActiveStr());
+				fragmentJsonObject.put("fragmentEnable", insertFragment.isFragmentEnable());
+				fragmentJsonObject.put("fragmentActive", insertFragment.isFragmentActive());
 				fragmentJsonObject.put("fragmentDesc", insertFragment.getFragmentDesc());
 				fragmentJsonObject.put("fragmentCreateTime", insertFragment.getFragmentDateStr());
 				fragmentJsonObject.put("fragmentExpression", insertFragment.getFragmentExpression());
@@ -175,8 +169,8 @@ public class FragmentService {
 			String fragmentType;
 			String fragmentObjType;
 			String fragmentDesc;
-			String fragmentEnable;
-			String fragmentActive;
+			boolean fragmentEnable;
+			boolean fragmentActive;
 			String fragmentExpression;
 			if (Configure.serverVersion == 0) {
 				fragmentUUID = parmJb.optString("id", "");
@@ -184,8 +178,8 @@ public class FragmentService {
 				fragmentType = parmJb.optString("type", "");
 				fragmentObjType = parmJb.optString("objectType", "");
 				fragmentDesc = parmJb.optString("desc", "");
-				fragmentEnable = parmJb.optString("enable", "true");
-				fragmentActive = parmJb.optString("active", "true");
+				fragmentEnable = parmJb.optBoolean("enable", true);
+				fragmentActive = parmJb.optBoolean("active", true);
 				fragmentExpression = parmJb.optString("expression", "");
 			} else {
 				fragmentUUID = parmJb.optString("fragmentUUID", "");
@@ -193,8 +187,8 @@ public class FragmentService {
 				fragmentType = parmJb.optString("fragmentType", "");
 				fragmentObjType = parmJb.optString("fragmentObjType", "");
 				fragmentDesc = parmJb.optString("fragmentDesc", "");
-				fragmentEnable = parmJb.optString("fragmentEnable", "true");
-				fragmentActive = parmJb.optString("fragmentActive", "true");
+				fragmentEnable = parmJb.optBoolean("fragmentEnable", true);
+				fragmentActive = parmJb.optBoolean("fragmentActive", true);
 				fragmentExpression = parmJb.optString("fragmentExpression", "");
 			}
 			if (StringUtil.isNullOrEmpty(fragmentUUID) || StringUtil.isNullOrEmpty(fragmentExpression)) {
@@ -244,8 +238,8 @@ public class FragmentService {
 					if (!StringUtil.isNullOrEmpty(fragmentDesc)) {
 						fragment.setFragmentDesc(fragmentDesc);
 					}
-					fragment.setFragmentEnableStr(fragmentEnable);
-					fragment.setFragmentActiveStr(fragmentActive);
+					fragment.setFragmentEnable(fragmentEnable);
+					fragment.setFragmentActive(fragmentActive);
 					fragment.setFragmentExpression(fragmentExpression);
 					break;
 				}
@@ -329,8 +323,8 @@ public class FragmentService {
 						fragmentObj.put("desc", fragment.getFragmentDesc());
 						fragmentObj.put("type", fragment.getFragmentType());
 						fragmentObj.put("objectType", fragment.getFragmentObjType());
-						fragmentObj.put("enable", fragment.getFragmentEnableStr());
-						fragmentObj.put("active", fragment.getFragmentActiveStr());
+						fragmentObj.put("enable", fragment.isFragmentEnable());
+						fragmentObj.put("active", fragment.isFragmentActive());
 						fragmentObj.put("createTime", fragment.getFragmentDateStr());
 						fragmentObj.put("expression", fragment.getFragmentExpression());
 					} else {
@@ -339,8 +333,8 @@ public class FragmentService {
 						fragmentObj.put("fragmentDesc", fragment.getFragmentDesc());
 						fragmentObj.put("fragmentType", fragment.getFragmentType());
 						fragmentObj.put("fragmentObjType", fragment.getFragmentObjType());
-						fragmentObj.put("fragmentEnable", fragment.getFragmentEnableStr());
-						fragmentObj.put("fragmentActive", fragment.getFragmentActiveStr());
+						fragmentObj.put("fragmentEnable", fragment.isFragmentEnable());
+						fragmentObj.put("fragmentActive", fragment.isFragmentActive());
 						fragmentObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
 						fragmentObj.put("fragmentExpression", fragment.getFragmentExpression());
 					}
@@ -575,8 +569,8 @@ public class FragmentService {
 			dataObj.put("fragmentName", fragment.getFragmentName());
 			dataObj.put("fragmentDesc", fragment.getFragmentDesc());
 			dataObj.put("fragmentType", fragment.getFragmentType());
-			dataObj.put("fragmentEnable", fragment.getFragmentEnable() == 0 ? "true" : "false");
-			dataObj.put("fragmentActive", fragment.getFragmentActive() == 0 ? "true" : "false");
+			dataObj.put("fragmentEnable", fragment.isFragmentEnable());
+			dataObj.put("fragmentActive", fragment.isFragmentActive());
 			dataObj.put("fragmentCreateTime", DateUtil.dateTimeFormat(fragment.getFragmentDate()));
 
 			fragmentJsonArray.add(dataObj);
