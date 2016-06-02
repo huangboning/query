@@ -173,9 +173,9 @@ public class InterfaceAction extends BaseAction {
 					} else if (methodCode.equals(MethodCode.GET_GEOCODING)) {
 						returnString = queryService.getGeocoding(bodyString);
 					} else if (methodCode.equals(MethodCode.EXECUTE_SCENE)) {
-						returnString = queryService.executeScenario(bodyString);
+						returnString = queryService.executeScenario(bodyString,session);
 					} else if (methodCode.equals(MethodCode.NEXT_PAGE)) {
-						returnString = queryService.nextPage(bodyString);
+						returnString = queryService.nextPage(bodyString,session);
 					} else {
 						this.thorwError("", ParameterCode.Error.SERVICE_PARAMETER, "该接口未实现", "");
 						return null;
@@ -187,6 +187,7 @@ public class InterfaceAction extends BaseAction {
 					return null;
 				}
 				loger.info("return data=" + returnString);
+				response.setHeader("Content-Type", "application/json;charset=utf-8");
 				response.getOutputStream().write(returnString.getBytes("utf-8"));
 				return null;
 			} else {
@@ -244,7 +245,7 @@ public class InterfaceAction extends BaseAction {
 			} else {
 				o.put("baseObject", baseObject);
 			}
-			response.setHeader("Content-type", "text/html;charset=utf-8");
+			response.setHeader("Content-Type", "application/json;charset=utf-8");
 			response.getOutputStream().write(o.toString().getBytes("utf-8"));
 			loger.info("return data=" + o.toString());
 		} catch (Exception e) {

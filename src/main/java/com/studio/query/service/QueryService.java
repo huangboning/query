@@ -18,10 +18,14 @@ import org.springframework.stereotype.Service;
 import com.studio.query.common.Configure;
 import com.studio.query.common.Constants;
 import com.studio.query.common.HttpUtil;
+import com.studio.query.entity.Fragment;
 import com.studio.query.entity.HeadData;
+import com.studio.query.entity.Scene;
+import com.studio.query.entity.Variable;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
 import com.studio.query.util.CacheUtil;
+import com.studio.query.util.DateUtil;
 import com.studio.query.util.FileUtil;
 import com.studio.query.util.StringUtil;
 
@@ -60,6 +64,7 @@ public class QueryService {
 		String resultString = null;
 		// 这里获取选择数据源定义的数据表头逻辑
 		String tableHeadDefString = "";
+		JSONArray tableHeadDefArray = new JSONArray();
 		if (Configure.isDevelopment) {
 
 			tableHeadDefString = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_table_head_def.txt");
@@ -76,18 +81,20 @@ public class QueryService {
 				getTableHeadDefJson.put("params", getTableHeadDefObj);
 				tableHeadDefString = HttpUtil.sendPost(Configure.esTalbleServiceUrl,
 						getTableHeadDefJson.toString().getBytes("utf-8"));
+				JSONObject resultObj = JSONObject.fromObject(tableHeadDefString);
+				tableHeadDefArray = resultObj.getJSONArray("result");
 			} catch (Exception e) {
 				e.printStackTrace();
 				loger.info(e.toString());
 				loger.info("请求失败：" + Configure.esTalbleServiceUrl);
 				resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF,
-						ParameterCode.Error.SERVICE_INVALID, "获取选择数据源定义的数据表头失败", tableHeadDefString);
+						ParameterCode.Error.SERVICE_INVALID, "获取选择数据源定义的数据表头失败", "");
 				return resultString;
 			}
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.GET_TABLE_HEAD_DEF, ParameterCode.Result.RESULT_OK,
-				"获取选择数据源定义的数据表头成功", tableHeadDefString);
+		resultString = StringUtil.packetObjectObj(MethodCode.GET_TABLE_HEAD_DEF, ParameterCode.Result.RESULT_OK,
+				"获取选择数据源定义的数据表头成功", tableHeadDefArray);
 
 		return resultString;
 	}
@@ -268,18 +275,98 @@ public class QueryService {
 	 * 
 	 * @return
 	 */
-	public String executeScenario(String bodyString) {
+	public String executeScenario(String bodyString, Map<String, Object> session) {
 		String resultString = null;
 		// 这里执行场景查询结果返回
 		String executeScenarioString = "";
 
 		if (Configure.isDevelopment) {
 
-			executeScenarioString = FileUtil
-					.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
+			String tempBody = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
 		} else {
 			try {
-				executeScenarioString = HttpUtil.sendPost(Configure.esQueryServiceUrl, bodyString.getBytes("utf-8"));
+				Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+				// 如果session中没有记录当前场景
+				if (sceneActive == null) {
+					resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE,
+							ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
+					return resultString;
+				}
+				JSONArray scopeObjs = new JSONArray();
+				List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+				if (scopeArray == null) {
+					scopeArray = new ArrayList<String>();
+				}
+				for (String scopeStr : scopeArray) {
+					scopeObjs.add(scopeStr);
+				}
+				JSONObject queryObj = new JSONObject();
+				JSONObject sceneObj = new JSONObject();
+				sceneObj.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
+				sceneObj.put("scope", scopeObjs.toString());
+				// sceneObj.put("name", sceneActive.getSceneName());
+				// sceneObj.put("id", sceneActive.getSceneUUID());
+				// sceneObj.put("tages", "[]");
+
+				JSONArray fragmentListArray = new JSONArray();
+				Map<String, Object> fragmentsMap = new HashMap<String, Object>();
+				JSONArray variableJsonArray = new JSONArray();
+
+				// 读取缓存中的fragment数据
+				List<Fragment> fragmentList = (List<Fragment>) CacheUtil
+						.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+				if (fragmentList == null) {
+					fragmentList = new ArrayList<Fragment>();
+				}
+				for (int i = 0; i < fragmentList.size(); i++) {
+					Fragment fragment = fragmentList.get(i);
+					JSONObject dataObj = new JSONObject();
+					dataObj.put("id", fragment.getFragmentUUID());
+					dataObj.put("name", fragment.getFragmentName());
+					dataObj.put("desc", fragment.getFragmentDesc());
+					dataObj.put("type", fragment.getFragmentType());
+					dataObj.put("objectType", fragment.getFragmentObjType());
+					dataObj.put("enable", fragment.isFragmentEnable());
+					dataObj.put("version", "");
+					if (fragment.isFragmentEnable()) {
+						fragmentListArray.add(dataObj);
+					}
+
+				}
+				sceneObj.put("fragmentList", fragmentListArray);
+				queryObj.put("scenario", sceneObj.toString());
+
+				for (int i = 0; i < fragmentList.size(); i++) {
+					Fragment fragment = fragmentList.get(i);
+					JSONObject dataObj = new JSONObject();
+					dataObj.put("id", fragment.getFragmentUUID());
+					dataObj.put("name", fragment.getFragmentName());
+					dataObj.put("desc", fragment.getFragmentDesc());
+					dataObj.put("type", fragment.getFragmentType());
+					dataObj.put("objectType", fragment.getFragmentObjType());
+					dataObj.put("tags", "[]");
+					dataObj.put("version", "");
+					dataObj.put("expression", fragment.getFragmentExpression());
+					if (fragment.isFragmentEnable()) {
+						fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
+					}
+
+				}
+				queryObj.put("fragments", fragmentsMap);
+				JSONObject paginationObj = new JSONObject();
+				paginationObj.put("size", 20);
+				paginationObj.put("from", 0);
+				queryObj.put("pagination", paginationObj);
+				queryObj.put("method", "query");
+				
+				queryObj.put("variables", "[]");
+				loger.info("executeScenario post data="+queryObj.toString());
+				// String tempBody = FileUtil
+				// .readFile(Configure.rootPath +
+				// "/WEB-INF/classes/query2.txt");
+
+				executeScenarioString = HttpUtil.sendPost(Configure.esQueryServiceUrl,
+						queryObj.toString().getBytes("utf-8"));
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -300,18 +387,97 @@ public class QueryService {
 	 * 
 	 * @return
 	 */
-	public String nextPage(String bodyString) {
+	public String nextPage(String bodyString, Map<String, Object> session) {
 		String resultString = null;
 		// 这里执行场景查询结果返回
 		String executeScenarioString = "";
 
 		if (Configure.isDevelopment) {
 
-			executeScenarioString = FileUtil
-					.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
+			String tempBody = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
 		} else {
 			try {
-				executeScenarioString = HttpUtil.sendPost(Configure.esQueryServiceUrl, bodyString.getBytes("utf-8"));
+				Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+				// 如果session中没有记录当前场景
+				if (sceneActive == null) {
+					resultString = StringUtil.packetObject(MethodCode.NEXT_PAGE, ParameterCode.Error.SERVICE_SESSION,
+							"当前没设置活动场景，或会话已经过期！", "");
+					return resultString;
+				}
+				JSONArray scopeObjs = new JSONArray();
+				List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+				if (scopeArray == null) {
+					scopeArray = new ArrayList<String>();
+				}
+				for (String scopeStr : scopeArray) {
+					scopeObjs.add(scopeStr);
+				}
+				JSONObject queryObj = new JSONObject();
+				JSONObject sceneObj = new JSONObject();
+				sceneObj.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
+				sceneObj.put("scope", scopeObjs.toString());
+				// sceneObj.put("name", sceneActive.getSceneName());
+				// sceneObj.put("id", sceneActive.getSceneUUID());
+				// sceneObj.put("tages", "[]");
+
+				JSONArray fragmentListArray = new JSONArray();
+				Map<String, Object> fragmentsMap = new HashMap<String, Object>();
+				JSONArray variableJsonArray = new JSONArray();
+
+				// 读取缓存中的fragment数据
+				List<Fragment> fragmentList = (List<Fragment>) CacheUtil
+						.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+				if (fragmentList == null) {
+					fragmentList = new ArrayList<Fragment>();
+				}
+				for (int i = 0; i < fragmentList.size(); i++) {
+					Fragment fragment = fragmentList.get(i);
+					JSONObject dataObj = new JSONObject();
+					dataObj.put("id", fragment.getFragmentUUID());
+					dataObj.put("name", fragment.getFragmentName());
+					dataObj.put("desc", fragment.getFragmentDesc());
+					dataObj.put("type", fragment.getFragmentType());
+					dataObj.put("objectType", fragment.getFragmentObjType());
+					dataObj.put("enable", fragment.isFragmentEnable());
+					dataObj.put("version", "");
+					if (fragment.isFragmentEnable()) {
+						fragmentListArray.add(dataObj);
+					}
+
+				}
+				sceneObj.put("fragmentList", fragmentListArray);
+				queryObj.put("scenario", sceneObj.toString());
+
+				for (int i = 0; i < fragmentList.size(); i++) {
+					Fragment fragment = fragmentList.get(i);
+					JSONObject dataObj = new JSONObject();
+					dataObj.put("id", fragment.getFragmentUUID());
+					dataObj.put("name", fragment.getFragmentName());
+					dataObj.put("desc", fragment.getFragmentDesc());
+					dataObj.put("type", fragment.getFragmentType());
+					dataObj.put("objectType", fragment.getFragmentObjType());
+					dataObj.put("tags", "[]");
+					dataObj.put("version", "");
+					dataObj.put("expression", fragment.getFragmentExpression());
+					if (fragment.isFragmentEnable()) {
+						fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
+					}
+
+				}
+				queryObj.put("fragments", fragmentsMap);
+				// JSONObject paginationObj = new JSONObject();
+				// paginationObj.put("size", 20);
+				// paginationObj.put("from", 0);
+				queryObj.put("method", "validate");
+				// queryObj.put("pagination", paginationObj);
+				queryObj.put("variables", "[]");
+				System.out.println(queryObj.toString());
+				// String tempBody = FileUtil
+				// .readFile(Configure.rootPath +
+				// "/WEB-INF/classes/query2.txt");
+
+				executeScenarioString = HttpUtil.sendPost(Configure.esQueryServiceUrl,
+						queryObj.toString().getBytes("utf-8"));
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -332,27 +498,91 @@ public class QueryService {
 	 * 
 	 * @return
 	 */
-	public String validate(String bodyString) {
+	public String validate(String bodyString, Map<String, Object> session) {
 
 		// 这里返回验证表达式结果
 		String validateExpressionString = "";
 		try {
-			// String str = HttpUtil.sendPost(Configure.esQueryServiceUrl,
-			// bodyString.getBytes("utf-8"));
-			// System.out.println(str);
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpPost method = new HttpPost(Configure.esQueryServiceUrl);
-			method.addHeader("Content-type", "application/json; charset=utf-8");
-			method.setHeader("Accept", "application/json");
-			String bodyStringaa = FileUtil.readFile("D:/hbn/workspaces/query/src/main/resources/valid.txt");
-			method.setEntity(new StringEntity(bodyStringaa, Charset.forName("UTF-8")));
 
-			HttpResponse response = httpClient.execute(method);
-			validateExpressionString = EntityUtils.toString(response.getEntity());
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			JSONArray scopeObjs = new JSONArray();
+			List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+			if (scopeArray == null) {
+				scopeArray = new ArrayList<String>();
+			}
+			for (String scopeStr : scopeArray) {
+				scopeObjs.add(scopeStr);
+			}
+			JSONObject queryObj = new JSONObject();
+			JSONObject sceneObj = new JSONObject();
+			sceneObj.put("scope", scopeObjs.toString());
+
+			JSONArray fragmentListArray = new JSONArray();
+			Map<String, Object> fragmentsMap = new HashMap<String, Object>();
+			JSONArray variableJsonArray = new JSONArray();
+
+			// 读取缓存中的fragment数据
+			List<Fragment> fragmentList = (List<Fragment>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+			if (fragmentList == null) {
+				fragmentList = new ArrayList<Fragment>();
+			}
+			for (int i = 0; i < fragmentList.size(); i++) {
+				Fragment fragment = fragmentList.get(i);
+				JSONObject dataObj = new JSONObject();
+				dataObj.put("id", fragment.getFragmentUUID());
+				dataObj.put("name", fragment.getFragmentName());
+				dataObj.put("desc", fragment.getFragmentDesc());
+				dataObj.put("type", fragment.getFragmentType());
+				dataObj.put("objectType", fragment.getFragmentObjType());
+				dataObj.put("enable", fragment.isFragmentEnable());
+				dataObj.put("version", "");
+				if (fragment.isFragmentEnable()) {
+					fragmentListArray.add(dataObj);
+				}
+
+			}
+			sceneObj.put("fragmentList", fragmentListArray);
+			queryObj.put("scenario", sceneObj.toString());
+
+			for (int i = 0; i < fragmentList.size(); i++) {
+				Fragment fragment = fragmentList.get(i);
+				JSONObject dataObj = new JSONObject();
+				dataObj.put("id", fragment.getFragmentUUID());
+				dataObj.put("name", fragment.getFragmentName());
+				dataObj.put("desc", fragment.getFragmentDesc());
+				dataObj.put("type", fragment.getFragmentType());
+				dataObj.put("objectType", fragment.getFragmentObjType());
+				dataObj.put("tags", "[]");
+				dataObj.put("version", "");
+				dataObj.put("expression", fragment.getFragmentExpression());
+				if (fragment.isFragmentEnable()) {
+					fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
+				}
+
+			}
+			queryObj.put("fragments", fragmentsMap);
+			// JSONObject paginationObj = new JSONObject();
+			// paginationObj.put("size", 20);
+			// paginationObj.put("from", 0);
+			queryObj.put("method", "validate");
+			// queryObj.put("pagination", paginationObj);
+			queryObj.put("variables", "[]");
+			System.out.println(queryObj.toString());
+			// String tempBody = FileUtil
+			// .readFile(Configure.rootPath + "/WEB-INF/classes/query2.txt");
+
+			validateExpressionString = HttpUtil.sendPost(Configure.esQueryServiceUrl,
+					queryObj.toString().getBytes("utf-8"));
+
 		} catch (Exception e) {
 			e.printStackTrace();
+			loger.info(e.toString());
+			loger.info("请求失败：" + Configure.esQueryServiceUrl);
+
 		}
 		return validateExpressionString;
+
 	}
 
 	public static void main(String[] args) {

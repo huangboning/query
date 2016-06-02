@@ -356,7 +356,7 @@ public class JGitService {
 
 						ObjectId objectId = treeWalk.getObjectId(0);
 						ObjectLoader loader = repository.open(objectId);
-						str = new String(loader.getBytes(), "UTF-8");
+						str = new String(loader.getBytes(), "utf-8");
 
 					}
 				}

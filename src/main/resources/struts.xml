@@ -82,9 +82,6 @@
 		<action name="getHintFields" class="com.studio.query.action.InterfaceAction"
 			method="getHintFields">
 		</action>
-		<action name="getGeocoding" class="com.studio.query.action.InterfaceAction"
-			method="getGeocoding">
-		</action>
 	</package>
 	<package name="scenarioHistory" extends="struts-default"
 		namespace="/V1/scenarioHistory">
@@ -128,6 +125,9 @@
 		</action>
 		<action name="nextPage" class="com.studio.query.action.InterfaceAction"
 			method="nextPage">
+		</action>
+		<action name="getGeocoding" class="com.studio.query.action.InterfaceAction"
+			method="getGeocoding">
 		</action>
 	</package>
 	<package name="fragment" extends="struts-default" namespace="/V1/fragment">
