@@ -147,7 +147,7 @@ public class InterfaceAction extends BaseAction {
 						// variableService.enableShareVariable(bodyString,
 						// currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_VARIABLE)) {
-						returnString = variableService.getVariables(bodyString, currentAccount, session);
+						returnString = variableService.getVariablesList(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_SHARE_VARIABLE)) {
 						returnString = variableService.getShareVariables(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_FRAGMENT)) {
@@ -174,8 +174,8 @@ public class InterfaceAction extends BaseAction {
 						returnString = queryService.getGeocoding(bodyString);
 					} else if (methodCode.equals(MethodCode.EXECUTE_SCENE)) {
 						returnString = queryService.executeScenario(bodyString);
-					} else if (methodCode.equals(MethodCode.VALIDATE_SCENE)) {
-						returnString = queryService.validateScenario(bodyString);
+					} else if (methodCode.equals(MethodCode.NEXT_PAGE)) {
+						returnString = queryService.nextPage(bodyString);
 					} else {
 						this.thorwError("", ParameterCode.Error.SERVICE_PARAMETER, "该接口未实现", "");
 						return null;
@@ -394,7 +394,7 @@ public class InterfaceAction extends BaseAction {
 		this.execute();
 	}
 
-	public void getVariables() {
+	public void getVariablesList() {
 		this.execute();
 	}
 
@@ -446,8 +446,7 @@ public class InterfaceAction extends BaseAction {
 		this.execute();
 	}
 
-	public void validateScenario() {
+	public void nextPage() {
 		this.execute();
 	}
-
 }

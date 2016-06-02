@@ -149,7 +149,7 @@ public class MethodCode {
 	/**
 	 * 获取变量列表
 	 */
-	public static final String LIST_VARIABLE = "getVariables";
+	public static final String LIST_VARIABLE = "getVariableList";
 	/**
 	 * 获取共享变量历史记录
 	 */
@@ -166,7 +166,6 @@ public class MethodCode {
 	 * 发布共享变量
 	 */
 	public static final String RELEASE_SHARE_VARIABLE = "releaseShareVariable";
-	
 
 	/**
 	 * ES接口 getIndexDocTypes 获取数据源列表
@@ -201,15 +200,14 @@ public class MethodCode {
 	 * ES接口 getGeocoding 查询位置
 	 */
 	public static final String GET_GEOCODING = "getGeocoding";
-	
+
 	/**
 	 * ES接口 executeScenario 执行场景查询
 	 */
 	public static final String EXECUTE_SCENE = "executeScenario";
+
 	/**
-	 * ES接口 executeScenario 执行场景查询
+	 * ES接口 executeScenario 执行场景查询下一页
 	 */
-	public static final String VALIDATE_SCENE = "validateScenario";
-	
-	
+	public static final String NEXT_PAGE = "nextPage";
 }

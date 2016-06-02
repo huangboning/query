@@ -85,14 +85,9 @@
 		<action name="getGeocoding" class="com.studio.query.action.InterfaceAction"
 			method="getGeocoding">
 		</action>
-		<action name="executeScenario" class="com.studio.query.action.InterfaceAction"
-			method="executeScenario">
-		</action>
-		<action name="validateScenario" class="com.studio.query.action.InterfaceAction"
-			method="validateScenario">
-		</action>
 	</package>
-	<package name="scenarioHistory" extends="struts-default" namespace="/V1/scenarioHistory">
+	<package name="scenarioHistory" extends="struts-default"
+		namespace="/V1/scenarioHistory">
 		<action name="getScenarioHistory" class="com.studio.query.action.InterfaceAction"
 			method="getScenarioHistory">
 		</action>
@@ -127,6 +122,12 @@
 		</action>
 		<action name="updateScenario" class="com.studio.query.action.InterfaceAction"
 			method="updateScenario">
+		</action>
+		<action name="executeScenario" class="com.studio.query.action.InterfaceAction"
+			method="executeScenario">
+		</action>
+		<action name="nextPage" class="com.studio.query.action.InterfaceAction"
+			method="nextPage">
 		</action>
 	</package>
 	<package name="fragment" extends="struts-default" namespace="/V1/fragment">
@@ -189,8 +190,8 @@
 		<action name="enableShareVariable" class="com.studio.query.action.InterfaceAction"
 			method="enableShareVariable">
 		</action>
-		<action name="getVariables" class="com.studio.query.action.InterfaceAction"
-			method="getVariables">
+		<action name="getVariablesList" class="com.studio.query.action.InterfaceAction"
+			method="getVariablesList">
 		</action>
 		<action name="getShareVariableHistory" class="com.studio.query.action.InterfaceAction"
 			method="getShareVariableHistory">

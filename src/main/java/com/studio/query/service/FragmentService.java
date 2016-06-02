@@ -288,7 +288,7 @@ public class FragmentService {
 		if (parmJb != null) {
 			String fragmentUUID;
 			if (Configure.serverVersion == 0) {
-				fragmentUUID = parmJb.optString("id", "");
+				fragmentUUID = parmJb.optString("fragmentId", "");
 			} else {
 				fragmentUUID = parmJb.optString("fragmentUUID", "");
 			}
@@ -438,18 +438,34 @@ public class FragmentService {
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
-			Fragment updateFragment = new Fragment();
-			updateFragment.setFragmentUUID(fragmentUUID);
-			int result = fragmentDao.disableFragment(updateFragment);
-			if (result < 1) {
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			// 如果session中没有记录当前场景
+			if (sceneActive == null) {
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT,
-						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
+						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
 				return resultString;
-			} else {
-
-				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
-						"禁用fragment成功", "");
 			}
+			List<Fragment> fragmentList = (List<Fragment>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+			if (fragmentList == null) {
+				fragmentList = new ArrayList<Fragment>();
+			}
+			JSONObject fragmentObj = new JSONObject();
+			for (int i = 0; i < fragmentList.size(); i++) {
+
+				Fragment fragment = fragmentList.get(i);
+				if (fragment.getFragmentUUID().equals(fragmentUUID)) {
+					fragment.setFragmentEnable(false);
+					break;
+				}
+			}
+
+			// 将fragment更新到缓存中
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+
+			resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+					"禁用fragment成功", "");
+
 		}
 		return resultString;
 	}
@@ -501,18 +517,34 @@ public class FragmentService {
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
-			Fragment updateFragment = new Fragment();
-			updateFragment.setFragmentUUID(fragmentUUID);
-			int result = fragmentDao.enableFragment(updateFragment);
-			if (result < 1) {
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			// 如果session中没有记录当前场景
+			if (sceneActive == null) {
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT,
-						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "fragment不存在", "");
+						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
 				return resultString;
-			} else {
-
-				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
-						"启用fragment成功", "");
 			}
+			List<Fragment> fragmentList = (List<Fragment>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+			if (fragmentList == null) {
+				fragmentList = new ArrayList<Fragment>();
+			}
+			JSONObject fragmentObj = new JSONObject();
+			for (int i = 0; i < fragmentList.size(); i++) {
+
+				Fragment fragment = fragmentList.get(i);
+				if (fragment.getFragmentUUID().equals(fragmentUUID)) {
+					fragment.setFragmentEnable(true);
+					break;
+				}
+			}
+
+			// 将fragment更新到缓存中
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+
+			resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+					"启用fragment成功", "");
+
 		}
 		return resultString;
 	}

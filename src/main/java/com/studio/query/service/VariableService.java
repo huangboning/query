@@ -318,7 +318,7 @@ public class VariableService {
 	// return resultString;
 	// }
 
-	public String getVariables(String bodyString, Account currentAccount, Map<String, Object> session) {
+	public String getVariablesList(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
