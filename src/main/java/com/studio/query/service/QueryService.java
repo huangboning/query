@@ -68,6 +68,7 @@ public class QueryService {
 		if (Configure.isDevelopment) {
 
 			tableHeadDefString = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_table_head_def.txt");
+			tableHeadDefArray = JSONArray.fromObject(tableHeadDefString);
 		} else {
 			try {
 				JSONObject getTableHeadDefJson = new JSONObject();
@@ -273,109 +274,38 @@ public class QueryService {
 	/**
 	 * 查询场景
 	 * 
+	 * @param bodyString
+	 * @param session
 	 * @return
 	 */
 	public String executeScenario(String bodyString, Map<String, Object> session) {
 		String resultString = null;
 		// 这里执行场景查询结果返回
 		String executeScenarioString = "";
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		int position = 0;
+		int recCount = 20;
+		if (parmJb != null) {
+			position = parmJb.optInt("position", 0);
+			recCount = parmJb.optInt("recCount", 20);
+		}
 
 		if (Configure.isDevelopment) {
 
-			String tempBody = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
+			executeScenarioString = FileUtil
+					.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
 		} else {
-			try {
-				Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
-				// 如果session中没有记录当前场景
-				if (sceneActive == null) {
-					resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE,
-							ParameterCode.Error.SERVICE_SESSION, "当前没设置活动场景，或会话已经过期！", "");
-					return resultString;
-				}
-				JSONArray scopeObjs = new JSONArray();
-				List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
-				if (scopeArray == null) {
-					scopeArray = new ArrayList<String>();
-				}
-				for (String scopeStr : scopeArray) {
-					scopeObjs.add(scopeStr);
-				}
-				JSONObject queryObj = new JSONObject();
-				JSONObject sceneObj = new JSONObject();
-				sceneObj.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
-				sceneObj.put("scope", scopeObjs.toString());
-				// sceneObj.put("name", sceneActive.getSceneName());
-				// sceneObj.put("id", sceneActive.getSceneUUID());
-				// sceneObj.put("tages", "[]");
 
-				JSONArray fragmentListArray = new JSONArray();
-				Map<String, Object> fragmentsMap = new HashMap<String, Object>();
-				JSONArray variableJsonArray = new JSONArray();
-
-				// 读取缓存中的fragment数据
-				List<Fragment> fragmentList = (List<Fragment>) CacheUtil
-						.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
-				if (fragmentList == null) {
-					fragmentList = new ArrayList<Fragment>();
-				}
-				for (int i = 0; i < fragmentList.size(); i++) {
-					Fragment fragment = fragmentList.get(i);
-					JSONObject dataObj = new JSONObject();
-					dataObj.put("id", fragment.getFragmentUUID());
-					dataObj.put("name", fragment.getFragmentName());
-					dataObj.put("desc", fragment.getFragmentDesc());
-					dataObj.put("type", fragment.getFragmentType());
-					dataObj.put("objectType", fragment.getFragmentObjType());
-					dataObj.put("enable", fragment.isFragmentEnable());
-					dataObj.put("version", "");
-					if (fragment.isFragmentEnable()) {
-						fragmentListArray.add(dataObj);
-					}
-
-				}
-				sceneObj.put("fragmentList", fragmentListArray);
-				queryObj.put("scenario", sceneObj.toString());
-
-				for (int i = 0; i < fragmentList.size(); i++) {
-					Fragment fragment = fragmentList.get(i);
-					JSONObject dataObj = new JSONObject();
-					dataObj.put("id", fragment.getFragmentUUID());
-					dataObj.put("name", fragment.getFragmentName());
-					dataObj.put("desc", fragment.getFragmentDesc());
-					dataObj.put("type", fragment.getFragmentType());
-					dataObj.put("objectType", fragment.getFragmentObjType());
-					dataObj.put("tags", "[]");
-					dataObj.put("version", "");
-					dataObj.put("expression", fragment.getFragmentExpression());
-					if (fragment.isFragmentEnable()) {
-						fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
-					}
-
-				}
-				queryObj.put("fragments", fragmentsMap);
-				JSONObject paginationObj = new JSONObject();
-				paginationObj.put("size", 20);
-				paginationObj.put("from", 0);
-				queryObj.put("pagination", paginationObj);
-				queryObj.put("method", "query");
-				
-				queryObj.put("variables", "[]");
-				loger.info("executeScenario post data="+queryObj.toString());
-				// String tempBody = FileUtil
-				// .readFile(Configure.rootPath +
-				// "/WEB-INF/classes/query2.txt");
-
-				executeScenarioString = HttpUtil.sendPost(Configure.esQueryServiceUrl,
-						queryObj.toString().getBytes("utf-8"));
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				loger.info(e.toString());
-				loger.info("请求失败：" + Configure.esQueryServiceUrl);
-				resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE, ParameterCode.Error.SERVICE_INVALID,
-						"执行场景查询失败", "");
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			// 如果session中没有记录当前场景
+			if (sceneActive == null) {
+				resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE, ParameterCode.Error.SERVICE_SESSION,
+						"当前没设置活动场景，或会话已经过期！", "");
 				return resultString;
 			}
+			executeScenarioString = this.executeQuery(position, recCount, session);
+
 		}
 		resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE, ParameterCode.Result.RESULT_OK, "执行场景查询成功",
 				executeScenarioString);
@@ -385,16 +315,27 @@ public class QueryService {
 	/**
 	 * 查询场景下一页
 	 * 
+	 * @param bodyString
+	 * @param session
 	 * @return
 	 */
 	public String nextPage(String bodyString, Map<String, Object> session) {
 		String resultString = null;
 		// 这里执行场景查询结果返回
 		String executeScenarioString = "";
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		int position = 0;
+		int recCount = 20;
+		if (parmJb != null) {
+			position = parmJb.optInt("position", 0);
+			recCount = parmJb.optInt("recCount", 20);
+		}
 
 		if (Configure.isDevelopment) {
 
-			String tempBody = FileUtil.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
+			executeScenarioString = FileUtil
+					.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
 		} else {
 			try {
 				Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
@@ -404,80 +345,7 @@ public class QueryService {
 							"当前没设置活动场景，或会话已经过期！", "");
 					return resultString;
 				}
-				JSONArray scopeObjs = new JSONArray();
-				List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
-				if (scopeArray == null) {
-					scopeArray = new ArrayList<String>();
-				}
-				for (String scopeStr : scopeArray) {
-					scopeObjs.add(scopeStr);
-				}
-				JSONObject queryObj = new JSONObject();
-				JSONObject sceneObj = new JSONObject();
-				sceneObj.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
-				sceneObj.put("scope", scopeObjs.toString());
-				// sceneObj.put("name", sceneActive.getSceneName());
-				// sceneObj.put("id", sceneActive.getSceneUUID());
-				// sceneObj.put("tages", "[]");
-
-				JSONArray fragmentListArray = new JSONArray();
-				Map<String, Object> fragmentsMap = new HashMap<String, Object>();
-				JSONArray variableJsonArray = new JSONArray();
-
-				// 读取缓存中的fragment数据
-				List<Fragment> fragmentList = (List<Fragment>) CacheUtil
-						.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
-				if (fragmentList == null) {
-					fragmentList = new ArrayList<Fragment>();
-				}
-				for (int i = 0; i < fragmentList.size(); i++) {
-					Fragment fragment = fragmentList.get(i);
-					JSONObject dataObj = new JSONObject();
-					dataObj.put("id", fragment.getFragmentUUID());
-					dataObj.put("name", fragment.getFragmentName());
-					dataObj.put("desc", fragment.getFragmentDesc());
-					dataObj.put("type", fragment.getFragmentType());
-					dataObj.put("objectType", fragment.getFragmentObjType());
-					dataObj.put("enable", fragment.isFragmentEnable());
-					dataObj.put("version", "");
-					if (fragment.isFragmentEnable()) {
-						fragmentListArray.add(dataObj);
-					}
-
-				}
-				sceneObj.put("fragmentList", fragmentListArray);
-				queryObj.put("scenario", sceneObj.toString());
-
-				for (int i = 0; i < fragmentList.size(); i++) {
-					Fragment fragment = fragmentList.get(i);
-					JSONObject dataObj = new JSONObject();
-					dataObj.put("id", fragment.getFragmentUUID());
-					dataObj.put("name", fragment.getFragmentName());
-					dataObj.put("desc", fragment.getFragmentDesc());
-					dataObj.put("type", fragment.getFragmentType());
-					dataObj.put("objectType", fragment.getFragmentObjType());
-					dataObj.put("tags", "[]");
-					dataObj.put("version", "");
-					dataObj.put("expression", fragment.getFragmentExpression());
-					if (fragment.isFragmentEnable()) {
-						fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
-					}
-
-				}
-				queryObj.put("fragments", fragmentsMap);
-				// JSONObject paginationObj = new JSONObject();
-				// paginationObj.put("size", 20);
-				// paginationObj.put("from", 0);
-				queryObj.put("method", "validate");
-				// queryObj.put("pagination", paginationObj);
-				queryObj.put("variables", "[]");
-				System.out.println(queryObj.toString());
-				// String tempBody = FileUtil
-				// .readFile(Configure.rootPath +
-				// "/WEB-INF/classes/query2.txt");
-
-				executeScenarioString = HttpUtil.sendPost(Configure.esQueryServiceUrl,
-						queryObj.toString().getBytes("utf-8"));
+				executeScenarioString = this.executeQuery(position, recCount, session);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -494,16 +362,16 @@ public class QueryService {
 	}
 
 	/**
-	 * 验证表达式
+	 * 执行查询逻辑
 	 * 
+	 * @param position
+	 * @param recCount
+	 * @param session
 	 * @return
 	 */
-	public String validate(String bodyString, Map<String, Object> session) {
-
-		// 这里返回验证表达式结果
-		String validateExpressionString = "";
+	public String executeQuery(int position, int recCount, Map<String, Object> session) {
+		String resultString = "";
 		try {
-
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			JSONArray scopeObjs = new JSONArray();
 			List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
@@ -515,7 +383,11 @@ public class QueryService {
 			}
 			JSONObject queryObj = new JSONObject();
 			JSONObject sceneObj = new JSONObject();
+			sceneObj.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
 			sceneObj.put("scope", scopeObjs.toString());
+			// sceneObj.put("name", sceneActive.getSceneName());
+			// sceneObj.put("id", sceneActive.getSceneUUID());
+			// sceneObj.put("tages", "[]");
 
 			JSONArray fragmentListArray = new JSONArray();
 			Map<String, Object> fragmentsMap = new HashMap<String, Object>();
@@ -562,25 +434,52 @@ public class QueryService {
 
 			}
 			queryObj.put("fragments", fragmentsMap);
-			// JSONObject paginationObj = new JSONObject();
-			// paginationObj.put("size", 20);
-			// paginationObj.put("from", 0);
-			queryObj.put("method", "validate");
-			// queryObj.put("pagination", paginationObj);
-			queryObj.put("variables", "[]");
-			System.out.println(queryObj.toString());
-			// String tempBody = FileUtil
-			// .readFile(Configure.rootPath + "/WEB-INF/classes/query2.txt");
+			JSONObject paginationObj = new JSONObject();
+			paginationObj.put("size", recCount);
+			paginationObj.put("from", position);
+			queryObj.put("pagination", paginationObj);
+			queryObj.put("method", "query");
 
-			validateExpressionString = HttpUtil.sendPost(Configure.esQueryServiceUrl,
-					queryObj.toString().getBytes("utf-8"));
+			queryObj.put("variables", "[]");
+			loger.info("executeScenario post data=" + queryObj.toString());
+
+			resultString = HttpUtil.sendPost(Configure.esQueryServiceUrl, queryObj.toString().getBytes("utf-8"));
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			loger.info(e.toString());
 			loger.info("请求失败：" + Configure.esQueryServiceUrl);
-
 		}
+		return resultString;
+	}
+
+	/**
+	 * 验证表达式
+	 * 
+	 * @return
+	 */
+	public String validate(String bodyString, Map<String, Object> session) {
+
+		// 这里返回验证表达式结果
+		String validateExpressionString = "";
+
+		if (Configure.isDevelopment) {
+			validateExpressionString = "{\"isValid\":true,\"fragmentWithVarError\":[],\"results\":[],\"success\":true,\"varReferenced\":{}}";
+		} else {
+
+			validateExpressionString = this.executeQuery(0, 20, session);
+		}
+		loger.info("validate result=" + validateExpressionString);
+
+		// 在更新fragment的时候做验证处理，如果验证成功则保存，如果验证失败则将失败信息返回。
+		// JSONObject
+		// validateObj=JSONObject.fromObject(validateExpressionString);
+		// if (validateObj!=null) {
+		//
+		// boolean result=validateObj.optBoolean("isValid",false);
+		// }else {
+		// return false;
+		// }
 		return validateExpressionString;
 
 	}
