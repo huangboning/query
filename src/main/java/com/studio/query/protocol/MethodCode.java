@@ -65,7 +65,11 @@ public class MethodCode {
 	/**
 	 * 关闭场景版本
 	 */
-	public static final String CLOSE_VERSION = "closeScenario";
+	public static final String CLOSE_SCENE= "closeScenario";
+	/**
+	 * 打开场景版本
+	 */
+	public static final String OPEN_SCENE = "openScenario";
 	/**
 	 * 更新场景
 	 */

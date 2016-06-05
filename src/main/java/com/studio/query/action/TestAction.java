@@ -160,13 +160,25 @@ public class TestAction {
 			deleteFragmentObj.put("fragmentUUID", "FRGMe191a9b9215641308463f1ff46ee5786");
 			deleteFragmentJson.put("params", deleteFragmentObj);
 
-			// // 关闭场景版本
-			// JSONObject closeSceneJson = new JSONObject();
-			// closeSceneJson.put("method", "closeScenario");
-			// JSONObject closeSceneObj = new JSONObject();
-			// closeSceneObj.put("sceneVersion",
-			// "235c0729afe31e95b0f44d18f9b998f15f7c9b90");
-			// closeSceneJson.put("params", closeSceneObj);
+			// 关闭场景版本
+			JSONObject closeSceneJson = new JSONObject();
+			closeSceneJson.put("method", "closeScenario");
+			JSONObject closeSceneObj = new JSONObject();
+			closeSceneObj.put("scenarioId", "SCNO32bffa81736c40dc8df6311f0d87c1a6");
+			closeSceneJson.put("params", closeSceneObj);
+
+			// 打开场景版本
+			JSONObject openSceneJson = new JSONObject();
+			openSceneJson.put("method", "openScenario");
+			JSONObject openSceneObj = new JSONObject();
+			openSceneObj.put("scenarioId", "SCNOf6172ef7823f4ed1b9967e79d6c50ee0");
+			openSceneJson.put("params", openSceneObj);
+			
+			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/V1/scenario/openScenario",
+					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null, null,
+					closeSceneJson.toString().getBytes("utf-8"));
+			System.out.println(closeSceneJson.toString());
+			System.out.println(result);
 
 			// // 禁用fragment
 			// JSONObject disableFragmentJson = new JSONObject();
@@ -330,11 +342,7 @@ public class TestAction {
 			getInitDocTypeJson.put("method", "getIndexDocTypes");
 			getInitDocTypeJson.put("params", "");
 
-			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/V1/index/getIndexDocTypes",
-					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"), null, null,
-					listSceneJson.toString().getBytes("utf-8"));
-			System.out.println(listSceneJson.toString());
-			System.out.println(result);
+
 
 			// // ES接口 getHintFields
 			// JSONObject getHintFieldsJson = new JSONObject();

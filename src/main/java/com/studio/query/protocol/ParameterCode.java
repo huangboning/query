@@ -117,6 +117,11 @@ public class ParameterCode {
 		 * 查询版本-查询的版本号不存在
 		 */
 		public static final String QUERY_VERSION_NO_EXIST = "-116";
+		
+		/**
+		 * 更新场景-需要分支名称
+		 */
+		public static final String UPDATE_SCENE_NO_BRANCH = "205";
 
 	}
 }

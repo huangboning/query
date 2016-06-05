@@ -117,6 +117,9 @@
 		<action name="closeScenario" class="com.studio.query.action.InterfaceAction"
 			method="closeScenario">
 		</action>
+		<action name="openScenario" class="com.studio.query.action.InterfaceAction"
+			method="openScenario">
+		</action>
 		<action name="updateScenario" class="com.studio.query.action.InterfaceAction"
 			method="updateScenario">
 		</action>

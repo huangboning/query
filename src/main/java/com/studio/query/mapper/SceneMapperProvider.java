@@ -19,6 +19,9 @@ public class SceneMapperProvider {
 		if (!StringUtil.isNullOrEmpty(scene.getSceneName())) {
 			buffer.append("and a.scene_name =#{sceneName} ");
 		}
+		if(scene.getSceneEnable()!=1){
+			buffer.append("and a.scene_enable =#{sceneEnable} ");
+		}
 
 		return buffer.toString();
 	}

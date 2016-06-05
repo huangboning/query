@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,14 @@ public class SceneService {
 
 	public int updateScene(Scene scene) {
 		return sceneDao.updateScene(scene);
+	}
+
+	public int closeScene(Scene scene) {
+		return sceneDao.closeScene(scene);
+	}
+
+	public int openScene(Scene scene) {
+		return sceneDao.openScene(scene);
 	}
 
 	public String createScene(String bodyString, Account currentAccount, Map<String, Object> session) {
@@ -102,6 +111,11 @@ public class SceneService {
 						+ Constants.SCENE_REPOSITORY_NAME + "/" + insertScene.getSceneGit();
 
 				jGitService.initAccountGit(gitPath, currentAccount);
+				// 记录当前活动的场景
+				JSONObject activeObj = new JSONObject();
+				activeObj.put("sceneUUID", insertScene.getSceneUUID());
+				HistoryUtil.setUserSceneHistory(currentAccount.getAccountName(), activeObj.toString());
+
 				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK,
 						"创建场景成功", "");
 				this.resetScope(null, session);
@@ -117,9 +131,23 @@ public class SceneService {
 	public String getSceneList(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		int sceneStatus=0;
+		if (parmJb != null) {
+			String sceneEnable= parmJb.optString("enable", "");
+			if (sceneEnable.equals("enable")) {
+				sceneStatus=0;
+			}else if (sceneEnable.equals("disable")) {
+				sceneStatus=-1;
+			}else if(sceneEnable.equals("all")) {
+				sceneStatus=1;
+			}
+		}
 		JSONArray sceneJsonArray = new JSONArray();
 		Scene findScene = new Scene();
 		findScene.setAccountId(currentAccount.getAccountId());
+		findScene.setSceneEnable(sceneStatus);
 		List<Scene> sceneList = sceneDao.findScene(findScene);
 		String sceneActiveUUID = HistoryUtil.getUserSceneHistory(currentAccount.getAccountName());
 		boolean isFrist = false;
@@ -334,11 +362,18 @@ public class SceneService {
 
 			// 根据版本获取场景内容
 			JGitService jGitService = new JGitService();
+			String currentVersionBranchName = jGitService.getBranchFromCommit(sessionScenePath, sceneVersion,
+					new HashMap<>());
+			jGitService.jGitCheckout(sessionScenePath, currentVersionBranchName);
+			jGitService.jGitCheckout(sessionScenePath, sceneVersion);
+			// jGitService.jGitCheckout(sessionScenePath, "bug4");
 			String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion, "info.txt");
 			// 解析场景json数据
 			List<Fragment> fragmentList = JsonUtil.getFragmentFromSceneString(contentString);
 			List<Variable> variableList = JsonUtil.getVariableFromSceneString(contentString);
 			List<String> scopeList = JsonUtil.getScopeFromSceneString(contentString);
+			String sceneDesc = JsonUtil.getDescFromSceneString(contentString);
+			sceneActive.setSceneDesc(sceneDesc);
 
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
@@ -378,7 +413,7 @@ public class SceneService {
 			sceneObject.put("id", sceneActive.getSceneUUID());
 			sceneObject.put("name", sceneActive.getSceneName());
 			sceneObject.put("desc", sceneActive.getSceneDesc());
-			sceneObject.put("createTime", sceneActive.getSceneDesc());
+			sceneObject.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
 			sceneObject.put("version", committer.getCommitVersion());
 			sceneObject.put("comment", committer.getCommitMssage());
 			sceneObject.put("scope", scopeObjs.toString());
@@ -471,21 +506,50 @@ public class SceneService {
 
 	}
 
-	public String closeSceneVersion(String bodyString, Account currentAccount) {
+	public String closeScenario(String bodyString, Account currentAccount) {
 
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String sceneVersion = parmJb.optString("sceneVersion", "");
-			if (StringUtil.isNullOrEmpty(sceneVersion)) {
+			String scenarioId = parmJb.optString("scenarioId", "");
+			if (StringUtil.isNullOrEmpty(scenarioId)) {
 
-				resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION, ParameterCode.Error.SERVICE_PARAMETER,
+				resultString = StringUtil.packetObject(MethodCode.CLOSE_SCENE, ParameterCode.Error.SERVICE_PARAMETER,
 						"必要参数不足", "");
 				return resultString;
 			}
-			resultString = StringUtil.packetObject(MethodCode.CLOSE_VERSION, ParameterCode.Result.RESULT_OK, "关闭场景成功",
+			// 更新场景为关闭状态
+			Scene updateScene=new Scene();
+			updateScene.setSceneUUID(scenarioId);
+			sceneDao.closeScene(updateScene);
+
+			resultString = StringUtil.packetObject(MethodCode.CLOSE_SCENE, ParameterCode.Result.RESULT_OK, "关闭场景成功",
 					"");
+
+		}
+		return resultString;
+	}
+
+	public String openScenario(String bodyString, Account currentAccount) {
+
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String scenarioId = parmJb.optString("scenarioId", "");
+			if (StringUtil.isNullOrEmpty(scenarioId)) {
+
+				resultString = StringUtil.packetObject(MethodCode.OPEN_SCENE, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
+				return resultString;
+			}
+			// 更新场景为打开状态
+			Scene updateScene=new Scene();
+			updateScene.setSceneUUID(scenarioId);
+			sceneDao.openScene(updateScene);
+
+			resultString = StringUtil.packetObject(MethodCode.OPEN_SCENE, ParameterCode.Result.RESULT_OK, "打开场景成功", "");
 
 		}
 		return resultString;
@@ -497,17 +561,14 @@ public class SceneService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String sceneComment;
+			String sceneDesc;
+			String sceneBranchName;
 			if (Configure.serverVersion == 0) {
-				sceneComment = parmJb.optString("comment", "");
+				sceneDesc = parmJb.optString("desc", "");
+				sceneBranchName = parmJb.optString("branchName", "");
 			} else {
-				sceneComment = parmJb.optString("sceneComment", "");
-			}
-			if (StringUtil.isNullOrEmpty(sceneComment)) {
-
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Error.SERVICE_PARAMETER,
-						"必要参数不足", "");
-				return resultString;
+				sceneDesc = parmJb.optString("sceneDesc", "");
+				sceneBranchName = parmJb.optString("SceneBranchName", "");
 			}
 
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
@@ -575,13 +636,47 @@ public class SceneService {
 				scopeObjs.add(scopeStr);
 			}
 			sceneJson.put("scopeList", scopeObjs.toString());
+			// 添加desc
+			JSONObject descObj = new JSONObject();
+			descObj.put("desc", sceneDesc);
+			sceneJson.put("scene", descObj);
 
-			FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
 			JGitService jGitService = new JGitService();
-			jGitService.jGitCommit(scenePath, currentAccount, sceneComment);
 
 			// 从git查询最新版本的comment和version
 			Committer committer = jGitService.getLastCommitter(scenePath);
+			String currentVersion = (String) session.get(Constants.SCENE_VERSION);
+			boolean isLastVersion = jGitService.isLastVersion(scenePath, currentVersion);
+			String currentVersionBranchName = jGitService.getBranchFromCommit(scenePath, currentVersion,
+					new HashMap<>());
+
+			if (!isLastVersion) {
+				if (StringUtil.isNullOrEmpty(sceneBranchName)) {
+					resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+							ParameterCode.Error.UPDATE_SCENE_NO_BRANCH, "更新场景需要分支名称", "");
+					return resultString;
+				} else {
+					// 正常建分支
+					jGitService.jGitCheckout(scenePath, currentVersion);
+					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
+					jGitService.jGitCreateBranch(scenePath, sceneBranchName);
+					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
+				}
+			} else {
+
+				if (!StringUtil.isNullOrEmpty(sceneBranchName)) {
+					// 强制建分支
+					jGitService.jGitCheckout(scenePath, currentVersion);
+					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
+					jGitService.jGitCreateBranch(scenePath, sceneBranchName);
+					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
+				} else {
+					// 如果分支名称为空则正常提交版本，需要重新checkout branch
+					jGitService.jGitCheckout(scenePath, currentVersionBranchName);
+					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
+					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
+				}
+			}
 
 			JSONObject sceneObject = new JSONObject();
 			if (Configure.serverVersion == 0) {

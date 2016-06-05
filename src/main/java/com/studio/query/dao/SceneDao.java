@@ -31,5 +31,11 @@ public interface SceneDao {
 
 	@Update("update t_scene set scene_desc=#{sceneDesc} where scene_id=#{sceneId}")
 	public int updateScene(Scene scene);
+	
+	@Update("update t_scene set scene_enable=-1 where scene_uuid=#{sceneUUID}")
+	public int closeScene(Scene scene);
+	
+	@Update("update t_scene set scene_enable=0 where scene_uuid=#{sceneUUID}")
+	public int openScene(Scene scene);
 
 }

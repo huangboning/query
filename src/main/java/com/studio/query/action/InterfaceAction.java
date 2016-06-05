@@ -104,8 +104,10 @@ public class InterfaceAction extends BaseAction {
 					} else if (methodCode.equals(MethodCode.GET_CURRENT_VERSION)
 							|| methodCode.equals(MethodCode.GET_CURRENT_VERSION_OLD)) {
 						returnString = sceneService.getCurrentVersion(bodyString, currentAccount, session);
-					} else if (methodCode.equals(MethodCode.CLOSE_VERSION)) {
-						returnString = sceneService.closeSceneVersion(bodyString, currentAccount);
+					} else if (methodCode.equals(MethodCode.CLOSE_SCENE)) {
+						returnString = sceneService.closeScenario(bodyString, currentAccount);
+					} else if (methodCode.equals(MethodCode.OPEN_SCENE)) {
+						returnString = sceneService.openScenario(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.UPDATE_SCENE)) {
 						returnString = sceneService.updateScene(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CREATE_FRAGMENT)) {
@@ -173,9 +175,9 @@ public class InterfaceAction extends BaseAction {
 					} else if (methodCode.equals(MethodCode.GET_GEOCODING)) {
 						returnString = queryService.getGeocoding(bodyString);
 					} else if (methodCode.equals(MethodCode.EXECUTE_SCENE)) {
-						returnString = queryService.executeScenario(bodyString,session);
+						returnString = queryService.executeScenario(bodyString, session);
 					} else if (methodCode.equals(MethodCode.NEXT_PAGE)) {
-						returnString = queryService.nextPage(bodyString,session);
+						returnString = queryService.nextPage(bodyString, session);
 					} else {
 						this.thorwError("", ParameterCode.Error.SERVICE_PARAMETER, "该接口未实现", "");
 						return null;
@@ -312,6 +314,10 @@ public class InterfaceAction extends BaseAction {
 	}
 
 	public void closeScenario() {
+		this.execute();
+	}
+
+	public void openScenario() {
 		this.execute();
 	}
 

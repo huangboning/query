@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,7 @@ import com.studio.query.entity.Committer;
 import com.studio.query.util.DateUtil;
 import com.studio.query.util.StringUtil;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class JGitService {
@@ -207,6 +209,46 @@ public class JGitService {
 	}
 
 	/**
+	 * checkout
+	 * 
+	 * @param path
+	 * @param version
+	 * @return
+	 */
+	public boolean jGitCheckout(String path, String version) {
+		try {
+			File root = new File(path);
+			Git git = Git.init().setDirectory(root).call();
+			git.checkout().setName(version).call();
+			return true;
+		} catch (Exception e) {
+			loger.info(e.toString());
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * jgit创建分支
+	 * 
+	 * @param path
+	 * @param branchName
+	 * @return
+	 */
+	public boolean jGitCreateBranch(String path, String branchName) {
+		try {
+			File root = new File(path);
+			Git git = Git.init().setDirectory(root).call();
+			git.checkout().setCreateBranch(true).setName(branchName).call();
+			return true;
+		} catch (Exception e) {
+			loger.info(e.toString());
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
 	 * 提交共享fragment(发布共享的时候初始化template.txt并提交发布的内容)
 	 * 
 	 * @param path
@@ -368,6 +410,87 @@ public class JGitService {
 			e.printStackTrace();
 		}
 		return str;
+	}
+
+	public Map<String, String> initBranchHead(String path) {
+
+		Map<String, String> branchHeadMap = new HashMap<String, String>();
+		try (Repository repository = JGitService.openRepository(path)) {
+			Git git = new Git(repository);
+			List<Ref> branchList = git.branchList().call();
+			for (Ref branch : branchList) {
+				String branchName = branch.getName();
+				boolean isDetachedBranch = false;
+				// if (branchName.equals("HEAD")) {
+				// isDetachedBranch = true;
+				// }
+				if (!branchName.startsWith(Constants.R_HEADS)) {
+					if (!isDetachedBranch) {
+						continue;
+					}
+				}
+
+				String shortBranchName = branchName.substring(branchName.lastIndexOf("/") + 1);
+				git.checkout().setName(shortBranchName).call();
+				ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+				String headVersion = "";
+				if (null != lastCommitId) {
+					try (RevWalk revWalk = new RevWalk(repository)) {
+						RevCommit commit = revWalk.parseCommit(lastCommitId);
+						headVersion = commit.getName();
+						revWalk.dispose();
+					}
+				}
+				branchHeadMap.put(shortBranchName, headVersion);
+			}
+			git.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return branchHeadMap;
+	}
+
+	public boolean isLastVersion(String path, String version) {
+		boolean result = false;
+		Map<String, String> branchHeadMap = this.initBranchHead(path);
+		for (Iterator i = branchHeadMap.keySet().iterator(); i.hasNext();) {
+			Object obj = i.next();
+			if (version.equals(branchHeadMap.get(obj))) {
+				result = true;
+				break;
+			}
+
+		}
+		return result;
+	}
+
+	public String getBranchFromCommit(String path, String version, Map branchMapping) {
+		String branchName = "";
+		Map m = this.readLogTree(path, branchMapping);
+		JSONObject mJson = new JSONObject().fromObject(m);
+		JSONObject commitObj = mJson.getJSONObject("commit");
+		JSONObject vObj = commitObj.getJSONObject(version);
+		if (vObj != null) {
+			JSONArray bArray = vObj.getJSONArray("branch");
+			if (bArray.size() >= 1) {
+				branchName = (String) bArray.get(0);
+			}
+		}
+		return branchName;
+	}
+
+	public static void main(String[] args) {
+		JGitService j = new JGitService();
+		System.out.println(j.getBranchFromCommit("D:/gitquery/2016/5/huangboning/scene/1465013483313",
+				"daf40c4b00ba8c82225e46b30f424423fe15e36b", new HashMap<>()));
+		// Map m =
+		// j.readLogTree("D:/gitquery/2016/5/huangboning/scene/1465013483313",
+		// new HashMap<>());
+		// JSONObject mJson = new JSONObject().fromObject(m);
+		// System.out.println(mJson);
+		// System.out.println(j.isLastVersion("D:/gitquery/2016/5/huangboning/scene/1465013483313",
+		// "87270e1d78453978b120e01c3d665e384fb9d42b"));
 	}
 
 	/**
@@ -650,28 +773,58 @@ public class JGitService {
 		}
 	}
 
-	public static void main(String[] args) {
-		
-		Map map=readLogTree("E:/gitquery/2016/5/huangboning/scene/1464357955585", new HashMap<>());
-		System.out.println(map.get("current"));
-		JSONObject obj=new JSONObject();
-		obj.put("baseObject", map);
-		System.out.println(obj.toString());
+	public static void main222(String[] args) {
 
-//		try (Repository repository = JGitService
-//				.openRepository("E:/gitquery/2016/5/huangboning/scene/1464357955585")) {
-//			Git git = new Git(repository);
-//			for (RevCommit revCommit : git.log().call()) {
-//				// ObjectId objId =
-//				// git.getRepository().resolve(revCommit.name());
-//
-//				System.out.println(revCommit.getName());
-//			}
-//			git.close();
-//		} catch (Exception e) {
-//
-//			e.printStackTrace();
-//		}
+		// Map map =
+		// readLogTree("D:/gitquery/2016/5/huangboning/scene/1465013483313", new
+		// HashMap<>());
+		// System.out.println(map.get("current"));
+		// JSONObject obj = new JSONObject();
+		// obj.put("baseObject", map);
+		// System.out.println(obj.toString());
+
+		try (Repository repository = JGitService.openRepository("D:/gitquery/2016/5/huangboning/scene/1465013483313")) {
+			Git git = new Git(repository);
+			List<Ref> branchList = git.branchList().call();
+			for (Ref branch : branchList) {
+				String branchName = branch.getName();
+				boolean isDetachedBranch = false;
+				// if (branchName.equals("HEAD")) {
+				// isDetachedBranch = true;
+				// }
+				if (!branchName.startsWith(Constants.R_HEADS)) {
+					if (!isDetachedBranch) {
+						continue;
+					}
+				}
+
+				String shortBranchName = branchName.substring(branchName.lastIndexOf("/") + 1);
+				System.out.println(shortBranchName);
+				git.checkout().setName(shortBranchName).call();
+				ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+				if (null != lastCommitId) {
+					try (RevWalk revWalk = new RevWalk(repository)) {
+						RevCommit commit = revWalk.parseCommit(lastCommitId);
+						System.out.println(commit.getName());
+						revWalk.dispose();
+					}
+				}
+
+				// for (RevCommit revCommit : git.log().call()) {
+				// System.out.println(revCommit.getName());
+				// }
+			}
+			// for (RevCommit revCommit : git.log().call()) {
+			// // ObjectId objId =
+			// // git.getRepository().resolve(revCommit.name());
+			//
+			// System.out.println(revCommit.getName());
+			// }
+			git.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
 
 		// try (Repository repository =
 		// JGitService.openRepository("E:/gittest")) {

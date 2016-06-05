@@ -101,4 +101,26 @@ public class JsonUtil {
 		}
 		return scopeList;
 	}
+
+	/**
+	 * 从场景json中解析出desc数据
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String getDescFromSceneString(String str) {
+
+		String descString = "";
+		try {
+			JSONObject strObj = JSONObject.fromObject(str);
+			JSONObject sceneObj = strObj.getJSONObject("scene");
+			if (sceneObj != null) {
+				descString = sceneObj.optString("desc", "");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return descString;
+	}
 }
