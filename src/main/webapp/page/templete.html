@@ -1,0 +1,29 @@
+<html>
+	<header>
+
+		<title>templete</title>
+		<link rel="stylesheet" href="css/common.css" />
+		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				//如果支持screen
+//				if (window.screen) {
+//					var width = screen.availWidth; //获取屏幕的宽度
+//					var pWidth = width * 0.16 + 'px,*';
+//					$('#mainFrameSet').attr("cols", pWidth);
+//				} else {
+//					
+//				}
+			})
+		</script>
+	</header>
+
+	<frameset rows="150px,*" border="5px" bordercolor="#000000">
+		<frame src="header.html" noresize="noresize" scrolling="no"></frame>
+		<frameset cols="230px,*" id="mainFrameSet">
+			<frame src="menu.html" noresize="noresize"></frame>
+			<frame src="main.html"></frame>
+		</frameset>
+	</frameset>
+
+</html>

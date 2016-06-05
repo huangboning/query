@@ -391,7 +391,6 @@ public class QueryService {
 
 			JSONArray fragmentListArray = new JSONArray();
 			Map<String, Object> fragmentsMap = new HashMap<String, Object>();
-			JSONArray variableJsonArray = new JSONArray();
 
 			// 读取缓存中的fragment数据
 			List<Fragment> fragmentList = (List<Fragment>) CacheUtil
@@ -434,13 +433,42 @@ public class QueryService {
 
 			}
 			queryObj.put("fragments", fragmentsMap);
+			
+			JSONArray variableListArray = new JSONArray();
+			// 读取缓存中的变量数据
+			List<Variable> variableList = (List<Variable>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+			if (variableList == null) {
+				variableList = new ArrayList<Variable>();
+			}
+			for (int i = 0; i < variableList.size(); i++) {
+				Variable variable = variableList.get(i);
+				JSONObject dataObj = new JSONObject();
+
+				dataObj.put("variableClassId", variable.getVariableUUID());
+				dataObj.put("name", variable.getVariableName());
+				dataObj.put("variableType", variable.getVariableType());
+				JSONObject belongObj = new JSONObject();
+				belongObj.put("fragmentId", variable.getFragmentUUID());
+				belongObj.put("scenarioId", variable.getSceneUUID());
+				dataObj.put("beLongsTo", belongObj);
+				dataObj.put("valueType", variable.getVariableValueType());
+				dataObj.put("fieldType", variable.getVariableFieldType());
+				dataObj.put("value", variable.getVariableValue());
+				dataObj.put("variableInstanceId", "");
+				dataObj.put("variableScope", variable.getVariableScope());
+				variableListArray.add(dataObj);
+				
+
+			}
+			queryObj.put("variables", variableListArray);
+			
 			JSONObject paginationObj = new JSONObject();
 			paginationObj.put("size", recCount);
 			paginationObj.put("from", position);
 			queryObj.put("pagination", paginationObj);
 			queryObj.put("method", "query");
 
-			queryObj.put("variables", "[]");
 			loger.info("executeScenario post data=" + queryObj.toString());
 
 			resultString = HttpUtil.sendPost(Configure.esQueryServiceUrl, queryObj.toString().getBytes("utf-8"));

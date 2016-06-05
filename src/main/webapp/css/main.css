@@ -1,0 +1,252 @@
+body {
+	margin: 0px;
+}
+
+#div_header_bg {
+	background: #316294;
+}
+
+#div_header {
+	margin-top: 0px;
+	margin-left: 0px;
+	width: 980px;
+	height: 100px;
+	margin-right: auto;
+	margin-left: auto;
+	background: #316294;
+}
+#div_header_title {
+	font-size: 24px;
+	font-weight: bold;
+	color: white;
+}
+
+#div_header_logout {
+	font-size: 12px;
+	font-weight: bold;
+	color: white;
+	text-align: right;
+}
+
+#div_header_logout a:LINK {
+	color: white;
+	text-decoration: none;
+}
+
+#div_header_logout a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+#div_header_logout a:hover {
+	color: gray;
+	text-decoration: none;
+}
+
+#div_header_logout a:active {
+	color: white;
+	text-decoration: none;
+}
+
+#div_center {
+	margin-top: 10px;
+	width: 980px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#div_system_center {
+	margin-top: 10px;
+	width: 980px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#login_table {
+	
+}
+
+#count_table {
+	width: 980px;
+	border: 1px solid #cccccc;
+}
+
+#count_table_admin {
+	margin-top: 10px;
+	width: 980px;
+	margin-right: auto;
+	margin-left: auto;
+	border: 1px solid #cccccc;
+}
+
+#count_table_admin table {
+	margin: 0 auto;
+	width: 980px;
+	border: 0px solid #000;
+}
+
+#count_table_admin table th {
+	background: #316294;
+	color:white;
+	height: 25px;
+	font: 12px;
+	font-weight: normal;
+}
+
+/* css注释：默认css背景被白色 */
+#count_table_admin table.stripe tr td {
+	height: 28px;
+	line-height: 28px;
+	text-align: left;
+	background: #FFF;
+	vertical-align: middle;
+}
+
+/* css 注释：默认隔行背景颜色 */
+#count_table_admin table.stripe tr.alt td {
+	background: #F2F2F2;
+}
+
+/* css注释：鼠标经过时候背景颜色 */
+#count_table_admin table.stripe tr.over td {
+	background: #EEECEB;
+}
+
+#common_table {
+	margin-top: 10px;
+	width: 654px;
+	margin-right: auto;
+	margin-left: auto;
+	border: 1px solid #cccccc;
+}
+
+#common_table table {
+	margin: 0 auto;
+	width: 654px;
+	border: 0px solid #000;
+}
+
+#common_table table th {
+	background: #2D8C06;
+	height: 28px;
+}
+
+/* css注释：默认css背景被白色 */
+#common_table table.stripe tr td {
+	height: 28px;
+	line-height: 28px;
+	text-align: left;
+	background: #FFF;
+	vertical-align: middle;
+}
+
+/* css 注释：默认隔行背景颜色 */
+#common_table table.stripe tr.alt td {
+	background: #F2F2F2;
+}
+
+/* css注释：鼠标经过时候背景颜色 */
+#count_table_admin table.stripe tr.over td {
+	background: #EEECEB;
+}
+
+
+#div_center table thead {
+	background-color: #D7D7D7;
+}
+
+#div_page {
+	width: 980px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#div_page ul {
+	list-style: none;
+	height: 70px;
+	padding:0px;
+	border: 0px solid #1D8004;
+}
+
+#div_page ul li {
+	float: left;
+	padding-left: 15px;
+}
+#div_page ul li a:LINK{
+
+	text-decoration: none;
+	color: #316294;
+}
+
+
+#div_small_page {
+	width: 654px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#div_small_page ul {
+	list-style: none;
+	height: 30px;
+	padding:0px;
+	border: 0px solid #1D8004;
+}
+
+#div_small_page ul li {
+	float: left;
+	padding-left: 15px;
+}
+#div_small_page ul li a:LINK{
+
+	text-decoration: none;
+	color: #1D8004;
+}
+
+.input_on {
+	padding: 0px 4px 0px 4px;
+	height: 30px;
+	width: 200px;
+	border: 1px solid #316294;
+	background-color: #F6F6F6;
+}
+.common_btn {
+	background: #316294;
+	border-bottom-color: #ffffff;
+	border-bottom-width: 0px;
+	border-top-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	color: #ffffff;
+	font-size: 12pt;
+	font-style: normal;
+	font-weight: bolder;
+	width: 120px;
+	height: 30px;
+}
+.common_btn_dis {
+	background: #D8D8D8;
+	border-bottom-color: #ffffff;
+	border-bottom-width: 0px;
+	border-top-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	color: #ffffff;
+	font-size: 12pt;
+	font-style: normal;
+	font-weight: bolder;
+	width: 120px;
+	height: 30px;
+}
+#div_header_common a:LINK {
+	color: white;
+	text-decoration: none;
+}
+
+#div_header_common a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+#div_header_common a:hover {
+	color: black;
+	font-weight:bold;
+	text-decoration: none;
+}

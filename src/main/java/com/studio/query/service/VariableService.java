@@ -1,6 +1,7 @@
 package com.studio.query.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import com.studio.query.entity.ShareVariable;
 import com.studio.query.entity.Variable;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
+import com.studio.query.util.CacheUtil;
 import com.studio.query.util.DateUtil;
 import com.studio.query.util.FileUtil;
 import com.studio.query.util.StringUtil;
@@ -49,57 +51,96 @@ public class VariableService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			int variableScope = parmJb.optInt("variableScope", 0);// 0=scenario表示全局变量，1=fragment表示fragment内的局部变量
-			String variableName = parmJb.optString("variableName", "");
-			String variableType = parmJb.optString("variableType", "");
-			String variableObjType = parmJb.optString("variableObjType", "");
-			String fragmentUUID = parmJb.optString("fragmentUUID", "");
-			String variableDesc = parmJb.optString("variableDesc", "");
-			if (StringUtil.isNullOrEmpty(variableName)
-					|| (variableScope == 1 && StringUtil.isNullOrEmpty(fragmentUUID))) {
+			String fragmentId;
+			String variableName;
+			String variableType;
+			String variableScope;
+			String variableFieldType;
+			String variableValueType;
+			String variableValue;
+			if (Configure.serverVersion == 0) {
+				fragmentId = parmJb.optString("fragmentId", "");
+				variableName = parmJb.optString("name", "");
+				variableType = parmJb.optString("variableType", "");
+				variableScope = parmJb.optString("variableScope", "");
+				variableFieldType = parmJb.optString("fieldType", "");
+				variableValueType = parmJb.optString("valueType", "");
+				variableValue = parmJb.optString("value", "");
+			} else {
+				fragmentId = parmJb.optString("fragmentId", "");
+				variableName = parmJb.optString("variableName", "");
+				variableType = parmJb.optString("variableType", "");
+				variableScope = parmJb.optString("variableScope", "");
+				variableFieldType = parmJb.optString("variableFieldType", "");
+				variableValueType = parmJb.optString("variableValueType", "");
+				variableValue = parmJb.optString("variableValue", "");
+			}
+			if (StringUtil.isNullOrEmpty(variableName) || StringUtil.isNullOrEmpty(variableScope)
+					|| StringUtil.isNullOrEmpty(variableValue)) {
+
 				resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
-			// 变量重名验证暂时不启用
-			// Variable findVariable = new Variable();
-			// findVariable.setVariableName(variableName);
-			// List<Variable> variableList =
-			// variableDao.findVariable(findVariable);
-			// if (variableList.size() >= 1) {
-			// resultString =
-			// StringUtil.packetObject(MethodCode.CREATE_VARIABLE,
-			// ParameterCode.Result.RESULT_FAIL,
-			// ParameterCode.Error.CREATE_VARIABLE_EXIST, "变量已经存在", "");
-			// return resultString;
-			// }
-
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
-						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+				resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE,
+						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
 				return resultString;
 			}
+
 			Variable insertVariable = new Variable();
-			insertVariable.setSceneId(sceneActive.getSceneId());
+			insertVariable.setFragmentUUID(fragmentId);
+			insertVariable.setSceneUUID(sceneActive.getSceneUUID());
 			insertVariable.setVariableUUID(StringUtil.createVariableUUID());
 			insertVariable.setVariableName(variableName);
-			insertVariable.setVariableScope(variableScope);
-			insertVariable.setFragmentUUID(fragmentUUID);
 			insertVariable.setVariableType(variableType);
-			insertVariable.setVariableObjType(variableObjType);
-			insertVariable.setVariableDesc(variableDesc);
+			insertVariable.setVariableScope(variableScope);
+			insertVariable.setVariableFieldType(variableFieldType);
+			insertVariable.setVariableValueType(variableValueType);
+			insertVariable.setVariableValue(variableValue);
+			insertVariable.setVariableDateStr(DateUtil.dateTimeFormat(new Date()));
 
-			List<Variable> sessionVariableList = (List<Variable>) session.get(Constants.KEY_VARIABLE_ADD);
-			if (sessionVariableList == null || sessionVariableList.size() == 0) {
-				sessionVariableList = new ArrayList<Variable>();
+			// 将变量保存到缓存中
+			List<Variable> sessionVariableArray = (ArrayList<Variable>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+			if (sessionVariableArray == null) {
+				sessionVariableArray = new ArrayList<Variable>();
 			}
-			sessionVariableList.add(insertVariable);
-			session.put(Constants.KEY_VARIABLE_ADD, sessionVariableList);
+			sessionVariableArray.add(insertVariable);
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, sessionVariableArray);
 
 			JSONObject variableJsonObject = new JSONObject();
-			variableJsonObject.put("variableUUID", insertVariable.getVariableUUID());
+
+			if (Configure.serverVersion == 0) {
+				variableJsonObject.put("variableClassId", insertVariable.getVariableUUID());
+				variableJsonObject.put("name", insertVariable.getVariableName());
+				variableJsonObject.put("variableType", insertVariable.getVariableType());
+				JSONObject belongObj = new JSONObject();
+				belongObj.put("fragmentId", insertVariable.getFragmentUUID());
+				belongObj.put("scenarioId", insertVariable.getSceneUUID());
+				variableJsonObject.put("beLongsTo", belongObj);
+				variableJsonObject.put("valueType", insertVariable.getVariableValueType());
+				variableJsonObject.put("fieldType", insertVariable.getVariableFieldType());
+				variableJsonObject.put("value", insertVariable.getVariableValue());
+				variableJsonObject.put("variableInstanceId", "");
+				variableJsonObject.put("variableScope", insertVariable.getVariableScope());
+			} else {
+				variableJsonObject.put("variableUUID", insertVariable.getVariableUUID());
+				variableJsonObject.put("variableName", insertVariable.getVariableName());
+				variableJsonObject.put("variableType", insertVariable.getVariableType());
+				JSONObject belongObj = new JSONObject();
+				belongObj.put("fragmentId", insertVariable.getFragmentUUID());
+				belongObj.put("scenarioId", insertVariable.getSceneUUID());
+				variableJsonObject.put("beLongsTo", belongObj);
+				variableJsonObject.put("variableValueType", insertVariable.getVariableValueType());
+				variableJsonObject.put("variableFieldType", insertVariable.getVariableFieldType());
+				variableJsonObject.put("variableValue", insertVariable.getVariableValue());
+				variableJsonObject.put("variableInstanceId", "");
+				variableJsonObject.put("variableScope", insertVariable.getVariableScope());
+			}
+
 			resultString = StringUtil.packetObject(MethodCode.CREATE_VARIABLE, ParameterCode.Result.RESULT_OK,
 					"创建变量到缓存成功，请注意在切换场景前保存场景数据。", variableJsonObject.toString());
 
@@ -110,70 +151,75 @@ public class VariableService {
 	public String updateVariable(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
-		JSONObject jb = JSONObject.fromObject(bodyString);
-		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
-		if (parmJb != null) {
-			String variableUUID = parmJb.optString("variableUUID", "");
-			String variableName = parmJb.optString("variableName", "");
-			int variableScope = parmJb.optInt("variableScope", -1);
-			String variableType = parmJb.optString("variableType", "");
-			String variableObjType = parmJb.optString("variableObjType", "");
-			String fragmentUUID = parmJb.optString("fragmentUUID", "");
-			String variableDesc = parmJb.optString("variableDesc", "");
-
-			if (StringUtil.isNullOrEmpty(variableUUID)
-					|| (variableScope == 1 && StringUtil.isNullOrEmpty(fragmentUUID))) {
-
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
-				return resultString;
-			}
-			Variable findvVariable = new Variable();
-			findvVariable.setVariableUUID(variableUUID);
-			List<Variable> variableList = variableDao.findVariable(findvVariable);
-			if (variableList.size() < 1) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
-						ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
-				return resultString;
-			}
-
-			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
-			// 如果session中没有记录当前场景
-			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
-						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
-				return resultString;
-			}
-			Variable updateVariable = variableList.get(0);
-			if (!StringUtil.isNullOrEmpty(variableName)) {
-				updateVariable.setVariableName(variableName);
-			}
-			if (variableScope != -1) {
-				updateVariable.setVariableScope(variableScope);
-			}
-			if (!StringUtil.isNullOrEmpty(variableType)) {
-				updateVariable.setVariableType(variableType);
-			}
-			if (!StringUtil.isNullOrEmpty(variableObjType)) {
-				updateVariable.setVariableObjType(variableObjType);
-			}
-			if (!StringUtil.isNullOrEmpty(fragmentUUID)) {
-				updateVariable.setFragmentUUID(fragmentUUID);
-			}
-			if (!StringUtil.isNullOrEmpty(variableDesc)) {
-				updateVariable.setVariableDesc(variableDesc);
-			}
-			List<Variable> sessionVariableList = (List<Variable>) session.get(Constants.KEY_VARIABLE_UPDATE);
-			if (sessionVariableList == null || sessionVariableList.size() == 0) {
-				sessionVariableList = new ArrayList<Variable>();
-			}
-			sessionVariableList.add(updateVariable);
-			session.put(Constants.KEY_VARIABLE_UPDATE, sessionVariableList);
-
-			resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_OK,
-					"更新变量到缓存成功，请注意在切换场景前保存场景数据。", "");
-
-		}
+		// JSONObject jb = JSONObject.fromObject(bodyString);
+		// JSONObject parmJb = JSONObject.fromObject(jb.optString("params",
+		// ""));
+		// if (parmJb != null) {
+		// String variableUUID = parmJb.optString("variableUUID", "");
+		// String variableName = parmJb.optString("variableName", "");
+		// int variableScope = parmJb.optInt("variableScope", -1);
+		// String variableType = parmJb.optString("variableType", "");
+		// String variableObjType = parmJb.optString("variableObjType", "");
+		// String fragmentUUID = parmJb.optString("fragmentUUID", "");
+		// String variableDesc = parmJb.optString("variableDesc", "");
+		//
+		// if (StringUtil.isNullOrEmpty(variableUUID)
+		// || (variableScope == 1 && StringUtil.isNullOrEmpty(fragmentUUID))) {
+		//
+		// resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
+		// ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+		// return resultString;
+		// }
+		// Variable findvVariable = new Variable();
+		// findvVariable.setVariableUUID(variableUUID);
+		// List<Variable> variableList =
+		// variableDao.findVariable(findvVariable);
+		// if (variableList.size() < 1) {
+		// resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
+		// ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
+		// return resultString;
+		// }
+		//
+		// Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+		// // 如果session中没有记录当前场景
+		// if (sceneActive == null) {
+		// resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
+		// ParameterCode.Error.UPDATE_SCENE_NO_MATCH,
+		// "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+		// return resultString;
+		// }
+		// Variable updateVariable = variableList.get(0);
+		// if (!StringUtil.isNullOrEmpty(variableName)) {
+		// updateVariable.setVariableName(variableName);
+		// }
+		// if (variableScope != -1) {
+		// updateVariable.setVariableScope(variableScope);
+		// }
+		// if (!StringUtil.isNullOrEmpty(variableType)) {
+		// updateVariable.setVariableType(variableType);
+		// }
+		// if (!StringUtil.isNullOrEmpty(variableObjType)) {
+		// updateVariable.setVariableObjType(variableObjType);
+		// }
+		// if (!StringUtil.isNullOrEmpty(fragmentUUID)) {
+		// updateVariable.setFragmentUUID(fragmentUUID);
+		// }
+		// if (!StringUtil.isNullOrEmpty(variableDesc)) {
+		// updateVariable.setVariableDesc(variableDesc);
+		// }
+		// List<Variable> sessionVariableList = (List<Variable>)
+		// session.get(Constants.KEY_VARIABLE_UPDATE);
+		// if (sessionVariableList == null || sessionVariableList.size() == 0) {
+		// sessionVariableList = new ArrayList<Variable>();
+		// }
+		// sessionVariableList.add(updateVariable);
+		// session.put(Constants.KEY_VARIABLE_UPDATE, sessionVariableList);
+		//
+		// resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
+		// ParameterCode.Result.RESULT_OK,
+		// "更新变量到缓存成功，请注意在切换场景前保存场景数据。", "");
+		//
+		// }
 		return resultString;
 	}
 
@@ -325,29 +371,49 @@ public class VariableService {
 		// 如果session中没有记录当前场景
 		if (sceneActive == null) {
 			resultString = StringUtil.packetObject(MethodCode.LIST_VARIABLE, ParameterCode.Error.UPDATE_SCENE_NO_MATCH,
-					"当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
+					"会话已经过期！", "");
 			return resultString;
 		}
 		JSONArray variableJsonArray = new JSONArray();
-		Variable findVariable = new Variable();
-		findVariable.setSceneId(sceneActive.getSceneId());
-		List<Variable> variableList = variableDao.findVariable(findVariable);
+		List<Variable> variableList = (List<Variable>) CacheUtil
+				.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+		if (variableList == null) {
+			variableList = new ArrayList<Variable>();
+		}
 		for (int i = 0; i < variableList.size(); i++) {
 
 			Variable variable = variableList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("variableUUID", variable.getVariableUUID());
-			dataObj.put("variableName", variable.getVariableName());
-			dataObj.put("variableType", variable.getVariableType());
-			dataObj.put("variableObjType", variable.getVariableObjType());
-			dataObj.put("variableScope", variable.getVariableScope());
-			dataObj.put("fragmentUUID", variable.getFragmentUUID());
-			dataObj.put("variableDesc", variable.getVariableDesc());
-			dataObj.put("variableCreateTime", DateUtil.dateTimeFormat(variable.getVariableDate()));
+			if (Configure.serverVersion == 0) {
+				dataObj.put("variableClassId", variable.getVariableUUID());
+				dataObj.put("name", variable.getVariableName());
+				dataObj.put("variableType", variable.getVariableType());
+				JSONObject belongObj = new JSONObject();
+				belongObj.put("fragmentId", variable.getFragmentUUID());
+				belongObj.put("scenarioId", variable.getSceneUUID());
+				dataObj.put("beLongsTo", belongObj);
+				dataObj.put("valueType", variable.getVariableValueType());
+				dataObj.put("fieldType", variable.getVariableFieldType());
+				dataObj.put("value", variable.getVariableValue());
+				dataObj.put("variableInstanceId", "");
+				dataObj.put("variableScope", variable.getVariableScope());
+			} else {
+				dataObj.put("variableUUID", variable.getVariableUUID());
+				dataObj.put("variableName", variable.getVariableName());
+				dataObj.put("variableType", variable.getVariableType());
+				JSONObject belongObj = new JSONObject();
+				belongObj.put("fragmentId", variable.getFragmentUUID());
+				belongObj.put("scenarioId", variable.getSceneUUID());
+				dataObj.put("beLongsTo", belongObj);
+				dataObj.put("variableValueType", variable.getVariableValueType());
+				dataObj.put("variableFieldType", variable.getVariableFieldType());
+				dataObj.put("variableValue", variable.getVariableValue());
+				dataObj.put("variableInstanceId", "");
+				dataObj.put("variableScope", variable.getVariableScope());
+			}
 
 			variableJsonArray.add(dataObj);
 		}
-
 		resultString = StringUtil.packetObject(MethodCode.LIST_VARIABLE, ParameterCode.Result.RESULT_OK, "获取变量列表成功",
 				variableJsonArray.toString());
 
@@ -560,17 +626,17 @@ public class VariableService {
 			if (!StringUtil.isNullOrEmpty(shareVariableType)) {
 				shareVariable.setShareVariableType(shareVariableType);
 			} else {
-				shareVariable.setShareVariableType(fromVariable.getVariableType());
+				// shareVariable.setShareVariableType(fromVariable.getVariableType());
 			}
 			if (!StringUtil.isNullOrEmpty(shareVariableObjType)) {
 				shareVariable.setShareVariableObjType(shareVariableObjType);
 			} else {
-				shareVariable.setShareVariableObjType(fromVariable.getVariableObjType());
+				// shareVariable.setShareVariableObjType(fromVariable.getVariableObjType());
 			}
 			if (shareVariableScope != -1) {
 				shareVariable.setShareVariableScope(shareVariableScope);
 			} else {
-				shareVariable.setShareVariableScope(fromVariable.getVariableScope());
+				// shareVariable.setShareVariableScope(fromVariable.getVariableScope());
 			}
 			if (!StringUtil.isNullOrEmpty(fragmentUUID)) {
 				if (shareVariableScope == 1) {

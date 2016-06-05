@@ -1,0 +1,53 @@
+<html>
+	<header>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>main</title>
+
+		<link rel="stylesheet" href="css/common.css" />
+		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	</header>
+
+	<body style="background-color: #ffffff">
+		<div class="main_list">
+			<ul>
+				<li class="li_1"><p>商品ID</p></li>
+				<li class="li_1"><p>商品名称</p></li>
+				<li class="li_1"><p>商品分类</p></li>
+				<li class="li_1"><p>商品状态</p></li>
+				<li class="li_2"><p>商品时间</p></li>
+				<div style="clear: both;"></div>
+			</ul>
+			<ul>
+				<li class="li_1">b</li>
+				<li class="li_1">b</li>
+				<li class="li_1">b</li>
+				<li class="li_1">b</li>
+				<li class="li_2">b</li>
+				<div style="clear: both;"></div>
+			</ul>
+			<ul>
+				<li class="li_1">c</li>
+				<li class="li_1">c</li>
+				<li class="li_1">c</li>
+				<li class="li_1">c</li>
+				<li class="li_2">c</li>
+				<div style="clear: both;"></div>
+			</ul>
+			<ul>
+				<li class="li_1">d</li>
+				<li class="li_1">d</li>
+				<li class="li_1">d</li>
+				<li class="li_1">d</li>
+				<li class="li_2">d</li>
+				<div style="clear: both;"></div>
+			</ul>
+		</div>
+		<script>
+			$(document).ready(function() {
+				$('.main_list ul:first-child li').css('background-color', '#D7D7D7');
+				$('.main_list ul:last-child li').css('border-bottom', '1px solid #000');
+			})
+		</script>
+	</body>
+
+</html>

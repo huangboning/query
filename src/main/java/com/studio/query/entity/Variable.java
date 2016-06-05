@@ -8,16 +8,17 @@ public class Variable extends Page {
 	private int variableId;
 	private int sceneId;
 	private String variableUUID;
-	private int variableScope;
-	private String variableScopeStr;
+	private String variableScope;
 	private String fragmentUUID;
+	private String sceneUUID;
 	private String variableName;
 	private String variableType;
-	private String variableObjType;
+	private String variableFieldType;
+	private String variableValueType;
+	private String variableValue;
 	private String variableDesc;
 	private Date variableDate;
 	private String variableDateStr;
-	private String variableExpression;
 
 	public int getVariableId() {
 		return variableId;
@@ -43,11 +44,11 @@ public class Variable extends Page {
 		this.variableUUID = variableUUID;
 	}
 
-	public int getVariableScope() {
+	public String getVariableScope() {
 		return variableScope;
 	}
 
-	public void setVariableScope(int variableScope) {
+	public void setVariableScope(String variableScope) {
 		this.variableScope = variableScope;
 	}
 
@@ -57,6 +58,14 @@ public class Variable extends Page {
 
 	public void setFragmentUUID(String fragmentUUID) {
 		this.fragmentUUID = fragmentUUID;
+	}
+
+	public String getSceneUUID() {
+		return sceneUUID;
+	}
+
+	public void setSceneUUID(String sceneUUID) {
+		this.sceneUUID = sceneUUID;
 	}
 
 	public String getVariableName() {
@@ -75,12 +84,28 @@ public class Variable extends Page {
 		this.variableType = variableType;
 	}
 
-	public String getVariableObjType() {
-		return variableObjType;
+	public String getVariableFieldType() {
+		return variableFieldType;
 	}
 
-	public void setVariableObjType(String variableObjType) {
-		this.variableObjType = variableObjType;
+	public void setVariableFieldType(String variableFieldType) {
+		this.variableFieldType = variableFieldType;
+	}
+
+	public String getVariableValueType() {
+		return variableValueType;
+	}
+
+	public void setVariableValueType(String variableValueType) {
+		this.variableValueType = variableValueType;
+	}
+
+	public String getVariableValue() {
+		return variableValue;
+	}
+
+	public void setVariableValue(String variableValue) {
+		this.variableValue = variableValue;
 	}
 
 	public String getVariableDesc() {
@@ -97,22 +122,6 @@ public class Variable extends Page {
 
 	public void setVariableDate(Date variableDate) {
 		this.variableDate = variableDate;
-	}
-
-	public String getVariableExpression() {
-		return variableExpression;
-	}
-
-	public void setVariableExpression(String variableExpression) {
-		this.variableExpression = variableExpression;
-	}
-
-	public String getVariableScopeStr() {
-		return variableScopeStr;
-	}
-
-	public void setVariableScopeStr(String variableScopeStr) {
-		this.variableScopeStr = variableScopeStr;
 	}
 
 	public String getVariableDateStr() {

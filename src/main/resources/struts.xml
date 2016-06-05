@@ -24,27 +24,32 @@
 
 		<!--定义全局Result -->
 		<global-results>
-			<result name="login" type="redirect">/pages/login.jsp</result>
+			<result name="login" type="redirect">/page/login.jsp</result>
 		</global-results>
 	</package>
 
 	<package name="default" extends="struts-default">
 		<action name="login" class="com.studio.query.action.UserAction"
 			method="userLogin">
-			<result name="success">/pages/info.jsp</result>
-			<result name="error">/pages/error.jsp</result>
+			<result name="success">/page/info.jsp</result>
+			<result name="error">/page/error.jsp</result>
 		</action>
 		<action name="logout" class="com.studio.query.action.UserAction"
 			method="userLogOut">
-			<result name="success">/pages/login.jsp</result>
-			<result name="error">/pages/error.jsp</result>
+			<result name="success">/page/login.jsp</result>
+			<result name="error">/page/error.jsp</result>
 		</action>
 	</package>
 	<package name="user" extends="authority" namespace="/user">
 		<action name="info" class="com.studio.query.action.UserAction"
 			method="userInfo">
-			<result name="success">/pages/info.jsp</result>
-			<result name="error">/pages/error.jsp</result>
+			<result name="success">/page/info.jsp</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
+		<action name="list" class="com.studio.query.action.UserAction"
+			method="listAccount">
+			<result name="success">/page/accountList.jsp</result>
+			<result name="error">/page/error.jsp</result>
 		</action>
 	</package>
 	<package name="service" extends="struts-default" namespace="/V1">

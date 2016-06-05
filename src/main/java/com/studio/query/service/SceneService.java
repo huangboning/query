@@ -133,15 +133,15 @@ public class SceneService {
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
-		int sceneStatus=0;
+		int sceneStatus = 0;
 		if (parmJb != null) {
-			String sceneEnable= parmJb.optString("enable", "");
+			String sceneEnable = parmJb.optString("enable", "");
 			if (sceneEnable.equals("enable")) {
-				sceneStatus=0;
-			}else if (sceneEnable.equals("disable")) {
-				sceneStatus=-1;
-			}else if(sceneEnable.equals("all")) {
-				sceneStatus=1;
+				sceneStatus = 0;
+			} else if (sceneEnable.equals("disable")) {
+				sceneStatus = -1;
+			} else if (sceneEnable.equals("all")) {
+				sceneStatus = 1;
 			}
 		}
 		JSONArray sceneJsonArray = new JSONArray();
@@ -479,21 +479,28 @@ public class SceneService {
 				dataObj.put("variableClassId", variable.getVariableUUID());
 				dataObj.put("name", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
-				dataObj.put("beLongsTo", "{}");
-				dataObj.put("valueType", "");
-				dataObj.put("fieldType", "");
-				dataObj.put("value", "");
+				JSONObject belongObj = new JSONObject();
+				belongObj.put("fragmentId", variable.getFragmentUUID());
+				belongObj.put("scenarioId", variable.getSceneUUID());
+				dataObj.put("beLongsTo", belongObj);
+				dataObj.put("valueType", variable.getVariableValueType());
+				dataObj.put("fieldType", variable.getVariableFieldType());
+				dataObj.put("value", variable.getVariableValue());
 				dataObj.put("variableInstanceId", "");
-				dataObj.put("variableScope", "");
+				dataObj.put("variableScope", variable.getVariableScope());
 			} else {
 				dataObj.put("variableUUID", variable.getVariableUUID());
 				dataObj.put("variableName", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
-				dataObj.put("variableObjType", variable.getVariableObjType());
-				dataObj.put("variableScope", variable.getVariableScopeStr());
-				dataObj.put("fragmentUUID", variable.getFragmentUUID());
-				dataObj.put("variableDesc", variable.getVariableDesc());
-				dataObj.put("variableCreateTime", variable.getVariableDateStr());
+				JSONObject belongObj = new JSONObject();
+				belongObj.put("fragmentId", variable.getFragmentUUID());
+				belongObj.put("scenarioId", variable.getSceneUUID());
+				dataObj.put("beLongsTo", belongObj);
+				dataObj.put("variableValueType", variable.getVariableValueType());
+				dataObj.put("variableFieldType", variable.getVariableFieldType());
+				dataObj.put("variableValue", variable.getVariableValue());
+				dataObj.put("variableInstanceId", "");
+				dataObj.put("variableScope", variable.getVariableScope());
 			}
 
 			variableJsonArray.add(dataObj);
@@ -520,7 +527,7 @@ public class SceneService {
 				return resultString;
 			}
 			// 更新场景为关闭状态
-			Scene updateScene=new Scene();
+			Scene updateScene = new Scene();
 			updateScene.setSceneUUID(scenarioId);
 			sceneDao.closeScene(updateScene);
 
@@ -545,7 +552,7 @@ public class SceneService {
 				return resultString;
 			}
 			// 更新场景为打开状态
-			Scene updateScene=new Scene();
+			Scene updateScene = new Scene();
 			updateScene.setSceneUUID(scenarioId);
 			sceneDao.openScene(updateScene);
 
@@ -615,14 +622,15 @@ public class SceneService {
 			for (Variable variable : sessionVariableArray) {
 				JSONObject dataObj = new JSONObject();
 				dataObj.put("variableUUID", variable.getVariableUUID());
+				dataObj.put("fragmentUUID", variable.getFragmentUUID());
+				dataObj.put("scenarioUUID", variable.getSceneUUID());
 				dataObj.put("variableName", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
-				dataObj.put("variableObjType", variable.getVariableObjType());
-				dataObj.put("variableScope", variable.getVariableScopeStr());
-				dataObj.put("fragmentUUID", variable.getFragmentUUID());
-				dataObj.put("variableDesc", variable.getVariableDesc());
-				dataObj.put("variableCreateTime", variable.getVariableDateStr());
-				dataObj.put("variableExpression", variable.getVariableExpression());
+				dataObj.put("variableValueType", variable.getVariableValueType());
+				dataObj.put("variableFieldType", variable.getVariableFieldType());
+				dataObj.put("variableValue", variable.getVariableValue());
+				dataObj.put("variableScope", variable.getVariableScope());
+				dataObj.put("variableInstanceId", "");
 				variableJsonArray.add(dataObj);
 			}
 			sceneJson.put("variableList", variableJsonArray);

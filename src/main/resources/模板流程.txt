@@ -1,0 +1,4 @@
+1.fragment发布模板objecttype=directInstance ，id：uuid
+2.templdate引用模板 classid：fragment.id （这里数据库记录共享fragment的最新版本，版本库路径，描述等）系统建模板git库
+3.fragment实例化，objecttype=templateInstance，classid：templdate.id,生成一个fragment instanceid
+4.variable如果带入等待确定。

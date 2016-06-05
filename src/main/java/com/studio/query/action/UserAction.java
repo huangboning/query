@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.studio.query.common.Configure;
+import com.studio.query.entity.Account;
 import com.studio.query.entity.JsonResult;
 import com.studio.query.entity.User;
 import com.studio.query.service.UserService;
@@ -27,6 +28,8 @@ public class UserAction extends BaseAction {
 	private String userPassword;
 	private List<User> userList = new ArrayList<User>();
 	private User userInfo = new User();
+	private Account searchAccount = new Account();
+	private List<Account> accountList = new ArrayList<Account>();
 
 	@Autowired
 	public UserService userService;
@@ -46,13 +49,13 @@ public class UserAction extends BaseAction {
 			if (userList.size() == 1) {
 				session.put(Configure.systemSessionUser, userList.get(0));
 				result.code = 0;
-				result.result = request.getContextPath() + "/user/info.do";
+				result.result = request.getContextPath() + "/user/list";
 			} else {
 				result.code = 1;
 				result.result = "用户名或密码错误！";
 			}
-			out.write(JSONObject.fromObject(result).toString()
-					.getBytes("utf-8"));
+			response.setHeader("Content-Type", "text/html;charset=utf-8");
+			out.write(JSONObject.fromObject(result).toString().getBytes("utf-8"));
 			out.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,6 +86,14 @@ public class UserAction extends BaseAction {
 			return ERROR;
 		}
 
+	}
+
+	public String listAccount() {
+		searchAccount.setOffset(offset);
+		searchAccount.setLimit(limit);
+		accountList = userService.findAccount(searchAccount);
+		count = userService.countAccount(searchAccount);
+		return SUCCESS;
 	}
 
 	public String getUserAccount() {
