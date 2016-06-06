@@ -19,6 +19,7 @@ public class Variable extends Page {
 	private String variableDesc;
 	private Date variableDate;
 	private String variableDateStr;
+	private String variableInstanceId;
 
 	public int getVariableId() {
 		return variableId;
@@ -130,6 +131,14 @@ public class Variable extends Page {
 
 	public void setVariableDateStr(String variableDateStr) {
 		this.variableDateStr = variableDateStr;
+	}
+
+	public String getVariableInstanceId() {
+		return variableInstanceId;
+	}
+
+	public void setVariableInstanceId(String variableInstanceId) {
+		this.variableInstanceId = variableInstanceId;
 	}
 
 }

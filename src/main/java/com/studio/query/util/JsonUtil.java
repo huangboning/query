@@ -61,6 +61,7 @@ public class JsonUtil {
 					JSONObject obj = strVariableArray.getJSONObject(i);
 					Variable variable = new Variable();
 					variable.setVariableUUID(obj.optString("variableUUID", ""));
+					variable.setVariableInstanceId(obj.optString("variableInstanceId", ""));
 					variable.setFragmentUUID(obj.optString("fragmentUUID", ""));
 					variable.setSceneUUID(obj.optString("sceneUUID", ""));
 					variable.setVariableName(obj.optString("variableName", ""));

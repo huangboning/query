@@ -765,27 +765,68 @@ public class FragmentService {
 	}
 
 	// 发布共享fragment版本
-	public String releaseShareFragment(String bodyString, Account currentAccount) {
+	public String releaseShareFragment(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String shareFragmentUUID = parmJb.optString("shareFragmentUUID", "");
-			String shareFragmentComment = parmJb.optString("shareFragmentComment", "");
-			String shareFragmentExpression = parmJb.optString("shareFragmentExpression", "");
-			String shareFragmentName = parmJb.optString("shareFragmentName", "");
-			String shareFragmentType = parmJb.optString("shareFragmentType", "");
-			String shareFragmentObjType = parmJb.optString("shareFragmentObjType", "");
-			String shareFragmentDesc = parmJb.optString("shareFragmentDesc", "");
+			String fragmentUUID;
+			if (Configure.serverVersion == 0) {
+				fragmentUUID = parmJb.optString("fragmentId", "");
+			} else {
+				fragmentUUID = parmJb.optString("fragmentUUID", "");
+			}
+			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
-			if (StringUtil.isNullOrEmpty(shareFragmentUUID) || StringUtil.isNullOrEmpty(shareFragmentComment)
-					|| StringUtil.isNullOrEmpty(shareFragmentExpression)) {
-
-				resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_FRAGMENT,
-						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				resultString = StringUtil.packetObject(MethodCode.RELEASE_SHARE_FRAGMENT, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
 				return resultString;
 			}
+			// 从缓存中解析出对应的fragment
+
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			// 如果session中没有记录当前场景
+			if (sceneActive == null) {
+				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT,
+						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
+				return resultString;
+			}
+			List<Fragment> fragmentList = (List<Fragment>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+			if (fragmentList == null) {
+				fragmentList = new ArrayList<Fragment>();
+			}
+			JSONObject fragmentObj = new JSONObject();
+			for (int i = 0; i < fragmentList.size(); i++) {
+
+				Fragment fragment = fragmentList.get(i);
+				if (fragment.getFragmentUUID().equals(fragmentUUID)) {
+					if (Configure.serverVersion == 0) {
+						fragmentObj.put("id", fragment.getFragmentUUID());
+						fragmentObj.put("name", fragment.getFragmentName());
+						fragmentObj.put("desc", fragment.getFragmentDesc());
+						fragmentObj.put("type", fragment.getFragmentType());
+						fragmentObj.put("objectType", fragment.getFragmentObjType());
+						fragmentObj.put("enable", fragment.isFragmentEnable());
+						fragmentObj.put("active", fragment.isFragmentActive());
+						fragmentObj.put("createTime", fragment.getFragmentDateStr());
+						fragmentObj.put("expression", fragment.getFragmentExpression());
+					} else {
+						fragmentObj.put("fragmentUUID", fragment.getFragmentUUID());
+						fragmentObj.put("fragmentName", fragment.getFragmentName());
+						fragmentObj.put("fragmentDesc", fragment.getFragmentDesc());
+						fragmentObj.put("fragmentType", fragment.getFragmentType());
+						fragmentObj.put("fragmentObjType", fragment.getFragmentObjType());
+						fragmentObj.put("fragmentEnable", fragment.isFragmentEnable());
+						fragmentObj.put("fragmentActive", fragment.isFragmentActive());
+						fragmentObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
+						fragmentObj.put("fragmentExpression", fragment.getFragmentExpression());
+					}
+					break;
+				}
+			}
+
 			Fragment findFragment = new Fragment();
 			findFragment.setFragmentUUID(shareFragmentUUID);
 			List<Fragment> fragmentList = fragmentDao.findFragment(findFragment);
