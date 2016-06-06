@@ -123,7 +123,7 @@ public class JGitService {
 	 * @param currentAccount
 	 * @return
 	 */
-	public boolean initShareFragmentGit(String path, Account currentAccount) {
+	public boolean initShareFragmentGit(String path) {
 		File root = new File(path);
 		if (!root.exists()) {
 			root.mkdir();

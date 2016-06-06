@@ -152,8 +152,8 @@ public class InterfaceAction extends BaseAction {
 						returnString = variableService.getVariablesList(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_SHARE_VARIABLE)) {
 						returnString = variableService.getShareVariables(bodyString, currentAccount);
-					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_FRAGMENT)) {
-						returnString = fragmentService.releaseShareFragment(bodyString, currentAccount);
+					} else if (methodCode.equals(MethodCode.RELEASE_FRAGMENT)) {
+						returnString = fragmentService.releaseFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_VARIABLE)) {
 						returnString = variableService.releaseShareVariable(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_HISTORY)) {
@@ -349,7 +349,7 @@ public class InterfaceAction extends BaseAction {
 		this.execute();
 	}
 
-	public void releaseShareFragment() {
+	public void releaseFragment() {
 		this.execute();
 	}
 

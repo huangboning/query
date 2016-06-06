@@ -157,8 +157,8 @@
 		<action name="enableFragment" class="com.studio.query.action.InterfaceAction"
 			method="enableFragment">
 		</action>
-		<action name="releaseShareFragment" class="com.studio.query.action.InterfaceAction"
-			method="releaseShareFragment">
+		<action name="releaseFragment" class="com.studio.query.action.InterfaceAction"
+			method="releaseFragment">
 		</action>
 		<action name="disableShareFragment" class="com.studio.query.action.InterfaceAction"
 			method="disableShareFragment">

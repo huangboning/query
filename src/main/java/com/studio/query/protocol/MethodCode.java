@@ -101,7 +101,7 @@ public class MethodCode {
 	/**
 	 * 发布共享Fragment
 	 */
-	public static final String RELEASE_SHARE_FRAGMENT = "releaseShareFragment";
+	public static final String RELEASE_FRAGMENT = "releaseFragment";
 	/**
 	 * 禁用共享Fragment
 	 */

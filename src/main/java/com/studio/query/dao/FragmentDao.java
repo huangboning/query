@@ -72,6 +72,6 @@ public interface FragmentDao {
 	public int releaseFragment(ShareFragment shareFragment);
 
 	// 更新模板fragment
-	@Update("update t_share_fragment set share_fragment_name=#{shareFragmentName},share_fragment_type=#{shareFragmentType},share_fragment_desc=#{shareFragmentDesc},share_fragment_version=#{shareFragmentVersion} where share_fragment_uuid=#{shareFragmentUUID} and account_id=#{accountId}")
+	@Update("update t_share_fragment set share_fragment_name=#{shareFragmentName},share_fragment_desc=#{shareFragmentDesc},share_fragment_version=#{shareFragmentVersion} where share_fragment_uuid=#{shareFragmentUUID} and account_id=#{accountId}")
 	public int updateShareFragment(ShareFragment shareFragment);
 }
