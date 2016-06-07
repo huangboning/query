@@ -614,7 +614,7 @@ public class FragmentService {
 		return resultString;
 	}
 
-	public String getShareFragmentHistory(String bodyString, Account currentAccount, Map<String, Object> session) {
+	public String getTemplateHistory(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
@@ -623,7 +623,7 @@ public class FragmentService {
 			String shareFragmentUUID = parmJb.optString("shareFragmentUUID", "");
 			if (StringUtil.isNullOrEmpty(shareFragmentUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
+				resultString = StringUtil.packetObject(MethodCode.GET_TEMPLATE_HISTORY,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -631,7 +631,7 @@ public class FragmentService {
 			shareFragment.setShareFragmentUUID(shareFragmentUUID);
 			List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
 			if (shareFragmentList.size() < 1) {
-				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
+				resultString = StringUtil.packetObject(MethodCode.GET_TEMPLATE_HISTORY,
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
@@ -664,14 +664,14 @@ public class FragmentService {
 			}
 			fragmentJsonObj.put("committers", committerJsonArray.toString());
 
-			resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_HISTORY,
-					ParameterCode.Result.RESULT_OK, "获取共享fragment共享历史版本成功", fragmentJsonObj.toString());
+			resultString = StringUtil.packetObject(MethodCode.GET_TEMPLATE_HISTORY, ParameterCode.Result.RESULT_OK,
+					"获取共享fragment共享历史版本成功", fragmentJsonObj.toString());
 
 		}
 		return resultString;
 	}
 
-	public String getShareFragmentVersion(String bodyString, Account currentAccount, Map<String, Object> session) {
+	public String getTemplateVersion(String bodyString, Account currentAccount, Map<String, Object> session) {
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
@@ -680,7 +680,7 @@ public class FragmentService {
 			String shareFragmentVersion = parmJb.optString("shareFragmentVersion", "");
 			if (StringUtil.isNullOrEmpty(shareFragmentUUID) || StringUtil.isNullOrEmpty(shareFragmentVersion)) {
 
-				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
+				resultString = StringUtil.packetObject(MethodCode.GET_TEMPLATE_VERSION,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
@@ -689,7 +689,7 @@ public class FragmentService {
 			shareFragment.setShareFragmentUUID(shareFragmentUUID);
 			List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
 			if (shareFragmentList.size() < 1) {
-				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
+				resultString = StringUtil.packetObject(MethodCode.GET_TEMPLATE_VERSION,
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
@@ -712,7 +712,7 @@ public class FragmentService {
 			String contentString = jGitService.getContentByVersion(gitPath, shareFragmentVersion, "template.txt");
 			Committer commitInfo = jGitService.getCommitterByVersion(gitPath, shareFragmentVersion);
 			if (commitInfo == null) {
-				resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
+				resultString = StringUtil.packetObject(MethodCode.GET_TEMPLATE_VERSION,
 						ParameterCode.Error.QUERY_VERSION_NO_EXIST, "查询的版本号不存在", "");
 				return resultString;
 			}
@@ -727,14 +727,14 @@ public class FragmentService {
 
 			fragmentJsonObj.put("committer", committerJsonObj.toString());
 
-			resultString = StringUtil.packetObject(MethodCode.GET_SHARE_FRAGMENT_VERSION,
-					ParameterCode.Result.RESULT_OK, "获取某个版本共享fragment成功", fragmentJsonObj.toString());
+			resultString = StringUtil.packetObject(MethodCode.GET_TEMPLATE_VERSION, ParameterCode.Result.RESULT_OK,
+					"获取某个版本共享fragment成功", fragmentJsonObj.toString());
 
 		}
 		return resultString;
 	}
 
-	public String getShareFragments(String bodyString, Account currentAccount, Map<String, Object> session) {
+	public String getTemplates(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONArray fragmentJsonArray = new JSONArray();
@@ -744,27 +744,28 @@ public class FragmentService {
 
 			ShareFragment shareFragment = shareFragmentList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("shareFragmentUUID", shareFragment.getShareFragmentUUID());
-			dataObj.put("shareFragmentName", shareFragment.getShareFragmentName());
-			dataObj.put("shareFragmentDesc", shareFragment.getShareFragmentDesc());
-			dataObj.put("shareFragmentType", shareFragment.getShareFragmentType());
-			dataObj.put("shareFragmentEnable", shareFragment.getShareFragmentEnable() == 0 ? "true" : "false");
-			dataObj.put("shareFragmentActvie", shareFragment.getShareFragmentActive() == 0 ? "true" : "false");
-			dataObj.put("shareFragmentCreatedBy", shareFragment.getAccountName());
-			dataObj.put("shareFragmentCreateTime", DateUtil.dateTimeFormat(shareFragment.getShareFragmentDate()));
-			dataObj.put("shareFragmentVersion", shareFragment.getShareFragmentVersion());
+			dataObj.put("fragmentId", shareFragment.getShareFragmentUUID());
+			dataObj.put("name", shareFragment.getShareFragmentName());
+			dataObj.put("desc", shareFragment.getShareFragmentDesc());
+			dataObj.put("type", shareFragment.getShareFragmentType());
+			dataObj.put("objType", shareFragment.getShareFragmentObjType());
+			dataObj.put("enable", shareFragment.getShareFragmentEnable() == 0 ? "true" : "false");
+			dataObj.put("actvie", shareFragment.getShareFragmentActive() == 0 ? "true" : "false");
+			dataObj.put("createdBy", shareFragment.getAccountName());
+			dataObj.put("createTime", DateUtil.dateTimeFormat(shareFragment.getShareFragmentDate()));
+			dataObj.put("version", shareFragment.getShareFragmentVersion());
 
 			fragmentJsonArray.add(dataObj);
 		}
 
-		resultString = StringUtil.packetObject(MethodCode.LIST_SHARE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+		resultString = StringUtil.packetObject(MethodCode.GET_TEMPLATES, ParameterCode.Result.RESULT_OK,
 				"获取共享fragment列表成功", fragmentJsonArray.toString());
 
 		return resultString;
 	}
 
 	// 发布共享fragment版本
-	public String releaseFragment(String bodyString, Account currentAccount, Map<String, Object> session) {
+	public String releaseTemplate(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
@@ -781,14 +782,14 @@ public class FragmentService {
 			}
 			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
 
-				resultString = StringUtil.packetObject(MethodCode.RELEASE_FRAGMENT,
+				resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
 			}
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.RELEASE_FRAGMENT,
+				resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE,
 						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
 				return resultString;
 			}
@@ -802,8 +803,9 @@ public class FragmentService {
 			Fragment fromFragment = null;
 			for (int i = 0; i < fragmentList.size(); i++) {
 
-				fromFragment = fragmentList.get(i);
-				if (fromFragment.getFragmentUUID().equals(fragmentUUID)) {
+				Fragment temp = fragmentList.get(i);
+				if (temp.getFragmentUUID().equals(fragmentUUID)) {
+					fromFragment = fragmentList.get(i);
 					if (Configure.serverVersion == 0) {
 						fragmentObj.put("id", fromFragment.getFragmentUUID());
 						fragmentObj.put("name", fromFragment.getFragmentName());
@@ -839,7 +841,7 @@ public class FragmentService {
 			}
 
 			if (fromFragment == null) {
-				resultString = StringUtil.packetObject(MethodCode.RELEASE_FRAGMENT,
+				resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE,
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
@@ -855,6 +857,8 @@ public class FragmentService {
 				shareFragment.setAccountId(currentAccount.getAccountId());
 				shareFragment.setShareFragmentUUID(fragmentUUID);
 				shareFragment.setShareFragmentName(fromFragment.getFragmentName());
+				shareFragment.setShareFragmentType(fromFragment.getFragmentType());
+				shareFragment.setShareFragmentObjType(fromFragment.getFragmentObjType());
 				shareFragment.setShareFragmentDesc(fromFragment.getFragmentDesc());
 				shareFragment.setShareFragmentDate(new Date());
 				shareFragment.setShareFragmentGit(StringUtil.createShareFragmentGit());
@@ -878,8 +882,100 @@ public class FragmentService {
 			} else {
 				fragmentDao.releaseFragment(shareFragment);
 			}
-			resultString = StringUtil.packetObject(MethodCode.RELEASE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+			resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE, ParameterCode.Result.RESULT_OK,
 					"发布共享fragment成功", fragmentObj.toString());
+
+		}
+		return resultString;
+	}
+
+	// 引用共享fragment版本
+	public String referenceTemplate(String bodyString, Map<String, Object> session) {
+
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String fragmentUUID = "";
+			String fragmentDesc = "";
+			if (Configure.serverVersion == 0) {
+				fragmentUUID = parmJb.optString("fragmentId", "");
+				fragmentDesc = parmJb.optString("desc", "");
+			} else {
+				fragmentUUID = parmJb.optString("fragmentUUID", "");
+				fragmentDesc = parmJb.optString("fragmentDesc", "");
+			}
+			if (StringUtil.isNullOrEmpty(fragmentUUID)) {
+
+				resultString = StringUtil.packetObject(MethodCode.REFERENCE_TEMPLATE,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			// 如果session中没有记录当前场景
+			if (sceneActive == null) {
+				resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE,
+						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
+				return resultString;
+			}
+			// 从模板库中解析出对应的fragment
+			ShareFragment shareFragment = new ShareFragment();
+			shareFragment.setShareFragmentUUID(fragmentUUID);
+			List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
+			if (shareFragmentList.size() < 1) {
+				resultString = StringUtil.packetObject(MethodCode.REFERENCE_TEMPLATE,
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
+				return resultString;
+			}
+			shareFragment = shareFragmentList.get(0);
+
+			JGitService jGitService = new JGitService();
+			String gitPath = Configure.gitRepositoryPath + "/" + shareFragment.getAccountRepository() + "/"
+					+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
+			// 获取最新共享fragment内容
+			String contentString = jGitService.getContentLast(gitPath, "template.txt");
+			Committer lastCommitter = jGitService.getLastCommitter(gitPath);
+			JSONObject refJson = new JSONObject().fromObject(contentString);
+
+			Fragment insertFragment = new Fragment();
+			insertFragment.setSceneId(sceneActive.getSceneId());
+			insertFragment.setFragmentUUID(refJson.optString("id", ""));
+			insertFragment.setFragmentTemplateId(StringUtil.createFragmentUUID());
+			insertFragment.setFragmentName(refJson.optString("name", ""));
+			insertFragment.setFragmentDesc(fragmentDesc);
+			insertFragment.setFragmentType(refJson.optString("type", ""));
+			insertFragment.setFragmentObjType("templateInstance");
+			insertFragment.setFragmentTemplateVersion(lastCommitter.getCommitVersion());
+			insertFragment.setFragmentEnable(true);
+			insertFragment.setFragmentActive(true);
+			insertFragment.setFragmentDateStr(DateUtil.dateTimeFormat(new Date()));
+			insertFragment.setFragmentExpression(refJson.optString("expression", ""));
+
+			// 将模板fragment保存到缓存中
+			List<Fragment> sessionFragmentArray = (ArrayList<Fragment>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE);
+			if (sessionFragmentArray == null) {
+				sessionFragmentArray = new ArrayList<Fragment>();
+			}
+			sessionFragmentArray.add(insertFragment);
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, sessionFragmentArray);
+
+			JSONObject fragmentJsonObject = new JSONObject();
+			if (Configure.serverVersion == 0) {
+				fragmentJsonObject.put("classId", insertFragment.getFragmentUUID());
+				fragmentJsonObject.put("instanceId", insertFragment.getFragmentTemplateId());
+				fragmentJsonObject.put("name", insertFragment.getFragmentName());
+				fragmentJsonObject.put("type", insertFragment.getFragmentType());
+				fragmentJsonObject.put("objectType", insertFragment.getFragmentObjType());
+				fragmentJsonObject.put("enable", insertFragment.isFragmentEnable());
+				fragmentJsonObject.put("active", insertFragment.isFragmentActive());
+				fragmentJsonObject.put("desc", insertFragment.getFragmentDesc());
+				fragmentJsonObject.put("version", insertFragment.getFragmentTemplateVersion());
+				fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
+			}
+
+			resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE, ParameterCode.Result.RESULT_OK,
+					"引用共享fragment成功", fragmentJsonObject.toString());
 
 		}
 		return resultString;

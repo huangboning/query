@@ -99,9 +99,27 @@ public class MethodCode {
 	 */
 	public static final String ENABLE_FRAGMENT = "enableFragment";
 	/**
-	 * 发布共享Fragment
+	 * 发布模板
 	 */
-	public static final String RELEASE_FRAGMENT = "releaseFragment";
+	public static final String RELEASE_TEMPLATE = "releaseTemplate";
+	/**
+	 * 引用模板
+	 */
+	public static final String REFERENCE_TEMPLATE = "referenceTemplate";
+	/**
+	 * 获取模板列表
+	 */
+	public static final String GET_TEMPLATES = "getTemplates";
+	/**
+	 * 获取模板历史记录
+	 */
+	public static final String GET_TEMPLATE_HISTORY = "getTemplateHistory";
+	/**
+	 * 获取模板某版本
+	 */
+	public static final String GET_TEMPLATE_VERSION = "getTemplateVersion";
+	
+	
 	/**
 	 * 禁用共享Fragment
 	 */
@@ -114,18 +132,7 @@ public class MethodCode {
 	 * 获取Fragment列表
 	 */
 	public static final String LIST_FRAGMENT = "getFragments";
-	/**
-	 * 获取共享Fragment列表
-	 */
-	public static final String LIST_SHARE_FRAGMENT = "getShareFragments";
-	/**
-	 * 获取共享Fragment历史记录
-	 */
-	public static final String GET_SHARE_FRAGMENT_HISTORY = "getShareFragmentHistory";
-	/**
-	 * 获取共享Fragment某版本
-	 */
-	public static final String GET_SHARE_FRAGMENT_VERSION = "getShareFragmentVersion";
+	
 	/**
 	 * 创建 变量
 	 */

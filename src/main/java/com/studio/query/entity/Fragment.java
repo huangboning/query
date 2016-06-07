@@ -8,6 +8,8 @@ public class Fragment extends Page {
 	private int fragmentId;
 	private int sceneId;
 	private String fragmentUUID;
+	private String fragmentTemplateId;
+	private String fragmentTemplateVersion;
 	private String fragmentName;
 	private String fragmentType;
 	private String fragmentObjType;
@@ -41,6 +43,22 @@ public class Fragment extends Page {
 
 	public void setFragmentUUID(String fragmentUUID) {
 		this.fragmentUUID = fragmentUUID;
+	}
+
+	public String getFragmentTemplateId() {
+		return fragmentTemplateId;
+	}
+
+	public void setFragmentTemplateId(String fragmentTemplateId) {
+		this.fragmentTemplateId = fragmentTemplateId;
+	}
+
+	public String getFragmentTemplateVersion() {
+		return fragmentTemplateVersion;
+	}
+
+	public void setFragmentTemplateVersion(String fragmentTemplateVersion) {
+		this.fragmentTemplateVersion = fragmentTemplateVersion;
 	}
 
 	public String getFragmentName() {

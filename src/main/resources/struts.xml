@@ -157,9 +157,7 @@
 		<action name="enableFragment" class="com.studio.query.action.InterfaceAction"
 			method="enableFragment">
 		</action>
-		<action name="releaseFragment" class="com.studio.query.action.InterfaceAction"
-			method="releaseFragment">
-		</action>
+
 		<action name="disableShareFragment" class="com.studio.query.action.InterfaceAction"
 			method="disableShareFragment">
 		</action>
@@ -169,14 +167,22 @@
 		<action name="getFragments" class="com.studio.query.action.InterfaceAction"
 			method="getFragments">
 		</action>
-		<action name="getShareFragments" class="com.studio.query.action.InterfaceAction"
-			method="getShareFragments">
+	</package>
+	<package name="template" extends="struts-default" namespace="/V1/template">
+		<action name="releaseTemplate" class="com.studio.query.action.InterfaceAction"
+			method="releaseTemplate">
 		</action>
-		<action name="getShareFragmentHistory" class="com.studio.query.action.InterfaceAction"
-			method="getShareFragmentHistory">
+		<action name="referenceTemplate" class="com.studio.query.action.InterfaceAction"
+			method="referenceTemplate">
 		</action>
-		<action name="getShareFragmentVersion" class="com.studio.query.action.InterfaceAction"
-			method="getShareFragmentVersion">
+		<action name="getTemplates" class="com.studio.query.action.InterfaceAction"
+			method="getTemplates">
+		</action>
+		<action name="getTemplateHistory" class="com.studio.query.action.InterfaceAction"
+			method="getTemplateHistory">
+		</action>
+		<action name="getTemplateVersion" class="com.studio.query.action.InterfaceAction"
+			method="getTemplateVersion">
 		</action>
 	</package>
 	<package name="variables" extends="struts-default" namespace="/V1/variables">

@@ -42,6 +42,39 @@ public class JsonUtil {
 		}
 		return fragmentList;
 	}
+	/**
+	 * 从场景json中解析出fragment模板数据
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static List<Fragment> getTemplateFromSceneString(String str) {
+
+		List<Fragment> fragmentList = new ArrayList<Fragment>();
+		if (!StringUtil.isNullOrEmpty(str)) {
+			JSONObject strObj = JSONObject.fromObject(str);
+			JSONArray strFragmentArray = strObj.getJSONArray("templateList");
+			if (strFragmentArray != null) {
+				for (int i = 0; i < strFragmentArray.size(); i++) {
+
+					JSONObject obj = strFragmentArray.getJSONObject(i);
+					Fragment fragment = new Fragment();
+					fragment.setFragmentUUID(obj.optString("classId", ""));
+					fragment.setFragmentUUID(obj.optString("instanceId", ""));
+					fragment.setFragmentName(obj.optString("fragmentName", ""));
+					fragment.setFragmentDesc(obj.optString("fragmentDesc", ""));
+					fragment.setFragmentType(obj.optString("fragmentType", ""));
+					fragment.setFragmentObjType(obj.optString("fragmentObjType", ""));
+					fragment.setFragmentActive(obj.optBoolean("fragmentActive", true));
+					fragment.setFragmentEnable(obj.optBoolean("fragmentEnable", true));
+					fragment.setFragmentDateStr(obj.optString("fragmentCreateTime", ""));
+					fragment.setFragmentExpression(obj.optString("fragmentExpression", ""));
+					fragmentList.add(fragment);
+				}
+			}
+		}
+		return fragmentList;
+	}
 
 	/**
 	 * 从场景json中解析出变量数据

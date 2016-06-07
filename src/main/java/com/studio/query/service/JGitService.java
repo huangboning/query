@@ -411,7 +411,50 @@ public class JGitService {
 		}
 		return str;
 	}
+	/**
+	 * 获取最新内容
+	 * 
+	 * @param path
+	 * @param version
+	 * @param fileName
+	 * @return
+	 */
+	public String getContentLast(String path, String fileName) {
+		String str = "";
+		try (Repository repository = JGitService.openRepository(path)) {
 
+			ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+			if (null == lastCommitId) {
+				return str;
+			}
+			try (RevWalk revWalk = new RevWalk(repository)) {
+				RevCommit commit = revWalk.parseCommit(lastCommitId);
+				// and using commit's tree find the path
+				RevTree tree = commit.getTree();
+				// System.out.println("Having tree: " + tree);
+
+				// now try to find a specific file
+				try (TreeWalk treeWalk = new TreeWalk(repository)) {
+					treeWalk.addTree(tree);
+					treeWalk.setRecursive(true); // 可以自动读取子树
+					treeWalk.setFilter(PathFilter.create(fileName));
+					if (treeWalk.next()) {
+
+						ObjectId objectId = treeWalk.getObjectId(0);
+						ObjectLoader loader = repository.open(objectId);
+						str = new String(loader.getBytes(), "utf-8");
+
+					}
+				}
+
+				revWalk.dispose();
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return str;
+	}
 	public Map<String, String> initBranchHead(String path) {
 
 		Map<String, String> branchHeadMap = new HashMap<String, String>();
@@ -471,7 +514,7 @@ public class JGitService {
 		JSONObject mJson = new JSONObject().fromObject(m);
 		JSONObject commitObj = mJson.getJSONObject("commit");
 		JSONObject vObj = commitObj.getJSONObject(version);
-		if (vObj != null) {
+		if (null!=vObj) {
 			JSONArray bArray = vObj.getJSONArray("branch");
 			if (bArray.size() >= 1) {
 				branchName = (String) bArray.get(0);

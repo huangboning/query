@@ -32,6 +32,7 @@ public interface FragmentDao {
 	@Results(value = { @Result(column = "share_fragment_id", property = "shareFragmentId"),
 			@Result(column = "account_id", property = "accountId"),
 			@Result(column = "account_name", property = "accountName"),
+			@Result(column = "account_repository", property = "accountRepository"),
 			@Result(column = "share_fragment_uuid", property = "shareFragmentUUID"),
 			@Result(column = "share_fragment_name", property = "shareFragmentName"),
 			@Result(column = "share_fragment_type", property = "shareFragmentType"),

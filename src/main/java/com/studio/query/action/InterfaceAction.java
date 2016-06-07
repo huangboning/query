@@ -128,8 +128,8 @@ public class InterfaceAction extends BaseAction {
 						returnString = fragmentService.enableShareFragment(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_FRAGMENT)) {
 						returnString = fragmentService.getFragments(bodyString, currentAccount, session);
-					} else if (methodCode.equals(MethodCode.LIST_SHARE_FRAGMENT)) {
-						returnString = fragmentService.getShareFragments(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.GET_TEMPLATES)) {
+						returnString = fragmentService.getTemplates(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CREATE_VARIABLE)) {
 						returnString = variableService.createVariable(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_VARIABLE)) {
@@ -152,14 +152,16 @@ public class InterfaceAction extends BaseAction {
 						returnString = variableService.getVariablesList(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_SHARE_VARIABLE)) {
 						returnString = variableService.getShareVariables(bodyString, currentAccount);
-					} else if (methodCode.equals(MethodCode.RELEASE_FRAGMENT)) {
-						returnString = fragmentService.releaseFragment(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.RELEASE_TEMPLATE)) {
+						returnString = fragmentService.releaseTemplate(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.REFERENCE_TEMPLATE)) {
+						returnString = fragmentService.referenceTemplate(bodyString, session);
 					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_VARIABLE)) {
 						returnString = variableService.releaseShareVariable(bodyString, currentAccount);
-					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_HISTORY)) {
-						returnString = fragmentService.getShareFragmentHistory(bodyString, currentAccount, session);
-					} else if (methodCode.equals(MethodCode.GET_SHARE_FRAGMENT_VERSION)) {
-						returnString = fragmentService.getShareFragmentVersion(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.GET_TEMPLATE_HISTORY)) {
+						returnString = fragmentService.getTemplateHistory(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.GET_TEMPLATE_VERSION)) {
+						returnString = fragmentService.getTemplateVersion(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_VARIABLE_HISTORY)) {
 						returnString = variableService.getShareVariableHistory(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_VARIABLE_VERSION)) {
@@ -349,10 +351,6 @@ public class InterfaceAction extends BaseAction {
 		this.execute();
 	}
 
-	public void releaseFragment() {
-		this.execute();
-	}
-
 	public void disableShareFragment() {
 		this.execute();
 	}
@@ -365,15 +363,23 @@ public class InterfaceAction extends BaseAction {
 		this.execute();
 	}
 
-	public void getShareFragments() {
+	public void releaseTemplate() {
 		this.execute();
 	}
 
-	public void getShareFragmentHistory() {
+	public void referenceTemplate() {
 		this.execute();
 	}
 
-	public void getShareFragmentVersion() {
+	public void getTemplates() {
+		this.execute();
+	}
+
+	public void getTemplateHistory() {
+		this.execute();
+	}
+
+	public void getTemplateVersion() {
 		this.execute();
 	}
 

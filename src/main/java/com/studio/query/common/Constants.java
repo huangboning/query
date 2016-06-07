@@ -11,6 +11,7 @@ public class Constants {
 	public static String KEY_SET_SCOPE="keySetScope";
 	public static String KEY_FRGM="keyFRGM";
 	public static String KEY_VAR="keyVAR";
+	public static String KEY_TEMPLATE="keyTEMPLATE";
 	
 	public static String KEY_SCENE_PATH="KEY_SCENE_PATH";
 	public static String SCENE_ACTIVE="SCENE_ACTIVE";

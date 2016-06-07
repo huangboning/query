@@ -8,6 +8,7 @@ public class ShareFragment extends Page {
 	private int shareFragmentId;
 	private int accountId;
 	private String accountName;
+	private String accountRepository;
 	private String shareFragmentUUID;
 	private String shareFragmentName;
 	private String shareFragmentType;
@@ -41,6 +42,14 @@ public class ShareFragment extends Page {
 
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
+	}
+
+	public String getAccountRepository() {
+		return accountRepository;
+	}
+
+	public void setAccountRepository(String accountRepository) {
+		this.accountRepository = accountRepository;
 	}
 
 	public String getShareFragmentUUID() {

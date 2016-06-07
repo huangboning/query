@@ -370,12 +370,14 @@ public class SceneService {
 			String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion, "info.txt");
 			// 解析场景json数据
 			List<Fragment> fragmentList = JsonUtil.getFragmentFromSceneString(contentString);
+			List<Fragment> templateList = JsonUtil.getTemplateFromSceneString(contentString);
 			List<Variable> variableList = JsonUtil.getVariableFromSceneString(contentString);
 			List<String> scopeList = JsonUtil.getScopeFromSceneString(contentString);
 			String sceneDesc = JsonUtil.getDescFromSceneString(contentString);
 			sceneActive.setSceneDesc(sceneDesc);
 
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, templateList);
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
 			// 重设scope
 			this.resetScope(scopeList, session);
@@ -431,6 +433,7 @@ public class SceneService {
 			sceneObject.put("scope", scopeObjs.toString());
 		}
 		JSONArray fragmentJsonArray = new JSONArray();
+		JSONArray templateJsonArray = new JSONArray();
 		JSONArray variableJsonArray = new JSONArray();
 
 		// 读取缓存中的fragment数据
@@ -462,6 +465,29 @@ public class SceneService {
 				dataObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
 			}
 
+			fragmentJsonArray.add(dataObj);
+		}
+		//sceneObject.put("fragmentList", fragmentJsonArray);
+
+		// 读取缓存中的fragment模板数据
+		List<Fragment> templateList = (List<Fragment>) CacheUtil
+				.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE);
+		if (templateList == null) {
+			templateList = new ArrayList<Fragment>();
+		}
+		for (int i = 0; i < templateList.size(); i++) {
+
+			Fragment fragment = templateList.get(i);
+			JSONObject dataObj = new JSONObject();
+
+			dataObj.put("classId", fragment.getFragmentUUID());
+			dataObj.put("instanceId", fragment.getFragmentTemplateId());
+			dataObj.put("name", fragment.getFragmentName());
+			dataObj.put("desc", fragment.getFragmentDesc());
+			dataObj.put("type", fragment.getFragmentType());
+			dataObj.put("objectType", fragment.getFragmentObjType());
+			dataObj.put("enable", fragment.isFragmentEnable());
+			dataObj.put("version", fragment.getFragmentTemplateVersion());
 			fragmentJsonArray.add(dataObj);
 		}
 		sceneObject.put("fragmentList", fragmentJsonArray);
@@ -611,6 +637,28 @@ public class SceneService {
 				fragmentJsonArray.add(dataObj);
 			}
 			sceneJson.put("fragmentList", fragmentJsonArray);
+			// 获取缓存中fragment模板数组
+			List<Fragment> sessionTemplateArray = (ArrayList<Fragment>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE);
+			if (sessionTemplateArray == null) {
+				sessionTemplateArray = new ArrayList<Fragment>();
+			}
+			JSONArray templateJsonArray = new JSONArray();
+			for (Fragment fragment : sessionTemplateArray) {
+				JSONObject dataObj = new JSONObject();
+				dataObj.put("classId", fragment.getFragmentUUID());
+				dataObj.put("instanceId", fragment.getFragmentUUID());
+				dataObj.put("fragmentName", fragment.getFragmentName());
+				dataObj.put("fragmentDesc", fragment.getFragmentDesc());
+				dataObj.put("fragmentType", fragment.getFragmentType());
+				dataObj.put("fragmentObjType", fragment.getFragmentObjType());
+				dataObj.put("fragmentEnable", fragment.isFragmentEnable());
+				dataObj.put("fragmentActive", fragment.isFragmentActive());
+				dataObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
+				dataObj.put("fragmentExpression", fragment.getFragmentExpression());
+				templateJsonArray.add(dataObj);
+			}
+			sceneJson.put("templateList", templateJsonArray);
 			// 获取缓存中变量数组
 			List<Variable> sessionVariableArray = (ArrayList<Variable>) CacheUtil
 					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
