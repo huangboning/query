@@ -17,6 +17,7 @@ public interface UserDao {
 			@Result(column = "user_account", property = "userAccount"),
 			@Result(column = "user_password", property = "userPassword"),
 			@Result(column = "user_name", property = "userName"),
+			@Result(column = "user_role_id", property = "userRoleId"),
 			@Result(column = "user_date", property = "userDate") })
 	@SelectProvider(type = UserMapperProvider.class, method = "findUser")
 	public List<User> findUser(User user);
@@ -26,8 +27,8 @@ public interface UserDao {
 
 	@Insert("insert into t_user(user_name,user_account,user_password,user_date) values(#{userName},#{userAccount},#{userPassword},now())")
 	public int insertUser(User user);
-	
+
 	@Update("update t_user set user_name=#{userName},user_password=#{userPassword} where user_id=#{userId}")
 	public int updateUser(User user);
-	
+
 }

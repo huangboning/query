@@ -2,9 +2,9 @@ package com.studio.query.entity;
 
 import java.util.Date;
 
-import com.studio.query.common.Page;
+import com.studio.query.common.Pager;
 
-public class Variable extends Page {
+public class Variable extends Pager {
 	private int variableId;
 	private int sceneId;
 	private String variableUUID;

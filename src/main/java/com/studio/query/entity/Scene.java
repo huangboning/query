@@ -2,9 +2,9 @@ package com.studio.query.entity;
 
 import java.util.Date;
 
-import com.studio.query.common.Page;
+import com.studio.query.common.Pager;
 
-public class Scene extends Page {
+public class Scene extends Pager {
 	private int sceneId;
 	private int accountId;
 	private String sceneUUID;

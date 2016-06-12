@@ -2,10 +2,11 @@ package com.studio.query.entity;
 
 import java.util.Date;
 
-import com.studio.query.common.Page;
+import com.studio.query.common.Pager;
 
-public class Account extends Page {
+public class Account extends Pager {
 	private int accountId;
+	private int accountStatus = 1;// 表示查询所有帐户
 	private String accountNumber;
 	private String accountPassword;
 	private String accountName;
@@ -22,6 +23,14 @@ public class Account extends Page {
 
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
+	}
+
+	public int getAccountStatus() {
+		return accountStatus;
+	}
+
+	public void setAccountStatus(int accountStatus) {
+		this.accountStatus = accountStatus;
 	}
 
 	public String getAccountNumber() {

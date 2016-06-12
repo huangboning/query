@@ -1,10 +1,10 @@
 package com.studio.query.common;
 
-public class Page {
+public class Pager {
 
 	private int offset;
 
-	private int limit;
+	private int limit=20;
 
 	/**
 	 * @return the offset

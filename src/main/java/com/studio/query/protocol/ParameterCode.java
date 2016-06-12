@@ -123,5 +123,9 @@ public class ParameterCode {
 		 */
 		public static final String UPDATE_SCENE_NO_BRANCH = "205";
 
+		/**
+		 * 账号登录-账号被禁用
+		 */
+		public static final String ACCOUNT_LOGIN_STATUS = "-117";
 	}
 }

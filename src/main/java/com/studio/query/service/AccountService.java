@@ -26,12 +26,28 @@ public class AccountService {
 	@Autowired
 	public AccountDao accountDao;
 
+	public List<Account> loginAccount(Account account) {
+		return accountDao.loginAccount(account);
+	}
+
 	public List<Account> findAccount(Account account) {
 		return accountDao.findAccount(account);
 	}
 
 	public int countAccount(Account account) {
 		return accountDao.countAccount(account);
+	}
+
+	public int initPwd(Account account) {
+		return accountDao.initPwd(account);
+	}
+
+	public int enable(Account account) {
+		return accountDao.enable(account);
+	}
+
+	public int disable(Account account) {
+		return accountDao.disable(account);
 	}
 
 	public int insertAccount(Account account) {
@@ -56,8 +72,13 @@ public class AccountService {
 			Account loginAccount = new Account();
 			loginAccount.setAccountName(accountName);
 			loginAccount.setAccountPassword(md5AccountPassword);
-			List<Account> accountList = accountDao.findAccount(loginAccount);
+			List<Account> accountList = accountDao.loginAccount(loginAccount);
 			if (accountList.size() == 1) {
+				if (accountList.get(0).getAccountStatus() != 0) {
+					resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN,
+							ParameterCode.Error.ACCOUNT_LOGIN_STATUS, "登录失败，帐号已经被禁用。", "");
+					return resultString;
+				}
 				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_OK, "登录成功",
 						"");
 				session.put(Configure.systemSessionAccount, accountList.get(0));
@@ -103,7 +124,7 @@ public class AccountService {
 			}
 			Account findAccount = new Account();
 			findAccount.setAccountName(accountName);
-			List<Account> accountList = accountDao.findAccount(findAccount);
+			List<Account> accountList = accountDao.verifyAccount(findAccount);
 			if (accountList.size() >= 1) {
 				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_REGISTER,
 						ParameterCode.Error.ACCOUNT_REGISTER_EXIST, "账号已存在", "");

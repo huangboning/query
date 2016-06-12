@@ -408,9 +408,9 @@ public class QueryService {
 				dataObj.put("objectType", fragment.getFragmentObjType());
 				dataObj.put("enable", fragment.isFragmentEnable());
 				dataObj.put("version", "");
-				if (fragment.isFragmentEnable()) {
-					fragmentListArray.add(dataObj);
-				}
+				// if (fragment.isFragmentEnable()) {
+				fragmentListArray.add(dataObj);
+				// }
 
 			}
 			sceneObj.put("fragmentList", fragmentListArray);
@@ -427,13 +427,13 @@ public class QueryService {
 				dataObj.put("tags", "[]");
 				dataObj.put("version", "");
 				dataObj.put("expression", fragment.getFragmentExpression());
-				if (fragment.isFragmentEnable()) {
-					fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
-				}
+				// if (fragment.isFragmentEnable()) {
+				fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
+				// }
 
 			}
 			queryObj.put("fragments", fragmentsMap);
-			
+
 			JSONArray variableListArray = new JSONArray();
 			// 读取缓存中的变量数据
 			List<Variable> variableList = (List<Variable>) CacheUtil
@@ -458,11 +458,10 @@ public class QueryService {
 				dataObj.put("variableInstanceId", "");
 				dataObj.put("variableScope", variable.getVariableScope());
 				variableListArray.add(dataObj);
-				
 
 			}
 			queryObj.put("variables", variableListArray);
-			
+
 			JSONObject paginationObj = new JSONObject();
 			paginationObj.put("size", recCount);
 			paginationObj.put("from", position);

@@ -26,10 +26,9 @@ public class UserAction extends BaseAction {
 	private static final long serialVersionUID = 1L;
 	private String userAccount;
 	private String userPassword;
-	private List<User> userList = new ArrayList<User>();
 	private User userInfo = new User();
-	private Account searchAccount = new Account();
-	private List<Account> accountList = new ArrayList<Account>();
+	private User searchUser = new User();
+	private List<User> userList = new ArrayList<User>();
 
 	@Autowired
 	public UserService userService;
@@ -43,13 +42,13 @@ public class UserAction extends BaseAction {
 			User loginUser = new User();
 			loginUser.setUserAccount(this.getUserAccount());
 			loginUser.setUserPassword(this.getUserPassword());
-			userList = userService.findUser(loginUser);
+			List<User> userList = userService.findUser(loginUser);
 			JsonResult result = new JsonResult();
 			OutputStream out = response.getOutputStream();
 			if (userList.size() == 1) {
 				session.put(Configure.systemSessionUser, userList.get(0));
 				result.code = 0;
-				result.result = request.getContextPath() + "/user/list";
+				result.result = request.getContextPath() + "/account/list";
 			} else {
 				result.code = 1;
 				result.result = "用户名或密码错误！";
@@ -88,12 +87,20 @@ public class UserAction extends BaseAction {
 
 	}
 
-	public String listAccount() {
-		searchAccount.setOffset(offset);
-		searchAccount.setLimit(limit);
-		accountList = userService.findAccount(searchAccount);
-		count = userService.countAccount(searchAccount);
+	public String listUser() {
+		searchUser.setOffset(pager.getOffset());
+		searchUser.setLimit(pager.getLimit());
+		userList = userService.findUser(searchUser);
+		count = userService.countUser(searchUser);
 		return SUCCESS;
+	}
+
+	public User getSearchUser() {
+		return searchUser;
+	}
+
+	public void setSearchUser(User searchUser) {
+		this.searchUser = searchUser;
 	}
 
 	public String getUserAccount() {

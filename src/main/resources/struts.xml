@@ -46,9 +46,27 @@
 			<result name="success">/page/info.jsp</result>
 			<result name="error">/page/error.jsp</result>
 		</action>
-		<action name="list" class="com.studio.query.action.UserAction"
+
+	</package>
+	<package name="account" extends="authority" namespace="/account">
+		<action name="list" class="com.studio.query.action.AccountAction"
 			method="listAccount">
 			<result name="success">/page/accountList.jsp</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
+		<action name="initPwd" class="com.studio.query.action.AccountAction"
+			method="initPwd">
+			<result name="success" type="redirectAction">/account/list</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
+		<action name="enable" class="com.studio.query.action.AccountAction"
+			method="enable">
+			<result name="success" type="redirectAction">/account/list</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
+		<action name="disable" class="com.studio.query.action.AccountAction"
+			method="disable">
+			<result name="success" type="redirectAction">/account/list</result>
 			<result name="error">/page/error.jsp</result>
 		</action>
 	</package>
@@ -174,6 +192,9 @@
 		</action>
 		<action name="referenceTemplate" class="com.studio.query.action.InterfaceAction"
 			method="referenceTemplate">
+		</action>
+		<action name="instanceTemplate" class="com.studio.query.action.InterfaceAction"
+			method="instanceTemplate">
 		</action>
 		<action name="getTemplates" class="com.studio.query.action.InterfaceAction"
 			method="getTemplates">

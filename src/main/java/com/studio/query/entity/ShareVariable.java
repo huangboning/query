@@ -2,9 +2,9 @@ package com.studio.query.entity;
 
 import java.util.Date;
 
-import com.studio.query.common.Page;
+import com.studio.query.common.Pager;
 
-public class ShareVariable extends Page {
+public class ShareVariable extends Pager {
 	private int shareVariableId;
 	private int accountId;
 	private String accountName;

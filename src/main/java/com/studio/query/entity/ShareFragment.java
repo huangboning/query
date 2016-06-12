@@ -2,9 +2,9 @@ package com.studio.query.entity;
 
 import java.util.Date;
 
-import com.studio.query.common.Page;
+import com.studio.query.common.Pager;
 
-public class ShareFragment extends Page {
+public class ShareFragment extends Pager {
 	private int shareFragmentId;
 	private int accountId;
 	private String accountName;

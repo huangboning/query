@@ -1,8 +1,8 @@
 package com.studio.query.entity;
 
-import com.studio.query.common.Page;
+import com.studio.query.common.Pager;
 
-public class Committer extends Page {
+public class Committer extends Pager {
 	private String commitVersion;
 	private String commitName;
 	private String commitEmail;

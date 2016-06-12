@@ -5,8 +5,9 @@
 
 <div>
 	<ul>
-		<p:pager url="" items="${count}" maxPageItems="${pager.limit}"
-			maxIndexPages="10" export="currentPageNumber=pageNumber">
+		<p:pager url="/test" items="${count}" maxPageItems="${pager.limit}"
+			maxIndexPages="15" export="currentPageNumber=pageNumber">
+			<p:param name="method" value="search" />
 			<p:index>
 				<p:first>
 					<li style="margin-left: -18px;"><a href="${pageUrl }">[首页]</a></li>

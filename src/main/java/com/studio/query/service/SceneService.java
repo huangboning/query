@@ -116,6 +116,8 @@ public class SceneService {
 				activeObj.put("sceneUUID", insertScene.getSceneUUID());
 				HistoryUtil.setUserSceneHistory(currentAccount.getAccountName(), activeObj.toString());
 
+				this.manualSwitchScene(insertScene.getSceneUUID(), currentAccount, session);
+
 				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK,
 						"创建场景成功", "");
 				this.resetScope(null, session);
@@ -167,6 +169,7 @@ public class SceneService {
 						dataObj.put("active", true);
 						// 会话中设置当前活动场景
 						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+						this.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
 					} else {
 						dataObj.put("active", false);
 					}
@@ -175,6 +178,7 @@ public class SceneService {
 						dataObj.put("active", true);
 						// 会话中设置当前活动场景
 						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+						this.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
 					} else {
 						dataObj.put("active", false);
 					}
@@ -213,6 +217,23 @@ public class SceneService {
 				sceneJsonArray.toString());
 
 		return resultString;
+	}
+
+	/**
+	 * 手动切换当前场景
+	 * 
+	 * @param sceneUUID
+	 * @param currentAccount
+	 * @param session
+	 */
+	public void manualSwitchScene(String sceneUUID, Account currentAccount, Map<String, Object> session) {
+		// 手动切换当前场景
+		JSONObject switchSceneJson = new JSONObject();
+		switchSceneJson.put("method", "switchScenario");
+		JSONObject switchSceneObj = new JSONObject();
+		switchSceneObj.put("scenarioId", sceneUUID);
+		switchSceneJson.put("params", switchSceneObj);
+		this.switchScene(switchSceneJson.toString(), currentAccount, session);
 	}
 
 	// 设置当前活动场景
@@ -323,6 +344,21 @@ public class SceneService {
 			session.put(Constants.KEY_SCENE_PATH, scenePath);
 			session.put(Constants.SCENE_ACTIVE, sceneList.get(0));
 
+			// 手动设置当前version
+			Map map = JGitService.readLogTree(scenePath, new HashMap<>());
+			JSONObject o = new JSONObject().fromObject(map);
+			JSONObject currentObj = o.getJSONObject("current");
+			if (currentObj != null) {
+				String currentVersion = currentObj.optString("id", "");
+				if (!StringUtil.isNullOrEmpty(currentVersion)) {
+					JSONObject switchVersionJson = new JSONObject();
+					switchVersionJson.put("method", "switchVersion");
+					JSONObject switchVersionObj = new JSONObject();
+					switchVersionObj.put("version", currentVersion);
+					switchVersionJson.put("params", switchVersionObj);
+					this.switchVersion(switchVersionJson.toString(), currentAccount, session);
+				}
+			}
 			// 记录当前活动的场景
 			JSONObject activeObj = new JSONObject();
 			activeObj.put("sceneUUID", sceneList.get(0).getSceneUUID());
@@ -467,7 +503,7 @@ public class SceneService {
 
 			fragmentJsonArray.add(dataObj);
 		}
-		//sceneObject.put("fragmentList", fragmentJsonArray);
+		// sceneObject.put("fragmentList", fragmentJsonArray);
 
 		// 读取缓存中的fragment模板数据
 		List<Fragment> templateList = (List<Fragment>) CacheUtil

@@ -12,13 +12,17 @@ public class UserMapperProvider {
 		if (user.getUserName() != null && !user.getUserName().equals("")) {
 			buffer.append("and a.user_name like concat('%',#{userName},'%') ");
 		}
-
 		if (user.getUserAccount() != null && !user.getUserAccount().equals("")) {
 			buffer.append("and a.user_account = #{userAccount} ");
 		}
-		if (user.getUserPassword() != null
-				&& !user.getUserPassword().equals("")) {
+		if (user.getUserPassword() != null && !user.getUserPassword().equals("")) {
 			buffer.append("and a.user_password = #{userPassword} ");
+		}
+		if (user.getBeginDate() != null && !user.getBeginDate().equals("")) {
+			buffer.append("and a.user_date >= #{beginDate} ");
+		}
+		if (user.getEndDate() != null && !user.getEndDate().equals("")) {
+			buffer.append("and a.user_date < #{endDate} ");
 		}
 		buffer.append(" order by a.user_date desc ");
 		if (user.getOffset() == 0 && user.getLimit() == 0) {
@@ -40,10 +44,14 @@ public class UserMapperProvider {
 		if (user.getUserAccount() != null && !user.getUserAccount().equals("")) {
 			buffer.append("and a.user_account = #{userAccount} ");
 		}
-
-		if (user.getUserPassword() != null
-				&& !user.getUserPassword().equals("")) {
+		if (user.getUserPassword() != null && !user.getUserPassword().equals("")) {
 			buffer.append("and a.user_password = #{userPassword} ");
+		}
+		if (user.getBeginDate() != null && !user.getBeginDate().equals("")) {
+			buffer.append("and a.user_date >= #{beginDate} ");
+		}
+		if (user.getEndDate() != null && !user.getEndDate().equals("")) {
+			buffer.append("and a.user_date < #{endDate} ");
 		}
 		return buffer.toString();
 	}

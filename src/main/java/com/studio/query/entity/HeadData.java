@@ -1,8 +1,8 @@
 package com.studio.query.entity;
 
-import com.studio.query.common.Page;
+import com.studio.query.common.Pager;
 
-public class HeadData extends Page {
+public class HeadData extends Pager {
 	private String headDataId;// 数据表头ID
 	private String headDataName;// 数据表头名称
 

@@ -2,9 +2,9 @@ package com.studio.query.entity;
 
 import java.util.Date;
 
-import com.studio.query.common.Page;
+import com.studio.query.common.Pager;
 
-public class Fragment extends Page {
+public class Fragment extends Pager {
 	private int fragmentId;
 	private int sceneId;
 	private String fragmentUUID;
@@ -20,6 +20,7 @@ public class Fragment extends Page {
 
 	private Date fragmentDate;
 	private String fragmentDateStr;
+	private String fragmentCreateBy;
 
 	public int getFragmentId() {
 		return fragmentId;
@@ -131,6 +132,14 @@ public class Fragment extends Page {
 
 	public void setFragmentActive(boolean fragmentActive) {
 		this.fragmentActive = fragmentActive;
+	}
+
+	public String getFragmentCreateBy() {
+		return fragmentCreateBy;
+	}
+
+	public void setFragmentCreateBy(String fragmentCreateBy) {
+		this.fragmentCreateBy = fragmentCreateBy;
 	}
 
 }

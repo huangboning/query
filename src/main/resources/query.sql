@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : localhost
 Source Server Version : 50624
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : query
 
 Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2016-05-21 18:59:47
+Date: 2016-06-12 23:39:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,16 +26,12 @@ CREATE TABLE `t_account` (
   `account_password` varchar(255) DEFAULT NULL,
   `account_email` varchar(255) DEFAULT NULL,
   `account_repository` varchar(255) DEFAULT NULL,
+  `account_status` int(11) DEFAULT '0' COMMENT '0正常-1禁用',
   `account_date` datetime DEFAULT NULL,
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `account_name_unique` (`account_name`),
   UNIQUE KEY `account_repository_unique` (`account_repository`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_account
--- ----------------------------
-INSERT INTO `t_account` VALUES ('1', '15557181347', 'huangboning', 'e10adc3949ba59abbe56e057f20f883e', 'huangboning@test.com', '/2016/5/huangboning', '2016-05-17 09:39:51');
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_fragment
@@ -54,14 +50,7 @@ CREATE TABLE `t_fragment` (
   `fragment_date` datetime DEFAULT NULL,
   PRIMARY KEY (`fragment_id`),
   UNIQUE KEY `fragment_no_unique` (`fragment_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_fragment
--- ----------------------------
-INSERT INTO `t_fragment` VALUES ('3', '1', 'FRGMaa3a42fc184f4943b0f6035baedec0fd', 'foxFragment', 'query', null, '我的第一个fragment', '0', '0', '2016-05-17 17:19:18');
-INSERT INTO `t_fragment` VALUES ('4', '1', 'FRGMa8fbd000b5454ad3867f91c31a678036', 'cangFragment', 'filter', null, '我的第二个fragment', '0', '0', '2016-05-17 17:19:48');
-INSERT INTO `t_fragment` VALUES ('5', '2', 'FRGM7d7a94c4c08c4770951ba64731b86a12', 'thirdFragment', 'filter', null, '我的第三个fragment', '0', '0', '2016-05-17 17:21:06');
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_role
@@ -72,12 +61,6 @@ CREATE TABLE `t_role` (
   `role_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_role
--- ----------------------------
-INSERT INTO `t_role` VALUES ('1', '系统管理员');
-INSERT INTO `t_role` VALUES ('2', '普通用户');
 
 -- ----------------------------
 -- Table structure for t_scene
@@ -97,13 +80,7 @@ CREATE TABLE `t_scene` (
   PRIMARY KEY (`scene_id`),
   UNIQUE KEY `scene_no_unique` (`scene_uuid`) USING BTREE,
   UNIQUE KEY `scene_git_unique` (`scene_git`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_scene
--- ----------------------------
-INSERT INTO `t_scene` VALUES ('1', '1', 'SCNObd1d9a66bca44137a70fd766558f56a8', 'foxquery', '我的第一个场景foxquery', null, '1463449947107', '0', '0', '2016-05-17 09:52:27');
-INSERT INTO `t_scene` VALUES ('2', '1', 'SCNO30652d124b8e4d63b68207c7cdaee113', 'foxquery2', '我的第二个场景foxquery', null, '1463450088442', '0', '0', '2016-05-17 09:54:48');
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_share_fragment
@@ -124,12 +101,7 @@ CREATE TABLE `t_share_fragment` (
   `share_fragment_git` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`share_fragment_id`),
   UNIQUE KEY `share_fragment_no_unique` (`share_fragment_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_share_fragment
--- ----------------------------
-INSERT INTO `t_share_fragment` VALUES ('3', '1', 'FRGMaa3a42fc184f4943b0f6035baedec0fd', 'foxQuery', 'query', null, '我的第一个分享fragment', '0', '0', '2016-05-18 22:48:41', '86947211e5f9ff24ac11a1ddb921473a697c7343', '1463582916514');
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_share_variable
@@ -152,10 +124,6 @@ CREATE TABLE `t_share_variable` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_share_variable
--- ----------------------------
-
--- ----------------------------
 -- Table structure for t_user
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
@@ -168,11 +136,7 @@ CREATE TABLE `t_user` (
   `user_date` datetime DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name_unique` (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_user
--- ----------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_variable
@@ -191,9 +155,4 @@ CREATE TABLE `t_variable` (
   `variable_date` datetime DEFAULT NULL,
   PRIMARY KEY (`variable_id`),
   UNIQUE KEY `variable_no_unique` (`variable_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of t_variable
--- ----------------------------
-INSERT INTO `t_variable` VALUES ('6', '1', 'third Variable', 'VAR4fbdb8ec8ac04fdd94f059571f6e4e4a', 'vType', '1', 'FRGMaa3a42fc184f4943b0f6035baedec0fd', 'voType', '我的第二个变量', '2016-05-21 16:47:58');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

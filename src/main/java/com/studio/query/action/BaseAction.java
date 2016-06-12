@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.studio.query.common.Pager;
 
 public class BaseAction extends ActionSupport implements SessionAware, ServletRequestAware, ServletResponseAware {
 
@@ -23,8 +24,7 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
 	protected HttpServletResponse response;
 	protected Map<String, Object> session;
 	protected String message;
-	protected int offset;
-	protected int limit = 15;
+	protected Pager pager=new Pager();
 	protected int count;
 
 	@Override
@@ -53,20 +53,12 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
 		this.message = message;
 	}
 
-	public int getOffset() {
-		return offset;
+	public Pager getPager() {
+		return pager;
 	}
 
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
-
-	public int getLimit() {
-		return limit;
-	}
-
-	public void setLimit(int limit) {
-		this.limit = limit;
+	public void setPager(Pager pager) {
+		this.pager = pager;
 	}
 
 	public int getCount() {
