@@ -1020,7 +1020,7 @@ public class FragmentService {
 			shareFragment.setShareFragmentUUID(templateId);
 			List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
 			if (shareFragmentList.size() < 1) {
-				resultString = StringUtil.packetObject(MethodCode.REFERENCE_TEMPLATE,
+				resultString = StringUtil.packetObject(MethodCode.INSTANCE_TEMPLATE,
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
@@ -1075,7 +1075,7 @@ public class FragmentService {
 			}
 			// 查看实例化模板是否引用变量
 			// sd
-			resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE, ParameterCode.Result.RESULT_OK,
+			resultString = StringUtil.packetObject(MethodCode.INSTANCE_TEMPLATE, ParameterCode.Result.RESULT_OK,
 					"实例化模板成功", fragmentJsonObject.toString());
 
 		}

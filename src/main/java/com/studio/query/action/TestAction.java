@@ -102,38 +102,38 @@ public class TestAction {
 			JSONObject switchSceneJson = new JSONObject();
 			switchSceneJson.put("method", "switchScenario");
 			JSONObject switchSceneObj = new JSONObject();
-			switchSceneObj.put("scenarioId", "SCNOc1a503c656ca4707a62d8f8d0bb686e5");
+			switchSceneObj.put("scenarioId", "SCNO72762acdc8604341b4bb8cd1e073c219");
 			switchSceneJson.put("params", switchSceneObj);
 
 			// 切换版本
 			JSONObject switchVersionJson = new JSONObject();
 			switchVersionJson.put("method", "switchVersion");
 			JSONObject switchVersionObj = new JSONObject();
-			switchVersionObj.put("version", "8cd19f5cf58449e70a20899de1a2278f48228558");
+			switchVersionObj.put("version", "bc8025315bc76a8b4296b9b35a9b38b2206fa1f2");
 			switchVersionJson.put("params", switchVersionObj);
 
-			 // 获取某版本场景
-			 JSONObject currentVersionJson = new JSONObject();
-			 currentVersionJson.put("method", "getCurrentVersion");
-			 currentVersionJson.put("params", "");
-			
-//			 // 更新场景
-//			 JSONObject updateSceneJson = new JSONObject();
-//			 updateSceneJson.put("method", "updateScenario");
-//			 JSONObject updateSceneObj = new JSONObject();
-//			 updateSceneObj.put("sceneComment", "huangboning update scene 1");
-//			
-//			 updateSceneJson.put("params", updateSceneObj);
+			// 获取某版本场景
+			JSONObject currentVersionJson = new JSONObject();
+			currentVersionJson.put("method", "getCurrentVersion");
+			currentVersionJson.put("params", "");
 
-			 // 创建fragment
-			 JSONObject createFragmentJson = new JSONObject();
-			 createFragmentJson.put("method", "createFragment");
-			 JSONObject createFragmentObj = new JSONObject();
-			 createFragmentObj.put("name", "FRAM1");
-			 createFragmentObj.put("type", "filter");
-			 createFragmentObj.put("objType", "directInstance");
-			 createFragmentObj.put("desc", "my fram");
-			 createFragmentJson.put("params", createFragmentObj);
+			// // 更新场景
+			// JSONObject updateSceneJson = new JSONObject();
+			// updateSceneJson.put("method", "updateScenario");
+			// JSONObject updateSceneObj = new JSONObject();
+			// updateSceneObj.put("sceneComment", "huangboning update scene 1");
+			//
+			// updateSceneJson.put("params", updateSceneObj);
+
+			// // 创建fragment
+			// JSONObject createFragmentJson = new JSONObject();
+			// createFragmentJson.put("method", "createFragment");
+			// JSONObject createFragmentObj = new JSONObject();
+			// createFragmentObj.put("name", "FRAM1");
+			// createFragmentObj.put("type", "filter");
+			// createFragmentObj.put("objType", "directInstance");
+			// createFragmentObj.put("desc", "my fram");
+			// createFragmentJson.put("params", createFragmentObj);
 
 			// // 获取fragment
 			// JSONObject getFragmentJson = new JSONObject();
@@ -205,7 +205,7 @@ public class TestAction {
 			// releaseFragmentJson.put("method", "releaseTemplate");
 			// JSONObject releaseFragmentObj = new JSONObject();
 			// releaseFragmentObj.put("fragmentId",
-			// "FRGM04d0b0382e4345ad8448cf61f0512525");
+			// "FRGM8dd46ac8f537462091bb26dae6384e7d");
 			// releaseFragmentObj.put("desc", "我的共享模板");
 			// releaseFragmentJson.put("params", releaseFragmentObj);
 
@@ -214,41 +214,42 @@ public class TestAction {
 			// getShareFragmentsJson.put("method", "getTemplates");
 			// getShareFragmentsJson.put("params", "");
 
-			// 引用共享fragment
-			JSONObject referenceFragmentJson = new JSONObject();
-			referenceFragmentJson.put("method", "referenceTemplate");
-			JSONObject referenceFragmentObj = new JSONObject();
-			referenceFragmentObj.put("fragmentId", "FRGM04d0b0382e4345ad8448cf61f0512525");
-			referenceFragmentObj.put("desc", "我引用别人的模板");
-			referenceFragmentJson.put("params", referenceFragmentObj);
+//			// 引用共享fragment
+//			JSONObject referenceFragmentJson = new JSONObject();
+//			referenceFragmentJson.put("method", "referenceTemplate");
+//			JSONObject referenceFragmentObj = new JSONObject();
+//			referenceFragmentObj.put("templateId", "FRGM8dd46ac8f537462091bb26dae6384e7d");
+//			referenceFragmentObj.put("desc", "我引用别人的模板");
+//			referenceFragmentJson.put("params", referenceFragmentObj);
+			// 实例化共享fragment
+			JSONObject instanceFragmentJson = new JSONObject();
+			instanceFragmentJson.put("method", "instanceTemplate");
+			JSONObject instanceFragmentObj = new JSONObject();
+			instanceFragmentObj.put("templateId", "FRGM8dd46ac8f537462091bb26dae6384e7d");
+			instanceFragmentObj.put("desc", "我实例化别人的模板");
+			instanceFragmentJson.put("params", instanceFragmentObj);
+
+//			// 获取共享fragment历史版本
+//			JSONObject shareFragmentHistoryJson = new JSONObject();
+//			shareFragmentHistoryJson.put("method", "getTemplateHistory");
+//			JSONObject shareFragmentHistoryObj = new JSONObject();
+//			shareFragmentHistoryObj.put("templateId", "FRGM8dd46ac8f537462091bb26dae6384e7d");
+//			shareFragmentHistoryJson.put("params", shareFragmentHistoryObj);
+
+//			// 获取某个版本共享fragment
+//			JSONObject getShareFragmentVersionJson = new JSONObject();
+//			getShareFragmentVersionJson.put("method", "getTemplateVersion");
+//			JSONObject getShareFragmentVersionObj = new JSONObject();
+//			getShareFragmentVersionObj.put("version", "db97f4f68afb9d455061c45af69d2bb78b1795e4");
+//			getShareFragmentVersionObj.put("templateId", "FRGM8dd46ac8f537462091bb26dae6384e7d");
+//			getShareFragmentVersionJson.put("params", getShareFragmentVersionObj);
 
 			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/V1/template/getTemplates",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"),
-					switchVersionJson.toString().getBytes("utf-8"), createFragmentJson.toString().getBytes("utf-8"),
-					currentVersionJson.toString().getBytes("utf-8"));
-			System.out.println(currentVersionJson.toString());
+					switchVersionJson.toString().getBytes("utf-8"), null,
+					instanceFragmentJson.toString().getBytes("utf-8"));
+			System.out.println(instanceFragmentJson.toString());
 			System.out.println(result);
-
-			// // 获取共享fragment历史版本
-			// JSONObject shareFragmentHistoryJson = new JSONObject();
-			// shareFragmentHistoryJson.put("method",
-			// "getShareFragmentHistory");
-			// JSONObject shareFragmentHistoryObj = new JSONObject();
-			// shareFragmentHistoryObj.put("shareFragmentUUID",
-			// "FRGMaa3a42fc184f4943b0f6035baedec0fd");
-			// shareFragmentHistoryJson.put("params", shareFragmentHistoryObj);
-
-			// // 获取某个版本共享fragment
-			// JSONObject getShareFragmentVersionJson = new JSONObject();
-			// getShareFragmentVersionJson.put("method",
-			// "getShareFragmentVersion");
-			// JSONObject getShareFragmentVersionObj = new JSONObject();
-			// getShareFragmentVersionObj.put("shareFragmentVersion",
-			// "e8e623820c74a6cd1b89b1a2242cb6e678452300");
-			// getShareFragmentVersionObj.put("shareFragmentUUID",
-			// "FRGMaa3a42fc184f4943b0f6035baedec0fd");
-			// getShareFragmentVersionJson.put("params",
-			// getShareFragmentVersionObj);
 
 			// // 创建变量
 			// JSONObject createVariableJson = new JSONObject();
