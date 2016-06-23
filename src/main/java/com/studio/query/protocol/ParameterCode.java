@@ -127,5 +127,10 @@ public class ParameterCode {
 		 * 账号登录-账号被禁用
 		 */
 		public static final String ACCOUNT_LOGIN_STATUS = "-117";
+		
+		/**
+		 * 更新场景-分支名称不合法
+		 */
+		public static final String BRANCH_VALID = "-118";
 	}
 }

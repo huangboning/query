@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ import net.sf.json.JSONObject;
 public class FragmentService {
 	@Autowired
 	public FragmentDao fragmentDao;
+	private List<String> templateVariableList = new ArrayList<String>();
 
 	public List<Fragment> findFragment(Fragment fragment) {
 		return fragmentDao.findFragment(fragment);
@@ -825,7 +828,7 @@ public class FragmentService {
 							fragmentObj.put("desc", fragmentDesc);
 						}
 						fragmentObj.put("type", fromFragment.getFragmentType());
-						fragmentObj.put("objectType", fromFragment.getFragmentObjType());
+						fragmentObj.put("objectType", "templateInstance");
 						fragmentObj.put("enable", fromFragment.isFragmentEnable());
 						fragmentObj.put("active", fromFragment.isFragmentActive());
 						fragmentObj.put("createTime", fromFragment.getFragmentDateStr());
@@ -840,7 +843,7 @@ public class FragmentService {
 						}
 
 						fragmentObj.put("fragmentType", fromFragment.getFragmentType());
-						fragmentObj.put("fragmentObjType", fromFragment.getFragmentObjType());
+						fragmentObj.put("fragmentObjType", "templateInstance");
 						fragmentObj.put("fragmentEnable", fromFragment.isFragmentEnable());
 						fragmentObj.put("fragmentActive", fromFragment.isFragmentActive());
 						fragmentObj.put("fragmentCreateTime", fromFragment.getFragmentDateStr());
@@ -909,10 +912,10 @@ public class FragmentService {
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
 			String templateId = parmJb.optString("templateId", "");
-			;
+			String fragmentVersion = parmJb.optString("version", "");
 			String desc = parmJb.optString("desc", "");
 
-			if (StringUtil.isNullOrEmpty(templateId)) {
+			if (StringUtil.isNullOrEmpty(templateId) || StringUtil.isNullOrEmpty(fragmentVersion)) {
 
 				resultString = StringUtil.packetObject(MethodCode.REFERENCE_TEMPLATE,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -940,7 +943,9 @@ public class FragmentService {
 			String gitPath = Configure.gitRepositoryPath + "/" + shareFragment.getAccountRepository() + "/"
 					+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
 			// 获取最新共享fragment内容
-			String contentString = jGitService.getContentLast(gitPath, "template.txt");
+			// String contentString = jGitService.getContentLast(gitPath,
+			// "template.txt");
+			String contentString = jGitService.getContentByVersion(gitPath, fragmentVersion, "template.txt");
 			Committer lastCommitter = jGitService.getLastCommitter(gitPath);
 			JSONObject refJson = new JSONObject().fromObject(contentString);
 
@@ -999,10 +1004,10 @@ public class FragmentService {
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
 			String templateId = parmJb.optString("templateId", "");
-			;
+			String fragmentVersion = parmJb.optString("version", "");
 			String desc = parmJb.optString("desc", "");
 
-			if (StringUtil.isNullOrEmpty(templateId)) {
+			if (StringUtil.isNullOrEmpty(templateId) || StringUtil.isNullOrEmpty(fragmentVersion)) {
 
 				resultString = StringUtil.packetObject(MethodCode.INSTANCE_TEMPLATE,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
@@ -1030,7 +1035,9 @@ public class FragmentService {
 			String gitPath = Configure.gitRepositoryPath + "/" + shareFragment.getAccountRepository() + "/"
 					+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
 			// 获取最新共享fragment内容
-			String contentString = jGitService.getContentLast(gitPath, "template.txt");
+			// String contentString = jGitService.getContentLast(gitPath,
+			// "template.txt");
+			String contentString = jGitService.getContentByVersion(gitPath, fragmentVersion, "template.txt");
 			Committer lastCommitter = jGitService.getLastCommitter(gitPath);
 			JSONObject refJson = new JSONObject().fromObject(contentString);
 
@@ -1074,11 +1081,58 @@ public class FragmentService {
 				fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
 			}
 			// 查看实例化模板是否引用变量
-			// sd
+			templateVariableList= new ArrayList<String>();
+			this.parseTemplateVariableList(insertFragment.getFragmentExpression());
+			for (int i = 0; i < templateVariableList.size(); i++) {
+				JSONObject variableJsonObject = new JSONObject();
+				variableJsonObject.pu
+			}
 			resultString = StringUtil.packetObject(MethodCode.INSTANCE_TEMPLATE, ParameterCode.Result.RESULT_OK,
 					"实例化模板成功", fragmentJsonObject.toString());
 
 		}
 		return resultString;
 	}
+
+	
+
+	public void parseTemplateVariableList(String jsonString) {
+		try {
+			JSONObject expJo = new JSONObject();
+			JSONArray expressArray = new JSONArray();
+			if (jsonString == null) {
+				//jsonString = FileUtil.readFile("E://query3.txt");
+				return;
+			}
+			expJo = JSONObject.fromObject(jsonString);
+			try {
+				expressArray = expJo.getJSONArray("expressions");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			//System.out.println(expressArray.size());
+
+			String dataType = expJo.optString("dataType", "");
+			if (!StringUtil.isNullOrEmpty(dataType)&&dataType.equals("variable")) {
+				JSONObject variableJo = expJo.getJSONObject("variable");
+				String variableClassId = variableJo.optString("variableClassId", "");
+				templateVariableList.add(variableClassId);
+			} else {
+				for (int i = 0; i < expressArray.size(); i++) {
+					expJo = expressArray.getJSONObject(i);
+					parseTemplateVariableList(expJo.toString());
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//System.out.println("varList size="+varList.size());
+	}
+
+//	public static void main(String[] args) {
+//
+//		FragmentService t = new FragmentService();
+//		t.test(null);
+//	}
 }

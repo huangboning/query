@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.studio.query.common.Configure;
 import com.studio.query.common.Constants;
 import com.studio.query.dao.AccountDao;
+import com.studio.query.dao.SceneDao;
 import com.studio.query.entity.Account;
+import com.studio.query.entity.Scene;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
 import com.studio.query.util.CacheUtil;
@@ -25,6 +27,10 @@ import net.sf.json.JSONObject;
 public class AccountService {
 	@Autowired
 	public AccountDao accountDao;
+	@Autowired
+	public SceneDao sceneDao;
+	@Autowired
+	public SceneService sceneService;
 
 	public List<Account> loginAccount(Account account) {
 		return accountDao.loginAccount(account);
@@ -82,6 +88,8 @@ public class AccountService {
 				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_OK, "登录成功",
 						"");
 				session.put(Configure.systemSessionAccount, accountList.get(0));
+				//设置当前活动场景
+				this.setAccountActiveScene(accountList.get(0), session);
 				// 设置默认scope
 				List<Map<String, String>> indexList = (List<Map<String, String>>) CacheUtil.getCacheObject("mapIndex");
 				if (indexList != null) {
@@ -246,4 +254,38 @@ public class AccountService {
 		return resultString;
 	}
 
+	// 设置用户活动场景
+	public void setAccountActiveScene(Account currentAccount, Map<String, Object> session) {
+
+		Scene findScene = new Scene();
+		findScene.setAccountId(currentAccount.getAccountId());
+		findScene.setSceneEnable(0);
+		List<Scene> sceneList = sceneDao.findScene(findScene);
+		String sceneActiveUUID = HistoryUtil.getUserSceneHistory(currentAccount.getAccountName());
+		boolean isFrist = false;
+		if (StringUtil.isNullOrEmpty(sceneActiveUUID)) {
+			isFrist = true;
+		}
+		for (int i = 0; i < sceneList.size(); i++) {
+
+			Scene scene = sceneList.get(i);
+			if (isFrist) {
+				if (i == 0) {
+					// 会话中设置当前活动场景
+					sceneService.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+					sceneService.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
+				} else {
+
+				}
+			} else {
+				if (sceneActiveUUID.equals(scene.getSceneUUID())) {
+					// 会话中设置当前活动场景
+					sceneService.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+					sceneService.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
+				} else {
+
+				}
+			}
+		}
+	}
 }

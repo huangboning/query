@@ -168,8 +168,8 @@ public class SceneService {
 					if (i == 0) {
 						dataObj.put("active", true);
 						// 会话中设置当前活动场景
-						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
-						this.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
+						//this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+						//this.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
 					} else {
 						dataObj.put("active", false);
 					}
@@ -177,8 +177,8 @@ public class SceneService {
 					if (sceneActiveUUID.equals(scene.getSceneUUID())) {
 						dataObj.put("active", true);
 						// 会话中设置当前活动场景
-						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
-						this.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
+						//this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+						//this.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
 					} else {
 						dataObj.put("active", false);
 					}
@@ -195,7 +195,7 @@ public class SceneService {
 					if (i == 0) {
 						dataObj.put("sceneActive", true);
 						// 会话中设置当前活动场景
-						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+						//this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
 					} else {
 						dataObj.put("sceneActive", false);
 					}
@@ -203,7 +203,7 @@ public class SceneService {
 					if (sceneActiveUUID.equals(scene.getSceneUUID())) {
 						dataObj.put("sceneActive", true);
 						// 会话中设置当前活动场景
-						this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+						//this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
 					} else {
 						dataObj.put("sceneActive", false);
 					}
@@ -428,10 +428,15 @@ public class SceneService {
 	public String getCurrentVersion(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
+		Account sessionAccount = (Account) session.get(Configure.systemSessionAccount);
+		if (sessionAccount == null) {
+			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Error.SERVICE_SESSION,
+					"会话已经过期！", "");
+		}
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 		if (sceneActive == null) {
-			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Error.SERVICE_SESSION,
-					"当前没设置活动场景，或会话已经过期！", "");
+			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_OK,
+					"当前没设置活动场景！", "");
 			return resultString;
 		}
 		String sessionScenePath = (String) session.get(Constants.KEY_SCENE_PATH);
@@ -749,6 +754,11 @@ public class SceneService {
 					return resultString;
 				} else {
 					// 正常建分支
+					if (!sceneBranchName.matches("[a-zA-Z\\d_]+")) {
+						resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+								ParameterCode.Error.BRANCH_VALID, "无效的分支名称", "");
+						return resultString;
+					}
 					jGitService.jGitCheckout(scenePath, currentVersion);
 					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
 					jGitService.jGitCreateBranch(scenePath, sceneBranchName);
@@ -758,6 +768,11 @@ public class SceneService {
 
 				if (!StringUtil.isNullOrEmpty(sceneBranchName)) {
 					// 强制建分支
+					if (!sceneBranchName.matches("[a-zA-Z\\d_]+")) {
+						resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+								ParameterCode.Error.BRANCH_VALID, "无效的分支名称", "");
+						return resultString;
+					}
 					jGitService.jGitCheckout(scenePath, currentVersion);
 					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
 					jGitService.jGitCreateBranch(scenePath, sceneBranchName);
