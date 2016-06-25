@@ -102,14 +102,14 @@ public class TestAction {
 			JSONObject switchSceneJson = new JSONObject();
 			switchSceneJson.put("method", "switchScenario");
 			JSONObject switchSceneObj = new JSONObject();
-			switchSceneObj.put("scenarioId", "SCNO72762acdc8604341b4bb8cd1e073c219");
+			switchSceneObj.put("scenarioId", "SCNOf46dc967964240f6ab156ce152e689aa");
 			switchSceneJson.put("params", switchSceneObj);
 
 			// 切换版本
 			JSONObject switchVersionJson = new JSONObject();
 			switchVersionJson.put("method", "switchVersion");
 			JSONObject switchVersionObj = new JSONObject();
-			switchVersionObj.put("version", "bc8025315bc76a8b4296b9b35a9b38b2206fa1f2");
+			switchVersionObj.put("version", "d07f3e1ac1a9b694e75fff058e6d7b102e724cf4");
 			switchVersionJson.put("params", switchVersionObj);
 
 			// 获取某版本场景
@@ -200,14 +200,14 @@ public class TestAction {
 			// getFragmentsJson.put("method", "getFragments");
 			// getFragmentsJson.put("params", "");
 
-			// // 发布共享fragment
-			// JSONObject releaseFragmentJson = new JSONObject();
-			// releaseFragmentJson.put("method", "releaseTemplate");
-			// JSONObject releaseFragmentObj = new JSONObject();
-			// releaseFragmentObj.put("fragmentId",
-			// "FRGM8dd46ac8f537462091bb26dae6384e7d");
-			// releaseFragmentObj.put("desc", "我的共享模板");
-			// releaseFragmentJson.put("params", releaseFragmentObj);
+//			 // 发布共享fragment
+//			 JSONObject releaseFragmentJson = new JSONObject();
+//			 releaseFragmentJson.put("method", "releaseTemplate");
+//			 JSONObject releaseFragmentObj = new JSONObject();
+//			 releaseFragmentObj.put("fragmentId",
+//			 "FRGM37c1f42ef5c749d285e332a8b6bbf661");
+//			 releaseFragmentObj.put("desc", "我的共享模板");
+//			 releaseFragmentJson.put("params", releaseFragmentObj);
 
 			// // 获取共享fragment列表
 			// JSONObject getShareFragmentsJson = new JSONObject();
@@ -225,7 +225,8 @@ public class TestAction {
 			JSONObject instanceFragmentJson = new JSONObject();
 			instanceFragmentJson.put("method", "instanceTemplate");
 			JSONObject instanceFragmentObj = new JSONObject();
-			instanceFragmentObj.put("templateId", "FRGM8dd46ac8f537462091bb26dae6384e7d");
+			instanceFragmentObj.put("templateId", "FRGM37c1f42ef5c749d285e332a8b6bbf661");
+			instanceFragmentObj.put("version", "4e17b6881f39e2e9536fba2fcfaed868e42c6208");
 			instanceFragmentObj.put("desc", "我实例化别人的模板");
 			instanceFragmentJson.put("params", instanceFragmentObj);
 

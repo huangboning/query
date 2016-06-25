@@ -18,6 +18,7 @@ import com.studio.query.entity.Committer;
 import com.studio.query.entity.Fragment;
 import com.studio.query.entity.Scene;
 import com.studio.query.entity.ShareFragment;
+import com.studio.query.entity.Variable;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
 import com.studio.query.util.CacheUtil;
@@ -858,8 +859,31 @@ public class FragmentService {
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
-			// 查看发布的fragment是否有引用变量
-			// sd
+			// 查看发布的fragment是否有引用变量(不管是否有引用变量统一将变量保存)
+
+			// 获取缓存中变量数组
+			List<Variable> sessionVariableArray = (ArrayList<Variable>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+			if (sessionVariableArray == null) {
+				sessionVariableArray = new ArrayList<Variable>();
+			}
+			JSONArray variableJsonArray = new JSONArray();
+
+			for (Variable variable : sessionVariableArray) {
+				JSONObject dataObj = new JSONObject();
+				dataObj.put("variableUUID", variable.getVariableUUID());
+				dataObj.put("fragmentUUID", variable.getFragmentUUID());
+				dataObj.put("scenarioUUID", variable.getSceneUUID());
+				dataObj.put("variableName", variable.getVariableName());
+				dataObj.put("variableType", variable.getVariableType());
+				dataObj.put("variableValueType", variable.getVariableValueType());
+				dataObj.put("variableFieldType", variable.getVariableFieldType());
+				dataObj.put("variableValue", variable.getVariableValue());
+				dataObj.put("variableScope", variable.getVariableScope());
+				dataObj.put("variableInstanceId", variable.getVariableInstanceId());
+				variableJsonArray.add(dataObj);
+			}
+			fragmentObj.put("variableList", variableJsonArray);
 			// 查询是否已经存在共享记录
 			ShareFragment findShareFragment = new ShareFragment();
 			findShareFragment.setShareFragmentUUID(fragmentUUID);
@@ -888,7 +912,7 @@ public class FragmentService {
 				jGitService.initShareFragmentGit(gitPath);
 			}
 			FileUtil.writeFile(gitPath + "/template.txt", fragmentObj.toString());
-			jGitService.shareFragmentCommit(gitPath, currentAccount, "引用fragment");
+			jGitService.shareFragmentCommit(gitPath, currentAccount, "发布fragment");
 			// 获取最新版本
 			Committer committer = jGitService.getLastCommitter(gitPath);
 			shareFragment.setShareFragmentVersion(committer.getCommitVersion());
@@ -1081,12 +1105,43 @@ public class FragmentService {
 				fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
 			}
 			// 查看实例化模板是否引用变量
-			templateVariableList= new ArrayList<String>();
+			JSONArray refVariableArray = new JSONArray();
+			try {
+				refVariableArray = refJson.getJSONArray("variableList");
+			} catch (Exception e) {
+			}
+			// 将变量保存到缓存中
+			List<Variable> sessionVariableArray = (ArrayList<Variable>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+			if (sessionVariableArray == null) {
+				sessionVariableArray = new ArrayList<Variable>();
+			}
+			templateVariableList = new ArrayList<String>();
 			this.parseTemplateVariableList(insertFragment.getFragmentExpression());
 			for (int i = 0; i < templateVariableList.size(); i++) {
-				JSONObject variableJsonObject = new JSONObject();
-				variableJsonObject.pu
+				String templateVarString = templateVariableList.get(i);
+				for (int j = 0; j < refVariableArray.size(); j++) {
+					JSONObject reVOj = refVariableArray.getJSONObject(j);
+					if (templateVarString.equals(reVOj.optString("variableUUID", ""))) {
+						Variable insertVariable = new Variable();
+						insertVariable.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
+						insertVariable.setSceneUUID(reVOj.optString("scenarioUUID", ""));
+						insertVariable.setVariableUUID(reVOj.optString("variableUUID", ""));
+						insertVariable.setVariableInstanceId(StringUtil.createVariableUUID());
+						insertVariable.setVariableName(reVOj.optString("variableName", ""));
+						insertVariable.setVariableType(reVOj.optString("variableType", ""));
+						insertVariable.setVariableScope(reVOj.optString("variableScope", ""));
+						insertVariable.setVariableFieldType(reVOj.optString("variableFieldType", ""));
+						insertVariable.setVariableValueType(reVOj.optString("variableValueType", ""));
+						insertVariable.setVariableValue(reVOj.optString("variableValue", ""));
+						insertVariable.setVariableDateStr(DateUtil.dateTimeFormat(new Date()));
+						sessionVariableArray.add(insertVariable);
+					}
+				}
+
 			}
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, sessionVariableArray);
+
 			resultString = StringUtil.packetObject(MethodCode.INSTANCE_TEMPLATE, ParameterCode.Result.RESULT_OK,
 					"实例化模板成功", fragmentJsonObject.toString());
 
@@ -1094,14 +1149,12 @@ public class FragmentService {
 		return resultString;
 	}
 
-	
-
 	public void parseTemplateVariableList(String jsonString) {
 		try {
 			JSONObject expJo = new JSONObject();
 			JSONArray expressArray = new JSONArray();
 			if (jsonString == null) {
-				//jsonString = FileUtil.readFile("E://query3.txt");
+				// jsonString = FileUtil.readFile("E://query3.txt");
 				return;
 			}
 			expJo = JSONObject.fromObject(jsonString);
@@ -1110,10 +1163,10 @@ public class FragmentService {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-			//System.out.println(expressArray.size());
+			// System.out.println(expressArray.size());
 
 			String dataType = expJo.optString("dataType", "");
-			if (!StringUtil.isNullOrEmpty(dataType)&&dataType.equals("variable")) {
+			if (!StringUtil.isNullOrEmpty(dataType) && dataType.equals("variable")) {
 				JSONObject variableJo = expJo.getJSONObject("variable");
 				String variableClassId = variableJo.optString("variableClassId", "");
 				templateVariableList.add(variableClassId);
@@ -1127,12 +1180,12 @@ public class FragmentService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//System.out.println("varList size="+varList.size());
+		// System.out.println("varList size="+varList.size());
 	}
 
-//	public static void main(String[] args) {
-//
-//		FragmentService t = new FragmentService();
-//		t.test(null);
-//	}
+	// public static void main(String[] args) {
+	//
+	// FragmentService t = new FragmentService();
+	// t.test(null);
+	// }
 }
