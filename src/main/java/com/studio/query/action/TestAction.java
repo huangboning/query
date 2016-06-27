@@ -214,21 +214,29 @@ public class TestAction {
 			// getShareFragmentsJson.put("method", "getTemplates");
 			// getShareFragmentsJson.put("params", "");
 
-//			// 引用共享fragment
-//			JSONObject referenceFragmentJson = new JSONObject();
-//			referenceFragmentJson.put("method", "referenceTemplate");
-//			JSONObject referenceFragmentObj = new JSONObject();
-//			referenceFragmentObj.put("templateId", "FRGM8dd46ac8f537462091bb26dae6384e7d");
-//			referenceFragmentObj.put("desc", "我引用别人的模板");
-//			referenceFragmentJson.put("params", referenceFragmentObj);
-			// 实例化共享fragment
-			JSONObject instanceFragmentJson = new JSONObject();
-			instanceFragmentJson.put("method", "instanceTemplate");
-			JSONObject instanceFragmentObj = new JSONObject();
-			instanceFragmentObj.put("templateId", "FRGM37c1f42ef5c749d285e332a8b6bbf661");
-			instanceFragmentObj.put("version", "4e17b6881f39e2e9536fba2fcfaed868e42c6208");
-			instanceFragmentObj.put("desc", "我实例化别人的模板");
-			instanceFragmentJson.put("params", instanceFragmentObj);
+			// 引用共享fragment
+			JSONObject referenceFragmentJson = new JSONObject();
+			referenceFragmentJson.put("method", "referenceTemplate");
+			JSONObject referenceFragmentObj = new JSONObject();
+			referenceFragmentObj.put("templateId", "FRGM37c1f42ef5c749d285e332a8b6bbf661");
+			referenceFragmentObj.put("version", "4e17b6881f39e2e9536fba2fcfaed868e42c6208");
+			referenceFragmentObj.put("desc", "我引用别人的模板");
+			referenceFragmentJson.put("params", referenceFragmentObj);
+			
+			// executeScene
+			 JSONObject executeSceneJson = new JSONObject();
+			 executeSceneJson.put("method", "executeScenario");
+			 JSONObject executeSceneObj = new JSONObject();
+			 executeSceneJson.put("params", executeSceneObj);
+			
+//			// 实例化共享fragment
+//			JSONObject instanceFragmentJson = new JSONObject();
+//			instanceFragmentJson.put("method", "instanceTemplate");
+//			JSONObject instanceFragmentObj = new JSONObject();
+//			instanceFragmentObj.put("templateId", "FRGM37c1f42ef5c749d285e332a8b6bbf661");
+//			instanceFragmentObj.put("version", "4e17b6881f39e2e9536fba2fcfaed868e42c6208");
+//			instanceFragmentObj.put("desc", "我实例化别人的模板");
+//			instanceFragmentJson.put("params", instanceFragmentObj);
 
 //			// 获取共享fragment历史版本
 //			JSONObject shareFragmentHistoryJson = new JSONObject();
@@ -247,9 +255,9 @@ public class TestAction {
 
 			String result = ApacheHttpUtil.testSceneBySession("http://localhost:8080/query/V1/template/getTemplates",
 					loginJson.toString().getBytes("utf-8"), switchSceneJson.toString().getBytes("utf-8"),
-					switchVersionJson.toString().getBytes("utf-8"), null,
-					instanceFragmentJson.toString().getBytes("utf-8"));
-			System.out.println(instanceFragmentJson.toString());
+					switchVersionJson.toString().getBytes("utf-8"), referenceFragmentJson.toString().getBytes("utf-8"),
+					executeSceneJson.toString().getBytes("utf-8"));
+			System.out.println(executeSceneJson.toString());
 			System.out.println(result);
 
 			// // 创建变量

@@ -998,19 +998,55 @@ public class FragmentService {
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, sessionFragmentArray);
 
 			JSONObject fragmentJsonObject = new JSONObject();
-			if (Configure.serverVersion == 0) {
-				fragmentJsonObject.put("templateId", insertFragment.getFragmentTemplateId());
-				fragmentJsonObject.put("instanceId", insertFragment.getFragmentUUID());
-				fragmentJsonObject.put("name", insertFragment.getFragmentName());
-				fragmentJsonObject.put("type", insertFragment.getFragmentType());
-				fragmentJsonObject.put("objectType", insertFragment.getFragmentObjType());
-				fragmentJsonObject.put("enable", insertFragment.isFragmentEnable());
-				fragmentJsonObject.put("active", insertFragment.isFragmentActive());
-				fragmentJsonObject.put("desc", insertFragment.getFragmentDesc());
-				fragmentJsonObject.put("createBy", insertFragment.getFragmentCreateBy());
-				fragmentJsonObject.put("createTime", insertFragment.getFragmentDateStr());
-				fragmentJsonObject.put("version", insertFragment.getFragmentTemplateVersion());
-				fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
+
+			fragmentJsonObject.put("templateId", insertFragment.getFragmentTemplateId());
+			fragmentJsonObject.put("instanceId", insertFragment.getFragmentUUID());
+			fragmentJsonObject.put("name", insertFragment.getFragmentName());
+			fragmentJsonObject.put("type", insertFragment.getFragmentType());
+			fragmentJsonObject.put("objectType", insertFragment.getFragmentObjType());
+			fragmentJsonObject.put("enable", insertFragment.isFragmentEnable());
+			fragmentJsonObject.put("active", insertFragment.isFragmentActive());
+			fragmentJsonObject.put("desc", insertFragment.getFragmentDesc());
+			fragmentJsonObject.put("createBy", insertFragment.getFragmentCreateBy());
+			fragmentJsonObject.put("createTime", insertFragment.getFragmentDateStr());
+			fragmentJsonObject.put("version", insertFragment.getFragmentTemplateVersion());
+			fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
+
+			// 查看实例化模板是否引用变量
+			JSONArray refVariableArray = new JSONArray();
+			try {
+				refVariableArray = refJson.getJSONArray("variableList");
+			} catch (Exception e) {
+			}
+			// 将变量保存到缓存中
+			List<Variable> sessionVariableArray = (ArrayList<Variable>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+			if (sessionVariableArray == null) {
+				sessionVariableArray = new ArrayList<Variable>();
+			}
+			templateVariableList = new ArrayList<String>();
+			this.parseTemplateVariableList(insertFragment.getFragmentExpression());
+			for (int i = 0; i < templateVariableList.size(); i++) {
+				String templateVarString = templateVariableList.get(i);
+				for (int j = 0; j < refVariableArray.size(); j++) {
+					JSONObject reVOj = refVariableArray.getJSONObject(j);
+					if (templateVarString.equals(reVOj.optString("variableUUID", ""))) {
+						Variable insertVariable = new Variable();
+						insertVariable.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
+						insertVariable.setSceneUUID(reVOj.optString("scenarioUUID", ""));
+						insertVariable.setVariableUUID(reVOj.optString("variableUUID", ""));
+						insertVariable.setVariableInstanceId(StringUtil.createVariableUUID());
+						insertVariable.setVariableName(reVOj.optString("variableName", ""));
+						insertVariable.setVariableType(reVOj.optString("variableType", ""));
+						insertVariable.setVariableScope(reVOj.optString("variableScope", ""));
+						insertVariable.setVariableFieldType(reVOj.optString("variableFieldType", ""));
+						insertVariable.setVariableValueType(reVOj.optString("variableValueType", ""));
+						insertVariable.setVariableValue(reVOj.optString("variableValue", ""));
+						insertVariable.setVariableDateStr(DateUtil.dateTimeFormat(new Date()));
+						sessionVariableArray.add(insertVariable);
+					}
+				}
+
 			}
 
 			resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE, ParameterCode.Result.RESULT_OK,
@@ -1090,20 +1126,20 @@ public class FragmentService {
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, sessionFragmentArray);
 
 			JSONObject fragmentJsonObject = new JSONObject();
-			if (Configure.serverVersion == 0) {
-				fragmentJsonObject.put("templateId", insertFragment.getFragmentTemplateId());
-				fragmentJsonObject.put("instanceId", insertFragment.getFragmentUUID());
-				fragmentJsonObject.put("name", insertFragment.getFragmentName());
-				fragmentJsonObject.put("type", insertFragment.getFragmentType());
-				fragmentJsonObject.put("objectType", insertFragment.getFragmentObjType());
-				fragmentJsonObject.put("enable", insertFragment.isFragmentEnable());
-				fragmentJsonObject.put("active", insertFragment.isFragmentActive());
-				fragmentJsonObject.put("desc", insertFragment.getFragmentDesc());
-				fragmentJsonObject.put("createBy", insertFragment.getFragmentCreateBy());
-				fragmentJsonObject.put("createTime", insertFragment.getFragmentDateStr());
-				fragmentJsonObject.put("version", insertFragment.getFragmentTemplateVersion());
-				fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
-			}
+
+			fragmentJsonObject.put("templateId", insertFragment.getFragmentTemplateId());
+			fragmentJsonObject.put("instanceId", insertFragment.getFragmentUUID());
+			fragmentJsonObject.put("name", insertFragment.getFragmentName());
+			fragmentJsonObject.put("type", insertFragment.getFragmentType());
+			fragmentJsonObject.put("objectType", insertFragment.getFragmentObjType());
+			fragmentJsonObject.put("enable", insertFragment.isFragmentEnable());
+			fragmentJsonObject.put("active", insertFragment.isFragmentActive());
+			fragmentJsonObject.put("desc", insertFragment.getFragmentDesc());
+			fragmentJsonObject.put("createBy", insertFragment.getFragmentCreateBy());
+			fragmentJsonObject.put("createTime", insertFragment.getFragmentDateStr());
+			fragmentJsonObject.put("version", insertFragment.getFragmentTemplateVersion());
+			fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
+
 			// 查看实例化模板是否引用变量
 			JSONArray refVariableArray = new JSONArray();
 			try {
