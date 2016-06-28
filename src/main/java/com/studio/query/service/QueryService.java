@@ -298,7 +298,7 @@ public class QueryService {
 			recCount = parmJb.optInt("recCount", 20);
 		}
 
-		if (!Configure.isDevelopment) {
+		if (Configure.isDevelopment) {
 
 			executeScenarioString = FileUtil
 					.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");

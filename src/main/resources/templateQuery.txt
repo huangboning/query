@@ -1,0 +1,223 @@
+{
+    "fragments": {
+        "FRGM37c1f42ef5c749d285e332a8b6bbf661": {
+            "id": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+            "name": "F1",
+            "desc": "",
+            "type": "filter",
+            "objectType": "directInstance",
+            "tags": [],
+            "version": "",
+            "expression": {
+                "expressions": [
+                    {
+                        "logicalNot": false,
+                        "indexDocType": "aminno.entities",
+                        "indexDocTypeName": "AshleyMadison.实体信息",
+                        "field": "ident.username",
+                        "fieldname": "身份信息-用户名",
+                        "fieldType": "string",
+                        "operator": "prefixFilter",
+                        "operatorName": "前缀匹配",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "plainString",
+                            "value": "tom"
+                        },
+                        "variable": {
+                            "variableClassId": "VAR6f4be34c72c3440983ad0e7e85fd1cb3",
+                            "variableName": "VAR1"
+                        },
+                        "eid": "04d8e140-3ab6-11e6-91aa-a7239e337f3e"
+                    },
+                    {
+                        "logicalNot": false,
+                        "indexDocType": "voter_fl.entities",
+                        "indexDocTypeName": "FL登记.实体信息",
+                        "field": "ident.middle_name",
+                        "fieldname": "身份信息-中间名",
+                        "fieldType": "string",
+                        "operator": "PlsSelect",
+                        "operatorName": "请选择operator",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "",
+                            "value": ""
+                        },
+                        "variable": {
+                            "variableClassId": "VARd6093d3ced744e71be870adb03d2bca8",
+                            "variableName": "VAR3"
+                        },
+                        "eid": "bd115870-3cd5-11e6-b7ad-f3b217766e34"
+                    }
+                ],
+                "operator": "bool_and"
+            }
+        }
+    },
+    "scenario": {
+        "createTime": "2016-06-25 17:19:01",
+        "scope": [
+            "allindicies.unified",
+            "aminno.entities",
+            "voter_fl.entities"
+        ],
+        "fragmentList": [
+            {
+                "id": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+                "name": "F1",
+                "desc": "",
+                "type": "filter",
+                "objectType": "directInstance",
+                "enable": true,
+                "version": ""
+            }
+        ],
+        "fragmentTemplateList": [
+            {
+                "id": "FRGM07e2a52d728e4d6baa8c3a0d63f10a05",
+                "templateId": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+                "name": "F1",
+                "desc": "我引用别人的模板",
+                "type": "filter",
+                "objectType": "templateInstance",
+                "enable": true,
+                "version": "73d0d79e3bfb2bcdd12f3385116ebd29bd7a426d"
+            }
+        ]
+    },
+    "fragmentTemplates": {
+        "FRGM07e2a52d728e4d6baa8c3a0d63f10a05": {
+            "id": "FRGM07e2a52d728e4d6baa8c3a0d63f10a05",
+            "templateId": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+            "name": "F1",
+            "desc": "我引用别人的模板",
+            "type": "filter",
+            "objectType": "templateInstance",
+            "tags": [],
+            "version": "73d0d79e3bfb2bcdd12f3385116ebd29bd7a426d",
+            "expression": {
+                "expressions": [
+                    {
+                        "logicalNot": false,
+                        "indexDocType": "aminno.entities",
+                        "indexDocTypeName": "AshleyMadison.实体信息",
+                        "field": "ident.username",
+                        "fieldname": "身份信息-用户名",
+                        "fieldType": "string",
+                        "operator": "prefixFilter",
+                        "operatorName": "前缀匹配",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "plainString",
+                            "value": "tom"
+                        },
+                        "variable": {
+                            "variableClassId": "VAR6f4be34c72c3440983ad0e7e85fd1cb3",
+                            "variableName": "VAR1"
+                        },
+                        "eid": "04d8e140-3ab6-11e6-91aa-a7239e337f3e"
+                    },
+                    {
+                        "logicalNot": false,
+                        "indexDocType": "voter_fl.entities",
+                        "indexDocTypeName": "FL登记.实体信息",
+                        "field": "ident.middle_name",
+                        "fieldname": "身份信息-中间名",
+                        "fieldType": "string",
+                        "operator": "PlsSelect",
+                        "operatorName": "请选择operator",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "",
+                            "value": ""
+                        },
+                        "variable": {
+                            "variableClassId": "VARd6093d3ced744e71be870adb03d2bca8",
+                            "variableName": "VAR3"
+                        },
+                        "eid": "bd115870-3cd5-11e6-b7ad-f3b217766e34"
+                    }
+                ],
+                "operator": "bool_and"
+            }
+        }
+    },
+    "variables": [
+        {
+            "variableClassId": "VAR6f4be34c72c3440983ad0e7e85fd1cb3",
+            "name": "VAR1",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+                "scenarioId": ""
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "hbn",
+            "variableInstanceId": "",
+            "variableScope": "fragment"
+        },
+        {
+            "variableClassId": "VARa889d7aad670429ca9b8a72f1d847d68",
+            "name": "VAR2",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+                "scenarioId": ""
+            },
+            "valueType": "plainValue",
+            "fieldType": "long",
+            "value": "120",
+            "variableInstanceId": "",
+            "variableScope": "scenario"
+        },
+        {
+            "variableClassId": "VARd6093d3ced744e71be870adb03d2bca8",
+            "name": "VAR3",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+                "scenarioId": ""
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "test",
+            "variableInstanceId": "",
+            "variableScope": "fragment"
+        },
+        {
+            "variableClassId": "VAR6f4be34c72c3440983ad0e7e85fd1cb3",
+            "name": "VAR1",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+                "scenarioId": ""
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "hbn",
+            "variableInstanceId": "",
+            "variableScope": "fragment"
+        },
+        {
+            "variableClassId": "VARd6093d3ced744e71be870adb03d2bca8",
+            "name": "VAR3",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRGM37c1f42ef5c749d285e332a8b6bbf661",
+                "scenarioId": ""
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "test",
+            "variableInstanceId": "",
+            "variableScope": "fragment"
+        }
+    ],
+    "pagination": {
+        "size": 20,
+        "from": 0
+    },
+    "method": "query"
+}

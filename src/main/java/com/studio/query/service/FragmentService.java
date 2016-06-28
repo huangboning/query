@@ -970,7 +970,7 @@ public class FragmentService {
 			// String contentString = jGitService.getContentLast(gitPath,
 			// "template.txt");
 			String contentString = jGitService.getContentByVersion(gitPath, fragmentVersion, "template.txt");
-			Committer lastCommitter = jGitService.getLastCommitter(gitPath);
+			//Committer lastCommitter = jGitService.getLastCommitter(gitPath);
 			JSONObject refJson = new JSONObject().fromObject(contentString);
 
 			Fragment insertFragment = new Fragment();
@@ -981,7 +981,7 @@ public class FragmentService {
 			insertFragment.setFragmentDesc(desc);
 			insertFragment.setFragmentType(refJson.optString("type", ""));
 			insertFragment.setFragmentObjType("templateInstance");
-			insertFragment.setFragmentTemplateVersion(lastCommitter.getCommitVersion());
+			insertFragment.setFragmentTemplateVersion(fragmentVersion);
 			insertFragment.setFragmentEnable(true);
 			insertFragment.setFragmentActive(true);
 			insertFragment.setFragmentCreateBy(shareFragment.getAccountName());
@@ -1049,7 +1049,7 @@ public class FragmentService {
 
 			}
 
-			resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE, ParameterCode.Result.RESULT_OK,
+			resultString = StringUtil.packetObject(MethodCode.REFERENCE_TEMPLATE, ParameterCode.Result.RESULT_OK,
 					"引用模板成功", fragmentJsonObject.toString());
 
 		}

@@ -109,7 +109,7 @@ public class TestAction {
 			JSONObject switchVersionJson = new JSONObject();
 			switchVersionJson.put("method", "switchVersion");
 			JSONObject switchVersionObj = new JSONObject();
-			switchVersionObj.put("version", "d07f3e1ac1a9b694e75fff058e6d7b102e724cf4");
+			switchVersionObj.put("version", "e6393f20dab819b8ef1b0920cb9455a0cede6dff");
 			switchVersionJson.put("params", switchVersionObj);
 
 			// 获取某版本场景
@@ -219,7 +219,7 @@ public class TestAction {
 			referenceFragmentJson.put("method", "referenceTemplate");
 			JSONObject referenceFragmentObj = new JSONObject();
 			referenceFragmentObj.put("templateId", "FRGM37c1f42ef5c749d285e332a8b6bbf661");
-			referenceFragmentObj.put("version", "4e17b6881f39e2e9536fba2fcfaed868e42c6208");
+			referenceFragmentObj.put("version", "73d0d79e3bfb2bcdd12f3385116ebd29bd7a426d");
 			referenceFragmentObj.put("desc", "我引用别人的模板");
 			referenceFragmentJson.put("params", referenceFragmentObj);
 			
