@@ -7,7 +7,8 @@ import com.studio.query.common.Pager;
 public class Variable extends Pager {
 	private int variableId;
 	private int sceneId;
-	private String variableUUID;
+	private String variableClassId;// 如果是引用变量，表示模板id
+	private String variableUUID;// 变量id也就是instanceid
 	private String variableScope;
 	private String fragmentUUID;
 	private String sceneUUID;
@@ -19,7 +20,6 @@ public class Variable extends Pager {
 	private String variableDesc;
 	private Date variableDate;
 	private String variableDateStr;
-	private String variableInstanceId;
 
 	public int getVariableId() {
 		return variableId;
@@ -133,12 +133,12 @@ public class Variable extends Pager {
 		this.variableDateStr = variableDateStr;
 	}
 
-	public String getVariableInstanceId() {
-		return variableInstanceId;
+	public String getVariableClassId() {
+		return variableClassId;
 	}
 
-	public void setVariableInstanceId(String variableInstanceId) {
-		this.variableInstanceId = variableInstanceId;
+	public void setVariableClassId(String variableClassId) {
+		this.variableClassId = variableClassId;
 	}
 
 }

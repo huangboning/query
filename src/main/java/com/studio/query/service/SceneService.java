@@ -521,8 +521,8 @@ public class SceneService {
 			Fragment fragment = templateList.get(i);
 			JSONObject dataObj = new JSONObject();
 
-			dataObj.put("classId", fragment.getFragmentUUID());
-			dataObj.put("instanceId", fragment.getFragmentTemplateId());
+			dataObj.put("classId", fragment.getFragmentTemplateId());
+			dataObj.put("id", fragment.getFragmentUUID());
 			dataObj.put("name", fragment.getFragmentName());
 			dataObj.put("desc", fragment.getFragmentDesc());
 			dataObj.put("type", fragment.getFragmentType());
@@ -543,7 +543,8 @@ public class SceneService {
 			Variable variable = variableList.get(i);
 			JSONObject dataObj = new JSONObject();
 			if (Configure.serverVersion == 0) {
-				dataObj.put("variableClassId", variable.getVariableUUID());
+				dataObj.put("variableClassId",variable.getVariableClassId() );
+				dataObj.put("variableInstanceId", variable.getVariableUUID());
 				dataObj.put("name", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
 				JSONObject belongObj = new JSONObject();
@@ -553,10 +554,10 @@ public class SceneService {
 				dataObj.put("valueType", variable.getVariableValueType());
 				dataObj.put("fieldType", variable.getVariableFieldType());
 				dataObj.put("value", variable.getVariableValue());
-				dataObj.put("variableInstanceId", "");
 				dataObj.put("variableScope", variable.getVariableScope());
 			} else {
 				dataObj.put("variableUUID", variable.getVariableUUID());
+				dataObj.put("variableClassId", variable.getVariableClassId());
 				dataObj.put("variableName", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
 				JSONObject belongObj = new JSONObject();
@@ -566,7 +567,6 @@ public class SceneService {
 				dataObj.put("variableValueType", variable.getVariableValueType());
 				dataObj.put("variableFieldType", variable.getVariableFieldType());
 				dataObj.put("variableValue", variable.getVariableValue());
-				dataObj.put("variableInstanceId", "");
 				dataObj.put("variableScope", variable.getVariableScope());
 			}
 
@@ -711,6 +711,7 @@ public class SceneService {
 			for (Variable variable : sessionVariableArray) {
 				JSONObject dataObj = new JSONObject();
 				dataObj.put("variableUUID", variable.getVariableUUID());
+				dataObj.put("variableClassId", variable.getVariableClassId());
 				dataObj.put("fragmentUUID", variable.getFragmentUUID());
 				dataObj.put("scenarioUUID", variable.getSceneUUID());
 				dataObj.put("variableName", variable.getVariableName());
@@ -719,7 +720,7 @@ public class SceneService {
 				dataObj.put("variableFieldType", variable.getVariableFieldType());
 				dataObj.put("variableValue", variable.getVariableValue());
 				dataObj.put("variableScope", variable.getVariableScope());
-				dataObj.put("variableInstanceId", "");
+		
 				variableJsonArray.add(dataObj);
 			}
 			sceneJson.put("variableList", variableJsonArray);

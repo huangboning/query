@@ -317,6 +317,7 @@ public class FragmentService {
 				fragmentList = new ArrayList<Fragment>();
 			}
 			JSONObject fragmentObj = new JSONObject();
+			boolean isHaveFragment = false;
 			for (int i = 0; i < fragmentList.size(); i++) {
 
 				Fragment fragment = fragmentList.get(i);
@@ -342,12 +343,42 @@ public class FragmentService {
 						fragmentObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
 						fragmentObj.put("fragmentExpression", fragment.getFragmentExpression());
 					}
+					isHaveFragment = true;
 					break;
 				}
 			}
+			if (isHaveFragment) {
+				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_OK,
+						"获取某个版本fragment成功", fragmentObj.toString());
+			} else {
+				List<Fragment> templateFragmentList = (List<Fragment>) CacheUtil
+						.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE);
+				if (templateFragmentList == null) {
+					templateFragmentList = new ArrayList<Fragment>();
+				}
+				JSONObject templateFragmentObj = new JSONObject();
+				for (int i = 0; i < templateFragmentList.size(); i++) {
 
-			resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_OK,
-					"获取某个版本fragment成功", fragmentObj.toString());
+					Fragment fragment = templateFragmentList.get(i);
+					if (fragment.getFragmentUUID().equals(fragmentUUID)) {
+
+						templateFragmentObj.put("classId", fragment.getFragmentTemplateId());
+						templateFragmentObj.put("id", fragment.getFragmentUUID());
+						templateFragmentObj.put("name", fragment.getFragmentName());
+						templateFragmentObj.put("desc", fragment.getFragmentDesc());
+						templateFragmentObj.put("type", fragment.getFragmentType());
+						templateFragmentObj.put("objectType", fragment.getFragmentObjType());
+						templateFragmentObj.put("enable", fragment.isFragmentEnable());
+						templateFragmentObj.put("active", fragment.isFragmentActive());
+						templateFragmentObj.put("createTime", fragment.getFragmentDateStr());
+						templateFragmentObj.put("expression", fragment.getFragmentExpression());
+
+						break;
+					}
+				}
+				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_OK,
+						"获取某个版本fragment成功", templateFragmentObj.toString());
+			}
 
 		}
 		return resultString;
@@ -451,6 +482,7 @@ public class FragmentService {
 			}
 			List<Fragment> fragmentList = (List<Fragment>) CacheUtil
 					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+			boolean isHaveFragment = false;
 			if (fragmentList == null) {
 				fragmentList = new ArrayList<Fragment>();
 			}
@@ -460,15 +492,41 @@ public class FragmentService {
 				Fragment fragment = fragmentList.get(i);
 				if (fragment.getFragmentUUID().equals(fragmentUUID)) {
 					fragment.setFragmentEnable(false);
+					isHaveFragment = true;
 					break;
 				}
 			}
+			if (isHaveFragment) {
 
-			// 将fragment更新到缓存中
-			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+				// 将fragment更新到缓存中
+				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
 
-			resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
-					"禁用fragment成功", "");
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+						"禁用fragment成功", "");
+			} else {
+				// 如果不是实例fragment，查找模板fragment
+
+				fragmentList = (List<Fragment>) CacheUtil
+						.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE);
+				if (fragmentList == null) {
+					fragmentList = new ArrayList<Fragment>();
+				}
+				fragmentObj = new JSONObject();
+				for (int i = 0; i < fragmentList.size(); i++) {
+
+					Fragment fragment = fragmentList.get(i);
+					if (fragment.getFragmentUUID().equals(fragmentUUID)) {
+						fragment.setFragmentEnable(false);
+						isHaveFragment = true;
+						break;
+					}
+				}
+				// 将模板fragment更新到缓存中
+				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, fragmentList);
+
+				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+						"禁用模板fragment成功", "");
+			}
 
 		}
 		return resultString;
@@ -530,6 +588,7 @@ public class FragmentService {
 			}
 			List<Fragment> fragmentList = (List<Fragment>) CacheUtil
 					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+			boolean isHaveFragment = false;
 			if (fragmentList == null) {
 				fragmentList = new ArrayList<Fragment>();
 			}
@@ -539,15 +598,40 @@ public class FragmentService {
 				Fragment fragment = fragmentList.get(i);
 				if (fragment.getFragmentUUID().equals(fragmentUUID)) {
 					fragment.setFragmentEnable(true);
+					isHaveFragment = true;
 					break;
 				}
 			}
+			if (isHaveFragment) {
+				// 将fragment更新到缓存中
+				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
 
-			// 将fragment更新到缓存中
-			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+						"启用fragment成功", "");
+			} else {
 
-			resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
-					"启用fragment成功", "");
+				fragmentList = (List<Fragment>) CacheUtil
+						.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE);
+				if (fragmentList == null) {
+					fragmentList = new ArrayList<Fragment>();
+				}
+
+				fragmentObj = new JSONObject();
+				for (int i = 0; i < fragmentList.size(); i++) {
+
+					Fragment fragment = fragmentList.get(i);
+					if (fragment.getFragmentUUID().equals(fragmentUUID)) {
+						fragment.setFragmentEnable(true);
+						isHaveFragment = true;
+						break;
+					}
+				}
+				// 将模板fragment更新到缓存中
+				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, fragmentList);
+
+				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
+						"启用模板fragment成功", "");
+			}
 
 		}
 		return resultString;
@@ -872,6 +956,7 @@ public class FragmentService {
 			for (Variable variable : sessionVariableArray) {
 				JSONObject dataObj = new JSONObject();
 				dataObj.put("variableUUID", variable.getVariableUUID());
+				dataObj.put("variableClassId", variable.getVariableClassId());
 				dataObj.put("fragmentUUID", variable.getFragmentUUID());
 				dataObj.put("scenarioUUID", variable.getSceneUUID());
 				dataObj.put("variableName", variable.getVariableName());
@@ -880,8 +965,8 @@ public class FragmentService {
 				dataObj.put("variableFieldType", variable.getVariableFieldType());
 				dataObj.put("variableValue", variable.getVariableValue());
 				dataObj.put("variableScope", variable.getVariableScope());
-				dataObj.put("variableInstanceId", variable.getVariableInstanceId());
 				variableJsonArray.add(dataObj);
+				
 			}
 			fragmentObj.put("variableList", variableJsonArray);
 			// 查询是否已经存在共享记录
@@ -938,6 +1023,7 @@ public class FragmentService {
 			String templateId = parmJb.optString("templateId", "");
 			String fragmentVersion = parmJb.optString("version", "");
 			String desc = parmJb.optString("desc", "");
+			String name = parmJb.optString("name", "");
 
 			if (StringUtil.isNullOrEmpty(templateId) || StringUtil.isNullOrEmpty(fragmentVersion)) {
 
@@ -970,14 +1056,18 @@ public class FragmentService {
 			// String contentString = jGitService.getContentLast(gitPath,
 			// "template.txt");
 			String contentString = jGitService.getContentByVersion(gitPath, fragmentVersion, "template.txt");
-			//Committer lastCommitter = jGitService.getLastCommitter(gitPath);
+			// Committer lastCommitter = jGitService.getLastCommitter(gitPath);
 			JSONObject refJson = new JSONObject().fromObject(contentString);
 
 			Fragment insertFragment = new Fragment();
 			insertFragment.setSceneId(sceneActive.getSceneId());
 			insertFragment.setFragmentTemplateId(refJson.optString("templateId", ""));
 			insertFragment.setFragmentUUID(StringUtil.createFragmentUUID());
-			insertFragment.setFragmentName(refJson.optString("name", ""));
+			if (StringUtil.isNullOrEmpty(name)) {
+				insertFragment.setFragmentName(refJson.optString("name", ""));
+			} else {
+				insertFragment.setFragmentName(name);
+			}
 			insertFragment.setFragmentDesc(desc);
 			insertFragment.setFragmentType(refJson.optString("type", ""));
 			insertFragment.setFragmentObjType("templateInstance");
@@ -1030,12 +1120,12 @@ public class FragmentService {
 				String templateVarString = templateVariableList.get(i);
 				for (int j = 0; j < refVariableArray.size(); j++) {
 					JSONObject reVOj = refVariableArray.getJSONObject(j);
-					if (templateVarString.equals(reVOj.optString("variableUUID", ""))) {
+					if (templateVarString.equals(reVOj.optString("variableClassId", ""))) {
 						Variable insertVariable = new Variable();
 						insertVariable.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
 						insertVariable.setSceneUUID(reVOj.optString("scenarioUUID", ""));
-						insertVariable.setVariableUUID(reVOj.optString("variableUUID", ""));
-						insertVariable.setVariableInstanceId(StringUtil.createVariableUUID());
+						insertVariable.setVariableUUID(StringUtil.createVariableUUID());
+						insertVariable.setVariableClassId(reVOj.optString("variableClassId", ""));
 						insertVariable.setVariableName(reVOj.optString("variableName", ""));
 						insertVariable.setVariableType(reVOj.optString("variableType", ""));
 						insertVariable.setVariableScope(reVOj.optString("variableScope", ""));
@@ -1066,6 +1156,7 @@ public class FragmentService {
 			String templateId = parmJb.optString("templateId", "");
 			String fragmentVersion = parmJb.optString("version", "");
 			String desc = parmJb.optString("desc", "");
+			String name = parmJb.optString("name", "");
 
 			if (StringUtil.isNullOrEmpty(templateId) || StringUtil.isNullOrEmpty(fragmentVersion)) {
 
@@ -1105,7 +1196,11 @@ public class FragmentService {
 			insertFragment.setSceneId(sceneActive.getSceneId());
 			insertFragment.setFragmentTemplateId("");// 实例化模板templateid为空
 			insertFragment.setFragmentUUID(StringUtil.createFragmentUUID());
-			insertFragment.setFragmentName(refJson.optString("name", ""));
+			if (StringUtil.isNullOrEmpty(name)) {
+				insertFragment.setFragmentName(refJson.optString("name", ""));
+			} else {
+				insertFragment.setFragmentName(name);
+			}
 			insertFragment.setFragmentDesc(desc);
 			insertFragment.setFragmentType(refJson.optString("type", ""));
 			insertFragment.setFragmentObjType("directInstance");
@@ -1158,12 +1253,12 @@ public class FragmentService {
 				String templateVarString = templateVariableList.get(i);
 				for (int j = 0; j < refVariableArray.size(); j++) {
 					JSONObject reVOj = refVariableArray.getJSONObject(j);
-					if (templateVarString.equals(reVOj.optString("variableUUID", ""))) {
+					if (templateVarString.equals(reVOj.optString("variableClassId", ""))) {
 						Variable insertVariable = new Variable();
 						insertVariable.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
 						insertVariable.setSceneUUID(reVOj.optString("scenarioUUID", ""));
-						insertVariable.setVariableUUID(reVOj.optString("variableUUID", ""));
-						insertVariable.setVariableInstanceId(StringUtil.createVariableUUID());
+						insertVariable.setVariableUUID(StringUtil.createVariableUUID());
+						insertVariable.setVariableClassId(reVOj.optString("variableClassId", ""));
 						insertVariable.setVariableName(reVOj.optString("variableName", ""));
 						insertVariable.setVariableType(reVOj.optString("variableType", ""));
 						insertVariable.setVariableScope(reVOj.optString("variableScope", ""));
