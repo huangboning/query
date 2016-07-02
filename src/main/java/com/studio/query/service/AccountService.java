@@ -91,11 +91,13 @@ public class AccountService {
 				//设置当前活动场景
 				this.setAccountActiveScene(accountList.get(0), session);
 				// 设置默认scope
-				List<Map<String, String>> indexList = (List<Map<String, String>>) CacheUtil.getCacheObject("mapIndex");
+				List<Map<String, Object>> indexList = (List<Map<String, Object>>) CacheUtil.getCacheObject("mapIndex");
+				//初始化场景未保存
+				session.put(Constants.SCENE_ISDIRTY,false);
 				if (indexList != null) {
-					for (Map<String, String> map : indexList) {
-						String isUndified = (String) map.get("isUnified");
-						if (isUndified.equals("true")) {
+					for (Map<String, Object> map : indexList) {
+						boolean isUndified = (boolean) map.get("isUnified");
+						if (isUndified) {
 							JSONObject setScopeJson = new JSONObject();
 							JSONObject scopeObj = new JSONObject();
 							scopeObj.put("scope", (String) map.get("id"));

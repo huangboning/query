@@ -33,6 +33,9 @@ import net.sf.json.JSONObject;
 public class FragmentService {
 	@Autowired
 	public FragmentDao fragmentDao;
+	@Autowired
+	public SceneService sceneService;
+
 	private List<String> templateVariableList = new ArrayList<String>();
 
 	public List<Fragment> findFragment(Fragment fragment) {
@@ -124,6 +127,8 @@ public class FragmentService {
 			}
 			sessionFragmentList.add(insertFragment);
 			session.put(Constants.KEY_FRAGMENT_ADD, sessionFragmentList);
+			//场景未保存
+			session.put(Constants.SCENE_ISDIRTY,true);
 
 			// int insertResult = fragmentDao.insertFragment(insertFragment);
 			// if (insertResult == 1) {
@@ -251,6 +256,8 @@ public class FragmentService {
 
 			// 将fragment更新到缓存中
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+			//场景未保存
+			session.put(Constants.SCENE_ISDIRTY,true);
 
 			// Fragment updateFragment = fragmentList.get(0);
 			// if (!StringUtil.isNullOrEmpty(fragmentName)) {
@@ -437,6 +444,8 @@ public class FragmentService {
 			}
 			// 将删除fragment更新到缓存中
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+			//场景未保存
+			session.put(Constants.SCENE_ISDIRTY,true);
 
 			// Fragment deleteFragment = fragmentList.get(0);
 			// List<Fragment> sessionFragmentList = (List<Fragment>)
@@ -523,6 +532,9 @@ public class FragmentService {
 				}
 				// 将模板fragment更新到缓存中
 				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, fragmentList);
+				
+				//场景未保存
+				session.put(Constants.SCENE_ISDIRTY,true);
 
 				resultString = StringUtil.packetObject(MethodCode.DISABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 						"禁用模板fragment成功", "");
@@ -629,6 +641,9 @@ public class FragmentService {
 				// 将模板fragment更新到缓存中
 				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, fragmentList);
 
+				//场景未保存
+				session.put(Constants.SCENE_ISDIRTY,true);
+				
 				resultString = StringUtil.packetObject(MethodCode.ENABLE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 						"启用模板fragment成功", "");
 			}
@@ -862,7 +877,7 @@ public class FragmentService {
 		return resultString;
 	}
 
-	// 发布共享fragment版本
+	// 发布模板fragment版本
 	public String releaseTemplate(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
@@ -943,6 +958,16 @@ public class FragmentService {
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
+			// 将scope带入
+			JSONArray scopeObjs = new JSONArray();
+			List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+			if (scopeArray == null) {
+				scopeArray = new ArrayList<String>();
+			}
+			for (String scopeStr : scopeArray) {
+				scopeObjs.add(scopeStr);
+			}
+			fragmentObj.put("scopeList", scopeObjs.toString());
 			// 查看发布的fragment是否有引用变量(不管是否有引用变量统一将变量保存)
 
 			// 获取缓存中变量数组
@@ -966,7 +991,7 @@ public class FragmentService {
 				dataObj.put("variableValue", variable.getVariableValue());
 				dataObj.put("variableScope", variable.getVariableScope());
 				variableJsonArray.add(dataObj);
-				
+
 			}
 			fragmentObj.put("variableList", variableJsonArray);
 			// 查询是否已经存在共享记录
@@ -1102,6 +1127,24 @@ public class FragmentService {
 			fragmentJsonObject.put("version", insertFragment.getFragmentTemplateVersion());
 			fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
 
+			// 重设scope
+			List<String> scopeList = new ArrayList<String>();
+			JSONArray strScopeArray = null;
+			try {
+				strScopeArray = refJson.getJSONArray("scopeList");
+			} catch (Exception e) {
+			}
+			if (strScopeArray != null) {
+				for (int i = 0; i < strScopeArray.size(); i++) {
+
+					String scope = (String) strScopeArray.get(i);
+
+					scopeList.add(scope);
+
+				}
+			}
+			sceneService.resetScope(scopeList, session);
+
 			// 查看实例化模板是否引用变量
 			JSONArray refVariableArray = new JSONArray();
 			try {
@@ -1138,6 +1181,8 @@ public class FragmentService {
 				}
 
 			}
+			//场景未保存
+			session.put(Constants.SCENE_ISDIRTY,true);
 
 			resultString = StringUtil.packetObject(MethodCode.REFERENCE_TEMPLATE, ParameterCode.Result.RESULT_OK,
 					"引用模板成功", fragmentJsonObject.toString());
@@ -1235,6 +1280,24 @@ public class FragmentService {
 			fragmentJsonObject.put("version", insertFragment.getFragmentTemplateVersion());
 			fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
 
+			// 重设scope
+			List<String> scopeList = new ArrayList<String>();
+			JSONArray strScopeArray = null;
+			try {
+				strScopeArray = refJson.getJSONArray("scopeList");
+			} catch (Exception e) {
+			}
+			if (strScopeArray != null) {
+				for (int i = 0; i < strScopeArray.size(); i++) {
+
+					String scope = (String) strScopeArray.get(i);
+
+					scopeList.add(scope);
+
+				}
+			}
+			sceneService.resetScope(scopeList, session);
+
 			// 查看实例化模板是否引用变量
 			JSONArray refVariableArray = new JSONArray();
 			try {
@@ -1272,9 +1335,111 @@ public class FragmentService {
 
 			}
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, sessionVariableArray);
+			//场景未保存
+			session.put(Constants.SCENE_ISDIRTY,true);
 
 			resultString = StringUtil.packetObject(MethodCode.INSTANCE_TEMPLATE, ParameterCode.Result.RESULT_OK,
 					"实例化模板成功", fragmentJsonObject.toString());
+
+		}
+		return resultString;
+	}
+
+	// 更新模板成实例
+	public String transferTemplateInstance(String bodyString, Map<String, Object> session) {
+
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String fragmentId = parmJb.optString("fragmentId", "");
+			String fragmentVersion = parmJb.optString("version", "");
+			String desc = parmJb.optString("desc", "");
+			String name = parmJb.optString("name", "");
+
+			if (StringUtil.isNullOrEmpty(fragmentId)) {
+
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_TEMPLATE,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			// 如果session中没有记录当前场景
+			if (sceneActive == null) {
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_TEMPLATE,
+						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
+				return resultString;
+			}
+			// 读取缓存中的模板fragment数据
+			JGitService jGitService = new JGitService();
+			List<Fragment> fragmentList = (List<Fragment>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+			if (fragmentList == null) {
+				fragmentList = new ArrayList<Fragment>();
+			}
+			List<Fragment> templateFragmentList = (List<Fragment>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE);
+			if (templateFragmentList == null) {
+				templateFragmentList = new ArrayList<Fragment>();
+			}
+			Fragment updateFragment = null;
+			for (int i = 0; i < templateFragmentList.size(); i++) {
+				Fragment templateFragment = templateFragmentList.get(i);
+				if (templateFragment.getFragmentUUID().equals(fragmentId)) {
+					updateFragment = new Fragment();
+					updateFragment.setFragmentTemplateId("");
+					updateFragment.setFragmentUUID(templateFragment.getFragmentUUID());
+					if (!StringUtil.isNullOrEmpty(name)) {
+						updateFragment.setFragmentName(name);
+					} else {
+						updateFragment.setFragmentName(templateFragment.getFragmentName());
+					}
+					updateFragment.setFragmentType(templateFragment.getFragmentType());
+					updateFragment.setFragmentObjType("directInstance");
+					updateFragment.setFragmentEnable(templateFragment.isFragmentEnable());
+					updateFragment.setFragmentActive(templateFragment.isFragmentActive());
+					if (!StringUtil.isNullOrEmpty(desc)) {
+						updateFragment.setFragmentDesc(desc);
+					} else {
+						updateFragment.setFragmentDesc(templateFragment.getFragmentDesc());
+					}
+					updateFragment.setFragmentCreateBy(templateFragment.getFragmentCreateBy());
+					updateFragment.setFragmentDateStr(templateFragment.getFragmentDateStr());
+					updateFragment.setFragmentTemplateVersion(templateFragment.getFragmentTemplateVersion());
+					updateFragment.setFragmentExpression(templateFragment.getFragmentExpression());
+					fragmentList.add(updateFragment);// 添加到实例fragment
+					templateFragmentList.remove(templateFragment);// 从模板fragment移除
+					break;
+				}
+			}
+			if (updateFragment == null) {
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
+						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
+				return resultString;
+			}
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, templateFragmentList);
+
+			JSONObject fragmentJsonObject = new JSONObject();
+
+			fragmentJsonObject.put("templateId", updateFragment.getFragmentTemplateId());
+			fragmentJsonObject.put("instanceId", updateFragment.getFragmentUUID());
+			fragmentJsonObject.put("name", updateFragment.getFragmentName());
+			fragmentJsonObject.put("type", updateFragment.getFragmentType());
+			fragmentJsonObject.put("objectType", updateFragment.getFragmentObjType());
+			fragmentJsonObject.put("enable", updateFragment.isFragmentEnable());
+			fragmentJsonObject.put("active", updateFragment.isFragmentActive());
+			fragmentJsonObject.put("desc", updateFragment.getFragmentDesc());
+			fragmentJsonObject.put("createBy", updateFragment.getFragmentCreateBy());
+			fragmentJsonObject.put("createTime", updateFragment.getFragmentDateStr());
+			fragmentJsonObject.put("version", updateFragment.getFragmentTemplateVersion());
+			fragmentJsonObject.put("expression", updateFragment.getFragmentExpression());
+
+			//场景未保存
+			session.put(Constants.SCENE_ISDIRTY,true);
+			
+			resultString = StringUtil.packetObject(MethodCode.UPDATE_TEMPLATE, ParameterCode.Result.RESULT_OK,
+					"更新模板成实例化成功", fragmentJsonObject.toString());
 
 		}
 		return resultString;

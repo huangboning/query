@@ -185,6 +185,9 @@
 		<action name="getFragments" class="com.studio.query.action.InterfaceAction"
 			method="getFragments">
 		</action>
+		<action name="transferTemplateInstance" class="com.studio.query.action.InterfaceAction"
+			method="transferTemplateInstance">
+		</action>
 	</package>
 	<package name="template" extends="struts-default" namespace="/V1/template">
 		<action name="releaseTemplate" class="com.studio.query.action.InterfaceAction"

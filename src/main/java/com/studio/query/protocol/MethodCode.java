@@ -111,6 +111,10 @@ public class MethodCode {
 	 */
 	public static final String INSTANCE_TEMPLATE = "instanceTemplate";
 	/**
+	 * 实例化模板
+	 */
+	public static final String UPDATE_TEMPLATE = "transferTemplateInstance";
+	/**
 	 * 获取模板列表
 	 */
 	public static final String GET_TEMPLATES = "getTemplates";

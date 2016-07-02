@@ -158,6 +158,8 @@ public class InterfaceAction extends BaseAction {
 						returnString = fragmentService.referenceTemplate(bodyString, session);
 					}else if (methodCode.equals(MethodCode.INSTANCE_TEMPLATE)) {
 						returnString = fragmentService.instanceTemplate(bodyString, session);
+					}else if (methodCode.equals(MethodCode.UPDATE_TEMPLATE)) {
+						returnString = fragmentService.transferTemplateInstance(bodyString, session);
 					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_VARIABLE)) {
 						returnString = variableService.releaseShareVariable(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.GET_TEMPLATE_HISTORY)) {
@@ -376,7 +378,9 @@ public class InterfaceAction extends BaseAction {
 	public void instanceTemplate() {
 		this.execute();
 	}
-
+	public void transferTemplateInstance() {
+		this.execute();
+	}
 	public void getTemplates() {
 		this.execute();
 	}

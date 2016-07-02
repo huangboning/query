@@ -16,6 +16,7 @@ public class Constants {
 	public static String KEY_SCENE_PATH="KEY_SCENE_PATH";
 	public static String SCENE_ACTIVE="SCENE_ACTIVE";
 	public static String SCENE_VERSION="SCENE_VERSION";
+	public static String SCENE_ISDIRTY="SCENE_ISDIRTY";
 	
 	public static String KEY_FRAGMENT_ADD="KEY_FRAGMENT_ADD";
 	public static String KEY_FRAGMENT_UPDATE="KEY_FRAGMENT_UPDATE";

@@ -256,12 +256,12 @@ public class SceneService {
 
 		session.remove(Constants.KEY_SET_SCOPE);
 		List<String> scopeList = new ArrayList<String>();
-		List<Map<String, String>> indexList = (List<Map<String, String>>) CacheUtil.getCacheObject("mapIndex");
+		List<Map<String, Object>> indexList = (List<Map<String, Object>>) CacheUtil.getCacheObject("mapIndex");
 		if (indexList != null) {
-			for (Map<String, String> map : indexList) {
-				String scopeId = map.get("id");
-				String isUnified = map.get("isUnified");
-				if (isUnified.equals("true")) {
+			for (Map<String, Object> map : indexList) {
+				String scopeId = (String) map.get("id");
+				boolean isUnified = (boolean) map.get("isUnified");
+				if (isUnified) {
 					scopeList.add(scopeId);
 				}
 			}
@@ -573,6 +573,10 @@ public class SceneService {
 			variableJsonArray.add(dataObj);
 		}
 		sceneObject.put("variableList", variableJsonArray);
+		
+		//场景是否有数据未保存
+		boolean scenIsDirty=(boolean) session.get(Constants.SCENE_ISDIRTY);
+		sceneObject.put("isDirty", scenIsDirty);
 
 		resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_OK,
 				"获取当前本场景成功", sceneObject.toString());
@@ -806,7 +810,8 @@ public class SceneService {
 				sceneObject.put("sceneActive", true);
 				sceneObject.put("sceneEnable", true);
 			}
-
+			//场景未保存
+			session.put(Constants.SCENE_ISDIRTY,false);
 			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "更新场景成功",
 					sceneObject.toString());
 

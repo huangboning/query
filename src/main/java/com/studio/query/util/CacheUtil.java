@@ -64,14 +64,14 @@ public class CacheUtil {
 
 	public void getIndexDocTypes(String path) {
 
-		List<Map<String, String>> indexList = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> indexList = new ArrayList<Map<String, Object>>();
 
 		try {
 			String sourceString = FileUtil.readFile(path);
 			JSONObject sourceObj = JSONObject.fromObject(sourceString);
 			JSONArray indexDefArray = sourceObj.getJSONArray("result");
 			for (int i = 0; i < indexDefArray.size(); i++) {
-				Map<String, String> indexMap = new HashMap<String, String>();
+				Map<String, Object> indexMap = new HashMap<String, Object>();
 
 				JSONObject infoObj = indexDefArray.getJSONObject(i);
 				JSONObject indexDefObj = infoObj.getJSONObject("indexDef");
@@ -81,7 +81,7 @@ public class CacheUtil {
 				String indexName = indexDefObj.optString("name", "");
 				String docDefId = indexDocTypeObj.optString("id", "");
 				String docDefName = indexDocTypeObj.optString("name", "");
-				String isUnified = infoObj.optString("isUnified", "");
+				boolean isUnified = infoObj.optBoolean("isUnified", false);
 
 				indexMap.put("id", indexId.concat(".").concat(docDefId));
 				indexMap.put("name", indexName.concat(".").concat(docDefName));
@@ -107,13 +107,13 @@ public class CacheUtil {
 
 	public void getIndexDocTypesES(String sourceString) {
 
-		List<Map<String, String>> indexList = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> indexList = new ArrayList<Map<String, Object>>();
 
 		try {
 			JSONObject sourceObj = JSONObject.fromObject(sourceString);
 			JSONArray indexDefArray = sourceObj.getJSONArray("result");
 			for (int i = 0; i < indexDefArray.size(); i++) {
-				Map<String, String> indexMap = new HashMap<String, String>();
+				Map<String, Object> indexMap = new HashMap<String, Object>();
 
 				JSONObject infoObj = indexDefArray.getJSONObject(i);
 				JSONObject indexDefObj = infoObj.getJSONObject("indexDef");
@@ -123,7 +123,7 @@ public class CacheUtil {
 				String indexName = indexDefObj.optString("name", "");
 				String docDefId = indexDocTypeObj.optString("id", "");
 				String docDefName = indexDocTypeObj.optString("name", "");
-				String isUnified = infoObj.optString("isUnified", "");
+				boolean isUnified = infoObj.optBoolean("isUnified", false);
 
 				indexMap.put("id", indexId.concat(".").concat(docDefId));
 				indexMap.put("name", indexName.concat(".").concat(docDefName));
@@ -149,14 +149,14 @@ public class CacheUtil {
 
 	public void getIndexDocTypesOrigin(String path) {
 
-		List<Map<String, String>> indexList = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> indexList = new ArrayList<Map<String, Object>>();
 
 		try {
 			String sourceString = FileUtil.readFile(path);
 			JSONObject sourceObj = JSONObject.fromObject(sourceString);
 			JSONArray indexDefArray = sourceObj.getJSONArray("result");
 			for (int i = 0; i < indexDefArray.size(); i++) {
-				Map<String, String> indexMap = new HashMap<String, String>();
+				Map<String, Object> indexMap = new HashMap<String, Object>();
 
 				JSONObject infoObj = indexDefArray.getJSONObject(i);
 				JSONObject indexDefObj = infoObj.getJSONObject("indexDef");
@@ -166,7 +166,7 @@ public class CacheUtil {
 				String indexName = indexDefObj.optString("name", "");
 				String docDefId = indexDocTypeObj.optString("id", "");
 				String docDefName = indexDocTypeObj.optString("name", "");
-				String isUnified = infoObj.optString("isUnified", "");
+				boolean isUnified = infoObj.optBoolean("isUnified", false);
 
 				indexMap.put("id", indexId.concat(".").concat(docDefId));
 				indexMap.put("name", indexName.concat(".").concat(docDefName));
@@ -192,13 +192,13 @@ public class CacheUtil {
 
 	public void getIndexDocTypesOriginES(String sourceString) {
 
-		List<Map<String, String>> indexList = new ArrayList<Map<String, String>>();
+		List<Map<String, Object>> indexList = new ArrayList<Map<String, Object>>();
 
 		try {
 			JSONObject sourceObj = JSONObject.fromObject(sourceString);
 			JSONArray indexDefArray = sourceObj.getJSONArray("result");
 			for (int i = 0; i < indexDefArray.size(); i++) {
-				Map<String, String> indexMap = new HashMap<String, String>();
+				Map<String, Object> indexMap = new HashMap<String, Object>();
 
 				JSONObject infoObj = indexDefArray.getJSONObject(i);
 				JSONObject indexDefObj = infoObj.getJSONObject("indexDef");
@@ -208,7 +208,7 @@ public class CacheUtil {
 				String indexName = indexDefObj.optString("name", "");
 				String docDefId = indexDocTypeObj.optString("id", "");
 				String docDefName = indexDocTypeObj.optString("name", "");
-				String isUnified = infoObj.optString("isUnified", "");
+				boolean isUnified = infoObj.optBoolean("isUnified", false);
 
 				indexMap.put("id", indexId.concat(".").concat(docDefId));
 				indexMap.put("name", indexName.concat(".").concat(docDefName));
