@@ -24,7 +24,6 @@
 					<c:if test="${pageNumber != currentPageNumber}">
 						<li><a href="${pageUrl }">${pageNumber}</a></li>
 					</c:if>
-					haha:${currentPageNumber}
 				</p:pages>
 				<p:next>
 					<li><a href="${pageUrl }">[下一页]</a></li>

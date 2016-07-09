@@ -913,8 +913,10 @@ public class FragmentService {
 		if (parmJb != null) {
 			String fragmentUUID = "";
 			String fragmentDesc = "";
+			String fragmentName="";
 			if (Configure.serverVersion == 0) {
 				fragmentUUID = parmJb.optString("fragmentId", "");
+				fragmentName = parmJb.optString("name", "");
 				fragmentDesc = parmJb.optString("desc", "");
 			} else {
 				fragmentUUID = parmJb.optString("fragmentUUID", "");
@@ -946,6 +948,9 @@ public class FragmentService {
 				Fragment temp = fragmentList.get(i);
 				if (temp.getFragmentUUID().equals(fragmentUUID)) {
 					fromFragment = fragmentList.get(i);
+					if(!StringUtil.isNullOrEmpty(fragmentName)){
+						fromFragment.setFragmentName(fragmentName);
+					}
 					if (Configure.serverVersion == 0) {
 						fragmentObj.put("templateId", fromFragment.getFragmentUUID());
 						fragmentObj.put("name", fromFragment.getFragmentName());
