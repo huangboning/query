@@ -260,7 +260,7 @@ public class FragmentService {
 				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
 				// 场景未保存
 				session.put(Constants.SCENE_ISDIRTY, true);
-				
+
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_OK,
 						"更新fragment到缓存成功，请注意在切换场景前保存场景数据。", "");
 			} else {
@@ -913,7 +913,7 @@ public class FragmentService {
 		if (parmJb != null) {
 			String fragmentUUID = "";
 			String fragmentDesc = "";
-			String fragmentName="";
+			String fragmentName = "";
 			if (Configure.serverVersion == 0) {
 				fragmentUUID = parmJb.optString("fragmentId", "");
 				fragmentName = parmJb.optString("name", "");
@@ -948,7 +948,7 @@ public class FragmentService {
 				Fragment temp = fragmentList.get(i);
 				if (temp.getFragmentUUID().equals(fragmentUUID)) {
 					fromFragment = fragmentList.get(i);
-					if(!StringUtil.isNullOrEmpty(fragmentName)){
+					if (!StringUtil.isNullOrEmpty(fragmentName)) {
 						fromFragment.setFragmentName(fragmentName);
 					}
 					if (Configure.serverVersion == 0) {
@@ -988,6 +988,11 @@ public class FragmentService {
 			if (fromFragment == null) {
 				resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE,
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
+				return resultString;
+			}
+			if (this.parseTemplateIsVariable(fromFragment.getFragmentExpression())) {
+				resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE,
+						ParameterCode.Error.RELEASE_TEMPLATE_VALUE, "发布模板不能使用值，请使用变量", "");
 				return resultString;
 			}
 			// 将scope带入
@@ -1511,9 +1516,45 @@ public class FragmentService {
 		// System.out.println("varList size="+varList.size());
 	}
 
+	public boolean parseTemplateIsVariable(String jsonString) {
+		boolean result = false;
+		try {
+			JSONObject expJo = new JSONObject();
+			JSONArray expressArray = new JSONArray();
+			if (jsonString == null) {
+				// jsonString = FileUtil.readFile("E://query3.txt");
+				return result;
+			}
+			expJo = JSONObject.fromObject(jsonString);
+			try {
+				expressArray = expJo.getJSONArray("expressions");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			// System.out.println(expressArray.size());
+
+			String dataType = expJo.optString("dataType", "");
+			if (!StringUtil.isNullOrEmpty(dataType) && dataType.equals("value")) {
+				return true;
+			} else {
+				for (int i = 0; i < expressArray.size(); i++) {
+					expJo = expressArray.getJSONObject(i);
+					result = parseTemplateIsVariable(expJo.toString());
+					if (result) {
+						break;
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	// public static void main(String[] args) {
 	//
 	// FragmentService t = new FragmentService();
-	// t.test(null);
+	// System.out.println(t.parseTemplateIsVariable(null));
 	// }
 }

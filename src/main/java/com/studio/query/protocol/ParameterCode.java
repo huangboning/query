@@ -132,5 +132,9 @@ public class ParameterCode {
 		 * 更新场景-分支名称不合法
 		 */
 		public static final String BRANCH_VALID = "-118";
+		/**
+		 * 发布模板-发布模板不能使用值
+		 */
+		public static final String RELEASE_TEMPLATE_VALUE= "-119";
 	}
 }
