@@ -691,7 +691,8 @@ public class SceneService {
 			JSONArray templateJsonArray = new JSONArray();
 			for (Fragment fragment : sessionTemplateArray) {
 				JSONObject dataObj = new JSONObject();
-				dataObj.put("classId", fragment.getFragmentUUID());
+				dataObj.put("templateId", fragment.getFragmentTemplateId());
+				dataObj.put("version", fragment.getFragmentTemplateVersion());
 				dataObj.put("instanceId", fragment.getFragmentUUID());
 				dataObj.put("fragmentName", fragment.getFragmentName());
 				dataObj.put("fragmentDesc", fragment.getFragmentDesc());

@@ -1200,12 +1200,12 @@ public class FragmentService {
 				String templateVarString = templateVariableList.get(i);
 				for (int j = 0; j < refVariableArray.size(); j++) {
 					JSONObject reVOj = refVariableArray.getJSONObject(j);
-					if (templateVarString.equals(reVOj.optString("variableClassId", ""))) {
+					if (templateVarString.equals(reVOj.optString("variableUUID", ""))) {
 						Variable insertVariable = new Variable();
 						insertVariable.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
 						insertVariable.setSceneUUID(reVOj.optString("scenarioUUID", ""));
 						insertVariable.setVariableUUID(StringUtil.createVariableUUID());
-						insertVariable.setVariableClassId(reVOj.optString("variableClassId", ""));
+						insertVariable.setVariableClassId(reVOj.optString("variableUUID", ""));
 						insertVariable.setVariableName(reVOj.optString("variableName", ""));
 						insertVariable.setVariableType(reVOj.optString("variableType", ""));
 						insertVariable.setVariableScope(reVOj.optString("variableScope", ""));
@@ -1353,12 +1353,12 @@ public class FragmentService {
 				String templateVarString = templateVariableList.get(i);
 				for (int j = 0; j < refVariableArray.size(); j++) {
 					JSONObject reVOj = refVariableArray.getJSONObject(j);
-					if (templateVarString.equals(reVOj.optString("variableClassId", ""))) {
+					if (templateVarString.equals(reVOj.optString("variableUUID", ""))) {
 						Variable insertVariable = new Variable();
 						insertVariable.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
 						insertVariable.setSceneUUID(reVOj.optString("scenarioUUID", ""));
 						insertVariable.setVariableUUID(StringUtil.createVariableUUID());
-						insertVariable.setVariableClassId(reVOj.optString("variableClassId", ""));
+						insertVariable.setVariableClassId(reVOj.optString("variableUUID", ""));
 						insertVariable.setVariableName(reVOj.optString("variableName", ""));
 						insertVariable.setVariableType(reVOj.optString("variableType", ""));
 						insertVariable.setVariableScope(reVOj.optString("variableScope", ""));
@@ -1501,8 +1501,8 @@ public class FragmentService {
 			String dataType = expJo.optString("dataType", "");
 			if (!StringUtil.isNullOrEmpty(dataType) && dataType.equals("variable")) {
 				JSONObject variableJo = expJo.getJSONObject("variable");
-				String variableClassId = variableJo.optString("variableClassId", "");
-				templateVariableList.add(variableClassId);
+				String variableInstanceId = variableJo.optString("variableInstanceId", "");
+				templateVariableList.add(variableInstanceId);
 			} else {
 				for (int i = 0; i < expressArray.size(); i++) {
 					expJo = expressArray.getJSONObject(i);

@@ -59,7 +59,8 @@ public class JsonUtil {
 
 					JSONObject obj = strFragmentArray.getJSONObject(i);
 					Fragment fragment = new Fragment();
-					fragment.setFragmentTemplateId(obj.optString("classId", ""));
+					fragment.setFragmentTemplateId(obj.optString("templateId", ""));
+					fragment.setFragmentTemplateVersion(obj.optString("version", ""));
 					fragment.setFragmentUUID(obj.optString("instanceId", ""));
 					fragment.setFragmentName(obj.optString("fragmentName", ""));
 					fragment.setFragmentDesc(obj.optString("fragmentDesc", ""));
@@ -96,7 +97,7 @@ public class JsonUtil {
 					variable.setVariableUUID(obj.optString("variableUUID", ""));
 					variable.setVariableClassId(obj.optString("variableClassId", ""));
 					variable.setFragmentUUID(obj.optString("fragmentUUID", ""));
-					variable.setSceneUUID(obj.optString("sceneUUID", ""));
+					variable.setSceneUUID(obj.optString("scenarioUUID", ""));
 					variable.setVariableName(obj.optString("variableName", ""));
 					variable.setVariableType(obj.optString("variableType", ""));
 					variable.setVariableValueType(obj.optString("variableValueType", ""));

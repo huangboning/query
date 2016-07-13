@@ -298,7 +298,8 @@ public class QueryService {
 			recCount = parmJb.optInt("recCount", 20);
 		}
 
-		if (Configure.isDevelopment) {
+		//测试添加的，发布版本注意改回来
+		if (!Configure.isDevelopment) {
 
 			executeScenarioString = FileUtil
 					.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
@@ -390,6 +391,9 @@ public class QueryService {
 			}
 			JSONObject queryObj = new JSONObject();
 			JSONObject sceneObj = new JSONObject();
+			sceneObj.put("id", sceneActive.getSceneUUID());
+			sceneObj.put("name", sceneActive.getSceneName());
+			sceneObj.put("desc", sceneActive.getSceneDesc());
 			sceneObj.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
 			sceneObj.put("scope", scopeObjs.toString());
 			// sceneObj.put("name", sceneActive.getSceneName());
@@ -522,7 +526,8 @@ public class QueryService {
 				Variable variable = variableList.get(i);
 				JSONObject dataObj = new JSONObject();
 
-				dataObj.put("variableClassId", variable.getVariableUUID());
+				dataObj.put("variableInstanceId", variable.getVariableUUID());
+				dataObj.put("variableClassId", variable.getVariableClassId());
 				dataObj.put("name", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
 				JSONObject belongObj = new JSONObject();
@@ -532,7 +537,6 @@ public class QueryService {
 				dataObj.put("valueType", variable.getVariableValueType());
 				dataObj.put("fieldType", variable.getVariableFieldType());
 				dataObj.put("value", variable.getVariableValue());
-				dataObj.put("variableInstanceId", "");
 				dataObj.put("variableScope", variable.getVariableScope());
 				variableListArray.add(dataObj);
 
