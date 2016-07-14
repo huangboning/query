@@ -1552,9 +1552,85 @@ public class FragmentService {
 		return result;
 	}
 
-	// public static void main(String[] args) {
-	//
-	// FragmentService t = new FragmentService();
-	// System.out.println(t.parseTemplateIsVariable(null));
-	// }
+	JSONObject testObj = new JSONObject();
+	public List testList = new ArrayList<>();
+
+	public void testTemplateVariableList(String jsonString, String pid) {
+		// String str="";
+		try {
+			JSONObject expJo = new JSONObject();
+			JSONArray expressArray = new JSONArray();
+			if (jsonString == null) {
+				jsonString = FileUtil.readFile("E://test.txt");
+				// return;
+			}
+			expJo = JSONObject.fromObject(jsonString);
+			try {
+				expressArray = expJo.getJSONArray("user");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			// System.out.println(expressArray.size());
+
+			String userName = expJo.optString("name", "");
+			System.out.println(userName);
+			String id = StringUtil.createVariableUUID();
+			expJo.put("id", id);
+			expJo.put("pid", pid);
+			System.out.println("id=" + id + ",pid=" + pid);
+			testList.add(expJo);
+			if (expressArray.size() > 0) {
+				for (int i = 0; i < expressArray.size(); i++) {
+					expJo = expressArray.getJSONObject(i);
+					testTemplateVariableList(expJo.toString(), id);
+				}
+			}
+			// str=expJo.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// System.out.println(str);
+		// return str;
+		// System.out.println("varList size="+varList.size());
+	}
+
+	public List<JSONObject> createMenuTree(List<JSONObject> menuList) {
+		List<JSONObject> nodeList = new ArrayList<JSONObject>();
+		for (JSONObject menu1 : menuList) {
+			boolean mark = false;
+			List childList = new ArrayList<>();
+			for (JSONObject menu2 : menuList) {
+				if (menu1.optString("pid") == menu2.optString("id")) {
+					mark = true;
+					
+					childList.add(menu1);
+					menu2.put("user", childList);
+					break;
+				}
+			}
+			if (!mark) {
+				nodeList.add(menu1);
+			}
+		}
+		return nodeList;
+	}
+
+	public static void main(String[] args) {
+
+		FragmentService t = new FragmentService();
+		t.testTemplateVariableList(null, "root");
+		for (int i = 0; i < t.testList.size(); i++) {
+			System.out.println(t.testList.get(i));
+		}
+		List<JSONObject> nodeList=t.createMenuTree(t.testList);
+		System.out.println(nodeList);
+		// JSONObject originObj =
+		// JSONObject.fromObject("{\"name\":\"hbn\",\"info\":{\"age\":10}}");
+		// JSONObject agObj = originObj.getJSONObject("info");
+		// agObj.put("age", 20);
+		// originObj.put("name", "ca");
+		// System.out.println(agObj.opt("age"));
+		// System.out.println(originObj.toString());
+		// System.out.println(originObj.size());
+	}
 }

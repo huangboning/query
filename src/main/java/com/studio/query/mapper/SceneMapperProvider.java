@@ -22,7 +22,7 @@ public class SceneMapperProvider {
 		if(scene.getSceneEnable()!=1){
 			buffer.append("and a.scene_enable =#{sceneEnable} ");
 		}
-
+		buffer.append(" order by a.scene_date asc ");
 		return buffer.toString();
 	}
 }
