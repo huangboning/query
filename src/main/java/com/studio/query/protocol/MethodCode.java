@@ -65,7 +65,7 @@ public class MethodCode {
 	/**
 	 * 关闭场景版本
 	 */
-	public static final String CLOSE_SCENE= "closeScenario";
+	public static final String CLOSE_SCENE = "closeScenario";
 	/**
 	 * 打开场景版本
 	 */
@@ -126,8 +126,7 @@ public class MethodCode {
 	 * 获取模板某版本
 	 */
 	public static final String GET_TEMPLATE_VERSION = "getTemplateVersion";
-	
-	
+
 	/**
 	 * 禁用共享Fragment
 	 */
@@ -140,7 +139,7 @@ public class MethodCode {
 	 * 获取Fragment列表
 	 */
 	public static final String LIST_FRAGMENT = "getFragments";
-	
+
 	/**
 	 * 创建 变量
 	 */
@@ -185,6 +184,18 @@ public class MethodCode {
 	 * 发布共享变量
 	 */
 	public static final String RELEASE_SHARE_VARIABLE = "releaseShareVariable";
+	/**
+	 * 记事本列表
+	 */
+	public static final String LIST_NOTE = "getNotes";
+	/**
+	 * 更新记事本
+	 */
+	public static final String UPDATE_NOTE = "updateNote";
+	/**
+	 * 删除记事本
+	 */
+	public static final String DELETE_NOTE = "deleteNote";
 
 	/**
 	 * ES接口 getIndexDocTypes 获取数据源列表

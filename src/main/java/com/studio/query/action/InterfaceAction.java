@@ -15,6 +15,7 @@ import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
 import com.studio.query.service.AccountService;
 import com.studio.query.service.FragmentService;
+import com.studio.query.service.NoteService;
 import com.studio.query.service.QueryService;
 import com.studio.query.service.SceneService;
 import com.studio.query.service.VariableService;
@@ -39,6 +40,8 @@ public class InterfaceAction extends BaseAction {
 	public FragmentService fragmentService;
 	@Autowired
 	public VariableService variableService;
+	@Autowired
+	public NoteService noteService;
 	@Autowired
 	public QueryService queryService;
 
@@ -156,9 +159,9 @@ public class InterfaceAction extends BaseAction {
 						returnString = fragmentService.releaseTemplate(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.REFERENCE_TEMPLATE)) {
 						returnString = fragmentService.referenceTemplate(bodyString, session);
-					}else if (methodCode.equals(MethodCode.INSTANCE_TEMPLATE)) {
+					} else if (methodCode.equals(MethodCode.INSTANCE_TEMPLATE)) {
 						returnString = fragmentService.instanceTemplate(bodyString, session);
-					}else if (methodCode.equals(MethodCode.UPDATE_TEMPLATE)) {
+					} else if (methodCode.equals(MethodCode.UPDATE_TEMPLATE)) {
 						returnString = fragmentService.transferTemplateInstance(bodyString, session);
 					} else if (methodCode.equals(MethodCode.RELEASE_SHARE_VARIABLE)) {
 						returnString = variableService.releaseShareVariable(bodyString, currentAccount);
@@ -170,6 +173,12 @@ public class InterfaceAction extends BaseAction {
 						returnString = variableService.getShareVariableHistory(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_VARIABLE_VERSION)) {
 						returnString = variableService.getShareVariableVersion(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.LIST_NOTE)) {
+						returnString = noteService.doListNoteLogic(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.UPDATE_NOTE)) {
+						returnString = noteService.doUpdateNoteLogic(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.DELETE_NOTE)) {
+						returnString = noteService.doDeleteNoteLogic(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_INDEX_DOC_TYPES)) {
 						returnString = queryService.getIndexDocTypes(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_HELP_VALUE)) {
@@ -378,9 +387,11 @@ public class InterfaceAction extends BaseAction {
 	public void instanceTemplate() {
 		this.execute();
 	}
+
 	public void transferTemplateInstance() {
 		this.execute();
 	}
+
 	public void getTemplates() {
 		this.execute();
 	}
@@ -434,6 +445,18 @@ public class InterfaceAction extends BaseAction {
 	}
 
 	public void releaseShareVariable() {
+		this.execute();
+	}
+
+	public void getNotes() {
+		this.execute();
+	}
+
+	public void updateNote() {
+		this.execute();
+	}
+
+	public void deleteNote() {
 		this.execute();
 	}
 

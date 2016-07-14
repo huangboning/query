@@ -117,7 +117,7 @@ public class ParameterCode {
 		 * 查询版本-查询的版本号不存在
 		 */
 		public static final String QUERY_VERSION_NO_EXIST = "-116";
-		
+
 		/**
 		 * 更新场景-需要分支名称
 		 */
@@ -127,7 +127,7 @@ public class ParameterCode {
 		 * 账号登录-账号被禁用
 		 */
 		public static final String ACCOUNT_LOGIN_STATUS = "-117";
-		
+
 		/**
 		 * 更新场景-分支名称不合法
 		 */
@@ -135,6 +135,10 @@ public class ParameterCode {
 		/**
 		 * 发布模板-发布模板不能使用值
 		 */
-		public static final String RELEASE_TEMPLATE_VALUE= "-119";
+		public static final String RELEASE_TEMPLATE_VALUE = "-119";
+		/**
+		 * 查询记事板-查询的记事板不存在
+		 */
+		public static final String QUERY_NOTE_NO_EXIST = "-120";
 	}
 }
