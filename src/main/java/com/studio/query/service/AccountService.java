@@ -14,9 +14,11 @@ import com.studio.query.dao.AccountDao;
 import com.studio.query.dao.SceneDao;
 import com.studio.query.entity.Account;
 import com.studio.query.entity.Scene;
+import com.studio.query.entity.User;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
 import com.studio.query.util.CacheUtil;
+import com.studio.query.util.DateUtil;
 import com.studio.query.util.HistoryUtil;
 import com.studio.query.util.Md5Util;
 import com.studio.query.util.StringUtil;
@@ -40,12 +42,20 @@ public class AccountService {
 		return accountDao.findAccount(account);
 	}
 
+	public List<Account> verifyAccount(Account account) {
+		return accountDao.verifyAccount(account);
+	}
+
 	public int countAccount(Account account) {
 		return accountDao.countAccount(account);
 	}
 
 	public int initPwd(Account account) {
 		return accountDao.initPwd(account);
+	}
+
+	public int updatePwd(Account account) {
+		return accountDao.updatePwd(account);
 	}
 
 	public int enable(Account account) {
@@ -85,15 +95,17 @@ public class AccountService {
 							ParameterCode.Error.ACCOUNT_LOGIN_STATUS, "登录失败，帐号已经被禁用。", "");
 					return resultString;
 				}
+				JSONObject accountJson = new JSONObject();
+				accountJson.put("needset", accountList.get(0).getAccountPwdStatus() == -1 ? true : false);
 				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_OK, "登录成功",
-						"");
+						accountJson.toString());
 				session.put(Configure.systemSessionAccount, accountList.get(0));
-				//设置当前活动场景
+				// 设置当前活动场景
 				this.setAccountActiveScene(accountList.get(0), session);
 				// 设置默认scope
 				List<Map<String, Object>> indexList = (List<Map<String, Object>>) CacheUtil.getCacheObject("mapIndex");
-				//初始化场景未保存
-				session.put(Constants.SCENE_ISDIRTY,false);
+				// 初始化场景未保存
+				session.put(Constants.SCENE_ISDIRTY, false);
 				if (indexList != null) {
 					for (Map<String, Object> map : indexList) {
 						boolean isUndified = (boolean) map.get("isUnified");
@@ -212,6 +224,66 @@ public class AccountService {
 		session.remove(Constants.SCENE_VERSION);
 		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGOUT, ParameterCode.Result.RESULT_OK, "", "");
 
+		return resultString;
+	}
+
+	public String doAccountInfoLogic(String bodyString, Account currentAccount, Map<String, Object> session) {
+
+		String resultString = null;
+
+		JSONObject accountJson = new JSONObject();
+		accountJson.put("accountName", currentAccount.getAccountName());
+		accountJson.put("accountEmail", currentAccount.getAccountEmail());
+		accountJson.put("accountStatus", currentAccount.getAccountStatus() == 0 ? "正常" : "禁用");
+		accountJson.put("accountDate", DateUtil.dateTimeFormat(currentAccount.getAccountDate()));
+		accountJson.put("needset", currentAccount.getAccountPwdStatus() == -1 ? true : false);
+		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_INFO, ParameterCode.Result.RESULT_OK, "获取用户信息成功",
+				accountJson.toString());
+
+		return resultString;
+	}
+
+	public String doAccountPwdUpdateLogic(String bodyString, Account currentAccount, Map<String, Object> session) {
+
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String oldPassword = parmJb.optString("oldPassword", "");
+			String newPassword = parmJb.optString("newPassword", "");
+			if (StringUtil.isNullOrEmpty(oldPassword) || StringUtil.isNullOrEmpty(newPassword)) {
+
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_PWD_UPDATE,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			oldPassword = oldPassword.trim();
+			newPassword = newPassword.trim();
+			if (!Md5Util.md5Encode(oldPassword).equals(currentAccount.getAccountPassword())) {
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_PWD_UPDATE,
+						ParameterCode.Error.OLD_PASSWORD_VALIDATE, "原始密码错误！", "");
+				return resultString;
+			}
+			Account updateAccount = new Account();
+			updateAccount.setAccountId(currentAccount.getAccountId());
+			updateAccount.setAccountPassword(Md5Util.md5Encode(newPassword));
+			int result = this.updatePwd(updateAccount);
+			if (result == 1) {
+				JSONObject accountJson = new JSONObject();
+				accountJson.put("accountName", currentAccount.getAccountName());
+				accountJson.put("accountEmail", currentAccount.getAccountEmail());
+				accountJson.put("accountStatus", currentAccount.getAccountStatus() == 0 ? "正常" : "禁用");
+				accountJson.put("accountDate", DateUtil.dateTimeFormat(currentAccount.getAccountDate()));
+				accountJson.put("needset", currentAccount.getAccountPwdStatus() == -1 ? true : false);
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_PWD_UPDATE, ParameterCode.Result.RESULT_OK,
+						"更新用户密码成功", accountJson.toString());
+			} else {
+				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_PWD_UPDATE,
+						ParameterCode.Error.SERVICE_RESOLVE, "更新用户密码失败！", "");
+				return resultString;
+			}
+
+		}
 		return resultString;
 	}
 

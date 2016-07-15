@@ -5,10 +5,32 @@
 <struts>
 	<constant name="struts.devMode" value="true" />
 
-	<package name="authority" extends="struts-default">
+	<package name="accountAuthority" extends="struts-default">
 		<interceptors>
 			<!--定义一个名为authority的拦截器 -->
-			<interceptor class="com.studio.query.common.AuthorityInterceptor"
+			<interceptor class="com.studio.query.common.AccountAuthorityInterceptor"
+				name="authority" />
+			<!--定义一个包含权限检查的拦截器栈 -->
+			<interceptor-stack name="mydefault">
+				<!--配置内建默认拦截器 -->
+				<interceptor-ref name="defaultStack" />
+				<!--配置自定义的拦截器 -->
+				<interceptor-ref name="authority" />
+
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="mydefault" />
+
+		<!--定义全局Result -->
+		<global-results>
+			<result name="login" type="redirect">/page/author.jsp</result>
+		</global-results>
+	</package>
+	<package name="userAuthority" extends="struts-default">
+		<interceptors>
+			<!--定义一个名为authority的拦截器 -->
+			<interceptor class="com.studio.query.common.UserAuthorityInterceptor"
 				name="authority" />
 			<!--定义一个包含权限检查的拦截器栈 -->
 			<interceptor-stack name="mydefault">
@@ -27,7 +49,6 @@
 			<result name="login" type="redirect">/page/login.jsp</result>
 		</global-results>
 	</package>
-
 	<package name="default" extends="struts-default">
 		<action name="login" class="com.studio.query.action.UserAction"
 			method="userLogin">
@@ -40,15 +61,22 @@
 			<result name="error">/page/error.jsp</result>
 		</action>
 	</package>
-	<package name="user" extends="authority" namespace="/user">
+	<package name="user" extends="userAuthority" namespace="/user">
 		<action name="info" class="com.studio.query.action.UserAction"
 			method="userInfo">
 			<result name="success">/page/info.jsp</result>
 			<result name="error">/page/error.jsp</result>
 		</action>
-
-	</package>
-	<package name="account" extends="authority" namespace="/account">
+		<action name="updatePwd" class="com.studio.query.action.UserAction"
+			method="updatePwd">
+			<result name="success">/page/success.jsp</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
+		<action name="addAccount" class="com.studio.query.action.AccountAction"
+			method="addAccount">
+			<result name="success">/page/success.jsp</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
 		<action name="list" class="com.studio.query.action.AccountAction"
 			method="listAccount">
 			<result name="success">/page/accountList.jsp</result>
@@ -56,18 +84,27 @@
 		</action>
 		<action name="initPwd" class="com.studio.query.action.AccountAction"
 			method="initPwd">
-			<result name="success" type="redirectAction">/account/list</result>
+			<result name="success">/page/success.jsp</result>
 			<result name="error">/page/error.jsp</result>
 		</action>
 		<action name="enable" class="com.studio.query.action.AccountAction"
 			method="enable">
-			<result name="success" type="redirectAction">/account/list</result>
+			<result name="success" type="redirectAction">list</result>
 			<result name="error">/page/error.jsp</result>
 		</action>
 		<action name="disable" class="com.studio.query.action.AccountAction"
 			method="disable">
-			<result name="success" type="redirectAction">/account/list</result>
+			<result name="success" type="redirectAction">list</result>
 			<result name="error">/page/error.jsp</result>
+		</action>
+	</package>
+	<package name="account" extends="struts-default" namespace="/V1/account">
+
+		<action name="accountInfo" class="com.studio.query.action.InterfaceAction"
+			method="accountInfo">
+		</action>
+		<action name="accountPwdUpdate" class="com.studio.query.action.InterfaceAction"
+			method="accountPwdUpdate">
 		</action>
 	</package>
 	<package name="service" extends="struts-default" namespace="/V1">
@@ -192,6 +229,9 @@
 	<package name="note" extends="struts-default" namespace="/V1/note">
 		<action name="getNotes" class="com.studio.query.action.InterfaceAction"
 			method="getNotes">
+		</action>
+		<action name="addNote" class="com.studio.query.action.InterfaceAction"
+			method="addNote">
 		</action>
 		<action name="updateNote" class="com.studio.query.action.InterfaceAction"
 			method="updateNote">

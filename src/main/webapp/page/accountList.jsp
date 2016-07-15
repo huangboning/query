@@ -32,8 +32,11 @@
 			style="width: 980px; height: 30px; color: white; background-color: #316294; margin-top: 20px;">
 			<div style="padding-top: 5px; padding-left: 5px;">用户管理</div>
 		</div>
+		<div style="height: 30px; background-color:; margin-top: 10px;">
+			<a href="<%=path%>/page/accountAdd.jsp">新增用户</a>&nbsp;&nbsp;
+		</div>
 		<div style="margin-top: 10px;">
-			<form id="search_form" action="<%=path%>/account/list" method="post">
+			<form id="search_form" action="<%=path%>/user/list" method="post">
 
 				用户名称： <input type="text" name="searchAccount.accountName"
 					style="width: 120px; height: 19px;"
@@ -67,7 +70,7 @@
 		<table class="stripe">
 			<tr>
 				<th>序号</th>
-				<th>用户名称</th>
+				<th>用户账号</th>
 				<th>用户邮件</th>
 				<th>用户状态</th>
 				<th>创建时间</th>
@@ -87,15 +90,15 @@
 						</c:if></td>
 					<td><s:date format="yyyy-MM-dd HH:mm:ss" name="#a.accountDate"></s:date></td>
 					<td><a
-						href="<%=path%>/account/initPwd?searchAccount.accountId=${a.accountId}"
+						href="<%=path%>/user/initPwd?searchAccount.accountId=${a.accountId}"
 						onclick="return confirm('请谨慎操作，确定要初始化该用户密码？')">初始密码</a>&nbsp;|&nbsp;
 						<c:if test="${a.accountStatus==-1}">
 							<a
-								href="<%=path%>/account/enable?searchAccount.accountId=${a.accountId}"
+								href="<%=path%>/user/enable?searchAccount.accountId=${a.accountId}"
 								onclick="return confirm('请谨慎操作，确定启用该用户吗？')">启用</a>
 						</c:if> <c:if test="${a.accountStatus==0}">
 							<a
-								href="<%=path%>/account/disable?searchAccount.accountId=${a.accountId}"
+								href="<%=path%>/user/disable?searchAccount.accountId=${a.accountId}"
 								onclick="return confirm('请谨慎操作，确定禁用该用户吗？')">禁用</a>
 						</c:if></td>
 				</tr>

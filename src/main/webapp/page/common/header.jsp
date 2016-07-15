@@ -23,29 +23,17 @@
 		</div>
 	</div>
 </div>
-<c:if test="${peking_user!=null}">
+<c:if test="${zq_query_user!=null}">
 	<div
 		style="width: 980px; height: 50px; margin-right: auto; margin-left: auto; background-color: #f1eeee">
 		<div>&nbsp;</div>
 		<div>
 
 			<div style="width: 80px; height: 25px; float: left;">
-				<a href="<%=path%>/account/info.do">帐号信息</a>
+				<a href="<%=path%>/user/info">帐号管理</a>
 			</div>
 			<div style="width: 80px; height: 25px; float: left;">
-				<a href="<%=path%>/account/listNews.do">校园热门</a>
-			</div>
-			<div style="width: 80px; height: 25px; float: left;">
-				<a href="<%=path%>/account/listShow.do">精彩北大</a>
-			</div>
-			<div style="width: 95px; height: 25px; float: left;">
-				<a href="<%=path%>/account/listTriangle.do">三角地在线</a>
-			</div>
-			<div style="width: 80px; height: 25px; float: left;">
-				<a href="<%=path%>/account/listRssType.do">公众平台</a>
-			</div>
-			<div style="width: 80px; height: 25px; float: left;">
-				<a href="<%=path%>/account/listBbsType.do">BBS</a>
+				<a href="<%=path%>/user/list">用户管理</a>
 			</div>
 		</div>
 	</div>

@@ -140,5 +140,9 @@ public class ParameterCode {
 		 * 查询记事板-查询的记事板不存在
 		 */
 		public static final String QUERY_NOTE_NO_EXIST = "-120";
+		/**
+		 * 原始密码错误
+		 */
+		public static final String OLD_PASSWORD_VALIDATE = "-121";
 	}
 }

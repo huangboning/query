@@ -67,6 +67,32 @@ public class NoteService {
 		return resultString;
 	}
 
+	public String doAddNoteLogic(String bodyString, Account currentAccount, Map<String, Object> session) {
+
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String noteTitle = parmJb.optString("title", "");
+			String noteContent = parmJb.optString("content", "");
+
+			if (StringUtil.isNullOrEmpty(noteContent)) {
+
+				resultString = StringUtil.packetObject(MethodCode.ADD_NOTE, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
+				return resultString;
+			}
+			Note addNote = new Note();
+			addNote.setAccountId(currentAccount.getAccountId());
+			addNote.setNoteTitle(noteTitle);
+			addNote.setNoteContent(noteContent);
+			noteDao.insertNote(addNote);
+
+			resultString = StringUtil.packetObject(MethodCode.ADD_NOTE, ParameterCode.Result.RESULT_OK, "添加记事板成功。", "");
+		}
+		return resultString;
+	}
+
 	public String doUpdateNoteLogic(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
@@ -89,6 +115,7 @@ public class NoteService {
 			if (!StringUtil.isNullOrEmpty(noteTitle)) {
 				updateNote.setNoteTitle(noteTitle);
 			}
+			updateNote.setNoteContent(noteContent);
 			int result = noteDao.updateNote(updateNote);
 			if (result != 1) {
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_NOTE, ParameterCode.Error.QUERY_NOTE_NO_EXIST,
@@ -137,7 +164,7 @@ public class NoteService {
 				return resultString;
 			}
 
-			resultString = StringUtil.packetObject(MethodCode.UPDATE_NOTE, ParameterCode.Result.RESULT_OK, "删除记事板成功。",
+			resultString = StringUtil.packetObject(MethodCode.DELETE_NOTE, ParameterCode.Result.RESULT_OK, "删除记事板成功。",
 					"");
 		}
 		return resultString;

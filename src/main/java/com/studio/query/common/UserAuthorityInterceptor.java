@@ -5,7 +5,7 @@ import java.util.Map;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
-public class AuthorityInterceptor extends AbstractInterceptor {
+public class UserAuthorityInterceptor extends AbstractInterceptor {
 	private static final long serialVersionUID = 1358600090729208361L;
 
 	@Override

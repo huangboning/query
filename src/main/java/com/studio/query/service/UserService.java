@@ -28,7 +28,7 @@ public class UserService {
 		return userDao.insertUser(user);
 	}
 
-	public int updateUser(User user) {
-		return userDao.updateUser(user);
+	public int updatePwd(User user) {
+		return userDao.updatePwd(user);
 	}
 }

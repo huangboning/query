@@ -173,8 +173,14 @@ public class InterfaceAction extends BaseAction {
 						returnString = variableService.getShareVariableHistory(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.GET_SHARE_VARIABLE_VERSION)) {
 						returnString = variableService.getShareVariableVersion(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.ACCOUNT_INFO)) {
+						returnString = accountService.doAccountInfoLogic(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.ACCOUNT_PWD_UPDATE)) {
+						returnString = accountService.doAccountPwdUpdateLogic(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.LIST_NOTE)) {
 						returnString = noteService.doListNoteLogic(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.ADD_NOTE)) {
+						returnString = noteService.doAddNoteLogic(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.UPDATE_NOTE)) {
 						returnString = noteService.doUpdateNoteLogic(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.DELETE_NOTE)) {
@@ -448,7 +454,19 @@ public class InterfaceAction extends BaseAction {
 		this.execute();
 	}
 
+	public void accountInfo() {
+		this.execute();
+	}
+
+	public void accountPwdUpdate() {
+		this.execute();
+	}
+
 	public void getNotes() {
+		this.execute();
+	}
+
+	public void addNote() {
 		this.execute();
 	}
 

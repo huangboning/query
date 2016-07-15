@@ -15,6 +15,7 @@ import com.studio.query.mapper.AccountMapperProvider;
 public interface AccountDao {
 	@Results(value = { @Result(column = "account_id", property = "accountId"),
 			@Result(column = "account_status", property = "accountStatus"),
+			@Result(column = "account_pwd_status", property = "accountPwdStatus"),
 			@Result(column = "account_number", property = "accountNumber"),
 			@Result(column = "account_name", property = "accountName"),
 			@Result(column = "account_email", property = "accountEmail"),
@@ -31,6 +32,7 @@ public interface AccountDao {
 
 	@Results(value = { @Result(column = "account_id", property = "accountId"),
 			@Result(column = "account_status", property = "accountStatus"),
+			@Result(column = "account_pwd_status", property = "accountPwdStatus"),
 			@Result(column = "account_number", property = "accountNumber"),
 			@Result(column = "account_name", property = "accountName"),
 			@Result(column = "account_email", property = "accountEmail"),
@@ -43,11 +45,14 @@ public interface AccountDao {
 	@SelectProvider(type = AccountMapperProvider.class, method = "countAccount")
 	public int countAccount(Account account);
 
-	@Insert("insert into t_account(account_name,account_password,account_number,account_email,account_repository,account_date)values(#{accountName},#{accountPassword},#{accountNumber},#{accountEmail},#{accountRepository},now())")
+	@Insert("insert into t_account(account_name,account_password,account_number,account_email,account_repository,account_pwd_status,account_date)values(#{accountName},#{accountPassword},#{accountNumber},#{accountEmail},#{accountRepository},#{accountPwdStatus},now())")
 	public int insertAccount(Account account);
 
-	@Update("update t_account set account_password='e10adc3949ba59abbe56e057f20f883e' where account_id=#{accountId}")
+	@Update("update t_account set account_password=#{accountPassword},account_pwd_status=-1 where account_id=#{accountId}")
 	public int initPwd(Account account);
+	
+	@Update("update t_account set account_password=#{accountPassword},account_pwd_status=0 where account_id=#{accountId}")
+	public int updatePwd(Account account);
 
 	@Update("update t_account set account_status=0 where account_id=#{accountId}")
 	public int enable(Account account);

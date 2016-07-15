@@ -31,27 +31,27 @@
 			<div style="padding-top: 5px; padding-left: 5px;">帐号信息</div>
 		</div>
 		<div style="height: 30px; background-color:; margin-top: 10px;">
-			<a href="<%=path%>/page/pwd.jsp">修改密码</a>&nbsp;&nbsp;
+			<a href="#">信息修改</a>&nbsp;&nbsp;
+
 		</div>
 		<table style="border: 0; width: 980px; background-color: #e6e6e6">
 			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户帐户</td>
-				<td style="width: 35%;">${userInfo.userAccount}</td>
-				<td style="background-color: #f1eeee; width: 15%;">用户名称</td>
+				<td style="background-color: #f1eeee; width: 15%;">真实姓名</td>
 				<td style="width: 35%;">${userInfo.userName}</td>
-			</tr>
-			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户角色</td>
-				<td style="width: 35%;"></td>
-				<td style="background-color: #f1eeee; width: 15%;">用户状态</td>
+				<td style="background-color: #f1eeee; width: 15%;">手机</td>
 				<td style="width: 35%;"></td>
 			</tr>
 			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户邮箱</td>
+				<td style="background-color: #f1eeee; width: 15%;">地址</td>
 				<td style="width: 35%;"></td>
-				<td style="background-color: #f1eeee; width: 15%;">创建时间</td>
-				<td style="width: 35%;"><fmt:formatDate
-						value="${userInfo.userDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+				<td style="background-color: #f1eeee; width: 15%;">学校</td>
+				<td style="width: 35%;"></td>
+			</tr>
+			<tr style="background-color: #ffffff; height: 40px;">
+				<td style="background-color: #f1eeee; width: 15%;">email</td>
+				<td style="width: 35%;"></td>
+				<td style="background-color: #f1eeee; width: 15%;">角色</td>
+				<td style="width: 35%;"></td>
 			</tr>
 
 		</table>

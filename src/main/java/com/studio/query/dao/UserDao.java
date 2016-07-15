@@ -28,7 +28,7 @@ public interface UserDao {
 	@Insert("insert into t_user(user_name,user_account,user_password,user_date) values(#{userName},#{userAccount},#{userPassword},now())")
 	public int insertUser(User user);
 
-	@Update("update t_user set user_name=#{userName},user_password=#{userPassword} where user_id=#{userId}")
-	public int updateUser(User user);
+	@Update("update t_user set user_password=#{userPassword} where user_id=#{userId}")
+	public int updatePwd(User user);
 
 }

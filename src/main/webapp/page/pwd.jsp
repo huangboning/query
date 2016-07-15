@@ -28,33 +28,45 @@
 	<div id="div_center">
 		<div
 			style="width: 980px; height: 30px; color: white; background-color: #316294; margin-top: 20px;">
-			<div style="padding-top: 5px; padding-left: 5px;">帐号信息</div>
+			<div style="padding-top: 5px; padding-left: 5px;">修改密码</div>
 		</div>
-		<div style="height: 30px; background-color:; margin-top: 10px;">
-			<a href="<%=path%>/page/pwd.jsp">修改密码</a>&nbsp;&nbsp;
-		</div>
-		<table style="border: 0; width: 980px; background-color: #e6e6e6">
-			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户帐户</td>
-				<td style="width: 35%;">${userInfo.userAccount}</td>
-				<td style="background-color: #f1eeee; width: 15%;">用户名称</td>
-				<td style="width: 35%;">${userInfo.userName}</td>
-			</tr>
-			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户角色</td>
-				<td style="width: 35%;"></td>
-				<td style="background-color: #f1eeee; width: 15%;">用户状态</td>
-				<td style="width: 35%;"></td>
-			</tr>
-			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户邮箱</td>
-				<td style="width: 35%;"></td>
-				<td style="background-color: #f1eeee; width: 15%;">创建时间</td>
-				<td style="width: 35%;"><fmt:formatDate
-						value="${userInfo.userDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-			</tr>
-
-		</table>
+		<form id="form1" name="form1" method="post"
+			action="<%=path%>/user/updatePwd">
+			<table id="login_table">
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>原始密码：</td>
+					<td><input value="" type="password" name="oldPassword"
+						id="oldPassword" class="input_on" /></td>
+				</tr>
+				<tr>
+					<td>用户密码：</td>
+					<td><input value="" type="password" name="newPassword"
+						id="newPassword" class="input_on" /></td>
+				</tr>
+				<tr>
+					<td>确认密码：</td>
+					<td><input value="" type="password" name="confirmPassword"
+						id="confirmPassword" class="input_on" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><span id="userAccountValid"
+						style="color: red;"></span></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="修改" class="common_btn" /></td>
+					<td><input type="button" onclick="history.go(-1)" value="返回"
+						class="common_btn" /></td>
+				</tr>
+			</table>
+		</form>
 	</div>
 </body>
 </html>

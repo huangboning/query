@@ -1,7 +1,7 @@
 package com.studio.query.util;
 
 import java.util.Calendar;
-import java.util.Map;
+import java.util.Random;
 
 import net.sf.json.JSONObject;
 
@@ -91,5 +91,11 @@ public class StringUtil {
 		String shareVariableGit = String.valueOf(Calendar.getInstance().getTimeInMillis());
 		return shareVariableGit;
 
+	}
+
+	public static String createPassword() {
+		int randomInt = new Random().nextInt(999999);
+		String randomString = String.valueOf(randomInt);
+		return randomString;
 	}
 }

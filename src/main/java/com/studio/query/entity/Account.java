@@ -7,6 +7,7 @@ import com.studio.query.common.Pager;
 public class Account extends Pager {
 	private int accountId;
 	private int accountStatus = 1;// 表示查询所有帐户
+	private int accountPwdStatus;
 	private String accountNumber;
 	private String accountPassword;
 	private String accountName;
@@ -16,6 +17,8 @@ public class Account extends Pager {
 
 	private String beginDate;
 	private String endDate;
+
+	private String confirmPassword;
 
 	public int getAccountId() {
 		return accountId;
@@ -31,6 +34,14 @@ public class Account extends Pager {
 
 	public void setAccountStatus(int accountStatus) {
 		this.accountStatus = accountStatus;
+	}
+
+	public int getAccountPwdStatus() {
+		return accountPwdStatus;
+	}
+
+	public void setAccountPwdStatus(int accountPwdStatus) {
+		this.accountPwdStatus = accountPwdStatus;
 	}
 
 	public String getAccountNumber() {
@@ -95,6 +106,14 @@ public class Account extends Pager {
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 }

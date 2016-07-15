@@ -12,6 +12,8 @@ import com.studio.query.entity.Account;
 import com.studio.query.entity.JsonResult;
 import com.studio.query.entity.User;
 import com.studio.query.service.UserService;
+import com.studio.query.util.Md5Util;
+import com.studio.query.util.StringUtil;
 
 import net.sf.json.JSONObject;
 
@@ -26,6 +28,9 @@ public class UserAction extends BaseAction {
 	private static final long serialVersionUID = 1L;
 	private String userAccount;
 	private String userPassword;
+	private String oldPassword;
+	private String newPassword;
+	private String confirmPassword;
 	private User userInfo = new User();
 	private User searchUser = new User();
 	private List<User> userList = new ArrayList<User>();
@@ -48,7 +53,7 @@ public class UserAction extends BaseAction {
 			if (userList.size() == 1) {
 				session.put(Configure.systemSessionUser, userList.get(0));
 				result.code = 0;
-				result.result = request.getContextPath() + "/account/list";
+				result.result = request.getContextPath() + "/user/info";
 			} else {
 				result.code = 1;
 				result.result = "用户名或密码错误！";
@@ -87,6 +92,38 @@ public class UserAction extends BaseAction {
 
 	}
 
+	public String updatePwd() {
+		userInfo = (User) session.get(Configure.systemSessionUser);
+		if (StringUtil.isNullOrEmpty(this.getOldPassword().trim())
+				|| StringUtil.isNullOrEmpty(this.getNewPassword().trim())
+				|| StringUtil.isNullOrEmpty(this.getConfirmPassword().trim())) {
+			this.setMessage("请将信息填写完整！");
+			return ERROR;
+		} else {
+
+			if (!this.getNewPassword().trim().equals(this.getConfirmPassword().trim())) {
+				this.setMessage("两次密码输入不一致！");
+				return ERROR;
+			} else {
+				if (!Md5Util.md5Encode(this.getOldPassword().trim()).equals(userInfo.getUserPassword())) {
+					this.setMessage("原始密码错误！");
+					return ERROR;
+				}
+				User updateUser = new User();
+				updateUser.setUserId(userInfo.getUserId());
+				updateUser.setUserPassword(Md5Util.md5Encode(this.getNewPassword().trim()));
+				int result = userService.updatePwd(updateUser);
+				if (result == 1) {
+					this.setMessage("修改密码成功！");
+					return SUCCESS;
+				} else {
+					this.setMessage("操作失败！");
+					return ERROR;
+				}
+			}
+		}
+
+	}
 	public String listUser() {
 		searchUser.setOffset(pager.getOffset());
 		searchUser.setLimit(pager.getLimit());
@@ -133,6 +170,30 @@ public class UserAction extends BaseAction {
 
 	public void setUserInfo(User userInfo) {
 		this.userInfo = userInfo;
+	}
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 }

@@ -185,9 +185,21 @@ public class MethodCode {
 	 */
 	public static final String RELEASE_SHARE_VARIABLE = "releaseShareVariable";
 	/**
+	 * 用户信息
+	 */
+	public static final String ACCOUNT_INFO = "accountInfo";
+	/**
+	 * 用户更新密码
+	 */
+	public static final String ACCOUNT_PWD_UPDATE = "accountPwdUpdate";
+	/**
 	 * 记事本列表
 	 */
 	public static final String LIST_NOTE = "getNotes";
+	/**
+	 * 添加记事本
+	 */
+	public static final String ADD_NOTE = "addNote";
 	/**
 	 * 更新记事本
 	 */

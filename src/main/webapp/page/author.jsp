@@ -28,33 +28,10 @@
 	<div id="div_center">
 		<div
 			style="width: 980px; height: 30px; color: white; background-color: #316294; margin-top: 20px;">
-			<div style="padding-top: 5px; padding-left: 5px;">帐号信息</div>
+			<div style="padding-top: 5px; padding-left: 5px;">错误信息</div>
 		</div>
 		<div style="height: 30px; background-color:; margin-top: 10px;">
-			<a href="<%=path%>/page/pwd.jsp">修改密码</a>&nbsp;&nbsp;
-		</div>
-		<table style="border: 0; width: 980px; background-color: #e6e6e6">
-			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户帐户</td>
-				<td style="width: 35%;">${userInfo.userAccount}</td>
-				<td style="background-color: #f1eeee; width: 15%;">用户名称</td>
-				<td style="width: 35%;">${userInfo.userName}</td>
-			</tr>
-			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户角色</td>
-				<td style="width: 35%;"></td>
-				<td style="background-color: #f1eeee; width: 15%;">用户状态</td>
-				<td style="width: 35%;"></td>
-			</tr>
-			<tr style="background-color: #ffffff; height: 40px;">
-				<td style="background-color: #f1eeee; width: 15%;">用户邮箱</td>
-				<td style="width: 35%;"></td>
-				<td style="background-color: #f1eeee; width: 15%;">创建时间</td>
-				<td style="width: 35%;"><fmt:formatDate
-						value="${userInfo.userDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-			</tr>
-
-		</table>
+			无权限操作！</div>
 	</div>
 </body>
 </html>
