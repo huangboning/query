@@ -299,7 +299,7 @@ public class QueryService {
 		}
 
 		//测试添加的，发布版本注意改回来
-		if (!Configure.isDevelopment) {
+		if (Configure.isDevelopment) {
 
 			executeScenarioString = FileUtil
 					.readFile(Configure.rootPath + "/WEB-INF/classes/demo_execute_scenario.txt");
@@ -424,7 +424,9 @@ public class QueryService {
 				// }
 
 			}
-			sceneObj.put("fragmentList", fragmentListArray);
+			//变更，templateFragmentList加入到fragmentList中，用objtype区分
+			//sceneObj.put("fragmentList", fragmentListArray);
+			
 			// queryObj.put("scenario", sceneObj.toString());
 
 			for (int i = 0; i < fragmentList.size(); i++) {
@@ -443,7 +445,8 @@ public class QueryService {
 				// }
 
 			}
-			queryObj.put("fragments", fragmentsMap);
+			//变更，templateFragmentList加入到fragmentList中，用objtype区分
+			//queryObj.put("fragments", fragmentsMap);
 
 			JSONArray fragmentTemplateListArray = new JSONArray();
 			Map<String, Object> fragmentTemplatesMap = new HashMap<String, Object>();
@@ -466,11 +469,15 @@ public class QueryService {
 				dataObj.put("enable", fragment.isFragmentEnable());
 				dataObj.put("version", fragment.getFragmentTemplateVersion());
 				// if (fragment.isFragmentEnable()) {
-				fragmentTemplateListArray.add(dataObj);
+				//变更，templateFragmentList加入到fragmentList中，用objtype区分
+				//fragmentTemplateListArray.add(dataObj);
+				fragmentListArray.add(dataObj);
 				// }
 
 			}
-			sceneObj.put("fragmentTemplateList", fragmentTemplateListArray);
+			//变更，templateFragmentList加入到fragmentList中，用objtype区分
+			//sceneObj.put("fragmentTemplateList", fragmentTemplateListArray);
+			sceneObj.put("fragmentList", fragmentListArray);
 			queryObj.put("scenario", sceneObj.toString());
 
 			for (int i = 0; i < templateFragmentList.size(); i++) {
@@ -484,36 +491,41 @@ public class QueryService {
 				dataObj.put("objectType", fragment.getFragmentObjType());
 				dataObj.put("tags", "[]");
 				dataObj.put("version", fragment.getFragmentTemplateVersion());
-				// 因为是引用模板，这里要根据模板version获取expression
-				try {
-					ShareFragment shareFragment = new ShareFragment();
-					String expressionStr = "";
-					shareFragment.setShareFragmentUUID(fragment.getFragmentTemplateId());
-					List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
-					if (shareFragmentList.size() >= 1) {
-						shareFragment = shareFragmentList.get(0);
-						String gitPath = Configure.gitRepositoryPath + "/" + shareFragment.getAccountRepository() + "/"
-								+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
-						// 获取最新共享fragment内容
-						// String contentString =
-						// jGitService.getContentLast(gitPath,
-						// "template.txt");
-						String contentString = jGitService.getContentByVersion(gitPath,
-								fragment.getFragmentTemplateVersion(), "template.txt");
-						JSONObject refJson = new JSONObject().fromObject(contentString);
-						expressionStr = refJson.optString("expression", "");
-					}
-					dataObj.put("expression", expressionStr);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				dataObj.put("expression", fragment.getFragmentExpression());
+//				// 因为是引用模板，这里要根据模板version获取expression
+//				try {
+//					ShareFragment shareFragment = new ShareFragment();
+//					String expressionStr = "";
+//					shareFragment.setShareFragmentUUID(fragment.getFragmentTemplateId());
+//					List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
+//					if (shareFragmentList.size() >= 1) {
+//						shareFragment = shareFragmentList.get(0);
+//						String gitPath = Configure.gitRepositoryPath + "/" + shareFragment.getAccountRepository() + "/"
+//								+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
+//						// 获取最新共享fragment内容
+//						// String contentString =
+//						// jGitService.getContentLast(gitPath,
+//						// "template.txt");
+//						String contentString = jGitService.getContentByVersion(gitPath,
+//								fragment.getFragmentTemplateVersion(), "template.txt");
+//						JSONObject refJson = new JSONObject().fromObject(contentString);
+//						expressionStr = refJson.optString("expression", "");
+//					}
+//					dataObj.put("expression", expressionStr);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
 
 				// if (fragment.isFragmentEnable()) {
-				fragmentTemplatesMap.put(fragment.getFragmentUUID(), dataObj);
+				//变更，templateFragmentList加入到fragmentList中，用objtype区分
+				//fragmentTemplatesMap.put(fragment.getFragmentUUID(), dataObj);
+				fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
 				// }
 
 			}
-			queryObj.put("fragmentTemplates", fragmentTemplatesMap);
+			//变更，templateFragmentList加入到fragmentList中，用objtype区分
+			//queryObj.put("fragmentTemplates", fragmentTemplatesMap);
+			queryObj.put("fragments", fragmentsMap);
 
 			JSONArray variableListArray = new JSONArray();
 			// 读取缓存中的变量数据

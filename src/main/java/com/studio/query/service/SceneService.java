@@ -69,10 +69,12 @@ public class SceneService {
 			String sceneName;
 			String sceneDesc;
 			String sceneType;
+			JSONArray scopeArray = new JSONArray();
 			if (Configure.serverVersion == 0) {
 				sceneName = parmJb.optString("name", "");
 				sceneDesc = parmJb.optString("desc", "");
 				sceneType = parmJb.optString("type", "");
+				scopeArray = parmJb.getJSONArray("scopes");
 			} else {
 				sceneName = parmJb.optString("sceneName", "");
 				sceneDesc = parmJb.optString("sceneDesc", "");
@@ -118,9 +120,33 @@ public class SceneService {
 
 				this.manualSwitchScene(insertScene.getSceneUUID(), currentAccount, session);
 
+				this.resetScope(null, session);//先清空scope
+				// 创建场景时设置scope
+				// 这里设置数据源逻辑
+				List<String> scopeList = (List<String>) session.get(Constants.KEY_SET_SCOPE);
+				if (scopeList == null) {
+					scopeList = new ArrayList<String>();
+				}
+
+				for (int i = 0; i < scopeArray.size(); i++) {
+					boolean isExist = false;
+					String scope = scopeArray.getString(i);
+					for (int j = 0; j < scopeList.size(); j++) {
+						String oldScope = scopeList.get(j);
+						if (oldScope.equals(scope)) {
+							isExist = true;
+							break;
+						}
+					}
+					if (!isExist) {
+						scopeList.add(scope);
+					}
+				}
+				session.put(Constants.KEY_SET_SCOPE, scopeList);
+
 				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK,
 						"创建场景成功", "");
-				this.resetScope(null, session);
+				
 			} else {
 
 				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Error.CREATE_SCENE_FAIL,
@@ -168,8 +194,10 @@ public class SceneService {
 					if (i == 0) {
 						dataObj.put("active", true);
 						// 会话中设置当前活动场景
-						//this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
-						//this.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
+						// this.setActiveScene(scene.getSceneUUID(),
+						// currentAccount, session);
+						// this.manualSwitchScene(scene.getSceneUUID(),
+						// currentAccount, session);
 					} else {
 						dataObj.put("active", false);
 					}
@@ -177,8 +205,10 @@ public class SceneService {
 					if (sceneActiveUUID.equals(scene.getSceneUUID())) {
 						dataObj.put("active", true);
 						// 会话中设置当前活动场景
-						//this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
-						//this.manualSwitchScene(scene.getSceneUUID(), currentAccount, session);
+						// this.setActiveScene(scene.getSceneUUID(),
+						// currentAccount, session);
+						// this.manualSwitchScene(scene.getSceneUUID(),
+						// currentAccount, session);
 					} else {
 						dataObj.put("active", false);
 					}
@@ -195,7 +225,8 @@ public class SceneService {
 					if (i == 0) {
 						dataObj.put("sceneActive", true);
 						// 会话中设置当前活动场景
-						//this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+						// this.setActiveScene(scene.getSceneUUID(),
+						// currentAccount, session);
 					} else {
 						dataObj.put("sceneActive", false);
 					}
@@ -203,7 +234,8 @@ public class SceneService {
 					if (sceneActiveUUID.equals(scene.getSceneUUID())) {
 						dataObj.put("sceneActive", true);
 						// 会话中设置当前活动场景
-						//this.setActiveScene(scene.getSceneUUID(), currentAccount, session);
+						// this.setActiveScene(scene.getSceneUUID(),
+						// currentAccount, session);
 					} else {
 						dataObj.put("sceneActive", false);
 					}
@@ -543,7 +575,7 @@ public class SceneService {
 			Variable variable = variableList.get(i);
 			JSONObject dataObj = new JSONObject();
 			if (Configure.serverVersion == 0) {
-				dataObj.put("variableClassId",variable.getVariableClassId() );
+				dataObj.put("variableClassId", variable.getVariableClassId());
 				dataObj.put("variableInstanceId", variable.getVariableUUID());
 				dataObj.put("name", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
@@ -573,9 +605,9 @@ public class SceneService {
 			variableJsonArray.add(dataObj);
 		}
 		sceneObject.put("variableList", variableJsonArray);
-		
-		//场景是否有数据未保存
-		boolean scenIsDirty=(boolean) session.get(Constants.SCENE_ISDIRTY);
+
+		// 场景是否有数据未保存
+		boolean scenIsDirty = (boolean) session.get(Constants.SCENE_ISDIRTY);
 		sceneObject.put("isDirty", scenIsDirty);
 
 		resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_OK,
@@ -725,7 +757,7 @@ public class SceneService {
 				dataObj.put("variableFieldType", variable.getVariableFieldType());
 				dataObj.put("variableValue", variable.getVariableValue());
 				dataObj.put("variableScope", variable.getVariableScope());
-		
+
 				variableJsonArray.add(dataObj);
 			}
 			sceneJson.put("variableList", variableJsonArray);
@@ -811,8 +843,8 @@ public class SceneService {
 				sceneObject.put("sceneActive", true);
 				sceneObject.put("sceneEnable", true);
 			}
-			//场景未保存
-			session.put(Constants.SCENE_ISDIRTY,false);
+			// 场景未保存
+			session.put(Constants.SCENE_ISDIRTY, false);
 			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "更新场景成功",
 					sceneObject.toString());
 
