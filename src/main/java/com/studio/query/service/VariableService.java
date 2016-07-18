@@ -111,9 +111,9 @@ public class VariableService {
 			}
 			sessionVariableArray.add(insertVariable);
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, sessionVariableArray);
-			//场景未保存
-			session.put(Constants.SCENE_ISDIRTY,true);
-			
+			// 场景未保存
+			session.put(Constants.SCENE_ISDIRTY, true);
+
 			JSONObject variableJsonObject = new JSONObject();
 
 			variableJsonObject.put("variableClassId", insertVariable.getVariableClassId());
@@ -121,8 +121,13 @@ public class VariableService {
 			variableJsonObject.put("name", insertVariable.getVariableName());
 			variableJsonObject.put("variableType", insertVariable.getVariableType());
 			JSONObject belongObj = new JSONObject();
-			belongObj.put("fragmentId", insertVariable.getFragmentUUID());
-			belongObj.put("scenarioId", insertVariable.getSceneUUID());
+			if (insertVariable.getVariableScope().equals("fragment")) {
+				belongObj.put("fragmentId", insertVariable.getFragmentUUID());
+				belongObj.put("scenarioId", insertVariable.getSceneUUID());
+			} else {
+				belongObj.put("fragmentId", "");
+				belongObj.put("scenarioId", "");
+			}
 			variableJsonObject.put("beLongsTo", belongObj);
 			variableJsonObject.put("valueType", insertVariable.getVariableValueType());
 			variableJsonObject.put("fieldType", insertVariable.getVariableFieldType());
@@ -185,8 +190,8 @@ public class VariableService {
 
 			// 将fragment更新到缓存中
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
-			//场景未保存
-			session.put(Constants.SCENE_ISDIRTY,true);
+			// 场景未保存
+			session.put(Constants.SCENE_ISDIRTY, true);
 
 			resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE, ParameterCode.Result.RESULT_OK,
 					"更新变量到缓存成功，请注意在切换场景前保存场景数据。", "");
@@ -368,13 +373,19 @@ public class VariableService {
 			dataObj.put("name", variable.getVariableName());
 			dataObj.put("variableType", variable.getVariableType());
 			JSONObject belongObj = new JSONObject();
-			belongObj.put("fragmentId", variable.getFragmentUUID());
-			belongObj.put("scenarioId", variable.getSceneUUID());
+			if (variable.getVariableScope().equals("fragment")) {
+				belongObj.put("fragmentId", variable.getFragmentUUID());
+				belongObj.put("scenarioId", variable.getSceneUUID());
+			} else {
+				belongObj.put("fragmentId", "");
+				belongObj.put("scenarioId", "");
+			}
+
 			dataObj.put("beLongsTo", belongObj);
 			dataObj.put("valueType", variable.getVariableValueType());
 			dataObj.put("fieldType", variable.getVariableFieldType());
 			dataObj.put("value", variable.getVariableValue());
-			
+
 			dataObj.put("variableScope", variable.getVariableScope());
 
 			variableJsonArray.add(dataObj);

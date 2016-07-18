@@ -298,7 +298,7 @@ public class QueryService {
 			recCount = parmJb.optInt("recCount", 20);
 		}
 
-		//测试添加的，发布版本注意改回来
+		// 测试添加的，发布版本注意改回来
 		if (Configure.isDevelopment) {
 
 			executeScenarioString = FileUtil
@@ -424,9 +424,9 @@ public class QueryService {
 				// }
 
 			}
-			//变更，templateFragmentList加入到fragmentList中，用objtype区分
-			//sceneObj.put("fragmentList", fragmentListArray);
-			
+			// 变更，templateFragmentList加入到fragmentList中，用objtype区分
+			// sceneObj.put("fragmentList", fragmentListArray);
+
 			// queryObj.put("scenario", sceneObj.toString());
 
 			for (int i = 0; i < fragmentList.size(); i++) {
@@ -445,8 +445,7 @@ public class QueryService {
 				// }
 
 			}
-			//变更，templateFragmentList加入到fragmentList中，用objtype区分
-			//queryObj.put("fragments", fragmentsMap);
+			queryObj.put("fragments", fragmentsMap);
 
 			JSONArray fragmentTemplateListArray = new JSONArray();
 			Map<String, Object> fragmentTemplatesMap = new HashMap<String, Object>();
@@ -469,14 +468,14 @@ public class QueryService {
 				dataObj.put("enable", fragment.isFragmentEnable());
 				dataObj.put("version", fragment.getFragmentTemplateVersion());
 				// if (fragment.isFragmentEnable()) {
-				//变更，templateFragmentList加入到fragmentList中，用objtype区分
-				//fragmentTemplateListArray.add(dataObj);
+				// 变更，templateFragmentList加入到fragmentList中，用objtype区分
+				// fragmentTemplateListArray.add(dataObj);
 				fragmentListArray.add(dataObj);
 				// }
 
 			}
-			//变更，templateFragmentList加入到fragmentList中，用objtype区分
-			//sceneObj.put("fragmentTemplateList", fragmentTemplateListArray);
+			// 变更，templateFragmentList加入到fragmentList中，用objtype区分
+			// sceneObj.put("fragmentTemplateList", fragmentTemplateListArray);
 			sceneObj.put("fragmentList", fragmentListArray);
 			queryObj.put("scenario", sceneObj.toString());
 
@@ -492,40 +491,41 @@ public class QueryService {
 				dataObj.put("tags", "[]");
 				dataObj.put("version", fragment.getFragmentTemplateVersion());
 				dataObj.put("expression", fragment.getFragmentExpression());
-//				// 因为是引用模板，这里要根据模板version获取expression
-//				try {
-//					ShareFragment shareFragment = new ShareFragment();
-//					String expressionStr = "";
-//					shareFragment.setShareFragmentUUID(fragment.getFragmentTemplateId());
-//					List<ShareFragment> shareFragmentList = fragmentDao.findShareFragment(shareFragment);
-//					if (shareFragmentList.size() >= 1) {
-//						shareFragment = shareFragmentList.get(0);
-//						String gitPath = Configure.gitRepositoryPath + "/" + shareFragment.getAccountRepository() + "/"
-//								+ Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" + shareFragment.getShareFragmentGit();
-//						// 获取最新共享fragment内容
-//						// String contentString =
-//						// jGitService.getContentLast(gitPath,
-//						// "template.txt");
-//						String contentString = jGitService.getContentByVersion(gitPath,
-//								fragment.getFragmentTemplateVersion(), "template.txt");
-//						JSONObject refJson = new JSONObject().fromObject(contentString);
-//						expressionStr = refJson.optString("expression", "");
-//					}
-//					dataObj.put("expression", expressionStr);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
+				// // 因为是引用模板，这里要根据模板version获取expression
+				// try {
+				// ShareFragment shareFragment = new ShareFragment();
+				// String expressionStr = "";
+				// shareFragment.setShareFragmentUUID(fragment.getFragmentTemplateId());
+				// List<ShareFragment> shareFragmentList =
+				// fragmentDao.findShareFragment(shareFragment);
+				// if (shareFragmentList.size() >= 1) {
+				// shareFragment = shareFragmentList.get(0);
+				// String gitPath = Configure.gitRepositoryPath + "/" +
+				// shareFragment.getAccountRepository() + "/"
+				// + Constants.SHARE_FRAGMENT_REPOSITORY_NAME + "/" +
+				// shareFragment.getShareFragmentGit();
+				// // 获取最新共享fragment内容
+				// // String contentString =
+				// // jGitService.getContentLast(gitPath,
+				// // "template.txt");
+				// String contentString =
+				// jGitService.getContentByVersion(gitPath,
+				// fragment.getFragmentTemplateVersion(), "template.txt");
+				// JSONObject refJson = new
+				// JSONObject().fromObject(contentString);
+				// expressionStr = refJson.optString("expression", "");
+				// }
+				// dataObj.put("expression", expressionStr);
+				// } catch (Exception e) {
+				// e.printStackTrace();
+				// }
 
 				// if (fragment.isFragmentEnable()) {
-				//变更，templateFragmentList加入到fragmentList中，用objtype区分
-				//fragmentTemplatesMap.put(fragment.getFragmentUUID(), dataObj);
-				fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
+				fragmentTemplatesMap.put(fragment.getFragmentUUID(), dataObj);
 				// }
 
 			}
-			//变更，templateFragmentList加入到fragmentList中，用objtype区分
-			//queryObj.put("fragmentTemplates", fragmentTemplatesMap);
-			queryObj.put("fragments", fragmentsMap);
+			queryObj.put("fragmentTemplates", fragmentTemplatesMap);
 
 			JSONArray variableListArray = new JSONArray();
 			// 读取缓存中的变量数据
@@ -543,8 +543,13 @@ public class QueryService {
 				dataObj.put("name", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
 				JSONObject belongObj = new JSONObject();
-				belongObj.put("fragmentId", variable.getFragmentUUID());
-				belongObj.put("scenarioId", variable.getSceneUUID());
+				if (variable.getVariableScope().equals("fragment")) {
+					belongObj.put("fragmentId", variable.getFragmentUUID());
+					belongObj.put("scenarioId", variable.getSceneUUID());
+				} else {
+					belongObj.put("fragmentId", "");
+					belongObj.put("scenarioId", "");
+				}
 				dataObj.put("beLongsTo", belongObj);
 				dataObj.put("valueType", variable.getVariableValueType());
 				dataObj.put("fieldType", variable.getVariableFieldType());

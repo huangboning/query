@@ -120,7 +120,7 @@ public class SceneService {
 
 				this.manualSwitchScene(insertScene.getSceneUUID(), currentAccount, session);
 
-				this.resetScope(null, session);//先清空scope
+				this.resetScope(null, session);// 先清空scope
 				// 创建场景时设置scope
 				// 这里设置数据源逻辑
 				List<String> scopeList = (List<String>) session.get(Constants.KEY_SET_SCOPE);
@@ -146,7 +146,7 @@ public class SceneService {
 
 				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK,
 						"创建场景成功", "");
-				
+
 			} else {
 
 				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Error.CREATE_SCENE_FAIL,
@@ -580,8 +580,13 @@ public class SceneService {
 				dataObj.put("name", variable.getVariableName());
 				dataObj.put("variableType", variable.getVariableType());
 				JSONObject belongObj = new JSONObject();
-				belongObj.put("fragmentId", variable.getFragmentUUID());
-				belongObj.put("scenarioId", variable.getSceneUUID());
+				if (variable.getVariableScope().equals("fragment")) {
+					belongObj.put("fragmentId", variable.getFragmentUUID());
+					belongObj.put("scenarioId", variable.getSceneUUID());
+				} else {
+					belongObj.put("fragmentId", "");
+					belongObj.put("scenarioId", "");
+				}
 				dataObj.put("beLongsTo", belongObj);
 				dataObj.put("valueType", variable.getVariableValueType());
 				dataObj.put("fieldType", variable.getVariableFieldType());
