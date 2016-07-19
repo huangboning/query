@@ -1130,7 +1130,7 @@ public class FragmentService {
 			Fragment insertFragment = new Fragment();
 			insertFragment.setSceneId(sceneActive.getSceneId());
 			insertFragment.setFragmentTemplateId(refJson.optString("templateId", ""));
-			insertFragment.setFragmentUUID(StringUtil.createFragmentUUID());
+			insertFragment.setFragmentUUID(StringUtil.createTemplateFragmentUUID());
 			if (StringUtil.isNullOrEmpty(name)) {
 				insertFragment.setFragmentName(refJson.optString("name", ""));
 			} else {
@@ -1211,12 +1211,12 @@ public class FragmentService {
 				Variable templateVar = templateVariableList.get(i);
 				for (int j = 0; j < refVariableArray.size(); j++) {
 					JSONObject reVOj = refVariableArray.getJSONObject(j);
-					if (templateVar.getVariableClassId().equals(reVOj.optString("variableUUID", ""))) {
+					if (templateVar.getVariableClassId().equals(reVOj.optString("variableClassId", ""))) {
 						Variable insertVariable = new Variable();
-						insertVariable.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
+						insertVariable.setFragmentUUID(insertFragment.getFragmentUUID());
 						insertVariable.setSceneUUID(reVOj.optString("scenarioUUID", ""));
 						insertVariable.setVariableUUID(templateVar.getVariableUUID());
-						insertVariable.setVariableClassId(reVOj.optString("variableUUID", ""));
+						insertVariable.setVariableClassId(reVOj.optString("variableClassId", ""));
 						insertVariable.setVariableName(reVOj.optString("variableName", ""));
 						insertVariable.setVariableType(reVOj.optString("variableType", ""));
 						insertVariable.setVariableScope(reVOj.optString("variableScope", ""));
@@ -1226,7 +1226,7 @@ public class FragmentService {
 						insertVariable.setVariableDateStr(DateUtil.dateTimeFormat(new Date()));
 
 						JSONObject templateVarObj = new JSONObject();
-						templateVarObj.put("variableClassId", reVOj.optString("variableUUID", ""));
+						templateVarObj.put("variableClassId", reVOj.optString("variableClassId", ""));
 						templateVarObj.put("variableInstanceId", templateVar.getVariableUUID());
 						templateVarObj.put("name", reVOj.optString("variableName", ""));
 						templateVarObj.put("variableType", reVOj.optString("variableType", ""));
@@ -1245,7 +1245,7 @@ public class FragmentService {
 						templateVarObj.put("value", reVOj.optString("variableValue", ""));
 
 						// 如果全局变量，判断是否已经有该variableClassid
-						if (!this.validateIsExistVariable(sceneActive, reVOj.optString("variableUUID", ""))) {
+						if (!this.validateIsExistVariable(sceneActive, reVOj.optString("variableClassId", ""))) {
 							sessionVariableArray.add(insertVariable);
 							templateVariables.add(templateVarObj);
 						}
@@ -1397,12 +1397,12 @@ public class FragmentService {
 				Variable templateVar = templateVariableList.get(i);
 				for (int j = 0; j < refVariableArray.size(); j++) {
 					JSONObject reVOj = refVariableArray.getJSONObject(j);
-					if (templateVar.getVariableClassId().equals(reVOj.optString("variableUUID", ""))) {
+					if (templateVar.getVariableClassId().equals(reVOj.optString("variableClassId", ""))) {
 						Variable insertVariable = new Variable();
-						insertVariable.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
+						insertVariable.setFragmentUUID(insertFragment.getFragmentUUID());
 						insertVariable.setSceneUUID(reVOj.optString("scenarioUUID", ""));
 						insertVariable.setVariableUUID(templateVar.getVariableUUID());
-						insertVariable.setVariableClassId(reVOj.optString("variableUUID", ""));
+						insertVariable.setVariableClassId(reVOj.optString("variableClassId", ""));
 						insertVariable.setVariableName(reVOj.optString("variableName", ""));
 						insertVariable.setVariableType(reVOj.optString("variableType", ""));
 						insertVariable.setVariableScope(reVOj.optString("variableScope", ""));
@@ -1412,7 +1412,7 @@ public class FragmentService {
 						insertVariable.setVariableDateStr(DateUtil.dateTimeFormat(new Date()));
 
 						JSONObject templateVarObj = new JSONObject();
-						templateVarObj.put("variableClassId", reVOj.optString("variableUUID", ""));
+						templateVarObj.put("variableClassId", reVOj.optString("variableClassId", ""));
 						templateVarObj.put("variableInstanceId", templateVar.getVariableUUID());
 						templateVarObj.put("name", reVOj.optString("variableName", ""));
 						templateVarObj.put("variableType", reVOj.optString("variableType", ""));
@@ -1431,7 +1431,7 @@ public class FragmentService {
 						templateVarObj.put("value", reVOj.optString("variableValue", ""));
 
 						// 如果全局变量，判断是否已经有该variableClassid
-						if (!this.validateIsExistVariable(sceneActive, reVOj.optString("variableUUID", ""))) {
+						if (!this.validateIsExistVariable(sceneActive, reVOj.optString("variableClassId", ""))) {
 							sessionVariableArray.add(insertVariable);
 							templateVariables.add(templateVarObj);
 						}
@@ -1563,12 +1563,12 @@ public class FragmentService {
 			String dataType = expJo.optString("dataType", "");
 			if (!StringUtil.isNullOrEmpty(dataType) && dataType.equals("variable")) {
 				JSONObject variableJo = expJo.getJSONObject("variable");
-				String variableInstanceId = variableJo.optString("variableInstanceId", "");
+				String variableClassId = variableJo.optString("variableClassId", "");
 				String id = StringUtil.createVariableUUID();
-				variableJo.put("variableInstanceId", id);
-				variableJo.put("variableClassId", variableInstanceId);
+				//variableJo.put("variableInstanceId", id);
+				//variableJo.put("variableClassId", variableInstanceId);
 				Variable var = new Variable();
-				var.setVariableClassId(variableInstanceId);
+				var.setVariableClassId(variableClassId);
 				var.setVariableUUID(id);
 				this.templateVariableList.add(var);
 			} else {

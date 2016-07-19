@@ -61,11 +61,18 @@ public class StringUtil {
 		String fragmentUUID = java.util.UUID.randomUUID().toString();
 		fragmentUUID = fragmentUUID.substring(0, 8) + fragmentUUID.substring(9, 13) + fragmentUUID.substring(14, 18)
 				+ fragmentUUID.substring(19, 23) + fragmentUUID.substring(24);
-		fragmentUUID = "FRGM" + fragmentUUID;
+		fragmentUUID = "FRAG" + fragmentUUID;
 		return fragmentUUID;
 
 	}
+	public static String createTemplateFragmentUUID() {
+		String fragmentUUID = java.util.UUID.randomUUID().toString();
+		fragmentUUID = fragmentUUID.substring(0, 8) + fragmentUUID.substring(9, 13) + fragmentUUID.substring(14, 18)
+				+ fragmentUUID.substring(19, 23) + fragmentUUID.substring(24);
+		fragmentUUID = "FRAT" + fragmentUUID;
+		return fragmentUUID;
 
+	}
 	public static String createVariableUUID() {
 		String variableUUID = java.util.UUID.randomUUID().toString();
 		variableUUID = variableUUID.substring(0, 8) + variableUUID.substring(9, 13) + variableUUID.substring(14, 18)

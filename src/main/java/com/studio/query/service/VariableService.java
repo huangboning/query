@@ -94,7 +94,7 @@ public class VariableService {
 			insertVariable.setFragmentUUID(fragmentId);
 			insertVariable.setSceneUUID(sceneActive.getSceneUUID());
 			insertVariable.setVariableUUID(StringUtil.createVariableUUID());
-			insertVariable.setVariableClassId("");
+			insertVariable.setVariableClassId(insertVariable.getVariableUUID());
 			insertVariable.setVariableName(variableName);
 			insertVariable.setVariableType(variableType);
 			insertVariable.setVariableScope(variableScope);
@@ -147,12 +147,12 @@ public class VariableService {
 		JSONObject jb = JSONObject.fromObject(bodyString);
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
-			String variableInstanceId = parmJb.optString("variableInstanceId", "");
+			String variableClassId = parmJb.optString("variableClassId", "");
 			String variableName = parmJb.optString("variableName", "");
 			String variableValueType = parmJb.optString("valueType", "");
 			String variableValue = parmJb.optString("value", "");
 
-			if (StringUtil.isNullOrEmpty(variableInstanceId)) {
+			if (StringUtil.isNullOrEmpty(variableClassId)) {
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_VARIABLE,
 						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
 				return resultString;
@@ -174,7 +174,7 @@ public class VariableService {
 
 				Variable variable = variableList.get(i);
 				// git库存的UUID=classId，instanceId为引用模板的时候生成的id
-				if (variable.getVariableUUID().equals(variableInstanceId)) {
+				if (variable.getVariableUUID().equals(variableClassId)) {
 					if (!StringUtil.isNullOrEmpty(variableName)) {
 						variable.setVariableName(variableName);
 					}

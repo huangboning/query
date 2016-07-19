@@ -482,7 +482,7 @@ public class QueryService {
 			for (int i = 0; i < templateFragmentList.size(); i++) {
 				Fragment fragment = templateFragmentList.get(i);
 				JSONObject dataObj = new JSONObject();
-				dataObj.put("id", fragment.getFragmentUUID());
+				//dataObj.put("id", fragment.getFragmentUUID());//模板遍历的是模板id，本身的实例id不需要显示
 				dataObj.put("templateId", fragment.getFragmentTemplateId());
 				dataObj.put("name", fragment.getFragmentName());
 				dataObj.put("desc", fragment.getFragmentDesc());
@@ -521,7 +521,11 @@ public class QueryService {
 				// }
 
 				// if (fragment.isFragmentEnable()) {
-				fragmentTemplatesMap.put(fragment.getFragmentUUID(), dataObj);
+				//如果模板多次引用，只显示一次
+				if (fragmentTemplatesMap.get(fragment.getFragmentTemplateId())==null) {
+					fragmentTemplatesMap.put(fragment.getFragmentTemplateId(), dataObj);
+				}
+				
 				// }
 
 			}
