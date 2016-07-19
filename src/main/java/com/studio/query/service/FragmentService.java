@@ -991,11 +991,16 @@ public class FragmentService {
 						ParameterCode.Error.QUERY_FRAGMENT_NO_EXIST, "查询的fragment不存在", "");
 				return resultString;
 			}
-			if (this.parseTemplateIsVariable(fromFragment.getFragmentExpression())) {
-				resultString = StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE,
-						ParameterCode.Error.RELEASE_TEMPLATE_VALUE, "发布模板不能使用值，请使用变量", "");
-				return resultString;
-			}
+			// 暂时不验证
+			// if
+			// (this.parseTemplateIsVariable(fromFragment.getFragmentExpression()))
+			// {
+			// resultString =
+			// StringUtil.packetObject(MethodCode.RELEASE_TEMPLATE,
+			// ParameterCode.Error.RELEASE_TEMPLATE_VALUE, "发布模板不能使用值，请使用变量",
+			// "");
+			// return resultString;
+			// }
 			// 将scope带入
 			JSONArray scopeObjs = new JSONArray();
 			List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
@@ -1577,42 +1582,42 @@ public class FragmentService {
 			e.printStackTrace();
 		}
 	}
-
-	public boolean parseTemplateIsVariable(String jsonString) {
-		boolean result = false;
-		try {
-			JSONObject expJo = new JSONObject();
-			JSONArray expressArray = new JSONArray();
-			if (jsonString == null) {
-				// jsonString = FileUtil.readFile("E://query3.txt");
-				return result;
-			}
-			expJo = JSONObject.fromObject(jsonString);
-			try {
-				expressArray = expJo.getJSONArray("expressions");
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			// System.out.println(expressArray.size());
-
-			String dataType = expJo.optString("dataType", "");
-			if (!StringUtil.isNullOrEmpty(dataType) && dataType.equals("value")) {
-				return true;
-			} else {
-				for (int i = 0; i < expressArray.size(); i++) {
-					expJo = expressArray.getJSONObject(i);
-					result = parseTemplateIsVariable(expJo.toString());
-					if (result) {
-						break;
-					}
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+	// 暂时不验证
+	// public boolean parseTemplateIsVariable(String jsonString) {
+	// boolean result = false;
+	// try {
+	// JSONObject expJo = new JSONObject();
+	// JSONArray expressArray = new JSONArray();
+	// if (jsonString == null) {
+	// // jsonString = FileUtil.readFile("E://query3.txt");
+	// return result;
+	// }
+	// expJo = JSONObject.fromObject(jsonString);
+	// try {
+	// expressArray = expJo.getJSONArray("expressions");
+	// } catch (Exception e) {
+	// // TODO: handle exception
+	// }
+	// // System.out.println(expressArray.size());
+	//
+	// String dataType = expJo.optString("dataType", "");
+	// if (!StringUtil.isNullOrEmpty(dataType) && dataType.equals("value")) {
+	// return true;
+	// } else {
+	// for (int i = 0; i < expressArray.size(); i++) {
+	// expJo = expressArray.getJSONObject(i);
+	// result = parseTemplateIsVariable(expJo.toString());
+	// if (result) {
+	// break;
+	// }
+	// }
+	// }
+	//
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// return result;
+	// }
 
 	public boolean validateIsExistVariable(Scene sceneActive, String variableClassId) {
 		boolean result = false;

@@ -1,0 +1,383 @@
+第一步，引用模板
+{
+    "templateId": "FRGM01bd0b6e52b447d2afb78ba7f5c1ddeb",
+    "instanceId": "FRGMa42b116ff02e40579a3972355d9befaf",
+    "name": "FOXF1模板实例",
+    "type": "filter",
+    "objectType": "templateInstance",
+    "enable": true,
+    "active": true,
+    "desc": "",
+    "createBy": "fox",
+    "createTime": "2016-07-19 16:34:42",
+    "version": "c0769f1a438a5aace2cb4d9664add116d9e74892",
+    "expression": {
+        "expressions": [
+            {
+                "eid": "3094cd70-4d8b-11e6-a485-774ed0d6c005",
+                "logicalNot": false,
+                "indexDocType": "aminno.entities",
+                "indexDocTypeName": "AshleyMadison.实体信息",
+                "field": "profile.height",
+                "fieldType": "long",
+                "fieldname": "个人信息-身高",
+                "operator": "equalFilter",
+                "operatorName": "等于",
+                "dataType": "variable",
+                "value": {
+                    "valueType": "plainValue",
+                    "value": "100"
+                },
+                "variable": {
+                    "variableClassId": "",
+                    "variableInstanceId": "VARe3b4bd06123a46deba44f03e47a15d6d",
+                    "variableName": "FVAR1"
+                }
+            },
+            {
+                "eid": "4546ce80-4d8b-11e6-a485-774ed0d6c005",
+                "logicalNot": false,
+                "indexDocType": "voter_fl.entities",
+                "indexDocTypeName": "FL登记.实体信息",
+                "field": "profile.gender",
+                "fieldType": "string",
+                "fieldname": "个人信息-性别编码",
+                "operator": "prefixFilter",
+                "operatorName": "前缀匹配",
+                "dataType": "variable",
+                "value": {
+                    "valueType": "plainString",
+                    "value": "male"
+                },
+                "variable": {
+                    "variableClassId": "",
+                    "variableInstanceId": "VAR4c9b842bc1a44f689297468be55613cf",
+                    "variableName": "FVAR2"
+                }
+            },
+            {
+                "eid": "728cecd0-4d8b-11e6-a485-774ed0d6c005",
+                "logicalNot": false,
+                "indexDocType": "aminno.entities",
+                "indexDocTypeName": "AshleyMadison.实体信息",
+                "field": "ident.username",
+                "fieldType": "string",
+                "fieldname": "身份信息-用户名",
+                "operator": "prefixFilter",
+                "operatorName": "前缀匹配",
+                "dataType": "value",
+                "value": {
+                    "valueType": "plainString",
+                    "value": "tom"
+                },
+                "variable": {
+                    "variableClassId": "",
+                    "variableInstanceId": "",
+                    "variableName": ""
+                }
+            }
+        ],
+        "operator": "bool_and"
+    },
+    "templateVariableList": [
+        {
+            "variableClassId": "VARe3b4bd06123a46deba44f03e47a15d6d",
+            "variableInstanceId": "VARcfeb44c83be84d4d95179cc86dcbfb45",
+            "name": "FVAR1",
+            "variableType": "",
+            "variableScope": "scenario",
+            "beLongsTo": {
+                "fragmentId": "",
+                "scenarioId": ""
+            },
+            "fieldType": "long",
+            "valueType": "plainValue",
+            "value": "180"
+        },
+        {
+            "variableClassId": "VAR4c9b842bc1a44f689297468be55613cf",
+            "variableInstanceId": "VARaba94ff961b242f39add9260d6df16b5",
+            "name": "FVAR2",
+            "variableType": "",
+            "variableScope": "fragment",
+            "beLongsTo": {
+                "fragmentId": "FRGMa42b116ff02e40579a3972355d9befaf",
+                "scenarioId": "SCNO50f342c95d004220a4701c95ed2fdd24"
+            },
+            "fieldType": "string",
+            "valueType": "plainString",
+            "value": "cang"
+        }
+    ]
+}
+第二部引用成功后返回的variableList
+{
+    "optCode": "getVariableList",
+    "statusCode": "200",
+    "message": "获取变量列表成功",
+    "baseObject": [
+        {
+            "variableClassId": "",
+            "variableInstanceId": "VARd6d47666b71449f68b7d1fdb416a54c7",
+            "name": "MYVAR1",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "",
+                "scenarioId": ""
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "huangboning",
+            "variableScope": "scenario"
+        },
+        {
+            "variableClassId": "VARe3b4bd06123a46deba44f03e47a15d6d",
+            "variableInstanceId": "VARcfeb44c83be84d4d95179cc86dcbfb45",
+            "name": "FVAR1",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "",
+                "scenarioId": ""
+            },
+            "valueType": "plainValue",
+            "fieldType": "long",
+            "value": "180",
+            "variableScope": "scenario"
+        },
+        {
+            "variableClassId": "VAR4c9b842bc1a44f689297468be55613cf",
+            "variableInstanceId": "VARaba94ff961b242f39add9260d6df16b5",
+            "name": "FVAR2",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRGM01bd0b6e52b447d2afb78ba7f5c1ddeb",
+                "scenarioId": "SCNO50f342c95d004220a4701c95ed2fdd24"
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "cang",
+            "variableScope": "fragment"
+        }
+    ]
+}
+第三步，执行场景查询
+{
+    "fragments": {
+        "FRGMe6e2128f044d430ebb2c90a523d320c1": {
+            "id": "FRGMe6e2128f044d430ebb2c90a523d320c1",
+            "name": "F1",
+            "desc": "",
+            "type": "filter",
+            "objectType": "directInstance",
+            "tags": [],
+            "version": "",
+            "expression": {
+                "expressions": [
+                    {
+                        "eid": "a98a2f50-4d8a-11e6-ba90-137728e5fb9f",
+                        "logicalNot": false,
+                        "indexDocType": "aminno.entities",
+                        "indexDocTypeName": "AshleyMadison.实体信息",
+                        "field": "ident.username",
+                        "fieldType": "string",
+                        "fieldname": "身份信息-用户名",
+                        "operator": "prefixFilter",
+                        "operatorName": "前缀匹配",
+                        "dataType": "value",
+                        "value": {
+                            "valueType": "plainString",
+                            "value": "jeck"
+                        },
+                        "variable": {
+                            "variableClassId": "",
+                            "variableInstanceId": "",
+                            "variableName": ""
+                        }
+                    },
+                    {
+                        "eid": "c705a3c0-4d8a-11e6-ba90-137728e5fb9f",
+                        "logicalNot": false,
+                        "indexDocType": "voter_fl.entities",
+                        "indexDocTypeName": "FL登记.实体信息",
+                        "field": "ident.first_name",
+                        "fieldType": "string",
+                        "fieldname": "身份信息-名",
+                        "operator": "prefixFilter",
+                        "operatorName": "前缀匹配",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "plainString"
+                        },
+                        "variable": {
+                            "variableClassId": "",
+                            "variableInstanceId": "VARd6d47666b71449f68b7d1fdb416a54c7",
+                            "variableName": "MYVAR1"
+                        }
+                    }
+                ],
+                "operator": "bool_and"
+            }
+        }
+    },
+    "scenario": {
+        "id": "SCNOb5528a30e7394a1c970b88593b0cf7ec",
+        "name": "s1",
+        "desc": "",
+        "createTime": "2016-07-19 13:51:04",
+        "scope": [
+            "allindicies.unified",
+            "aminno.entities",
+            "voter_fl.entities"
+        ],
+        "fragmentList": [
+            {
+                "id": "FRGMe6e2128f044d430ebb2c90a523d320c1",
+                "name": "F1",
+                "desc": "",
+                "type": "filter",
+                "objectType": "directInstance",
+                "enable": true,
+                "version": ""
+            },
+            {
+                "id": "FRGM94a08fd720db4167a9fb75ea59a12687",
+                "templateId": "FRGM01bd0b6e52b447d2afb78ba7f5c1ddeb",
+                "name": "FOXF1模板实例",
+                "desc": "",
+                "type": "filter",
+                "objectType": "templateInstance",
+                "enable": true,
+                "version": "c0769f1a438a5aace2cb4d9664add116d9e74892"
+            }
+        ]
+    },
+    "fragmentTemplates": {
+        "FRGM94a08fd720db4167a9fb75ea59a12687": {
+            "id": "FRGM94a08fd720db4167a9fb75ea59a12687",
+            "templateId": "FRGM01bd0b6e52b447d2afb78ba7f5c1ddeb",
+            "name": "FOXF1模板实例",
+            "desc": "",
+            "type": "filter",
+            "objectType": "templateInstance",
+            "tags": [],
+            "version": "c0769f1a438a5aace2cb4d9664add116d9e74892",
+            "expression": {
+                "expressions": [
+                    {
+                        "eid": "3094cd70-4d8b-11e6-a485-774ed0d6c005",
+                        "logicalNot": false,
+                        "indexDocType": "aminno.entities",
+                        "indexDocTypeName": "AshleyMadison.实体信息",
+                        "field": "profile.height",
+                        "fieldType": "long",
+                        "fieldname": "个人信息-身高",
+                        "operator": "equalFilter",
+                        "operatorName": "等于",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "plainValue",
+                            "value": "100"
+                        },
+                        "variable": {
+                            "variableClassId": "",
+                            "variableInstanceId": "VARe3b4bd06123a46deba44f03e47a15d6d",
+                            "variableName": "FVAR1"
+                        }
+                    },
+                    {
+                        "eid": "4546ce80-4d8b-11e6-a485-774ed0d6c005",
+                        "logicalNot": false,
+                        "indexDocType": "voter_fl.entities",
+                        "indexDocTypeName": "FL登记.实体信息",
+                        "field": "profile.gender",
+                        "fieldType": "string",
+                        "fieldname": "个人信息-性别编码",
+                        "operator": "prefixFilter",
+                        "operatorName": "前缀匹配",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "plainString",
+                            "value": "male"
+                        },
+                        "variable": {
+                            "variableClassId": "",
+                            "variableInstanceId": "VAR4c9b842bc1a44f689297468be55613cf",
+                            "variableName": "FVAR2"
+                        }
+                    },
+                    {
+                        "eid": "728cecd0-4d8b-11e6-a485-774ed0d6c005",
+                        "logicalNot": false,
+                        "indexDocType": "aminno.entities",
+                        "indexDocTypeName": "AshleyMadison.实体信息",
+                        "field": "ident.username",
+                        "fieldType": "string",
+                        "fieldname": "身份信息-用户名",
+                        "operator": "prefixFilter",
+                        "operatorName": "前缀匹配",
+                        "dataType": "value",
+                        "value": {
+                            "valueType": "plainString",
+                            "value": "tom"
+                        },
+                        "variable": {
+                            "variableClassId": "",
+                            "variableInstanceId": "",
+                            "variableName": ""
+                        }
+                    }
+                ],
+                "operator": "bool_and"
+            }
+        }
+    },
+    "variables": [
+        {
+            "variableInstanceId": "VARd6d47666b71449f68b7d1fdb416a54c7",
+            "variableClassId": "",
+            "name": "MYVAR1",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "",
+                "scenarioId": ""
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "huangboning",
+            "variableScope": "scenario"
+        },
+        {
+            "variableInstanceId": "VARb45fcbea5f484224b88e4d429554bf4a",
+            "variableClassId": "VARe3b4bd06123a46deba44f03e47a15d6d",
+            "name": "FVAR1",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "",
+                "scenarioId": ""
+            },
+            "valueType": "plainValue",
+            "fieldType": "long",
+            "value": "180",
+            "variableScope": "scenario"
+        },
+        {
+            "variableInstanceId": "VARd460ece1e58f47e9ba0ae377e07dcdc0",
+            "variableClassId": "VAR4c9b842bc1a44f689297468be55613cf",
+            "name": "FVAR2",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRGM01bd0b6e52b447d2afb78ba7f5c1ddeb",
+                "scenarioId": "SCNO50f342c95d004220a4701c95ed2fdd24"
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "cang",
+            "variableScope": "fragment"
+        }
+    ],
+    "pagination": {
+        "size": 20,
+        "from": 0
+    },
+    "method": "query"
+}
