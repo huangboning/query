@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : localhost
 Source Server Version : 50624
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : query
 
 Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2016-06-12 23:39:40
+Date: 2016-07-19 13:19:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,11 +27,12 @@ CREATE TABLE `t_account` (
   `account_email` varchar(255) DEFAULT NULL,
   `account_repository` varchar(255) DEFAULT NULL,
   `account_status` int(11) DEFAULT '0' COMMENT '0正常-1禁用',
+  `account_pwd_status` int(11) DEFAULT '0',
   `account_date` datetime DEFAULT NULL,
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `account_name_unique` (`account_name`),
   UNIQUE KEY `account_repository_unique` (`account_repository`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_fragment
@@ -50,7 +51,20 @@ CREATE TABLE `t_fragment` (
   `fragment_date` datetime DEFAULT NULL,
   PRIMARY KEY (`fragment_id`),
   UNIQUE KEY `fragment_no_unique` (`fragment_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for t_note
+-- ----------------------------
+DROP TABLE IF EXISTS `t_note`;
+CREATE TABLE `t_note` (
+  `note_id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) DEFAULT NULL,
+  `note_title` varchar(255) DEFAULT NULL,
+  `note_content` varchar(255) DEFAULT NULL,
+  `note_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`note_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_role
@@ -60,7 +74,7 @@ CREATE TABLE `t_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_scene
@@ -76,11 +90,12 @@ CREATE TABLE `t_scene` (
   `scene_git` varchar(255) DEFAULT NULL,
   `scene_active` tinyint(11) NOT NULL DEFAULT '0',
   `scene_enable` tinyint(11) NOT NULL DEFAULT '0',
+  `scene_scope` varchar(255) DEFAULT NULL,
   `scene_date` datetime DEFAULT NULL,
   PRIMARY KEY (`scene_id`),
   UNIQUE KEY `scene_no_unique` (`scene_uuid`) USING BTREE,
   UNIQUE KEY `scene_git_unique` (`scene_git`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_share_fragment
@@ -101,7 +116,7 @@ CREATE TABLE `t_share_fragment` (
   `share_fragment_git` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`share_fragment_id`),
   UNIQUE KEY `share_fragment_no_unique` (`share_fragment_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_share_variable
@@ -156,3 +171,5 @@ CREATE TABLE `t_variable` (
   PRIMARY KEY (`variable_id`),
   UNIQUE KEY `variable_no_unique` (`variable_uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `t_user` VALUES ('1', 'admin', md5('123456'), 'huangboning', '1', '2016-06-13 08:47:24');

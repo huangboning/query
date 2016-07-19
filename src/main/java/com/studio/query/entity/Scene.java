@@ -14,6 +14,7 @@ public class Scene extends Pager {
 	private String sceneComment;
 	private String sceneGit;
 	private String sceneVersion;
+	private String sceneScope;
 	private int sceneActive;
 	private int sceneEnable;
 
@@ -89,6 +90,14 @@ public class Scene extends Pager {
 
 	public void setSceneVersion(String sceneVersion) {
 		this.sceneVersion = sceneVersion;
+	}
+
+	public String getSceneScope() {
+		return sceneScope;
+	}
+
+	public void setSceneScope(String sceneScope) {
+		this.sceneScope = sceneScope;
 	}
 
 	public int getSceneActive() {

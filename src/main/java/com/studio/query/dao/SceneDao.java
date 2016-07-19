@@ -20,13 +20,14 @@ public interface SceneDao {
 			@Result(column = "scene_desc", property = "sceneDesc"),
 			@Result(column = "scene_comment", property = "sceneComment"),
 			@Result(column = "scene_git", property = "sceneGit"),
+			@Result(column = "scene_scope", property = "sceneScope"),
 			@Result(column = "scene_active", property = "sceneActive"),
 			@Result(column = "scene_enable", property = "sceneEnable"),
 			@Result(column = "scene_date", property = "sceneDate") })
 	@SelectProvider(type = SceneMapperProvider.class, method = "findScene")
 	public List<Scene> findScene(Scene scene);
 
-	@Insert("insert into t_scene(account_id,scene_uuid,scene_name,scene_desc,scene_comment,scene_git,scene_active,scene_enable,scene_date) values(#{accountId},#{sceneUUID},#{sceneName},#{sceneDesc},#{sceneComment},#{sceneGit},#{sceneActive},#{sceneEnable},now())")
+	@Insert("insert into t_scene(account_id,scene_uuid,scene_name,scene_desc,scene_comment,scene_git,scene_scope,scene_active,scene_enable,scene_date) values(#{accountId},#{sceneUUID},#{sceneName},#{sceneDesc},#{sceneComment},#{sceneGit},#{sceneScope},#{sceneActive},#{sceneEnable},now())")
 	public int insertScene(Scene scene);
 
 	@Update("update t_scene set scene_desc=#{sceneDesc} where scene_id=#{sceneId}")

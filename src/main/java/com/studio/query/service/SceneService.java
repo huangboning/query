@@ -106,6 +106,7 @@ public class SceneService {
 			insertScene.setSceneType(sceneType);
 			insertScene.setSceneDesc(sceneDesc);
 			insertScene.setSceneGit(StringUtil.createSceneGit());
+			insertScene.setSceneScope(scopeArray.toString());
 			int insertResult = sceneDao.insertScene(insertScene);
 			if (insertResult == 1) {
 				JGitService jGitService = new JGitService();
@@ -448,6 +449,26 @@ public class SceneService {
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, templateList);
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
 			// 重设scope
+			JSONArray sceneScopeArray=new JSONArray();
+			try {
+				sceneScopeArray=JSONArray.fromObject(sceneActive.getSceneScope());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			for (int i = 0; i <sceneScopeArray.size(); i++) {
+				boolean isExist = false;
+				String scope = sceneScopeArray.getString(i);
+				for (int j = 0; j < scopeList.size(); j++) {
+					String oldScope = scopeList.get(j);
+					if (oldScope.equals(scope)) {
+						isExist = true;
+						break;
+					}
+				}
+				if (!isExist) {
+					scopeList.add(scope);
+				}
+			}
 			this.resetScope(scopeList, session);
 
 			session.put(Constants.SCENE_VERSION, sceneVersion);
