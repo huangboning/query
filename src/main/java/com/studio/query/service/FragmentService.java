@@ -385,6 +385,8 @@ public class FragmentService {
 						templateFragmentObj.put("createTime", fragment.getFragmentDateStr());
 						templateFragmentObj.put("expression", fragment.getFragmentExpression());
 
+						// 如果是模板fragment，在getFragment的时候，返回所用到的变量列表到前端
+						templateFragmentObj.put("templateVariableList", fragment.getFragmentTemplateVariable());
 						break;
 					}
 				}
@@ -1247,8 +1249,9 @@ public class FragmentService {
 						// 如果全局变量，判断是否已经有该variableClassid
 						if (!this.validateIsExistVariable(sceneActive, reVOj.optString("variableClassId", ""))) {
 							sessionVariableArray.add(insertVariable);
-							templateVariables.add(templateVarObj);
+							//templateVariables.add(templateVarObj);
 						}
+						templateVariables.add(templateVarObj);
 					}
 				}
 
@@ -1256,7 +1259,7 @@ public class FragmentService {
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, sessionVariableArray);
 
 			fragmentJsonObject.put("templateVariableList", templateVariables);
-
+			insertFragment.setFragmentTemplateVariable(templateVariables.toString());
 			// 场景未保存
 			session.put(Constants.SCENE_ISDIRTY, true);
 
@@ -1433,8 +1436,9 @@ public class FragmentService {
 						// 如果全局变量，判断是否已经有该variableClassid
 						if (!this.validateIsExistVariable(sceneActive, reVOj.optString("variableClassId", ""))) {
 							sessionVariableArray.add(insertVariable);
-							templateVariables.add(templateVarObj);
+							//templateVariables.add(templateVarObj);
 						}
+						templateVariables.add(templateVarObj);
 					}
 				}
 
@@ -1442,6 +1446,7 @@ public class FragmentService {
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, sessionVariableArray);
 
 			fragmentJsonObject.put("templateVariableList", templateVariables);
+			insertFragment.setFragmentTemplateVariable(templateVariables.toString());
 			// 场景未保存
 			session.put(Constants.SCENE_ISDIRTY, true);
 
@@ -1565,8 +1570,8 @@ public class FragmentService {
 				JSONObject variableJo = expJo.getJSONObject("variable");
 				String variableClassId = variableJo.optString("variableClassId", "");
 				String id = StringUtil.createVariableUUID();
-				//variableJo.put("variableInstanceId", id);
-				//variableJo.put("variableClassId", variableInstanceId);
+				// variableJo.put("variableInstanceId", id);
+				// variableJo.put("variableClassId", variableInstanceId);
 				Variable var = new Variable();
 				var.setVariableClassId(variableClassId);
 				var.setVariableUUID(id);

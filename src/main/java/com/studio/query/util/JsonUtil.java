@@ -70,6 +70,7 @@ public class JsonUtil {
 					fragment.setFragmentEnable(obj.optBoolean("fragmentEnable", true));
 					fragment.setFragmentDateStr(obj.optString("fragmentCreateTime", ""));
 					fragment.setFragmentExpression(obj.optString("fragmentExpression", ""));
+					fragment.setFragmentTemplateVariable(obj.optString("fragmentTemplateVariable", ""));
 					fragmentList.add(fragment);
 				}
 			}

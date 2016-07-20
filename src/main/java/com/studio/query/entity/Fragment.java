@@ -16,6 +16,7 @@ public class Fragment extends Pager {
 	private String fragmentDesc;
 	private boolean fragmentEnable;
 	private boolean fragmentActive;
+	private String fragmentTemplateVariable;
 	private String fragmentExpression;
 
 	private Date fragmentDate;
@@ -100,6 +101,14 @@ public class Fragment extends Pager {
 
 	public void setFragmentDate(Date fragmentDate) {
 		this.fragmentDate = fragmentDate;
+	}
+
+	public String getFragmentTemplateVariable() {
+		return fragmentTemplateVariable;
+	}
+
+	public void setFragmentTemplateVariable(String fragmentTemplateVariable) {
+		this.fragmentTemplateVariable = fragmentTemplateVariable;
 	}
 
 	public String getFragmentExpression() {

@@ -760,6 +760,7 @@ public class SceneService {
 				dataObj.put("fragmentActive", fragment.isFragmentActive());
 				dataObj.put("fragmentCreateTime", fragment.getFragmentDateStr());
 				dataObj.put("fragmentExpression", fragment.getFragmentExpression());
+				dataObj.put("fragmentTemplateVariable", fragment.getFragmentTemplateVariable());
 				templateJsonArray.add(dataObj);
 			}
 			sceneJson.put("templateList", templateJsonArray);
