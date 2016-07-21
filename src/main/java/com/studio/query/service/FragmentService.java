@@ -36,6 +36,8 @@ public class FragmentService {
 	public FragmentDao fragmentDao;
 	@Autowired
 	public SceneService sceneService;
+	@Autowired
+	public QueryService queryService;
 
 	private List<Variable> templateVariableList = new ArrayList<Variable>();
 
@@ -393,7 +395,8 @@ public class FragmentService {
 				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_OK,
 						"获取某个版本fragment成功", templateFragmentObj.toString());
 			}
-
+			//测试validate接口
+			//queryService.validate("", session);
 		}
 		return resultString;
 	}

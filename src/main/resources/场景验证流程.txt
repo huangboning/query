@@ -1,0 +1,230 @@
+
+第一步，验证接口调用
+
+{
+    "fragments": {
+        "FRAG66aebd5207854570b8f542b9c288aca5": {
+            "id": "FRAG66aebd5207854570b8f542b9c288aca5",
+            "name": "F1",
+            "desc": "",
+            "type": "filter",
+            "objectType": "directInstance",
+            "tags": [],
+            "version": "",
+            "expression": {
+                "expressions": [
+                    {
+                        "eid": "0213be40-4e74-11e6-9f83-19cf1d8c689c",
+                        "logicalNot": false,
+                        "indexDocType": "allindicies.unified",
+                        "indexDocTypeName": "所有数据源.归一化映射",
+                        "field": "ident.first_name",
+                        "fieldType": "string",
+                        "fieldname": "身份信息-名",
+                        "operator": "prefixFilter",
+                        "operatorName": "前缀匹配",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "plainString"
+                        },
+                        "variable": {
+                            "variableClassId": "VARbc5d2b3de2704512be0c4cd3de210700",
+                            "variableInstanceId": "VARbc5d2b3de2704512be0c4cd3de210700",
+                            "variableName": "MVAR1"
+                        }
+                    }
+                ],
+                "operator": "bool_and"
+            }
+        }
+    },
+    "scenario": {
+        "id": "SCNO9b22561ed62e4428832f707d4462078b",
+        "name": "s1",
+        "desc": "",
+        "createTime": "2016-07-20 20:17:12",
+        "scope": [
+            "allindicies.unified",
+            "aminno.entities",
+            "voter_fl.entities"
+        ],
+        "fragmentList": [
+            {
+                "id": "FRAG66aebd5207854570b8f542b9c288aca5",
+                "name": "F1",
+                "desc": "",
+                "type": "filter",
+                "objectType": "directInstance",
+                "enable": true,
+                "version": ""
+            },
+            {
+                "id": "FRAT1569f148c4034e9eb9f4f5536d1bd709",
+                "templateId": "FRAG5d65bc1f93f34d5084dab00b3d52721c",
+                "name": "FOXF1模板实例",
+                "desc": "",
+                "type": "filter",
+                "objectType": "templateInstance",
+                "enable": true,
+                "version": "45060115942af36cc30b2e6f8c72e48188e42de8"
+            }
+        ]
+    },
+    "fragmentTemplates": {
+        "FRAG5d65bc1f93f34d5084dab00b3d52721c": {
+            "templateId": "FRAG5d65bc1f93f34d5084dab00b3d52721c",
+            "name": "FOXF1模板实例",
+            "desc": "",
+            "type": "filter",
+            "objectType": "templateInstance",
+            "tags": [],
+            "version": "45060115942af36cc30b2e6f8c72e48188e42de8",
+            "expression": {
+                "expressions": [
+                    {
+                        "eid": "4dcfdda0-4e74-11e6-87c9-c38cd6fbff81",
+                        "logicalNot": false,
+                        "indexDocType": "allindicies.unified",
+                        "indexDocTypeName": "所有数据源.归一化映射",
+                        "field": "ident.first_name",
+                        "fieldType": "string",
+                        "fieldname": "身份信息-名",
+                        "operator": "prefixFilter",
+                        "operatorName": "前缀匹配",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "plainString"
+                        },
+                        "variable": {
+                            "variableClassId": "VARc502875ed08948d8a884d79690de71a1",
+                            "variableInstanceId": "VARc502875ed08948d8a884d79690de71a1",
+                            "variableName": "GV1"
+                        }
+                    },
+                    {
+                        "eid": "54ac9c30-4e74-11e6-87c9-c38cd6fbff81",
+                        "logicalNot": false,
+                        "indexDocType": "aminno.entities",
+                        "indexDocTypeName": "AshleyMadison.实体信息",
+                        "field": "profile.height",
+                        "fieldType": "long",
+                        "fieldname": "个人信息-身高",
+                        "operator": "equalFilter",
+                        "operatorName": "等于",
+                        "dataType": "variable",
+                        "value": {
+                            "valueType": "plainValue"
+                        },
+                        "variable": {
+                            "variableClassId": "VARc1ed7e0033814c0aa1c8a4ce982de0f2",
+                            "variableInstanceId": "VARc1ed7e0033814c0aa1c8a4ce982de0f2",
+                            "variableName": "GV2"
+                        }
+                    },
+                    {
+                        "eid": "60a70430-4e74-11e6-87c9-c38cd6fbff81",
+                        "logicalNot": false,
+                        "indexDocType": "voter_fl.entities",
+                        "indexDocTypeName": "FL登记.实体信息",
+                        "field": "ident.first_name",
+                        "fieldType": "string",
+                        "fieldname": "身份信息-名",
+                        "operator": "regexpFilter",
+                        "operatorName": "正则表达式匹配",
+                        "dataType": "value",
+                        "value": {
+                            "valueType": "plainString",
+                            "value": "tom"
+                        },
+                        "variable": {
+                            "variableClassId": "",
+                            "variableInstanceId": "",
+                            "variableName": ""
+                        }
+                    }
+                ],
+                "operator": "bool_and"
+            }
+        }
+    },
+    "variables": [
+        {
+            "variableInstanceId": "VARbc5d2b3de2704512be0c4cd3de210700",
+            "variableClassId": "VARbc5d2b3de2704512be0c4cd3de210700",
+            "name": "MVAR1",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRAG66aebd5207854570b8f542b9c288aca5",
+                "scenarioId": "SCNO9b22561ed62e4428832f707d4462078b"
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "huangboning",
+            "variableScope": "fragment"
+        },
+        {
+            "variableInstanceId": "VAR9e8499c39cb341ce8ece09664563d648",
+            "variableClassId": "VARc502875ed08948d8a884d79690de71a1",
+            "name": "GV1",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "",
+                "scenarioId": ""
+            },
+            "valueType": "plainString",
+            "fieldType": "string",
+            "value": "cang",
+            "variableScope": "scenario"
+        },
+        {
+            "variableInstanceId": "VAR8ade99a664e64cb182d880b676b5d38d",
+            "variableClassId": "VARc1ed7e0033814c0aa1c8a4ce982de0f2",
+            "name": "GV2",
+            "variableType": "",
+            "beLongsTo": {
+                "fragmentId": "FRAT1569f148c4034e9eb9f4f5536d1bd709",
+                "scenarioId": "SCNO1511f6088e7e4a1cb075590c5f7f2da8"
+            },
+            "valueType": "plainValue",
+            "fieldType": "long",
+            "value": "180",
+            "variableScope": "fragment"
+        }
+    ],
+    "pagination": {
+        "size": 20,
+        "from": 0
+    },
+    "method": "validate"
+}
+
+验证返回结果
+
+{
+    "isValid": true,
+    "fragmentWithVarError": [],
+    "results": [],
+    "success": true,
+    "varReferenced": {
+        "fragmentsWithVariable": {
+            "VAR9e8499c39cb341ce8ece09664563d648": [
+                "FRAT1569f148c4034e9eb9f4f5536d1bd709"
+            ],
+            "VAR8ade99a664e64cb182d880b676b5d38d": [
+                "FRAT1569f148c4034e9eb9f4f5536d1bd709"
+            ],
+            "VARbc5d2b3de2704512be0c4cd3de210700": [
+                "FRAG66aebd5207854570b8f542b9c288aca5"
+            ]
+        },
+        "variablesByFragment": {
+            "FRAT1569f148c4034e9eb9f4f5536d1bd709": [
+                "VAR9e8499c39cb341ce8ece09664563d648",
+                "VAR8ade99a664e64cb182d880b676b5d38d"
+            ],
+            "FRAG66aebd5207854570b8f542b9c288aca5": [
+                "VARbc5d2b3de2704512be0c4cd3de210700"
+            ]
+        }
+    }
+}

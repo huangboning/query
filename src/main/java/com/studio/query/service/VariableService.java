@@ -174,7 +174,11 @@ public class VariableService {
 
 				Variable variable = variableList.get(i);
 				// git库存的UUID=classId，instanceId为引用模板的时候生成的id
-				if (variable.getVariableUUID().equals(variableClassId)) {
+				if (variable.getVariableClassId().equals(variableClassId)) {
+					String beFragmentId=variable.getFragmentUUID();
+					if(variable.getVariableScope().equals("")||(variable.getVariableScope().equals("")&&variable.getFragmentUUID()s)){
+						
+					}
 					if (!StringUtil.isNullOrEmpty(variableName)) {
 						variable.setVariableName(variableName);
 					}

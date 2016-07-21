@@ -1,0 +1,26 @@
+{
+  "isValid": true,
+  "fragmentWithVarError": [],
+  "results": [],
+  "varReferenced": {
+    "fragmentsWithVariable": {
+      "VARbc2363569594477f964facdf2c8a5e18": [
+        "FRAT0484f75c35eb4eaf8f14baf118fe32f4"
+      ],
+      "VARd24c15e2b91b4a998aed5e4299046a33": [
+        "FRAGe6186164638c4243a4d4ba9eb2cfa46e"
+      ],
+      "VAR8ef25209414441b79a949ce2604a2821": []
+    },
+    "variablesByFragment": {
+      "FRAGa647856d75ef4e9b87203a5fe1313adb": [],
+      "FRAGe6186164638c4243a4d4ba9eb2cfa46e": [
+        "VARd24c15e2b91b4a998aed5e4299046a33"
+      ],
+      "FRAG6406c7bac2d94a90ad82698a0aeba90b": [],
+      "FRAT0484f75c35eb4eaf8f14baf118fe32f4": [
+        "VARbc2363569594477f964facdf2c8a5e18"
+      ]
+    }
+  }
+}
