@@ -72,11 +72,13 @@ public class SceneService {
 			String sceneType;
 			JSONArray scopeArray = new JSONArray();
 			JSONObject fragmentObj = new JSONObject();
+			JSONObject sceneAttr= new JSONObject();;
 			if (Configure.serverVersion == 0) {
 				sceneName = parmJb.optString("name", "");
 				sceneDesc = parmJb.optString("desc", "");
 				sceneType = parmJb.optString("type", "");
 				scopeArray = parmJb.getJSONArray("scopes");
+				sceneAttr = parmJb.getJSONObject("attr");
 				fragmentObj = parmJb.getJSONObject("defaultFragment");
 
 			} else {
@@ -189,6 +191,7 @@ public class SceneService {
 				JSONObject descObj = new JSONObject();
 				descObj.put("desc", sceneDesc);
 				sceneJson.put("scene", descObj);
+				sceneJson.put("attr", sceneAttr);
 				// =========向场景中默认添加一个fragment==========
 
 				JGitService jGitService = new JGitService();
@@ -528,7 +531,9 @@ public class SceneService {
 			List<Variable> variableList = JsonUtil.getVariableFromSceneString(contentString);
 			List<String> scopeList = JsonUtil.getScopeFromSceneString(contentString);
 			String sceneDesc = JsonUtil.getDescFromSceneString(contentString);
+			JSONObject sceneAttrObj=JsonUtil.getAttrFromSceneString(contentString);
 			sceneActive.setSceneDesc(sceneDesc);
+			sceneActive.setSceneAttrObj(sceneAttrObj);
 
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, templateList);
@@ -602,6 +607,7 @@ public class SceneService {
 			sceneObject.put("scope", scopeObjs.toString());
 			sceneObject.put("tags", "[]");
 			sceneObject.put("values", "[]");
+			sceneObject.put("attr", sceneActive.getSceneAttrObj());
 		} else {
 			sceneObject.put("sceneUUID", sceneActive.getSceneUUID());
 			sceneObject.put("sceneName", sceneActive.getSceneName());

@@ -42,6 +42,7 @@ public class JsonUtil {
 		}
 		return fragmentList;
 	}
+
 	/**
 	 * 从场景json中解析出fragment模板数据
 	 * 
@@ -159,5 +160,26 @@ public class JsonUtil {
 		}
 
 		return descString;
+	}
+
+	/**
+	 * 从场景json中解析出attr数据
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static JSONObject getAttrFromSceneString(String str) {
+
+		JSONObject attrObj = new JSONObject();
+		try {
+			JSONObject strObj = JSONObject.fromObject(str);
+			if (null != strObj) {
+				attrObj = strObj.getJSONObject("attr");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return attrObj;
 	}
 }

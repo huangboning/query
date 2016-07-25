@@ -4,6 +4,8 @@ import java.util.Date;
 
 import com.studio.query.common.Pager;
 
+import net.sf.json.JSONObject;
+
 public class Scene extends Pager {
 	private int sceneId;
 	private int accountId;
@@ -17,6 +19,7 @@ public class Scene extends Pager {
 	private String sceneScope;
 	private int sceneActive;
 	private int sceneEnable;
+	private JSONObject sceneAttrObj;
 
 	private Date sceneDate;
 
@@ -122,6 +125,14 @@ public class Scene extends Pager {
 
 	public void setSceneDate(Date sceneDate) {
 		this.sceneDate = sceneDate;
+	}
+
+	public JSONObject getSceneAttrObj() {
+		return sceneAttrObj;
+	}
+
+	public void setSceneAttrObj(JSONObject sceneAttrObj) {
+		this.sceneAttrObj = sceneAttrObj;
 	}
 
 }
