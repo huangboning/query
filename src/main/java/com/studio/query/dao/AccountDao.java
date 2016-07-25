@@ -16,9 +16,11 @@ public interface AccountDao {
 	@Results(value = { @Result(column = "account_id", property = "accountId"),
 			@Result(column = "account_status", property = "accountStatus"),
 			@Result(column = "account_pwd_status", property = "accountPwdStatus"),
+			@Result(column = "account_template_status", property = "accountTemplateStatus"),
 			@Result(column = "account_number", property = "accountNumber"),
 			@Result(column = "account_name", property = "accountName"),
 			@Result(column = "account_email", property = "accountEmail"),
+			@Result(column = "account_real_name", property = "accountRealName"),
 			@Result(column = "account_password", property = "accountPassword"),
 			@Result(column = "account_repository", property = "accountRepository"),
 			@Result(column = "account_date", property = "accountDate") })
@@ -33,9 +35,11 @@ public interface AccountDao {
 	@Results(value = { @Result(column = "account_id", property = "accountId"),
 			@Result(column = "account_status", property = "accountStatus"),
 			@Result(column = "account_pwd_status", property = "accountPwdStatus"),
+			@Result(column = "account_template_status", property = "accountTemplateStatus"),
 			@Result(column = "account_number", property = "accountNumber"),
 			@Result(column = "account_name", property = "accountName"),
 			@Result(column = "account_email", property = "accountEmail"),
+			@Result(column = "account_real_name", property = "accountRealName"),
 			@Result(column = "account_password", property = "accountPassword"),
 			@Result(column = "account_repository", property = "accountRepository"),
 			@Result(column = "account_date", property = "accountDate") })
@@ -45,7 +49,7 @@ public interface AccountDao {
 	@SelectProvider(type = AccountMapperProvider.class, method = "countAccount")
 	public int countAccount(Account account);
 
-	@Insert("insert into t_account(account_name,account_password,account_number,account_email,account_repository,account_pwd_status,account_date)values(#{accountName},#{accountPassword},#{accountNumber},#{accountEmail},#{accountRepository},#{accountPwdStatus},now())")
+	@Insert("insert into t_account(account_name,account_password,account_number,account_email,account_real_name,account_repository,account_pwd_status,account_date)values(#{accountName},#{accountPassword},#{accountNumber},#{accountEmail},#{accountRealName},#{accountRepository},#{accountPwdStatus},now())")
 	public int insertAccount(Account account);
 
 	@Update("update t_account set account_password=#{accountPassword},account_pwd_status=-1 where account_id=#{accountId}")
@@ -59,4 +63,10 @@ public interface AccountDao {
 
 	@Update("update t_account set account_status=-1 where account_id=#{accountId}")
 	public int disable(Account account);
+	
+	@Update("update t_account set account_template_status=1 where account_id=#{accountId}")
+	public int enableTemplate(Account account);
+
+	@Update("update t_account set account_template_status=0 where account_id=#{accountId}")
+	public int disableTemplate(Account account);
 }

@@ -38,7 +38,7 @@
 		<div style="margin-top: 10px;">
 			<form id="search_form" action="<%=path%>/user/list" method="post">
 
-				用户名称： <input type="text" name="searchAccount.accountName"
+				用户账号： <input type="text" name="searchAccount.accountName"
 					style="width: 120px; height: 19px;"
 					value="${searchAccount.accountName}" /> 用户状态： <select
 					style="width: 120px; height: 25px;"
@@ -71,8 +71,10 @@
 			<tr>
 				<th>序号</th>
 				<th>用户账号</th>
+				<th>用户姓名</th>
 				<th>用户邮件</th>
 				<th>用户状态</th>
+				<th>发布模板</th>
 				<th>创建时间</th>
 				<th>操作</th>
 			</tr>
@@ -80,12 +82,17 @@
 			<s:iterator value="accountList" var="a" status="s">
 				<tr>
 					<td>${s.index + 1 + offset}</td>
-					<td style="width: 25%">${a.accountName}</td>
-
-					<td style="width: 25%">${a.accountEmail}</td>
+					<td>${a.accountName}</td>
+					<td>${a.accountRealName}</td>
+					<td>${a.accountEmail}</td>
 					<td><c:if test="${a.accountStatus==0}">
 							<font color="green">正常</font>
 						</c:if> <c:if test="${a.accountStatus==-1}">
+							<font color="red">禁用</font>
+						</c:if></td>
+					<td><c:if test="${a.accountTemplateStatus==1}">
+							<font color="green">正常</font>
+						</c:if> <c:if test="${a.accountTemplateStatus==0}">
 							<font color="red">禁用</font>
 						</c:if></td>
 					<td><s:date format="yyyy-MM-dd HH:mm:ss" name="#a.accountDate"></s:date></td>
@@ -100,6 +107,14 @@
 							<a
 								href="<%=path%>/user/disable?searchAccount.accountId=${a.accountId}"
 								onclick="return confirm('请谨慎操作，确定禁用该用户吗？')">禁用</a>
+						</c:if>&nbsp;|&nbsp; <c:if test="${a.accountTemplateStatus==0}">
+							<a
+								href="<%=path%>/user/enableTemplate?searchAccount.accountId=${a.accountId}"
+								onclick="return confirm('请谨慎操作，确定启用该用户发布模板权限吗？')">启用模板</a>
+						</c:if> <c:if test="${a.accountTemplateStatus==1}">
+							<a
+								href="<%=path%>/user/disableTemplate?searchAccount.accountId=${a.accountId}"
+								onclick="return confirm('请谨慎操作，确定禁用该用户发布模板吗？')">禁用模板</a>
 						</c:if></td>
 				</tr>
 			</s:iterator>

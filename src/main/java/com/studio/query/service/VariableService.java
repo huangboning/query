@@ -148,6 +148,7 @@ public class VariableService {
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
 			String variableClassId = parmJb.optString("variableClassId", "");
+			String fragmentId = parmJb.optString("fragmentId", "");
 			String variableName = parmJb.optString("variableName", "");
 			String variableValueType = parmJb.optString("valueType", "");
 			String variableValue = parmJb.optString("value", "");
@@ -173,23 +174,22 @@ public class VariableService {
 			for (int i = 0; i < variableList.size(); i++) {
 
 				Variable variable = variableList.get(i);
-				// git库存的UUID=classId，instanceId为引用模板的时候生成的id
-				if (variable.getVariableClassId().equals(variableClassId)) {
-					String beFragmentId=variable.getFragmentUUID();
-					if(variable.getVariableScope().equals("")||(variable.getVariableScope().equals("")&&variable.getFragmentUUID()s)){
-						
+				if (variable.getVariableScope().equals("scenario")||variable.getFragmentUUID().equals(fragmentId)) {
+					// git库存的UUID=classId，instanceId为引用模板的时候生成的id
+					if (variable.getVariableClassId().equals(variableClassId)) {
+						if (!StringUtil.isNullOrEmpty(variableName)) {
+							variable.setVariableName(variableName);
+						}
+						if (!StringUtil.isNullOrEmpty(variableValueType)) {
+							variable.setVariableValueType(variableValueType);
+						}
+						if (!StringUtil.isNullOrEmpty(variableValue)) {
+							variable.setVariableValue(variableValue);
+						}
+						break;
 					}
-					if (!StringUtil.isNullOrEmpty(variableName)) {
-						variable.setVariableName(variableName);
-					}
-					if (!StringUtil.isNullOrEmpty(variableValueType)) {
-						variable.setVariableValueType(variableValueType);
-					}
-					if (!StringUtil.isNullOrEmpty(variableValue)) {
-						variable.setVariableValue(variableValue);
-					}
-					break;
 				}
+				
 			}
 
 			// 将fragment更新到缓存中

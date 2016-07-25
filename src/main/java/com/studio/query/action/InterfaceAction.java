@@ -462,6 +462,10 @@ public class InterfaceAction extends BaseAction {
 		this.execute();
 	}
 
+	public void getPriority() {
+		this.execute();
+	}
+
 	public void getNotes() {
 		this.execute();
 	}

@@ -60,6 +60,12 @@
 			<result name="success">/page/login.jsp</result>
 			<result name="error">/page/error.jsp</result>
 		</action>
+		<action name="admin" class="com.studio.query.action.UserAction"
+			method="userInit">
+			<result name="init">/page/init.jsp</result>
+			<result name="login">/page/login.jsp</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
 	</package>
 	<package name="user" extends="userAuthority" namespace="/user">
 		<action name="info" class="com.studio.query.action.UserAction"
@@ -94,6 +100,16 @@
 		</action>
 		<action name="disable" class="com.studio.query.action.AccountAction"
 			method="disable">
+			<result name="success" type="redirectAction">list</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
+		<action name="enableTemplate" class="com.studio.query.action.AccountAction"
+			method="enableTemplate">
+			<result name="success" type="redirectAction">list</result>
+			<result name="error">/page/error.jsp</result>
+		</action>
+		<action name="disableTemplate" class="com.studio.query.action.AccountAction"
+			method="disableTemplate">
 			<result name="success" type="redirectAction">list</result>
 			<result name="error">/page/error.jsp</result>
 		</action>

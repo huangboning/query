@@ -24,15 +24,17 @@ CREATE TABLE `t_account` (
   `account_number` varchar(255) DEFAULT NULL,
   `account_name` varchar(255) DEFAULT NULL,
   `account_password` varchar(255) DEFAULT NULL,
+  `account_real_name` varchar(255) DEFAULT NULL,
   `account_email` varchar(255) DEFAULT NULL,
   `account_repository` varchar(255) DEFAULT NULL,
   `account_status` int(11) DEFAULT '0' COMMENT '0正常-1禁用',
   `account_pwd_status` int(11) DEFAULT '0',
+  `account_template_status` int(11) DEFAULT '0',
   `account_date` datetime DEFAULT NULL,
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `account_name_unique` (`account_name`),
   UNIQUE KEY `account_repository_unique` (`account_repository`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_fragment
@@ -172,4 +174,3 @@ CREATE TABLE `t_variable` (
   UNIQUE KEY `variable_no_unique` (`variable_uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `t_user` VALUES ('1', 'admin', md5('123456'), 'huangboning', '1', '2016-06-13 08:47:24');

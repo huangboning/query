@@ -33,6 +33,7 @@ public class UserAction extends BaseAction {
 	private String confirmPassword;
 	private User userInfo = new User();
 	private User searchUser = new User();
+	private User initUser = new User();
 	private List<User> userList = new ArrayList<User>();
 
 	@Autowired
@@ -71,6 +72,22 @@ public class UserAction extends BaseAction {
 	public String userLogOut() {
 		session.remove(Configure.systemSessionUser);
 		return SUCCESS;
+	}
+
+	public String userInit() {
+		
+		List<User> userList = userService.findUser(initUser);
+		if (userList.size() == 0) {
+			initUser.setUserAccount("admin");
+			initUser.setUserName("系统管理员");
+			String userPassword=StringUtil.createPasswordBase64();
+			initUser.setUserDisplyPwd(userPassword);
+			initUser.setUserPassword(Md5Util.md5Encode(userPassword));
+			userService.insertUser(initUser);
+			return "init";
+		} else {
+			return "login";
+		}
 	}
 
 	public String userInfo() {
@@ -124,6 +141,7 @@ public class UserAction extends BaseAction {
 		}
 
 	}
+
 	public String listUser() {
 		searchUser.setOffset(pager.getOffset());
 		searchUser.setLimit(pager.getLimit());
@@ -162,6 +180,14 @@ public class UserAction extends BaseAction {
 
 	public void setUserList(List<User> userList) {
 		this.userList = userList;
+	}
+
+	public User getInitUser() {
+		return initUser;
+	}
+
+	public void setInitUser(User initUser) {
+		this.initUser = initUser;
 	}
 
 	public User getUserInfo() {

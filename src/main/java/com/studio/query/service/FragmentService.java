@@ -2,16 +2,19 @@ package com.studio.query.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.studio.query.common.Configure;
 import com.studio.query.common.Constants;
+import com.studio.query.common.HttpUtil;
 import com.studio.query.dao.FragmentDao;
 import com.studio.query.entity.Account;
 import com.studio.query.entity.Committer;
@@ -32,6 +35,8 @@ import net.sf.json.JSONObject;
 
 @Service
 public class FragmentService {
+	Logger loger = Logger.getLogger(FragmentService.class);
+
 	@Autowired
 	public FragmentDao fragmentDao;
 	@Autowired
@@ -358,6 +363,13 @@ public class FragmentService {
 						fragmentObj.put("fragmentExpression", fragment.getFragmentExpression());
 					}
 					isHaveFragment = true;
+					if (!Configure.isDevelopment) {
+						List<Fragment> validateFragmentList = new ArrayList<Fragment>();
+						validateFragmentList.add(fragment);
+						String str = this.validateTemplateVariableList(session, validateFragmentList, new ArrayList<>());
+						fragmentObj.put("validateResult", str);
+						loger.info("validateResult="+str);
+					}
 					break;
 				}
 			}
@@ -389,14 +401,20 @@ public class FragmentService {
 
 						// 如果是模板fragment，在getFragment的时候，返回所用到的变量列表到前端
 						templateFragmentObj.put("templateVariableList", fragment.getFragmentTemplateVariable());
+						
+						if (!Configure.isDevelopment) {
+							List<Fragment> validateTemplateFragmentList = new ArrayList<Fragment>();
+							validateTemplateFragmentList.add(fragment);
+							String str = this.validateTemplateVariableList(session, new ArrayList<>(), templateFragmentList);
+							templateFragmentObj.put("validateResult", str);
+							loger.info("validateResult="+str);
+						}
 						break;
 					}
 				}
 				resultString = StringUtil.packetObject(MethodCode.GET_FRAGMENT, ParameterCode.Result.RESULT_OK,
 						"获取某个版本fragment成功", templateFragmentObj.toString());
 			}
-			//测试validate接口
-			//queryService.validate("", session);
 		}
 		return resultString;
 	}
@@ -1208,6 +1226,14 @@ public class FragmentService {
 			templateVariableList = new ArrayList<Variable>();
 			JSONObject expJo = JSONObject.fromObject(insertFragment.getFragmentExpression());
 			this.parseTemplateVariableList(expJo);
+
+			if (!Configure.isDevelopment) {
+				List<Fragment> validateFragmentList = new ArrayList<Fragment>();
+				validateFragmentList.add(insertFragment);
+				String str = this.validateTemplateVariableList(session, validateFragmentList, new ArrayList<>());
+				fragmentJsonObject.put("validateResult", str);
+				loger.info("validateResult="+str);
+			}
 			// insertFragment.setFragmentExpression(expJo.toString());//
 			// 重新设置引用变量后的expression
 			// 修改variableinstanceid交给客户端修改，传templdatevariablelist给客户端
@@ -1252,7 +1278,7 @@ public class FragmentService {
 						// 如果全局变量，判断是否已经有该variableClassid
 						if (!this.validateIsExistVariable(sceneActive, reVOj.optString("variableClassId", ""))) {
 							sessionVariableArray.add(insertVariable);
-							//templateVariables.add(templateVarObj);
+							// templateVariables.add(templateVarObj);
 						}
 						templateVariables.add(templateVarObj);
 					}
@@ -1395,6 +1421,15 @@ public class FragmentService {
 			templateVariableList = new ArrayList<Variable>();
 			JSONObject expJo = JSONObject.fromObject(insertFragment.getFragmentExpression());
 			this.parseTemplateVariableList(expJo);
+			
+			if (!Configure.isDevelopment) {
+				List<Fragment> validateFragmentList = new ArrayList<Fragment>();
+				validateFragmentList.add(insertFragment);
+				String str = this.validateTemplateVariableList(session, validateFragmentList, new ArrayList<>());
+				fragmentJsonObject.put("validateResult", str);
+				loger.info("validateResult="+str);
+			}
+			
 			// insertFragment.setFragmentExpression(expJo.toString());//
 			// 重新设置引用变量后的expression
 			// 修改variableinstanceid交给客户端修改，传templdatevariablelist给客户端
@@ -1439,7 +1474,7 @@ public class FragmentService {
 						// 如果全局变量，判断是否已经有该variableClassid
 						if (!this.validateIsExistVariable(sceneActive, reVOj.optString("variableClassId", ""))) {
 							sessionVariableArray.add(insertVariable);
-							//templateVariables.add(templateVarObj);
+							// templateVariables.add(templateVarObj);
 						}
 						templateVariables.add(templateVarObj);
 					}
@@ -1589,6 +1624,164 @@ public class FragmentService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String validateTemplateVariableList(Map<String, Object> session, List<Fragment> fragmentList,
+			List<Fragment> templateFragmentList) {
+		// 这里返回验证表达式结果
+		String resultString = "";
+		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+		JSONArray scopeObjs = new JSONArray();
+		List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+		if (scopeArray == null) {
+			scopeArray = new ArrayList<String>();
+		}
+		for (String scopeStr : scopeArray) {
+			scopeObjs.add(scopeStr);
+		}
+		JSONObject queryObj = new JSONObject();
+		JSONObject sceneObj = new JSONObject();
+		sceneObj.put("id", sceneActive.getSceneUUID());
+		sceneObj.put("name", sceneActive.getSceneName());
+		sceneObj.put("desc", sceneActive.getSceneDesc());
+		sceneObj.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
+		sceneObj.put("scope", scopeObjs.toString());
+		// sceneObj.put("name", sceneActive.getSceneName());
+		// sceneObj.put("id", sceneActive.getSceneUUID());
+		// sceneObj.put("tages", "[]");
+
+		JSONArray fragmentListArray = new JSONArray();
+		Map<String, Object> fragmentsMap = new HashMap<String, Object>();
+
+		for (int i = 0; i < fragmentList.size(); i++) {
+			Fragment fragment = fragmentList.get(i);
+			JSONObject dataObj = new JSONObject();
+			dataObj.put("id", fragment.getFragmentUUID());
+			dataObj.put("name", fragment.getFragmentName());
+			dataObj.put("desc", fragment.getFragmentDesc());
+			dataObj.put("type", fragment.getFragmentType());
+			dataObj.put("objectType", fragment.getFragmentObjType());
+			dataObj.put("enable", fragment.isFragmentEnable());
+			dataObj.put("version", "");
+			// if (fragment.isFragmentEnable()) {
+			fragmentListArray.add(dataObj);
+			// }
+
+		}
+
+		for (int i = 0; i < fragmentList.size(); i++) {
+			Fragment fragment = fragmentList.get(i);
+			JSONObject dataObj = new JSONObject();
+			dataObj.put("id", fragment.getFragmentUUID());
+			dataObj.put("name", fragment.getFragmentName());
+			dataObj.put("desc", fragment.getFragmentDesc());
+			dataObj.put("type", fragment.getFragmentType());
+			dataObj.put("objectType", fragment.getFragmentObjType());
+			dataObj.put("tags", "[]");
+			dataObj.put("version", "");
+			dataObj.put("expression", fragment.getFragmentExpression());
+			// if (fragment.isFragmentEnable()) {
+			fragmentsMap.put(fragment.getFragmentUUID(), dataObj);
+			// }
+
+		}
+		queryObj.put("fragments", fragmentsMap);
+
+		JSONArray fragmentTemplateListArray = new JSONArray();
+		Map<String, Object> fragmentTemplatesMap = new HashMap<String, Object>();
+
+		for (int i = 0; i < templateFragmentList.size(); i++) {
+			Fragment fragment = templateFragmentList.get(i);
+			JSONObject dataObj = new JSONObject();
+			dataObj.put("id", fragment.getFragmentUUID());
+			dataObj.put("templateId", fragment.getFragmentTemplateId());
+			dataObj.put("name", fragment.getFragmentName());
+			dataObj.put("desc", fragment.getFragmentDesc());
+			dataObj.put("type", fragment.getFragmentType());
+			dataObj.put("objectType", fragment.getFragmentObjType());
+			dataObj.put("enable", fragment.isFragmentEnable());
+			dataObj.put("version", fragment.getFragmentTemplateVersion());
+			// if (fragment.isFragmentEnable()) {
+			fragmentListArray.add(dataObj);
+			// }
+
+		}
+		sceneObj.put("fragmentList", fragmentListArray);
+		queryObj.put("scenario", sceneObj.toString());
+
+		for (int i = 0; i < templateFragmentList.size(); i++) {
+			Fragment fragment = templateFragmentList.get(i);
+			JSONObject dataObj = new JSONObject();
+			// dataObj.put("id",
+			// fragment.getFragmentUUID());//模板遍历的是模板id，本身的实例id不需要显示
+			dataObj.put("templateId", fragment.getFragmentTemplateId());
+			dataObj.put("name", fragment.getFragmentName());
+			dataObj.put("desc", fragment.getFragmentDesc());
+			dataObj.put("type", fragment.getFragmentType());
+			dataObj.put("objectType", fragment.getFragmentObjType());
+			dataObj.put("tags", "[]");
+			dataObj.put("version", fragment.getFragmentTemplateVersion());
+			dataObj.put("expression", fragment.getFragmentExpression());
+
+			// 如果模板多次引用，只显示一次
+			if (fragmentTemplatesMap.get(fragment.getFragmentTemplateId()) == null) {
+				fragmentTemplatesMap.put(fragment.getFragmentTemplateId(), dataObj);
+
+			}
+		}
+		queryObj.put("fragmentTemplates", fragmentTemplatesMap);
+
+		 JSONArray variableListArray = new JSONArray();
+		 // 读取缓存中的变量数据
+		 List<Variable> variableList = (List<Variable>) CacheUtil
+		 .getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+		 if (variableList == null) {
+		 variableList = new ArrayList<Variable>();
+		 }
+		 for (int i = 0; i < variableList.size(); i++) {
+		 Variable variable = variableList.get(i);
+		 JSONObject dataObj = new JSONObject();
+		
+		 dataObj.put("variableInstanceId", variable.getVariableUUID());
+		 dataObj.put("variableClassId", variable.getVariableClassId());
+		 dataObj.put("name", variable.getVariableName());
+		 dataObj.put("variableType", variable.getVariableType());
+		 JSONObject belongObj = new JSONObject();
+		 if (variable.getVariableScope().equals("fragment")) {
+		 belongObj.put("fragmentId", variable.getFragmentUUID());
+		 belongObj.put("scenarioId", variable.getSceneUUID());
+		 } else {
+		 belongObj.put("fragmentId", "");
+		 belongObj.put("scenarioId", "");
+		 }
+		 dataObj.put("beLongsTo", belongObj);
+		 dataObj.put("valueType", variable.getVariableValueType());
+		 dataObj.put("fieldType", variable.getVariableFieldType());
+		 dataObj.put("value", variable.getVariableValue());
+		 dataObj.put("variableScope", variable.getVariableScope());
+		 variableListArray.add(dataObj);
+		
+		 }
+		 queryObj.put("variables", variableListArray);
+		
+		// JSONObject paginationObj = new JSONObject();
+		// paginationObj.put("size", recCount);
+		// paginationObj.put("from", position);
+		// queryObj.put("pagination", paginationObj);
+		queryObj.put("method", "validate");
+		queryObj.put("isForceEnableAll", true);
+
+		loger.info("validateScenario post data=" + queryObj.toString());
+
+		try {
+			resultString = HttpUtil.sendPost(Configure.esQueryServiceUrl, queryObj.toString().getBytes("utf-8"));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			loger.info(e.toString());
+			loger.info("请求失败：" + Configure.esQueryServiceUrl);
+		}
+		return resultString;
 	}
 	// 暂时不验证
 	// public boolean parseTemplateIsVariable(String jsonString) {

@@ -142,7 +142,17 @@ public class AccountAction extends BaseAction {
 		accountService.disable(searchAccount);
 		return SUCCESS;
 	}
+	public String enableTemplate() {
 
+		accountService.enableTemplate(searchAccount);
+		return SUCCESS;
+	}
+
+	public String disableTemplate() {
+
+		accountService.disableTemplate(searchAccount);
+		return SUCCESS;
+	}
 	public String getAccountAccount() {
 		return accountAccount;
 	}

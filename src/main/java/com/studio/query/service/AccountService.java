@@ -66,6 +66,14 @@ public class AccountService {
 		return accountDao.disable(account);
 	}
 
+	public int enableTemplate(Account account) {
+		return accountDao.enableTemplate(account);
+	}
+
+	public int disableTemplate(Account account) {
+		return accountDao.disableTemplate(account);
+	}
+
 	public int insertAccount(Account account) {
 		return accountDao.insertAccount(account);
 	}
@@ -96,7 +104,13 @@ public class AccountService {
 					return resultString;
 				}
 				JSONObject accountJson = new JSONObject();
+				accountJson.put("accountName", accountList.get(0).getAccountName());
+				accountJson.put("accountRealName", accountList.get(0).getAccountRealName());
 				accountJson.put("needset", accountList.get(0).getAccountPwdStatus() == -1 ? true : false);
+				JSONObject priorityObj=new JSONObject();
+				priorityObj.put("couldReleaseTemplate",  accountList.get(0).getAccountTemplateStatus() == 1 ? true : false);
+				accountJson.put("priority",priorityObj);
+				
 				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_LOGIN, ParameterCode.Result.RESULT_OK, "登录成功",
 						accountJson.toString());
 				session.put(Configure.systemSessionAccount, accountList.get(0));
@@ -233,16 +247,19 @@ public class AccountService {
 
 		JSONObject accountJson = new JSONObject();
 		accountJson.put("accountName", currentAccount.getAccountName());
+		accountJson.put("accountRealName", currentAccount.getAccountRealName());
 		accountJson.put("accountEmail", currentAccount.getAccountEmail());
 		accountJson.put("accountStatus", currentAccount.getAccountStatus() == 0 ? "正常" : "禁用");
 		accountJson.put("accountDate", DateUtil.dateTimeFormat(currentAccount.getAccountDate()));
 		accountJson.put("needset", currentAccount.getAccountPwdStatus() == -1 ? true : false);
+		JSONObject priorityObj=new JSONObject();
+		priorityObj.put("couldReleaseTemplate",  currentAccount.getAccountTemplateStatus() == 1 ? true : false);
+		accountJson.put("priority",priorityObj);
 		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_INFO, ParameterCode.Result.RESULT_OK, "获取用户信息成功",
 				accountJson.toString());
 
 		return resultString;
 	}
-
 	public String doAccountPwdUpdateLogic(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
@@ -275,6 +292,7 @@ public class AccountService {
 				accountJson.put("accountStatus", currentAccount.getAccountStatus() == 0 ? "正常" : "禁用");
 				accountJson.put("accountDate", DateUtil.dateTimeFormat(currentAccount.getAccountDate()));
 				accountJson.put("needset", currentAccount.getAccountPwdStatus() == -1 ? true : false);
+				currentAccount.setAccountPassword(updateAccount.getAccountPassword());
 				resultString = StringUtil.packetObject(MethodCode.ACCOUNT_PWD_UPDATE, ParameterCode.Result.RESULT_OK,
 						"更新用户密码成功", accountJson.toString());
 			} else {

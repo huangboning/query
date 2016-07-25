@@ -43,6 +43,11 @@
 						id="insertAccount.accountName" class="input_on" /></td>
 				</tr>
 				<tr>
+					<td>用户姓名：</td>
+					<td><input value="" type="text" name="insertAccount.accountRealName"
+						id="insertAccount.accountRealName" class="input_on" /></td>
+				</tr>
+				<tr>
 					<td>用户邮件：</td>
 					<td><input value="" type="text" name="insertAccount.accountEmail"
 						id="insertAccount.accountEmail" class="input_on" /></td>

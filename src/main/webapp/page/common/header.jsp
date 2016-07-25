@@ -25,14 +25,15 @@
 </div>
 <c:if test="${zq_query_user!=null}">
 	<div
-		style="width: 980px; height: 50px; margin-right: auto; margin-left: auto; background-color: #f1eeee">
+		style="overflow:hidden;width: 980px; height: 50px; margin-right: auto; margin-left: auto; background-color: #f1eeee">
 		<div>&nbsp;</div>
 		<div>
 
 			<div style="width: 80px; height: 25px; float: left;">
 				<a href="<%=path%>/user/info">帐号管理</a>
 			</div>
-			<div style="width: 80px; height: 25px; float: left;">
+			
+			<div style="width: 80px; height: 25px; float: left;margin-left: 10px">
 				<a href="<%=path%>/user/list">用户管理</a>
 			</div>
 		</div>

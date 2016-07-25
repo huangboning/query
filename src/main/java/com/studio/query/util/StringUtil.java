@@ -1,5 +1,6 @@
 package com.studio.query.util;
 
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -65,6 +66,7 @@ public class StringUtil {
 		return fragmentUUID;
 
 	}
+
 	public static String createTemplateFragmentUUID() {
 		String fragmentUUID = java.util.UUID.randomUUID().toString();
 		fragmentUUID = fragmentUUID.substring(0, 8) + fragmentUUID.substring(9, 13) + fragmentUUID.substring(14, 18)
@@ -73,6 +75,7 @@ public class StringUtil {
 		return fragmentUUID;
 
 	}
+
 	public static String createVariableUUID() {
 		String variableUUID = java.util.UUID.randomUUID().toString();
 		variableUUID = variableUUID.substring(0, 8) + variableUUID.substring(9, 13) + variableUUID.substring(14, 18)
@@ -103,6 +106,15 @@ public class StringUtil {
 	public static String createPassword() {
 		int randomInt = new Random().nextInt(999999);
 		String randomString = String.valueOf(randomInt);
+		return randomString;
+	}
+
+	public static String createPasswordBase64() {
+		int randomInt = new Random().nextInt(999999);
+		String randomString = String.valueOf(randomInt);
+		randomString = Md5Util.md5Encode(randomString);
+		String str = new String(Base64.getEncoder().encode(randomString.getBytes()));
+		randomString = str.substring(0, 8);
 		return randomString;
 	}
 }

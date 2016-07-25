@@ -9,6 +9,7 @@ public class User extends Pager {
 	private String userName;
 	private String userAccount;
 	private String userPassword;
+	private String userDisplyPwd;
 	private int userRoleId;
 	private Date userDate;
 
@@ -45,6 +46,14 @@ public class User extends Pager {
 
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+
+	public String getUserDisplyPwd() {
+		return userDisplyPwd;
+	}
+
+	public void setUserDisplyPwd(String userDisplyPwd) {
+		this.userDisplyPwd = userDisplyPwd;
 	}
 
 	public int getUserRoleId() {

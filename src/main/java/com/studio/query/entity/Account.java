@@ -8,10 +8,12 @@ public class Account extends Pager {
 	private int accountId;
 	private int accountStatus = 1;// 表示查询所有帐户
 	private int accountPwdStatus;
+	private int accountTemplateStatus;
 	private String accountNumber;
 	private String accountPassword;
 	private String accountName;
 	private String accountEmail;
+	private String accountRealName;
 	private String accountRepository;
 	private Date accountDate;
 
@@ -44,6 +46,14 @@ public class Account extends Pager {
 		this.accountPwdStatus = accountPwdStatus;
 	}
 
+	public int getAccountTemplateStatus() {
+		return accountTemplateStatus;
+	}
+
+	public void setAccountTemplateStatus(int accountTemplateStatus) {
+		this.accountTemplateStatus = accountTemplateStatus;
+	}
+
 	public String getAccountNumber() {
 		return accountNumber;
 	}
@@ -74,6 +84,14 @@ public class Account extends Pager {
 
 	public void setAccountEmail(String accountEmail) {
 		this.accountEmail = accountEmail;
+	}
+
+	public String getAccountRealName() {
+		return accountRealName;
+	}
+
+	public void setAccountRealName(String accountRealName) {
+		this.accountRealName = accountRealName;
 	}
 
 	public String getAccountRepository() {

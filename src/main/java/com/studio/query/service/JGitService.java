@@ -3,10 +3,12 @@ package com.studio.query.service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,7 +93,7 @@ public class JGitService {
 	 * @param currentAccount
 	 * @return
 	 */
-	public boolean initAccountGit(String path, Account currentAccount) {
+	public boolean initAccountGit(String path, Account currentAccount,String content) {
 		File root = new File(path);
 		if (!root.exists()) {
 			root.mkdir();
@@ -103,6 +105,16 @@ public class JGitService {
 				// 默认初始化创建info.txt文件，并且提交做为默认第一个版本
 				File file = new File(path + "/info.txt");
 				file.createNewFile();
+				
+				try {
+					OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
+					out.write(content);
+					out.flush();
+					out.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 				git.add().addFilepattern("info.txt").call();
 				PersonIdent personIdent = new PersonIdent(currentAccount.getAccountName(),
 						this.getAccountEmail(currentAccount));
