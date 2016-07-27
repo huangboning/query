@@ -253,7 +253,13 @@ public class AccountService {
 		accountJson.put("accountDate", DateUtil.dateTimeFormat(currentAccount.getAccountDate()));
 		accountJson.put("needset", currentAccount.getAccountPwdStatus() == -1 ? true : false);
 		JSONObject priorityObj=new JSONObject();
-		priorityObj.put("couldReleaseTemplate",  currentAccount.getAccountTemplateStatus() == 1 ? true : false);
+		//实时获取权限
+		List<Account> tempAccounts=accountDao.loginAccount(currentAccount);
+		Account tempAccount=new Account();
+		if (tempAccounts.size()==1) {
+			tempAccount=tempAccounts.get(0);
+		}
+		priorityObj.put("couldReleaseTemplate",  tempAccount.getAccountTemplateStatus() == 1 ? true : false);
 		accountJson.put("priority",priorityObj);
 		resultString = StringUtil.packetObject(MethodCode.ACCOUNT_INFO, ParameterCode.Result.RESULT_OK, "获取用户信息成功",
 				accountJson.toString());

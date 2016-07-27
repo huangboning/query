@@ -2,6 +2,7 @@ package com.studio.query.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,6 @@ import com.studio.query.entity.Account;
 import com.studio.query.entity.Committer;
 import com.studio.query.entity.Fragment;
 import com.studio.query.entity.Scene;
-import com.studio.query.entity.ShareFragment;
 import com.studio.query.entity.ShareVariable;
 import com.studio.query.entity.Variable;
 import com.studio.query.protocol.MethodCode;
@@ -30,6 +30,8 @@ import net.sf.json.JSONObject;
 
 @Service
 public class VariableService {
+	private Map<String, Object> reVariableMap;
+
 	@Autowired
 	public VariableDao variableDao;
 
@@ -174,7 +176,7 @@ public class VariableService {
 			for (int i = 0; i < variableList.size(); i++) {
 
 				Variable variable = variableList.get(i);
-				if (variable.getVariableScope().equals("scenario")||variable.getFragmentUUID().equals(fragmentId)) {
+				if (variable.getVariableScope().equals("scenario") || variable.getFragmentUUID().equals(fragmentId)) {
 					// git库存的UUID=classId，instanceId为引用模板的时候生成的id
 					if (variable.getVariableClassId().equals(variableClassId)) {
 						if (!StringUtil.isNullOrEmpty(variableName)) {
@@ -189,7 +191,7 @@ public class VariableService {
 						break;
 					}
 				}
-				
+
 			}
 
 			// 将fragment更新到缓存中
@@ -241,46 +243,47 @@ public class VariableService {
 	public String deleteVariable(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
-		// JSONObject jb = JSONObject.fromObject(bodyString);
-		// JSONObject parmJb = JSONObject.fromObject(jb.optString("params",
-		// ""));
-		// if (parmJb != null) {
-		// String variableUUID = parmJb.optString("variableUUID", "");
-		// if (StringUtil.isNullOrEmpty(variableUUID)) {
-		//
-		// resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
-		// ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
-		// return resultString;
-		// }
-		// Variable findVariable = new Variable();
-		// findVariable.setVariableUUID(variableUUID);
-		// List<Variable> variableList = variableDao.findVariable(findVariable);
-		// if (variableList.size() != 1) {
-		// resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
-		// ParameterCode.Error.QUERY_VARIABLE_NO_EXIST, "查询的变量不存在", "");
-		// return resultString;
-		// }
-		// Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
-		// // 如果session中没有记录当前场景
-		// if (sceneActive == null) {
-		// resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
-		// ParameterCode.Error.UPDATE_SCENE_NO_MATCH,
-		// "当前会话中场景为空，请确认是否已经调用切换场景接口，或者会话已经过期！", "");
-		// return resultString;
-		// }
-		// Variable deleteVariable = variableList.get(0);
-		// List<Variable> sessionVariableList = (List<Variable>)
-		// session.get(Constants.KEY_VARIABLE_DELETE);
-		// if (sessionVariableList == null || sessionVariableList.size() == 0) {
-		// sessionVariableList = new ArrayList<Variable>();
-		// }
-		// sessionVariableList.add(deleteVariable);
-		// session.put(Constants.KEY_VARIABLE_DELETE, sessionVariableList);
-		//
-		// resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
-		// ParameterCode.Result.RESULT_OK,
-		// "删除变量到缓存成功，请注意在切换场景前保存场景数据。", "");
-		// }
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+		if (parmJb != null) {
+			String variableClassId = parmJb.optString("variableClassId", "");
+			String fragmentId = parmJb.optString("fragmentId", "");
+
+			if (StringUtil.isNullOrEmpty(variableClassId)) {
+				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
+						ParameterCode.Error.SERVICE_PARAMETER, "必要参数不足", "");
+				return resultString;
+			}
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			// 如果session中没有记录当前场景
+			if (sceneActive == null) {
+				resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE,
+						ParameterCode.Error.UPDATE_SCENE_NO_MATCH, "会话已经过期！", "");
+				return resultString;
+			}
+			List<Variable> variableList = (List<Variable>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+			if (variableList == null) {
+				variableList = new ArrayList<Variable>();
+			}
+			for (int i = 0; i < variableList.size(); i++) {
+				Variable variable = variableList.get(i);
+				if (variable.getVariableScope().equals("scenario") || variable.getFragmentUUID().equals(fragmentId)) {
+					if (variable.getVariableClassId().equals(variableClassId)) {
+						variableList.remove(variable);
+						break;
+					}
+				}
+
+			}
+			// 将fragment更新到缓存中
+			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
+			// 场景未保存
+			session.put(Constants.SCENE_ISDIRTY, true);
+
+			resultString = StringUtil.packetObject(MethodCode.DELETE_VARIABLE, ParameterCode.Result.RESULT_OK,
+					"删除变量到缓存成功，请注意在切换场景前保存场景数据。", "");
+		}
 		return resultString;
 	}
 
@@ -361,6 +364,29 @@ public class VariableService {
 					"会话已经过期！", "");
 			return resultString;
 		}
+
+		reVariableMap = new HashMap<>();
+		// 读取缓存中的模板fragment数据
+		JGitService jGitService = new JGitService();
+		List<Fragment> fragmentList = (List<Fragment>) CacheUtil
+				.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
+		if (fragmentList == null) {
+			fragmentList = new ArrayList<Fragment>();
+		}
+		List<Fragment> templateFragmentList = (List<Fragment>) CacheUtil
+				.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE);
+		if (templateFragmentList == null) {
+			templateFragmentList = new ArrayList<Fragment>();
+		}
+		for (int i = 0; i < templateFragmentList.size(); i++) {
+			fragmentList.add(templateFragmentList.get(i));
+		}
+		for (int j = 0; j < fragmentList.size(); j++) {
+			Fragment fragment = fragmentList.get(j);
+			JSONObject expJo = JSONObject.fromObject(fragment.getFragmentExpression());
+			this.parseVariable(expJo);
+		}
+
 		JSONArray variableJsonArray = new JSONArray();
 		List<Variable> variableList = (List<Variable>) CacheUtil
 				.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
@@ -391,6 +417,8 @@ public class VariableService {
 			dataObj.put("value", variable.getVariableValue());
 
 			dataObj.put("variableScope", variable.getVariableScope());
+			boolean isRefed = this.referenceVariable(variable.getVariableClassId());
+			dataObj.put("isRef", isRefed);
 
 			variableJsonArray.add(dataObj);
 		}
@@ -657,5 +685,42 @@ public class VariableService {
 
 		}
 		return resultString;
+	}
+
+	public boolean referenceVariable(String variableClassId) {
+		boolean result = false;
+		for (String key : reVariableMap.keySet()) {
+			if (key.equals(variableClassId)) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+
+	private void parseVariable(JSONObject expJo) {
+		try {
+
+			JSONArray expressArray = new JSONArray();
+			try {
+				expressArray = expJo.getJSONArray("expressions");
+			} catch (Exception e) {
+			}
+
+			String dataType = expJo.optString("dataType", "");
+			if (!StringUtil.isNullOrEmpty(dataType) && dataType.equals("variable")) {
+				JSONObject variableJo = expJo.getJSONObject("variable");
+				String variableClassId = variableJo.optString("variableClassId", "");
+				this.reVariableMap.put(variableClassId, variableClassId);
+			} else {
+				for (int i = 0; i < expressArray.size(); i++) {
+					expJo = expressArray.getJSONObject(i);
+					parseVariable(expJo);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
