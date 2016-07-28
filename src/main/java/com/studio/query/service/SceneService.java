@@ -895,6 +895,7 @@ public class SceneService {
 			JSONObject descObj = new JSONObject();
 			descObj.put("desc", sceneDesc);
 			sceneJson.put("scene", descObj);
+			sceneJson.put("attr", sceneActive.getSceneAttrObj());
 
 			JGitService jGitService = new JGitService();
 
