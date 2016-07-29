@@ -72,7 +72,8 @@ public class SceneService {
 			String sceneType;
 			JSONArray scopeArray = new JSONArray();
 			JSONObject fragmentObj = new JSONObject();
-			JSONObject sceneAttr= new JSONObject();;
+			JSONObject sceneAttr = new JSONObject();
+			;
 			if (Configure.serverVersion == 0) {
 				sceneName = parmJb.optString("name", "");
 				sceneDesc = parmJb.optString("desc", "");
@@ -163,6 +164,7 @@ public class SceneService {
 				sceneJson.put("templateList", "[]");
 				sceneJson.put("variableList", "[]");
 				// 临时设置数据源逻辑
+				this.resetScope(null, session);// 先清空scope
 				List<String> tempScopeList = (List<String>) session.get(Constants.KEY_SET_SCOPE);
 				if (tempScopeList == null) {
 					tempScopeList = new ArrayList<String>();
@@ -206,29 +208,31 @@ public class SceneService {
 
 				this.manualSwitchScene(insertScene.getSceneUUID(), currentAccount, session);
 
-				this.resetScope(null, session);// 先清空scope
-				// 创建场景时设置scope
-				// 这里设置数据源逻辑
-				List<String> scopeList = (List<String>) session.get(Constants.KEY_SET_SCOPE);
-				if (scopeList == null) {
-					scopeList = new ArrayList<String>();
-				}
-
-				for (int i = 0; i < scopeArray.size(); i++) {
-					boolean isExist = false;
-					String scope = scopeArray.getString(i);
-					for (int j = 0; j < scopeList.size(); j++) {
-						String oldScope = scopeList.get(j);
-						if (oldScope.equals(scope)) {
-							isExist = true;
-							break;
-						}
-					}
-					if (!isExist) {
-						scopeList.add(scope);
-					}
-				}
-				session.put(Constants.KEY_SET_SCOPE, scopeList);
+				// this.resetScope(null, session);// 先清空scope
+				// // 创建场景时设置scope
+				// // 这里设置数据源逻辑
+				// List<String> scopeList = (List<String>)
+				// session.get(Constants.KEY_SET_SCOPE);
+				// if (scopeList == null) {
+				// scopeList = new ArrayList<String>();
+				// }
+				//
+				// for (int i = 0; i < scopeArray.size(); i++) {
+				// boolean isExist = false;
+				// String scope = scopeArray.getString(i);
+				// for (int j = 0; j < scopeList.size(); j++) {
+				// String oldScope = scopeList.get(j);
+				// if (oldScope.equals(scope)) {
+				// isExist = true;
+				// break;
+				// }
+				// }
+				// if (!isExist) {
+				// scopeList.add(scope);
+				// }
+				// }
+				// session.put(Constants.KEY_SET_SCOPE, scopeList);
+				session.put(Constants.KEY_SET_SCOPE, tempScopeList);
 
 				resultString = StringUtil.packetObject(MethodCode.CREATE_SCENE, ParameterCode.Result.RESULT_OK,
 						"创建场景成功", "");
@@ -267,6 +271,18 @@ public class SceneService {
 		boolean isFrist = false;
 		if (StringUtil.isNullOrEmpty(sceneActiveUUID)) {
 			isFrist = true;
+		} else {
+			boolean isExit = false;
+			for (Scene s : sceneList) {
+				if (s.getSceneUUID().equals(sceneActiveUUID)) {
+					isExit = true;
+					break;
+				}
+			}
+			// 最后记录的场景不存在，或者被关闭
+			if (!isExit) {
+				isFrist = true;
+			}
 		}
 		for (int i = 0; i < sceneList.size(); i++) {
 
@@ -531,7 +547,7 @@ public class SceneService {
 			List<Variable> variableList = JsonUtil.getVariableFromSceneString(contentString);
 			List<String> scopeList = JsonUtil.getScopeFromSceneString(contentString);
 			String sceneDesc = JsonUtil.getDescFromSceneString(contentString);
-			JSONObject sceneAttrObj=JsonUtil.getAttrFromSceneString(contentString);
+			JSONObject sceneAttrObj = JsonUtil.getAttrFromSceneString(contentString);
 			sceneActive.setSceneDesc(sceneDesc);
 			sceneActive.setSceneAttrObj(sceneAttrObj);
 
@@ -917,8 +933,8 @@ public class SceneService {
 						return resultString;
 					}
 					Map map = JGitService.readLogTree(scenePath, new HashMap<>());
-					JSONObject historyObj=JSONObject.fromObject(map);
-					if(this.verifyBranchNameDup(sceneBranchName, historyObj)){
+					JSONObject historyObj = JSONObject.fromObject(map);
+					if (this.verifyBranchNameDup(sceneBranchName, historyObj)) {
 						resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
 								ParameterCode.Error.BRANCH_VALID, "分支名称重复", "");
 						return resultString;
@@ -938,8 +954,8 @@ public class SceneService {
 						return resultString;
 					}
 					Map map = JGitService.readLogTree(scenePath, new HashMap<>());
-					JSONObject historyObj=JSONObject.fromObject(map);
-					if(this.verifyBranchNameDup(sceneBranchName, historyObj)){
+					JSONObject historyObj = JSONObject.fromObject(map);
+					if (this.verifyBranchNameDup(sceneBranchName, historyObj)) {
 						resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
 								ParameterCode.Error.BRANCH_VALID, "分支名称重复", "");
 						return resultString;

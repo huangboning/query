@@ -363,6 +363,18 @@ public class AccountService {
 		boolean isFrist = false;
 		if (StringUtil.isNullOrEmpty(sceneActiveUUID)) {
 			isFrist = true;
+		}else {
+			boolean isExit = false;
+			for (Scene s : sceneList) {
+				if (s.getSceneUUID().equals(sceneActiveUUID)) {
+					isExit = true;
+					break;
+				}
+			}
+			// 最后记录的场景不存在，或者被关闭
+			if (!isExit) {
+				isFrist = true;
+			}
 		}
 		for (int i = 0; i < sceneList.size(); i++) {
 

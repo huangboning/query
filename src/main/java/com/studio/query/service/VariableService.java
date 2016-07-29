@@ -368,6 +368,7 @@ public class VariableService {
 		reVariableMap = new HashMap<>();
 		// 读取缓存中的模板fragment数据
 		JGitService jGitService = new JGitService();
+		List<Fragment> varfragmentList=new ArrayList<>();
 		List<Fragment> fragmentList = (List<Fragment>) CacheUtil
 				.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM);
 		if (fragmentList == null) {
@@ -378,11 +379,11 @@ public class VariableService {
 		if (templateFragmentList == null) {
 			templateFragmentList = new ArrayList<Fragment>();
 		}
-		for (int i = 0; i < templateFragmentList.size(); i++) {
-			fragmentList.add(templateFragmentList.get(i));
-		}
-		for (int j = 0; j < fragmentList.size(); j++) {
-			Fragment fragment = fragmentList.get(j);
+		varfragmentList.addAll(fragmentList);
+		varfragmentList.addAll(templateFragmentList);
+		
+		for (int j = 0; j < varfragmentList.size(); j++) {
+			Fragment fragment = varfragmentList.get(j);
 			JSONObject expJo = JSONObject.fromObject(fragment.getFragmentExpression());
 			this.parseVariable(expJo);
 		}
