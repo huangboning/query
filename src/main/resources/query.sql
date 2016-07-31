@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2016-07-31 13:09:06
+Date: 2016-07-31 23:59:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,6 +37,19 @@ CREATE TABLE `t_account` (
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for t_branch
+-- ----------------------------
+DROP TABLE IF EXISTS `t_branch`;
+CREATE TABLE `t_branch` (
+  `branch_id` int(11) NOT NULL AUTO_INCREMENT,
+  `branch_name` varchar(255) DEFAULT NULL,
+  `branch_name_cn` varchar(255) DEFAULT NULL,
+  `scene_id` int(11) DEFAULT NULL,
+  `branch_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`branch_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for t_fragment
 -- ----------------------------
 DROP TABLE IF EXISTS `t_fragment`;
@@ -53,7 +66,7 @@ CREATE TABLE `t_fragment` (
   `fragment_date` datetime DEFAULT NULL,
   PRIMARY KEY (`fragment_id`),
   UNIQUE KEY `fragment_no_unique` (`fragment_uuid`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_note
@@ -97,7 +110,7 @@ CREATE TABLE `t_scene` (
   PRIMARY KEY (`scene_id`),
   UNIQUE KEY `scene_no_unique` (`scene_uuid`) USING BTREE,
   UNIQUE KEY `scene_git_unique` (`scene_git`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_scene_desc
@@ -111,7 +124,7 @@ CREATE TABLE `t_scene_desc` (
   `scene_id` int(11) DEFAULT NULL,
   `scene_desc_date` datetime DEFAULT NULL,
   PRIMARY KEY (`scene_desc_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_share_fragment
