@@ -1052,12 +1052,23 @@ public class SceneService {
 								ParameterCode.Error.BRANCH_VALID, "分支名称重复", "");
 						return resultString;
 					}
+					// 先在最新版本上添加一个版本，然后在前一版本节点上再建立一个分支
+					jGitService.jGitCheckout(scenePath, currentVersionBranchName);
+					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
+					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
+					
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+					}
+
+					// 在前一版本节点上再建立一个分支
 					String branchAutoName = StringUtil.createBranchUUID();
 					jGitService.jGitCheckout(scenePath, currentVersion);
 					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
 					jGitService.jGitCreateBranch(scenePath, branchAutoName);
 					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
-					
+
 					// 保存分支名称中文映射
 					Branch insertBranch = new Branch();
 					insertBranch.setSceneId(sceneActive.getSceneId());
