@@ -144,5 +144,9 @@ public class ParameterCode {
 		 * 原始密码错误
 		 */
 		public static final String OLD_PASSWORD_VALIDATE = "-121";
+		/**
+		 * 当前活动场景不存在
+		 */
+		public static final String SCENE_ACTIVE_NO_EXIST = "-122";
 	}
 }

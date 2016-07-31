@@ -117,4 +117,12 @@ public class StringUtil {
 		randomString = str.substring(0, 8);
 		return randomString;
 	}
+	public static String createBranchUUID() {
+		String variableUUID = java.util.UUID.randomUUID().toString();
+		variableUUID = variableUUID.substring(0, 8) + variableUUID.substring(9, 13) + variableUUID.substring(14, 18)
+				+ variableUUID.substring(19, 23) + variableUUID.substring(24);
+		variableUUID = "BN" + variableUUID;
+		return variableUUID;
+
+	}
 }

@@ -110,7 +110,7 @@ public class InterfaceAction extends BaseAction {
 					} else if (methodCode.equals(MethodCode.CLOSE_SCENE)) {
 						returnString = sceneService.closeScenario(bodyString, currentAccount);
 					} else if (methodCode.equals(MethodCode.OPEN_SCENE)) {
-						returnString = sceneService.openScenario(bodyString, currentAccount);
+						returnString = sceneService.openScenario(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.UPDATE_SCENE)) {
 						returnString = sceneService.updateScene(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.CREATE_FRAGMENT)) {

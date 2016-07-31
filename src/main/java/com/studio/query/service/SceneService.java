@@ -12,13 +12,17 @@ import org.springframework.stereotype.Service;
 
 import com.studio.query.common.Configure;
 import com.studio.query.common.Constants;
+import com.studio.query.dao.BranchDao;
 import com.studio.query.dao.FragmentDao;
 import com.studio.query.dao.SceneDao;
+import com.studio.query.dao.SceneDescDao;
 import com.studio.query.dao.VariableDao;
 import com.studio.query.entity.Account;
+import com.studio.query.entity.Branch;
 import com.studio.query.entity.Committer;
 import com.studio.query.entity.Fragment;
 import com.studio.query.entity.Scene;
+import com.studio.query.entity.SceneDesc;
 import com.studio.query.entity.Variable;
 import com.studio.query.protocol.MethodCode;
 import com.studio.query.protocol.ParameterCode;
@@ -40,6 +44,10 @@ public class SceneService {
 	public FragmentDao fragmentDao;
 	@Autowired
 	public VariableDao variableDao;
+	@Autowired
+	public SceneDescDao sceneDescDao;
+	@Autowired
+	public BranchDao branchDao;
 
 	public List<Scene> findScene(Scene scene) {
 		return sceneDao.findScene(scene);
@@ -425,8 +433,8 @@ public class SceneService {
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 		// 如果session中没有记录当前场景
 		if (sceneActive == null) {
-			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Error.SERVICE_SESSION,
-					"当前没设置活动场景，或会话已经过期！", "");
+			resultString = StringUtil.packetObject(MethodCode.HISTORY_SCENE, ParameterCode.Error.SCENE_ACTIVE_NO_EXIST,
+					"当前没设置活动场景！", "");
 			return resultString;
 		}
 
@@ -434,10 +442,55 @@ public class SceneService {
 				+ Constants.SCENE_REPOSITORY_NAME + "/" + sceneActive.getSceneGit();
 
 		Map map = JGitService.readLogTree(scenePath, new HashMap<>());
+
+		// 附加版本描述（从数据库中查询）
+		Map commitMap = (Map) map.get("commit");
+		for (Object keyStr : commitMap.keySet()) {
+			Map itemMap = (Map) commitMap.get(keyStr);
+			SceneDesc findSceneDesc = new SceneDesc();
+			findSceneDesc.setSceneId(sceneActive.getSceneId());
+			findSceneDesc.setSceneVersion((String) itemMap.get("id"));
+			List<SceneDesc> sceneDescList = sceneDescDao.findSceneDesc(findSceneDesc);
+			if (sceneDescList.size() == 1) {
+				itemMap.put("commitDesc", sceneDescList.get(0).getSceneDesc());
+			} else {
+				itemMap.put("commitDesc", "");
+			}
+			this.replaceBranchNameCn(sceneActive, (List<String>) itemMap.get("branch"));
+		}
+		Map currentMap = (Map) map.get("current");
+		SceneDesc findSceneDesc = new SceneDesc();
+		findSceneDesc.setSceneId(sceneActive.getSceneId());
+		findSceneDesc.setSceneVersion((String) currentMap.get("id"));
+		List<SceneDesc> sceneDescList = sceneDescDao.findSceneDesc(findSceneDesc);
+		if (sceneDescList.size() == 1) {
+			currentMap.put("commitDesc", sceneDescList.get(0).getSceneDesc());
+		} else {
+			currentMap.put("commitDesc", "");
+		}
+		Map rootMap = (Map) map.get("root");
+		rootMap.put("commitDesc", "初始版本");
+
 		resultString = StringUtil.packetObjectObj(MethodCode.HISTORY_SCENE, ParameterCode.Result.RESULT_OK,
 				"查询场景历史版本成功", map);
 
 		return resultString;
+	}
+
+	public void replaceBranchNameCn(Scene sceneActive, List<String> branchList) {
+		// branch中文名称映射
+		Branch findBranch = new Branch();
+		findBranch.setSceneId(sceneActive.getSceneId());
+		List<Branch> branchCnList = branchDao.findBranch(findBranch);
+		for (int i = 0; i < branchList.size(); i++) {
+			for (Branch bn : branchCnList) {
+				if (branchList.get(i).equals(bn.getBranchName())) {
+					branchList.set(i, bn.getBranchNameCn());
+					break;
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -527,8 +580,8 @@ public class SceneService {
 			}
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION, ParameterCode.Error.SERVICE_SESSION,
-						"当前没设置活动场景，或会话已经过期！", "");
+				resultString = StringUtil.packetObject(MethodCode.SWITCH_VERSION,
+						ParameterCode.Error.SCENE_ACTIVE_NO_EXIST, "当前没设置活动场景", "");
 				return resultString;
 			}
 			String sessionScenePath = (String) session.get(Constants.KEY_SCENE_PATH);
@@ -596,8 +649,8 @@ public class SceneService {
 		}
 		Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 		if (sceneActive == null) {
-			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION, ParameterCode.Result.RESULT_OK,
-					"当前没设置活动场景！", "");
+			resultString = StringUtil.packetObject(MethodCode.GET_CURRENT_VERSION,
+					ParameterCode.Error.SCENE_ACTIVE_NO_EXIST, "当前没设置活动场景！", "");
 			return resultString;
 		}
 		String sessionScenePath = (String) session.get(Constants.KEY_SCENE_PATH);
@@ -776,7 +829,7 @@ public class SceneService {
 		return resultString;
 	}
 
-	public String openScenario(String bodyString, Account currentAccount) {
+	public String openScenario(String bodyString, Account currentAccount, Map<String, Object> session) {
 
 		String resultString = null;
 		JSONObject jb = JSONObject.fromObject(bodyString);
@@ -793,6 +846,8 @@ public class SceneService {
 			Scene updateScene = new Scene();
 			updateScene.setSceneUUID(scenarioId);
 			sceneDao.openScene(updateScene);
+
+			this.setActiveScene(scenarioId, currentAccount, session);
 
 			resultString = StringUtil.packetObject(MethodCode.OPEN_SCENE, ParameterCode.Result.RESULT_OK, "打开场景成功", "");
 
@@ -818,8 +873,8 @@ public class SceneService {
 
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Error.SERVICE_SESSION,
-						"当前没设置活动场景，或会话已经过期！", "");
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+						ParameterCode.Error.SCENE_ACTIVE_NO_EXIST, "当前没设置活动场景！", "");
 				return resultString;
 			}
 			String scenePath = (String) session.get(Constants.KEY_SCENE_PATH);
@@ -910,6 +965,7 @@ public class SceneService {
 			// 添加desc
 			JSONObject descObj = new JSONObject();
 			descObj.put("desc", sceneDesc);
+			sceneActive.setSceneDesc(sceneDesc);
 			sceneJson.put("scene", descObj);
 			sceneJson.put("attr", sceneActive.getSceneAttrObj());
 
@@ -927,43 +983,87 @@ public class SceneService {
 					return resultString;
 				} else {
 					// 正常建分支
-					if (!sceneBranchName.matches("[a-zA-Z\\d_]+")) {
-						resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
-								ParameterCode.Error.BRANCH_VALID, "无效的分支名称", "");
-						return resultString;
-					}
-					Map map = JGitService.readLogTree(scenePath, new HashMap<>());
-					JSONObject historyObj = JSONObject.fromObject(map);
-					if (this.verifyBranchNameDup(sceneBranchName, historyObj)) {
+					// if (!sceneBranchName.matches("[a-zA-Z\\d_]+")) {
+					// resultString =
+					// StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+					// ParameterCode.Error.BRANCH_VALID, "无效的分支名称", "");
+					// return resultString;
+					// }
+					// Map map = JGitService.readLogTree(scenePath, new
+					// HashMap<>());
+					// JSONObject historyObj = JSONObject.fromObject(map);
+					// if (this.verifyBranchNameDup(sceneBranchName,
+					// historyObj)) {
+					// resultString =
+					// StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+					// ParameterCode.Error.BRANCH_VALID, "分支名称重复", "");
+					// return resultString;
+					// }
+					// 查询映射表分支名称是否有重复
+					Branch findBranch = new Branch();
+					findBranch.setBranchNameCn(sceneBranchName);
+					findBranch.setSceneId(sceneActive.getSceneId());
+					List<Branch> branchList = branchDao.findBranch(findBranch);
+					if (branchList.size() >= 1) {
 						resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
 								ParameterCode.Error.BRANCH_VALID, "分支名称重复", "");
 						return resultString;
 					}
+					String branchAutoName = StringUtil.createBranchUUID();
 					jGitService.jGitCheckout(scenePath, currentVersion);
 					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
-					jGitService.jGitCreateBranch(scenePath, sceneBranchName);
+					jGitService.jGitCreateBranch(scenePath, branchAutoName);
 					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
+
+					// 保存分支名称中文映射
+					Branch insertBranch = new Branch();
+					insertBranch.setSceneId(sceneActive.getSceneId());
+					insertBranch.setBranchName(branchAutoName);
+					insertBranch.setBranchNameCn(sceneBranchName);
+					branchDao.insertBranch(insertBranch);
 				}
 			} else {
 
 				if (!StringUtil.isNullOrEmpty(sceneBranchName)) {
-					// 强制建分支
-					if (!sceneBranchName.matches("[a-zA-Z\\d_]+")) {
-						resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
-								ParameterCode.Error.BRANCH_VALID, "无效的分支名称", "");
-						return resultString;
-					}
-					Map map = JGitService.readLogTree(scenePath, new HashMap<>());
-					JSONObject historyObj = JSONObject.fromObject(map);
-					if (this.verifyBranchNameDup(sceneBranchName, historyObj)) {
+					// // 强制建分支
+					// if (!sceneBranchName.matches("[a-zA-Z\\d_]+")) {
+					// resultString =
+					// StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+					// ParameterCode.Error.BRANCH_VALID, "无效的分支名称", "");
+					// return resultString;
+					// }
+					// Map map = JGitService.readLogTree(scenePath, new
+					// HashMap<>());
+					// JSONObject historyObj = JSONObject.fromObject(map);
+					// if (this.verifyBranchNameDup(sceneBranchName,
+					// historyObj)) {
+					// resultString =
+					// StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+					// ParameterCode.Error.BRANCH_VALID, "分支名称重复", "");
+					// return resultString;
+					// }
+					// 查询映射表分支名称是否有重复
+					Branch findBranch = new Branch();
+					findBranch.setBranchNameCn(sceneBranchName);
+					findBranch.setSceneId(sceneActive.getSceneId());
+					List<Branch> branchList = branchDao.findBranch(findBranch);
+					if (branchList.size() >= 1) {
 						resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
 								ParameterCode.Error.BRANCH_VALID, "分支名称重复", "");
 						return resultString;
 					}
+					String branchAutoName = StringUtil.createBranchUUID();
 					jGitService.jGitCheckout(scenePath, currentVersion);
 					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
-					jGitService.jGitCreateBranch(scenePath, sceneBranchName);
+					jGitService.jGitCreateBranch(scenePath, branchAutoName);
 					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
+					
+					// 保存分支名称中文映射
+					Branch insertBranch = new Branch();
+					insertBranch.setSceneId(sceneActive.getSceneId());
+					insertBranch.setBranchName(branchAutoName);
+					insertBranch.setBranchNameCn(sceneBranchName);
+					branchDao.insertBranch(insertBranch);
 				} else {
 					// 如果分支名称为空则正常提交版本，需要重新checkout branch
 					jGitService.jGitCheckout(scenePath, currentVersionBranchName);
@@ -995,6 +1095,14 @@ public class SceneService {
 				sceneObject.put("sceneEnable", true);
 			}
 			session.put(Constants.SCENE_VERSION, committer.getCommitVersion());
+			// 保存desc
+			SceneDesc insertSceneDesc = new SceneDesc();
+			insertSceneDesc.setSceneId(sceneActive.getSceneId());
+			insertSceneDesc.setSceneUUID(sceneActive.getSceneUUID());
+			insertSceneDesc.setSceneVersion(committer.getCommitVersion());
+			insertSceneDesc.setSceneDesc(sceneDesc);
+			sceneDescDao.insertSceneDesc(insertSceneDesc);
+
 			// 场景未保存
 			session.put(Constants.SCENE_ISDIRTY, false);
 			resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Result.RESULT_OK, "更新场景成功",

@@ -308,8 +308,8 @@ public class QueryService {
 			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 			// 如果session中没有记录当前场景
 			if (sceneActive == null) {
-				resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE, ParameterCode.Error.SERVICE_SESSION,
-						"当前没设置活动场景，或会话已经过期！", "");
+				resultString = StringUtil.packetObject(MethodCode.EXECUTE_SCENE,
+						ParameterCode.Error.SCENE_ACTIVE_NO_EXIST, "当前没设置活动场景！", "");
 				return resultString;
 			}
 			executeScenarioString = this.executeQuery(position, recCount, session);
@@ -349,8 +349,8 @@ public class QueryService {
 				Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
 				// 如果session中没有记录当前场景
 				if (sceneActive == null) {
-					resultString = StringUtil.packetObject(MethodCode.NEXT_PAGE, ParameterCode.Error.SERVICE_SESSION,
-							"当前没设置活动场景，或会话已经过期！", "");
+					resultString = StringUtil.packetObject(MethodCode.NEXT_PAGE,
+							ParameterCode.Error.SCENE_ACTIVE_NO_EXIST, "当前没设置活动场景！", "");
 					return resultString;
 				}
 				executeScenarioString = this.executeQuery(position, recCount, session);
@@ -482,7 +482,8 @@ public class QueryService {
 			for (int i = 0; i < templateFragmentList.size(); i++) {
 				Fragment fragment = templateFragmentList.get(i);
 				JSONObject dataObj = new JSONObject();
-				//dataObj.put("id", fragment.getFragmentUUID());//模板遍历的是模板id，本身的实例id不需要显示
+				// dataObj.put("id",
+				// fragment.getFragmentUUID());//模板遍历的是模板id，本身的实例id不需要显示
 				dataObj.put("templateId", fragment.getFragmentTemplateId());
 				dataObj.put("name", fragment.getFragmentName());
 				dataObj.put("desc", fragment.getFragmentDesc());
@@ -521,11 +522,11 @@ public class QueryService {
 				// }
 
 				// if (fragment.isFragmentEnable()) {
-				//如果模板多次引用，只显示一次
-				if (fragmentTemplatesMap.get(fragment.getFragmentTemplateId())==null) {
+				// 如果模板多次引用，只显示一次
+				if (fragmentTemplatesMap.get(fragment.getFragmentTemplateId()) == null) {
 					fragmentTemplatesMap.put(fragment.getFragmentTemplateId(), dataObj);
 				}
-				
+
 				// }
 
 			}
@@ -582,7 +583,6 @@ public class QueryService {
 		return resultString;
 	}
 
-	
 	/**
 	 * 执行验证逻辑
 	 * 
@@ -696,7 +696,8 @@ public class QueryService {
 			for (int i = 0; i < templateFragmentList.size(); i++) {
 				Fragment fragment = templateFragmentList.get(i);
 				JSONObject dataObj = new JSONObject();
-				//dataObj.put("id", fragment.getFragmentUUID());//模板遍历的是模板id，本身的实例id不需要显示
+				// dataObj.put("id",
+				// fragment.getFragmentUUID());//模板遍历的是模板id，本身的实例id不需要显示
 				dataObj.put("templateId", fragment.getFragmentTemplateId());
 				dataObj.put("name", fragment.getFragmentName());
 				dataObj.put("desc", fragment.getFragmentDesc());
@@ -735,11 +736,11 @@ public class QueryService {
 				// }
 
 				// if (fragment.isFragmentEnable()) {
-				//如果模板多次引用，只显示一次
-				if (fragmentTemplatesMap.get(fragment.getFragmentTemplateId())==null) {
+				// 如果模板多次引用，只显示一次
+				if (fragmentTemplatesMap.get(fragment.getFragmentTemplateId()) == null) {
 					fragmentTemplatesMap.put(fragment.getFragmentTemplateId(), dataObj);
 				}
-				
+
 				// }
 
 			}
@@ -796,7 +797,7 @@ public class QueryService {
 		}
 		return resultString;
 	}
-	
+
 	/**
 	 * 验证表达式
 	 * 
