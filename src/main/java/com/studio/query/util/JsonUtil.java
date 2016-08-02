@@ -1,6 +1,7 @@
 package com.studio.query.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.studio.query.entity.Fragment;
@@ -181,5 +182,25 @@ public class JsonUtil {
 		}
 
 		return attrObj;
+	}
+
+	public static List<Variable> getRefVariableList(JSONArray refVariableArray) {
+		List<Variable> refVariableList = new ArrayList<>();
+		for (int j = 0; j < refVariableArray.size(); j++) {
+			JSONObject reVOj = refVariableArray.getJSONObject(j);
+			Variable refVar = new Variable();
+			refVar.setFragmentUUID(reVOj.optString("fragmentUUID", ""));
+			refVar.setSceneUUID(reVOj.optString("scenarioUUID", ""));
+			refVar.setVariableUUID(reVOj.optString("variableUUID", ""));
+			refVar.setVariableClassId(reVOj.optString("variableClassId", ""));
+			refVar.setVariableName(reVOj.optString("variableName", ""));
+			refVar.setVariableType(reVOj.optString("variableType", ""));
+			refVar.setVariableScope(reVOj.optString("variableScope", ""));
+			refVar.setVariableFieldType(reVOj.optString("variableFieldType", ""));
+			refVar.setVariableValueType(reVOj.optString("variableValueType", ""));
+			refVar.setVariableValue(reVOj.optString("variableValue", ""));
+			refVariableList.add(refVar);
+		}
+		return refVariableList;
 	}
 }

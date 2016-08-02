@@ -148,5 +148,13 @@ public class ParameterCode {
 		 * 当前活动场景不存在
 		 */
 		public static final String SCENE_ACTIVE_NO_EXIST = "-122";
+		/**
+		 * 场景验证失败
+		 */
+		public static final String SCENE_VALIDATE_FAIL = "-123";
+		/**
+		 * 场景fragment失败
+		 */
+		public static final String FRAGMENT_VALIDATE_FAIL = "-124";
 	}
 }
