@@ -2070,7 +2070,7 @@ public class FragmentService {
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 
 		if (parmJb != null) {
-			String fragmentId = parmJb.optString("fragmentId", "");
+			String fragmentId = parmJb.optString("id", "");
 			String templateId = parmJb.optString("templdateId", "");
 			String name = parmJb.optString("name", "");
 			String desc = parmJb.optString("desc", "");

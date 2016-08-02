@@ -570,8 +570,10 @@ public class SceneService {
 		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
 		if (parmJb != null) {
 			String sceneVersion;
+			boolean keepData = false;
 			if (Configure.serverVersion == 0) {
 				sceneVersion = parmJb.optString("version", "");
+				keepData = parmJb.optBoolean("keepdata", false);
 			} else {
 				sceneVersion = parmJb.optString("sceneVersion", "");
 			}
@@ -594,43 +596,45 @@ public class SceneService {
 					new HashMap<>());
 			jGitService.jGitCheckout(sessionScenePath, currentVersionBranchName);
 			jGitService.jGitCheckout(sessionScenePath, sceneVersion);
-			// jGitService.jGitCheckout(sessionScenePath, "bug4");
-			String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion, "info.txt");
-			// 解析场景json数据
-			List<Fragment> fragmentList = JsonUtil.getFragmentFromSceneString(contentString);
-			List<Fragment> templateList = JsonUtil.getTemplateFromSceneString(contentString);
-			List<Variable> variableList = JsonUtil.getVariableFromSceneString(contentString);
-			List<String> scopeList = JsonUtil.getScopeFromSceneString(contentString);
-			String sceneDesc = JsonUtil.getDescFromSceneString(contentString);
-			JSONObject sceneAttrObj = JsonUtil.getAttrFromSceneString(contentString);
-			sceneActive.setSceneDesc(sceneDesc);
-			sceneActive.setSceneAttrObj(sceneAttrObj);
+			if (!keepData) {
+				String contentString = jGitService.getContentByVersion(sessionScenePath, sceneVersion, "info.txt");
+				// 解析场景json数据
+				List<Fragment> fragmentList = JsonUtil.getFragmentFromSceneString(contentString);
+				List<Fragment> templateList = JsonUtil.getTemplateFromSceneString(contentString);
+				List<Variable> variableList = JsonUtil.getVariableFromSceneString(contentString);
+				List<String> scopeList = JsonUtil.getScopeFromSceneString(contentString);
+				String sceneDesc = JsonUtil.getDescFromSceneString(contentString);
+				JSONObject sceneAttrObj = JsonUtil.getAttrFromSceneString(contentString);
+				sceneActive.setSceneDesc(sceneDesc);
+				sceneActive.setSceneAttrObj(sceneAttrObj);
 
-			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
-			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, templateList);
-			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
-			// 重设scope
-			JSONArray sceneScopeArray = new JSONArray();
-			try {
-				sceneScopeArray = JSONArray.fromObject(sceneActive.getSceneScope());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			for (int i = 0; i < sceneScopeArray.size(); i++) {
-				boolean isExist = false;
-				String scope = sceneScopeArray.getString(i);
-				for (int j = 0; j < scopeList.size(); j++) {
-					String oldScope = scopeList.get(j);
-					if (oldScope.equals(scope)) {
-						isExist = true;
-						break;
+				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, fragmentList);
+				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_TEMPLATE, templateList);
+				CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR, variableList);
+				// 重设scope
+				JSONArray sceneScopeArray = new JSONArray();
+				try {
+					sceneScopeArray = JSONArray.fromObject(sceneActive.getSceneScope());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				for (int i = 0; i < sceneScopeArray.size(); i++) {
+					boolean isExist = false;
+					String scope = sceneScopeArray.getString(i);
+					for (int j = 0; j < scopeList.size(); j++) {
+						String oldScope = scopeList.get(j);
+						if (oldScope.equals(scope)) {
+							isExist = true;
+							break;
+						}
+					}
+					if (!isExist) {
+						scopeList.add(scope);
 					}
 				}
-				if (!isExist) {
-					scopeList.add(scope);
-				}
+				this.resetScope(scopeList, session);
 			}
-			this.resetScope(scopeList, session);
+
 			// 场景未保存
 			session.put(Constants.SCENE_ISDIRTY, false);
 
@@ -975,11 +979,12 @@ public class SceneService {
 			String str = this.validateScene(session, sessionFragmentArray, sessionTemplateArray, sessionVariableArray);
 			JSONObject strObj = JSONObject.fromObject(str);
 			boolean validateResult = strObj.optBoolean("isValid", false);
-//			if (!validateResult) {
-//				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE, ParameterCode.Error.SCENE_VALIDATE_FAIL,
-//						"场景验证失败", "");
-//				return resultString;
-//			}
+			// if (!validateResult) {
+			// resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+			// ParameterCode.Error.SCENE_VALIDATE_FAIL,
+			// "场景验证失败", "");
+			// return resultString;
+			// }
 
 			JGitService jGitService = new JGitService();
 
