@@ -185,6 +185,8 @@ public class InterfaceAction extends BaseAction {
 						returnString = noteService.doUpdateNoteLogic(bodyString, currentAccount, session);
 					} else if (methodCode.equals(MethodCode.DELETE_NOTE)) {
 						returnString = noteService.doDeleteNoteLogic(bodyString, currentAccount, session);
+					} else if (methodCode.equals(MethodCode.PRE_VALIDATE)) {
+						returnString = fragmentService.doPreValidateLogic(bodyString, session);
 					} else if (methodCode.equals(MethodCode.GET_INDEX_DOC_TYPES)) {
 						returnString = queryService.getIndexDocTypes(bodyString);
 					} else if (methodCode.equals(MethodCode.GET_HELP_VALUE)) {
@@ -479,6 +481,10 @@ public class InterfaceAction extends BaseAction {
 	}
 
 	public void deleteNote() {
+		this.execute();
+	}
+
+	public void preValidate() {
 		this.execute();
 	}
 

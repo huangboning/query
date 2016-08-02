@@ -128,17 +128,19 @@ public class FragmentService {
 				sessionFragmentArray = new ArrayList<Fragment>();
 			}
 			sessionFragmentArray.add(insertFragment);
-			// 验证fragment是否合法
-			List<Fragment> vaFragmentArray=new ArrayList<>();
-			vaFragmentArray.add(insertFragment);
-			String str=this.validateFragment(session, vaFragmentArray, new ArrayList<>());
-			JSONObject strObj = JSONObject.fromObject(str);
-//			boolean validateResult = strObj.optBoolean("isValid", false);
-//			if (!validateResult) {
-//				resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
-//						ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "fragment验证失败", "");
-//				return resultString;
-//			}
+			// // 验证fragment是否合法
+			// List<Fragment> vaFragmentArray=new ArrayList<>();
+			// vaFragmentArray.add(insertFragment);
+			// String str=this.validateFragment(session, vaFragmentArray, new
+			// ArrayList<>());
+			// JSONObject strObj = JSONObject.fromObject(str);
+			// boolean validateResult = strObj.optBoolean("isValid", false);
+			// if (!validateResult) {
+			// resultString =
+			// StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
+			// ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "fragment验证失败", str);
+			// return resultString;
+			// }
 
 			CacheUtil.putCacheObject(sceneActive.getSceneUUID() + Constants.KEY_FRGM, sessionFragmentArray);
 
@@ -252,24 +254,41 @@ public class FragmentService {
 			if (fragmentList == null) {
 				fragmentList = new ArrayList<Fragment>();
 			}
+			JSONObject validObj = new JSONObject();
 			JSONObject fragmentObj = new JSONObject();
 			for (int i = 0; i < fragmentList.size(); i++) {
 
 				Fragment fragment = fragmentList.get(i);
 				if (fragment.getFragmentUUID().equals(fragmentUUID)) {
-					
+
 					// 验证fragment是否合法
-					List<Fragment> vaFragmentArray=new ArrayList<>();
-					vaFragmentArray.add(fragment);
-					String str=this.validateFragment(session, vaFragmentArray, new ArrayList<>());
+					Fragment vFragment = new Fragment();
+					vFragment.setFragmentUUID(fragmentUUID);
+					if (!StringUtil.isNullOrEmpty(fragmentName)) {
+						vFragment.setFragmentName(fragmentName);
+					}
+					if (!StringUtil.isNullOrEmpty(fragmentType)) {
+						vFragment.setFragmentType(fragmentType);
+					}
+					if (!StringUtil.isNullOrEmpty(fragmentObjType)) {
+						vFragment.setFragmentObjType(fragmentObjType);
+					}
+					if (!StringUtil.isNullOrEmpty(fragmentDesc)) {
+						vFragment.setFragmentDesc(fragmentDesc);
+					}
+					vFragment.setFragmentExpression(fragmentExpression);
+					List<Fragment> vaFragmentArray = new ArrayList<>();
+					vaFragmentArray.add(vFragment);
+					String str = this.validateFragment(session, vaFragmentArray, new ArrayList<>());
 					JSONObject strObj = JSONObject.fromObject(str);
-//					boolean validateResult = strObj.optBoolean("isValid", false);
-//					if (!validateResult) {
-//						resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
-//								ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "fragment验证失败", "");
-//						return resultString;
-//					}
-					
+					validObj.put("valid", strObj);
+					boolean validateResult = strObj.optBoolean("isValid", false);
+					if (!validateResult) {
+						resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
+								ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "fragment验证失败", validObj.toString());
+						return resultString;
+					}
+
 					if (!StringUtil.isNullOrEmpty(fragmentName)) {
 						fragment.setFragmentName(fragmentName);
 					}
@@ -296,7 +315,7 @@ public class FragmentService {
 				session.put(Constants.SCENE_ISDIRTY, true);
 
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_OK,
-						"更新fragment到缓存成功，请注意在切换场景前保存场景数据。", "");
+						"更新fragment到缓存成功，请注意在切换场景前保存场景数据。", validObj.toString());
 			} else {
 
 				// 如果不是实例fragment，查找模板fragment
@@ -2031,16 +2050,141 @@ public class FragmentService {
 		queryObj.put("method", "validate");
 		queryObj.put("isForceEnableAll", true);
 
-		loger.info("validateScenario post data=" + queryObj.toString());
+		loger.info("validateFragment post data=" + queryObj.toString());
 
 		try {
 			resultString = HttpUtil.sendPost(Configure.esQueryServiceUrl, queryObj.toString().getBytes("utf-8"));
 
+			loger.info("validateResult=" + resultString);
 		} catch (Exception e) {
 			e.printStackTrace();
 			loger.info(e.toString());
 			loger.info("请求失败：" + Configure.esQueryServiceUrl);
 		}
+		return resultString;
+	}
+
+	public String doPreValidateLogic(String bodyString, Map<String, Object> session) {
+		String resultString = null;
+		JSONObject jb = JSONObject.fromObject(bodyString);
+		JSONObject parmJb = JSONObject.fromObject(jb.optString("params", ""));
+
+		if (parmJb != null) {
+			String fragmentId = parmJb.optString("fragmentId", "");
+			String templateId = parmJb.optString("templdateId", "");
+			String name = parmJb.optString("name", "");
+			String desc = parmJb.optString("desc", "");
+			String type = parmJb.optString("type", "");
+			String objType = parmJb.optString("objectType", "");
+			String expression = parmJb.optString("expression", "");
+			if (StringUtil.isNullOrEmpty(fragmentId)) {
+				resultString = StringUtil.packetObject(MethodCode.PRE_VALIDATE, ParameterCode.Error.SERVICE_PARAMETER,
+						"必要参数不足", "");
+				return resultString;
+			}
+			// 这里返回验证表达式结果
+			String validateString = "";
+			Scene sceneActive = (Scene) session.get(Constants.SCENE_ACTIVE);
+			JSONArray scopeObjs = new JSONArray();
+			List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+			if (scopeArray == null) {
+				scopeArray = new ArrayList<String>();
+			}
+			for (String scopeStr : scopeArray) {
+				scopeObjs.add(scopeStr);
+			}
+			JSONObject queryObj = new JSONObject();
+			JSONObject sceneObj = new JSONObject();
+			sceneObj.put("id", sceneActive.getSceneUUID());
+			sceneObj.put("name", sceneActive.getSceneName());
+			sceneObj.put("desc", sceneActive.getSceneDesc());
+			sceneObj.put("createTime", DateUtil.dateTimeFormat(sceneActive.getSceneDate()));
+			sceneObj.put("scope", scopeObjs.toString());
+
+			JSONArray fragmentListArray = new JSONArray();
+			Map<String, Object> fragmentsMap = new HashMap<String, Object>();
+			Map<String, Object> fragmentTemplatesMap = new HashMap<String, Object>();
+			if ("directInstance".equals(objType) || "templateInstance".equals(objType)) {
+				JSONObject dataObj = new JSONObject();
+				dataObj.put("id", fragmentId);
+				dataObj.put("templdateId", templateId);
+				dataObj.put("name", name);
+				dataObj.put("desc", desc);
+				dataObj.put("type", type);
+				dataObj.put("objectType", objType);
+				dataObj.put("enable", true);
+				dataObj.put("version", "");
+				dataObj.put("tags", "[]");
+				dataObj.put("expression", expression);
+				fragmentListArray.add(dataObj);
+				sceneObj.put("fragmentList", fragmentListArray);
+				if ("directInstance".equals(objType)) {
+					fragmentsMap.put(fragmentId, dataObj);
+					queryObj.put("fragments", fragmentsMap);
+				}
+				if ("templateInstance".equals(objType)) {
+					fragmentTemplatesMap.put(templateId, dataObj);
+					queryObj.put("fragmentTemplates", fragmentTemplatesMap);
+				}
+			}
+			queryObj.put("scenario", sceneObj.toString());
+
+			JSONArray variableListArray = new JSONArray();
+			// 读取缓存中的变量数据
+			List<Variable> variableList = (List<Variable>) CacheUtil
+					.getCacheObject(sceneActive.getSceneUUID() + Constants.KEY_VAR);
+			if (variableList == null) {
+				variableList = new ArrayList<Variable>();
+			}
+			for (int i = 0; i < variableList.size(); i++) {
+				Variable variable = variableList.get(i);
+				JSONObject dataObj = new JSONObject();
+
+				dataObj.put("variableInstanceId", variable.getVariableUUID());
+				dataObj.put("variableClassId", variable.getVariableClassId());
+				dataObj.put("name", variable.getVariableName());
+				dataObj.put("variableType", variable.getVariableType());
+				JSONObject belongObj = new JSONObject();
+				if (variable.getVariableScope().equals("fragment")) {
+					belongObj.put("fragmentId", variable.getFragmentUUID());
+					belongObj.put("scenarioId", variable.getSceneUUID());
+				} else {
+					belongObj.put("fragmentId", "");
+					belongObj.put("scenarioId", "");
+				}
+				dataObj.put("beLongsTo", belongObj);
+				dataObj.put("valueType", variable.getVariableValueType());
+				dataObj.put("fieldType", variable.getVariableFieldType());
+				dataObj.put("value", variable.getVariableValue());
+				dataObj.put("variableScope", variable.getVariableScope());
+				variableListArray.add(dataObj);
+			}
+			queryObj.put("variables", variableListArray);
+
+			// JSONObject paginationObj = new JSONObject();
+			// paginationObj.put("size", recCount);
+			// paginationObj.put("from", position);
+			// queryObj.put("pagination", paginationObj);
+			queryObj.put("method", "validate");
+			queryObj.put("isForceEnableAll", true);
+
+			loger.info("validateFragment post data=" + queryObj.toString());
+
+			try {
+				validateString = HttpUtil.sendPost(Configure.esQueryServiceUrl, queryObj.toString().getBytes("utf-8"));
+				loger.info("validateResult=" + validateString);
+				JSONObject validObj = new JSONObject();
+				JSONObject strObj = JSONObject.fromObject(validateString);
+				validObj.put("valid", strObj);
+				resultString = StringUtil.packetObject(MethodCode.PRE_VALIDATE, ParameterCode.Result.RESULT_OK,
+						"验证操作成功", validObj.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+				loger.info(e.toString());
+				loger.info("请求失败：" + Configure.esQueryServiceUrl);
+			}
+		}
+
 		return resultString;
 	}
 	// 暂时不验证

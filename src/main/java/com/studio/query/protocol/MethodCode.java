@@ -126,6 +126,10 @@ public class MethodCode {
 	 * 获取模板某版本
 	 */
 	public static final String GET_TEMPLATE_VERSION = "getTemplateVersion";
+	/**
+	 * 预验证接口
+	 */
+	public static final String PRE_VALIDATE = "preValidate";
 
 	/**
 	 * 禁用共享Fragment

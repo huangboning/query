@@ -241,6 +241,9 @@
 		<action name="transferTemplateInstance" class="com.studio.query.action.InterfaceAction"
 			method="transferTemplateInstance">
 		</action>
+		<action name="preValidate" class="com.studio.query.action.InterfaceAction"
+			method="preValidate">
+		</action>
 	</package>
 	<package name="note" extends="struts-default" namespace="/V1/note">
 		<action name="getNotes" class="com.studio.query.action.InterfaceAction"
