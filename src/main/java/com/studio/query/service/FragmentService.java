@@ -276,6 +276,7 @@ public class FragmentService {
 					if (!StringUtil.isNullOrEmpty(fragmentDesc)) {
 						vFragment.setFragmentDesc(fragmentDesc);
 					}
+					vFragment.setFragmentEnable(true);
 					vFragment.setFragmentExpression(fragmentExpression);
 					List<Fragment> vaFragmentArray = new ArrayList<>();
 					vaFragmentArray.add(vFragment);
