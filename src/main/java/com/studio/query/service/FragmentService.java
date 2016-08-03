@@ -280,11 +280,14 @@ public class FragmentService {
 					List<Fragment> vaFragmentArray = new ArrayList<>();
 					vaFragmentArray.add(vFragment);
 					String str = this.validateFragment(session, vaFragmentArray, new ArrayList<>());
-					JSONObject strObj = JSONObject.fromObject(str);
-					validObj.put("valid", strObj);
-					boolean validateResult = strObj.optBoolean("isValid", false);
+					boolean validateResult = false;
+					if (!StringUtil.isNullOrEmpty(str)) {
+						JSONObject strObj = JSONObject.fromObject(str);
+						validObj.put("valid", strObj);
+						validateResult = strObj.optBoolean("isValid", false);
+					}
 					if (!validateResult) {
-						resultString = StringUtil.packetObject(MethodCode.CREATE_FRAGMENT,
+						resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
 								ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "fragment验证失败", validObj.toString());
 						return resultString;
 					}

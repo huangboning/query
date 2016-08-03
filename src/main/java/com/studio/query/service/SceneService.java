@@ -977,14 +977,16 @@ public class SceneService {
 
 			// 验证场景是否合法
 			String str = this.validateScene(session, sessionFragmentArray, sessionTemplateArray, sessionVariableArray);
-			JSONObject strObj = JSONObject.fromObject(str);
-			boolean validateResult = strObj.optBoolean("isValid", false);
-			// if (!validateResult) {
-			// resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
-			// ParameterCode.Error.SCENE_VALIDATE_FAIL,
-			// "场景验证失败", "");
-			// return resultString;
-			// }
+			boolean validateResult = false;
+			if (!StringUtil.isNullOrEmpty(str)) {
+				JSONObject strObj = JSONObject.fromObject(str);
+				validateResult = strObj.optBoolean("isValid", false);
+			}
+			if (!validateResult) {
+				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+						ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "场景验证失败", "");
+				return resultString;
+			}
 
 			JGitService jGitService = new JGitService();
 
