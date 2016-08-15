@@ -211,7 +211,9 @@ public class InterfaceAction extends BaseAction {
 					this.thorwError("", ParameterCode.Error.SERVICE_RESOLVE, "服务器业务处理错误", "");
 					return null;
 				}
-				loger.info("return data=" + returnString);
+				if (!methodCode.equals(MethodCode.EXECUTE_SCENE)) {
+					loger.info("return data=" + returnString);
+				}
 				response.setHeader("Content-Type", "application/json;charset=utf-8");
 				response.getOutputStream().write(returnString.getBytes("utf-8"));
 				return null;

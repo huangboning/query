@@ -280,17 +280,24 @@ public class FragmentService {
 					vFragment.setFragmentExpression(fragmentExpression);
 					List<Fragment> vaFragmentArray = new ArrayList<>();
 					vaFragmentArray.add(vFragment);
-					String str = this.validateFragment(session, vaFragmentArray, new ArrayList<>());
-					boolean validateResult = false;
-					if (!StringUtil.isNullOrEmpty(str)) {
-						JSONObject strObj = JSONObject.fromObject(str);
-						validObj.put("valid", strObj);
-						validateResult = strObj.optBoolean("isValid", false);
-					}
-					if (!validateResult) {
-						resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
-								ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "fragment验证失败", validObj.toString());
-						return resultString;
+					if (!Configure.isDevelopment) {
+						String str = this.validateFragment(session, vaFragmentArray, new ArrayList<>());
+						boolean validateResult = false;
+						if (!StringUtil.isNullOrEmpty(str)) {
+							JSONObject strObj = JSONObject.fromObject(str);
+							validObj.put("valid", strObj);
+							validateResult = strObj.optBoolean("isValid", false);
+						} else {
+							validObj.put("valid", "{\"isValid\": false,\"message\":\"\"}");
+						}
+						// 验证失败也要保存
+						// if (!validateResult) {
+						// resultString =
+						// StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
+						// ParameterCode.Error.FRAGMENT_VALIDATE_FAIL,
+						// "fragment验证失败", validObj.toString());
+						// return resultString;
+						// }
 					}
 
 					if (!StringUtil.isNullOrEmpty(fragmentName)) {
@@ -334,8 +341,30 @@ public class FragmentService {
 
 					Fragment fragment = fragmentList.get(i);
 					if (fragment.getFragmentUUID().equals(fragmentUUID)) {
+						if (!StringUtil.isNullOrEmpty(fragmentName)) {
+							fragment.setFragmentName(fragmentName);
+						}
 						fragment.setFragmentExpression(fragmentExpression);
 						isHaveFragment = true;
+						// 验证
+						fragment.setFragmentEnable(true);
+						List<Fragment> vaFragmentArray = new ArrayList<>();
+						vaFragmentArray.add(fragment);
+						String str = this.validateFragment(session, vaFragmentArray, new ArrayList<>());
+						boolean validateResult = false;
+						if (!StringUtil.isNullOrEmpty(str)) {
+							JSONObject strObj = JSONObject.fromObject(str);
+							validObj.put("valid", strObj);
+							validateResult = strObj.optBoolean("isValid", false);
+						} else {
+							validObj.put("valid", "{\"isValid\": false,\"message\":\"\"}");
+						}
+						//模板验证失败不能保存
+						if (!validateResult) {
+							resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
+									ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "模板fragment验证失败", validObj.toString());
+							return resultString;
+						}
 						break;
 					}
 				}
@@ -346,7 +375,7 @@ public class FragmentService {
 				session.put(Constants.SCENE_ISDIRTY, true);
 
 				resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT, ParameterCode.Result.RESULT_OK,
-						"更新模板fragment到缓存成功，请注意在切换场景前保存场景数据。", "");
+						"更新模板fragment到缓存成功，请注意在切换场景前保存场景数据。", validObj.toString());
 			}
 
 		}

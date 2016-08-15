@@ -848,12 +848,20 @@ public class SceneService {
 						"必要参数不足", "");
 				return resultString;
 			}
+			Scene findScene = new Scene();
+			findScene.setAccountId(currentAccount.getAccountId());
+			List<Scene> openSceneList = sceneDao.findScene(findScene);
+
 			// 更新场景为打开状态
 			Scene updateScene = new Scene();
 			updateScene.setSceneUUID(scenarioId);
 			sceneDao.openScene(updateScene);
 
-			this.setActiveScene(scenarioId, currentAccount, session);
+			// 如果当前无打开场景，才会去激活当前打开的场景。
+			if (openSceneList.size() == 0) {
+				this.setActiveScene(scenarioId, currentAccount, session);
+				this.manualSwitchScene(scenarioId, currentAccount, session);
+			}
 
 			resultString = StringUtil.packetObject(MethodCode.OPEN_SCENE, ParameterCode.Result.RESULT_OK, "打开场景成功", "");
 
@@ -975,17 +983,22 @@ public class SceneService {
 			sceneJson.put("scene", descObj);
 			sceneJson.put("attr", sceneActive.getSceneAttrObj());
 
-			// 验证场景是否合法
-			String str = this.validateScene(session, sessionFragmentArray, sessionTemplateArray, sessionVariableArray);
-			boolean validateResult = false;
-			if (!StringUtil.isNullOrEmpty(str)) {
-				JSONObject strObj = JSONObject.fromObject(str);
-				validateResult = strObj.optBoolean("isValid", false);
-			}
-			if (!validateResult) {
-				resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
-						ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "场景验证失败", "");
-				return resultString;
+			if (!Configure.isDevelopment) {
+				// 验证场景是否合法
+				String str = this.validateScene(session, sessionFragmentArray, sessionTemplateArray,
+						sessionVariableArray);
+				boolean validateResult = false;
+				if (!StringUtil.isNullOrEmpty(str)) {
+					JSONObject strObj = JSONObject.fromObject(str);
+					validateResult = strObj.optBoolean("isValid", false);
+				}
+				// 场景验证失败可以保存
+				// if (!validateResult) {
+				// resultString =
+				// StringUtil.packetObject(MethodCode.UPDATE_SCENE,
+				// ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "场景验证失败", "");
+				// return resultString;
+				// }
 			}
 
 			JGitService jGitService = new JGitService();
@@ -994,7 +1007,11 @@ public class SceneService {
 			boolean isLastVersion = jGitService.isLastVersion(scenePath, currentVersion);
 			String currentVersionBranchName = jGitService.getBranchFromCommit(scenePath, currentVersion,
 					new HashMap<>());
-
+			loger.info(">>>>>>>>>>>>>>>currentVersion=" + currentVersion + ",isLastVersion=" + isLastVersion
+					+ ",currentVersionBranchName=" + currentVersionBranchName);
+			Map map = JGitService.readLogTree(scenePath, new HashMap<>());
+			JSONObject mJson = JSONObject.fromObject(map);
+			loger.info(">>>>>>>>>>>>>>>readLogTree=" + mJson.toString());
 			if (!isLastVersion) {
 				if (StringUtil.isNullOrEmpty(sceneBranchName)) {
 					resultString = StringUtil.packetObject(MethodCode.UPDATE_SCENE,
@@ -1033,7 +1050,7 @@ public class SceneService {
 					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
 					jGitService.jGitCreateBranch(scenePath, branchAutoName);
 					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
-
+					loger.info(">>>>>>>>>>>jGitCreateBranch===>>>>" + branchAutoName);
 					// 保存分支名称中文映射
 					Branch insertBranch = new Branch();
 					insertBranch.setSceneId(sceneActive.getSceneId());
@@ -1087,7 +1104,7 @@ public class SceneService {
 					FileUtil.writeFile(scenePath + "/info.txt", sceneJson.toString());
 					jGitService.jGitCreateBranch(scenePath, branchAutoName);
 					jGitService.jGitCommit(scenePath, currentAccount, "update scene");
-
+					loger.info(">>>>>>>>>>>>jGitCreateBranch===>>>>" + branchAutoName);
 					// 保存分支名称中文映射
 					Branch insertBranch = new Branch();
 					insertBranch.setSceneId(sceneActive.getSceneId());
