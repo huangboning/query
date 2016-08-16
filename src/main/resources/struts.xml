@@ -66,6 +66,10 @@
 			<result name="login">/page/login.jsp</result>
 			<result name="error">/page/error.jsp</result>
 		</action>
+		<action name="validate" class="com.studio.query.action.ValidateAction"
+			method="sceneValidate">
+			<result name="success">/test/testResult.jsp</result>
+		</action>
 	</package>
 	<package name="user" extends="userAuthority" namespace="/user">
 		<action name="info" class="com.studio.query.action.UserAction"

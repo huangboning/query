@@ -359,7 +359,7 @@ public class FragmentService {
 						} else {
 							validObj.put("valid", "{\"isValid\": false,\"message\":\"\"}");
 						}
-						//模板验证失败不能保存
+						// 模板验证失败不能保存
 						if (!validateResult) {
 							resultString = StringUtil.packetObject(MethodCode.UPDATE_FRAGMENT,
 									ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "模板fragment验证失败", validObj.toString());
@@ -1323,9 +1323,32 @@ public class FragmentService {
 			fragmentJsonObject.put("createTime", insertFragment.getFragmentDateStr());
 			fragmentJsonObject.put("version", insertFragment.getFragmentTemplateVersion());
 			fragmentJsonObject.put("expression", insertFragment.getFragmentExpression());
+			// 暂时不重设置scope
+			// // 重设scope
+			// List<String> scopeList = new ArrayList<String>();
+			// JSONArray strScopeArray = null;
+			// try {
+			// strScopeArray = refJson.getJSONArray("scopeList");
+			// } catch (Exception e) {
+			// }
+			// if (strScopeArray != null) {
+			// for (int i = 0; i < strScopeArray.size(); i++) {
+			//
+			// String scope = (String) strScopeArray.get(i);
+			//
+			// scopeList.add(scope);
+			//
+			// }
+			// }
+			// sceneService.resetScope(scopeList, session);
 
-			// 重设scope
-			List<String> scopeList = new ArrayList<String>();
+			// 校验模板中用到的scope是否为当前场景的子集
+			boolean isContain = false;
+			List<String> scopeArray = (ArrayList<String>) session.get(Constants.KEY_SET_SCOPE);
+			if (scopeArray == null) {
+				scopeArray = new ArrayList<String>();
+			}
+
 			JSONArray strScopeArray = null;
 			try {
 				strScopeArray = refJson.getJSONArray("scopeList");
@@ -1335,13 +1358,21 @@ public class FragmentService {
 				for (int i = 0; i < strScopeArray.size(); i++) {
 
 					String scope = (String) strScopeArray.get(i);
-
-					scopeList.add(scope);
-
+					for (String scopeStr : scopeArray) {
+						if (scope.equals(scopeStr)) {
+							isContain = true;
+							break;
+						} else {
+							isContain = false;
+						}
+					}
+					if (isContain == false) {
+						break;
+					}
 				}
 			}
-			sceneService.resetScope(scopeList, session);
-
+			fragmentJsonObject.put("isContain", isContain);
+			fragmentJsonObject.put("scopes", strScopeArray);
 			// 查看实例化模板是否引用变量
 			JSONArray refVariableArray = new JSONArray();
 			try {
@@ -1363,7 +1394,7 @@ public class FragmentService {
 				validateFragmentList.add(insertFragment);
 				String str = this.validateTemplateVariableList(session, validateFragmentList, new ArrayList<>(),
 						JsonUtil.getRefVariableList(refVariableArray));
-				fragmentJsonObject.put("validateResult", str);
+				fragmentJsonObject.put("valid", str);
 				loger.info("validateResult=" + str);
 				JSONObject strObj = JSONObject.fromObject(str);
 				JSONObject refObj = strObj.getJSONObject("varReferenced");
@@ -2203,10 +2234,10 @@ public class FragmentService {
 
 			loger.info("validateFragment post data=" + queryObj.toString());
 
+			JSONObject validObj = new JSONObject();
 			try {
 				validateString = HttpUtil.sendPost(Configure.esQueryServiceUrl, queryObj.toString().getBytes("utf-8"));
 				loger.info("validateResult=" + validateString);
-				JSONObject validObj = new JSONObject();
 				JSONObject strObj = JSONObject.fromObject(validateString);
 				validObj.put("valid", strObj);
 				resultString = StringUtil.packetObject(MethodCode.PRE_VALIDATE, ParameterCode.Result.RESULT_OK,
@@ -2215,6 +2246,9 @@ public class FragmentService {
 				e.printStackTrace();
 				loger.info(e.toString());
 				loger.info("请求失败：" + Configure.esQueryServiceUrl);
+				validObj.put("valid", "{\"isValid\": false,\"message\":\"\"}");
+				resultString = StringUtil.packetObject(MethodCode.PRE_VALIDATE,
+						ParameterCode.Error.FRAGMENT_VALIDATE_FAIL, "验证操作失败", validObj.toString());
 			}
 		}
 
