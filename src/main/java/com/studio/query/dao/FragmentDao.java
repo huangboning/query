@@ -39,6 +39,7 @@ public interface FragmentDao {
 			@Result(column = "share_fragment_obj_type", property = "shareFragmentObjType"),
 			@Result(column = "share_fragment_desc", property = "shareFragmentDesc"),
 			@Result(column = "share_fragment_version", property = "shareFragmentVersion"),
+			@Result(column = "share_fragment_scope", property = "shareFragmentScope"),
 			@Result(column = "share_fragment_git", property = "shareFragmentGit"),
 			@Result(column = "share_fragment_date", property = "shareFragmentDate") })
 	@SelectProvider(type = ShareFragmentMapperProvider.class, method = "findShareFragment")
@@ -68,11 +69,11 @@ public interface FragmentDao {
 	public int disableShareFragment(Fragment fragment);
 
 	// 发布模板fragment
-	@Insert("insert into t_share_fragment(account_id,share_fragment_uuid,share_fragment_name,share_fragment_type,share_fragment_obj_type,share_fragment_desc,share_fragment_enable,share_fragment_active,share_fragment_version,share_fragment_git,share_fragment_date)"
-			+ " values(#{accountId},#{shareFragmentUUID},#{shareFragmentName},#{shareFragmentType},#{shareFragmentObjType},#{shareFragmentDesc},#{shareFragmentEnable},#{shareFragmentActive},#{shareFragmentVersion},#{shareFragmentGit},now())")
+	@Insert("insert into t_share_fragment(account_id,share_fragment_uuid,share_fragment_name,share_fragment_type,share_fragment_obj_type,share_fragment_desc,share_fragment_enable,share_fragment_active,share_fragment_version,share_fragment_scope,share_fragment_git,share_fragment_date)"
+			+ " values(#{accountId},#{shareFragmentUUID},#{shareFragmentName},#{shareFragmentType},#{shareFragmentObjType},#{shareFragmentDesc},#{shareFragmentEnable},#{shareFragmentActive},#{shareFragmentVersion},#{shareFragmentScope},#{shareFragmentGit},now())")
 	public int releaseFragment(ShareFragment shareFragment);
 
 	// 更新模板fragment
-	@Update("update t_share_fragment set share_fragment_name=#{shareFragmentName},share_fragment_desc=#{shareFragmentDesc},share_fragment_version=#{shareFragmentVersion} where share_fragment_uuid=#{shareFragmentUUID} and account_id=#{accountId}")
+	@Update("update t_share_fragment set share_fragment_name=#{shareFragmentName},share_fragment_desc=#{shareFragmentDesc},share_fragment_version=#{shareFragmentVersion},share_fragment_scope=#{shareFragmentScope} where share_fragment_uuid=#{shareFragmentUUID} and account_id=#{accountId}")
 	public int updateShareFragment(ShareFragment shareFragment);
 }

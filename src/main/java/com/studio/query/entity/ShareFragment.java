@@ -18,6 +18,7 @@ public class ShareFragment extends Pager {
 	private int shareFragmentActive;
 	private Date shareFragmentDate;
 	private String shareFragmentVersion;
+	private String shareFragmentScope;
 	private String shareFragmentGit;
 
 	public int getShareFragmentId() {
@@ -122,6 +123,14 @@ public class ShareFragment extends Pager {
 
 	public void setShareFragmentVersion(String shareFragmentVersion) {
 		this.shareFragmentVersion = shareFragmentVersion;
+	}
+
+	public String getShareFragmentScope() {
+		return shareFragmentScope;
+	}
+
+	public void setShareFragmentScope(String shareFragmentScope) {
+		this.shareFragmentScope = shareFragmentScope;
 	}
 
 	public String getShareFragmentGit() {

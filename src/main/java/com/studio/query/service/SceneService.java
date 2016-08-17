@@ -1239,7 +1239,7 @@ public class SceneService {
 		for (int i = 0; i < templateFragmentList.size(); i++) {
 			Fragment fragment = templateFragmentList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("id", fragment.getFragmentTemplateId());
+			dataObj.put("id", fragment.getFragmentUUID());
 			dataObj.put("templateId", fragment.getFragmentTemplateId());
 			dataObj.put("name", fragment.getFragmentName());
 			dataObj.put("desc", fragment.getFragmentDesc());

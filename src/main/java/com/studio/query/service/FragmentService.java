@@ -1003,6 +1003,11 @@ public class FragmentService {
 			dataObj.put("createdBy", shareFragment.getAccountName());
 			dataObj.put("createTime", DateUtil.dateTimeFormat(shareFragment.getShareFragmentDate()));
 			dataObj.put("version", shareFragment.getShareFragmentVersion());
+			String shareFragmentScope="[]";
+			if (!StringUtil.isNullOrEmpty(shareFragment.getShareFragmentScope())) {
+				shareFragmentScope=shareFragment.getShareFragmentScope();
+			}
+			dataObj.put("scopes", shareFragmentScope);
 
 			fragmentJsonArray.add(dataObj);
 		}
@@ -1208,6 +1213,7 @@ public class FragmentService {
 				shareFragment.setShareFragmentDesc(fromFragment.getFragmentDesc());
 				shareFragment.setShareFragmentDate(new Date());
 				shareFragment.setShareFragmentGit(StringUtil.createShareFragmentGit());
+				shareFragment.setShareFragmentScope(scopeObjs.toString());
 			}
 
 			// 模板版本库路径
@@ -1878,7 +1884,7 @@ public class FragmentService {
 		for (int i = 0; i < templateFragmentList.size(); i++) {
 			Fragment fragment = templateFragmentList.get(i);
 			JSONObject dataObj = new JSONObject();
-			dataObj.put("id", fragment.getFragmentTemplateId());
+			dataObj.put("id", fragment.getFragmentUUID());
 			dataObj.put("templateId", fragment.getFragmentTemplateId());
 			dataObj.put("name", fragment.getFragmentName());
 			dataObj.put("desc", fragment.getFragmentDesc());
